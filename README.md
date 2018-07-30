@@ -4,8 +4,8 @@
  - frame commit
  - 개발중
 
-## CAAS_DASHBOARD 란?
-Paasta에서 제공하는 Kubernetes Cluster의 관리와 모니터링을 용이하게 하기 위하여 제공하는 UI서비스이다.
+## Caas_Dashboard 란?
+  Paasta에서 제공하는 Kubernetes Cluster 의 관리와 모니터링을 용이하게 하기 위하여 제공하는 UI서비스이다.
 
 
 ## 유의사항
