@@ -1,0 +1,39 @@
+# Spring properties
+spring:
+  application:
+    name: CaasDashboard  # Identify this application
+
+##INFRA_ADMIN Settings
+project:
+  name: paasta-caas-dashboard
+  artifactId: paasta-caas-dashboard
+  description: paasta-caas-dashboard
+info:
+  app:
+    encoding: Encoding - UTF-8
+  java:
+    source: Source - java ver
+    target: Instance1 - Java ver
+  spring:
+    profiles: ${spring.profiles.active:default}
+  build:
+    name: ${project.name}
+    artifact: ${project.artifactId}
+    description: ${project.description}
+
+
+management:
+  security:
+    enabled: false
+
+# HTTP Server
+server:
+  port: ${PORT:8091}   # HTTP (Tomcat) port
+
+---
+spring:
+  profiles: local
+
+---
+spring:
+  profiles: dev
