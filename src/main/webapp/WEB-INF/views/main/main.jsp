@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>main</title>
 
-    <link href="<c:url value='/resources/css/bootstrap.min.js' />" rel="stylesheet">
+    <script type="text/javascript" src="<c:url value='/resources/js/jquery.min.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/js/bootstrap.min.js' />"></script>
 
     <link href="<c:url value='/resources/css/bootstrap.css' />" rel="stylesheet">
     <link href="<c:url value='/resources/css/common.css' />" rel="stylesheet">
