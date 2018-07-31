@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -23,7 +24,7 @@ import java.util.Locale;
  * @version 1.0
  * @since 2016.07.07
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class GlobalControllerExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
@@ -41,10 +42,14 @@ public class GlobalControllerExceptionHandler {
 
 
     @ExceptionHandler({Exception.class})
-    @ResponseBody
-    public boolean handleAnyException(Exception e, HttpServletResponse response) throws IOException {
-        return errorResponse(e, HttpStatus.INTERNAL_SERVER_ERROR, response);
+//    @ResponseBody
+    public ModelAndView handleAnyException(Exception e, HttpStatus status, HttpServletResponse response) throws IOException {
+        System.out.println(status.value());
+        return new ModelAndView("/common/error/401");
     }
+//    public boolean handleAnyException(Exception e, HttpServletResponse response) throws IOException {
+//        return errorResponse(e, HttpStatus.INTERNAL_SERVER_ERROR, response);
+//    }
 
 
     //common message

@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -66,6 +68,22 @@ public class CommonErrorController {
         pageErrorLog(request);
         model.addAttribute("msg", "잘못된 요청입니다.");
         return "common/error";
+    }
+
+    /**
+     * Page error 401 string.
+     *
+     * @param request the request
+     * @param model   the model
+     * @return the string
+     */
+    @RequestMapping(value = "/401")
+    public String pageError401(HttpServletRequest request, Model model) {
+        LOGGER.info("page error code 401");
+        pageErrorLog(request);
+        model.addAttribute("msg", "접근이 금지되었습니다.");
+        return "error/error401";
+//        return "common/error";
     }
 
     /**

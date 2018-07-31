@@ -79,25 +79,25 @@
             </div>
         </div>
 
-        <%--<div class="panel panel-default" >--%>
-            <%--<div class="panel-heading" style="background-color: rgb(249, 161, 27)">--%>
-                <%--<div class="panel-title text-center" style="background-color: rgb(249, 161, 27)"><img src="/resources/images/logo.png"></div>--%>
-            <%--</div>--%>
+        <div class="panel panel-default" >
+            <div class="panel-heading" style="background-color: rgb(249, 161, 27)">
+                <div class="panel-title text-center" style="background-color: rgb(249, 161, 27)"><img src="/resources/images/logo.png"></div>
+            </div>
 
-            <%--<div class="panel-body" >--%>
-                <%--<form name='login'>--%>
-                    <%--<fieldset>--%>
-                        <%--<div class="form-group text-center">--%>
-                            <%--<c:out value='${msg }'/>--%>
-                        <%--</div>--%>
-                    <%--</fieldset>--%>
-                <%--</form>--%>
-                <%--<hr/>--%>
-                <%--<div>--%>
-                    <%--<span class="span-right"><a id="resetPassword" href="/myQuestion/myQuestionMain/create">문의하러 가기</a></span>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
+            <div class="panel-body" >
+                <form name='login'>
+                    <fieldset>
+                        <div class="form-group text-center">
+                            <c:out value='${msg }'/>
+                        </div>
+                    </fieldset>
+                </form>
+                <hr/>
+                <div>
+                    <span class="span-right"><a id="resetPassword" href="/myQuestion/myQuestionMain/create">문의하러 가기</a></span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
