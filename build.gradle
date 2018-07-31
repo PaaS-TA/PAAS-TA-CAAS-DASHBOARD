@@ -51,5 +51,11 @@ dependencies {
 
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-web-services')
+
+//	compile ('org.springframework.boot:spring-boot-starter-security')
+//	compile("org.springframework.security.oauth:spring-security-oauth2")
+	compile('org.springframework.security.oauth:spring-security-oauth2:2.0.10.RELEASE')
+	compile('org.springframework.security:spring-security-taglibs:4.2.3.RELEASE')
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
