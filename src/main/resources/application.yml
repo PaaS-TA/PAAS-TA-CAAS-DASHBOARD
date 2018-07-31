@@ -2,6 +2,13 @@
 spring:
   application:
     name: CaasDashboard  # Identify this application
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+
 
 ##INFRA_ADMIN Settings
 project:
