@@ -41,6 +41,24 @@ server:
 spring:
   profiles: local
 
+cf:
+  uaa:
+    oauth:
+      info:
+        uri: https://uaa.115.68.46.187.xip.io/userinfo
+      token:
+        check:
+          uri: https://uaa.115.68.46.187.xip.io/check_token
+        access:
+          uri: https://uaa.115.68.46.187.xip.io/oauth/token
+      logout:
+        url: https://uaa.115.68.46.187.xip.io/logout
+      authorization:
+        uri: https://uaa.115.68.46.187.xip.io/oauth/authorize
+      client:
+        id: caasclient
+        secret: clientsecret
+
 ---
 spring:
   profiles: dev

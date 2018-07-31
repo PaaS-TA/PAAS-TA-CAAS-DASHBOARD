@@ -12,8 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 /**
  * The type Security config.
  */
-@Configuration
-@EnableWebSecurity
+//@Configuration
+//@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -24,39 +24,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @throws Exception the exception
      */
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder authenticationMgr) throws Exception {
-
-
-        authenticationMgr.authenticationProvider(customAuthenticationProvider());
-
-
-    }
-
-    @Bean
-    AuthenticationProvider customAuthenticationProvider() {
-
-        CustomAuthenticationProvider impl = new CustomAuthenticationProvider();
-        return impl;
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-        http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/external/**").permitAll()
-                .antMatchers("/resources/**").permitAll()
-                //.antMatchers("/**").access("hasRole('ROLE_ADMIN')")
-                //.and()
-                //.formLogin().loginPage("/index")
-                //.defaultSuccessUrl("/main")
-                //.failureUrl("/index?error")
-                //.usernameParameter("id").passwordParameter("password")
-                //.and()
-                //.logout().logoutSuccessUrl("/index?logout");
-                ;
-    }
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder authenticationMgr) throws Exception {
+//
+//
+//        authenticationMgr.authenticationProvider(customAuthenticationProvider());
+//
+//
+//    }
+//
+//    @Bean
+//    AuthenticationProvider customAuthenticationProvider() {
+//
+//        CustomAuthenticationProvider impl = new CustomAuthenticationProvider();
+//        return impl;
+//    }
+//
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//
+//        http
+//                .csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/external/**").permitAll()
+//                .antMatchers("/resources/**").permitAll()
+//                //.antMatchers("/**").access("hasRole('ROLE_ADMIN')")
+//                //.and()
+//                //.formLogin().loginPage("/index")
+//                //.defaultSuccessUrl("/main")
+//                //.failureUrl("/index?error")
+//                //.usernameParameter("id").passwordParameter("password")
+//                //.and()
+//                //.logout().logoutSuccessUrl("/index?logout");
+//                ;
+//    }
 
 }
