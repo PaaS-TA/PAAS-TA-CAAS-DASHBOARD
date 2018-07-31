@@ -12,7 +12,6 @@
 
 개발 정보
 - java 1.8 버전
-- SpringCloud Edgware.RELEASE 
 - TomcatEmded 8.5.14
 - Gradle 4.4.1
 - Spring-boot 2.3.0
