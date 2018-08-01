@@ -118,8 +118,8 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
                     .logout()
                     .logoutSuccessHandler(ssoLogoutSuccessHandler)
                     .logoutRequestMatcher(ssoLogoutUrlMatcher)
-                    .and().formLogin().loginPage("/common/error/401")
-                    .and().exceptionHandling().accessDeniedPage("/common/error/401");
+                    .and().formLogin().loginPage("/common/error/unauthorized")
+                    .and().exceptionHandling().accessDeniedPage("/common/error/unauthorized");
 
 //            http
 //                    .csrf().disable()

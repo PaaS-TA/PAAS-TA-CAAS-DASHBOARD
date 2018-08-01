@@ -14,8 +14,16 @@
 
 <sec:authorize access="isAuthenticated()">
     <sec:authentication property="details.userid" var="userid"/>
+    <sec:authentication property="details.username" var="username"/>
+</sec:authorize>
+<sec:authorize access="!isAuthenticated()">
+    <script>
+        location.href='/common/error/401';
+    </script>
 </sec:authorize>
 
-${userid}
+userid = ${userid}
+<br>
+username = ${username}
 <br>
 test gogo

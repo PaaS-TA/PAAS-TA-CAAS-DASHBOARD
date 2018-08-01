@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: REX
-  Date: 9/22/2017
-  Time: 3:36 PM
+  Date: 7/5/2017
+  Time: 11:28 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>PaaS-TA 배포파이프라인</title>
+    <title>PaaS-TA c8s</title>
     <style>
         .layer {position:absolute;display:table;top:0;left:0;width:100%;height:100%}
         .layer .layer_inner{display:table-cell;text-align:center;vertical-align:middle}
@@ -53,12 +53,12 @@
                 <div class="panel-heading" style="">
                     <div>
                         <img  class="panel-image" src="<c:url value='/resources/images/logo.png'/>" style="width: 42px; height: 42px;">
-                        <span class="header-title" style=""> 배포파이프라인 </span>
+                        <span class="header-title" style=""> 쿠버네티스 </span>
                     </div>
                 </div>
 
                 <div class="panel-body" style="">
-                    <span style="">시스템 장애가 발생했습니다.</span>
+                    <span style="">사용자 인증에 실패했습니다.</span>
                     <hr/>
                 </div>
             </div>

@@ -23,4 +23,15 @@ public class testController {
         model.setViewName("/test/test");
         return model;
     }
+
+    @RequestMapping(value = {"/dashboard/500ErrorTest"}, method = RequestMethod.GET)
+    public ModelAndView testPage500() {
+        LOGGER.info("test 500 error controller in!!");
+        ModelAndView model = new ModelAndView();
+
+        Integer.parseInt("aaa");
+
+        model.setViewName("/test/test");
+        return model;
+    }
 }
