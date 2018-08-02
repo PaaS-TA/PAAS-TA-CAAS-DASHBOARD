@@ -9,11 +9,22 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+/**
+ * The type Common service.
+ */
 @Service
 public class CommonService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonService.class);
 
+    /**
+     * Sets path variables.
+     *
+     * @param httpServletRequest the http servlet request
+     * @param viewName           the view name
+     * @param mv                 the mv
+     * @return the path variables
+     */
     public ModelAndView setPathVariables(HttpServletRequest httpServletRequest, String viewName, ModelAndView mv) {
         Map pathVariablesMap = (Map) httpServletRequest.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         Object pathVariablesObject;
@@ -48,8 +59,17 @@ public class CommonService {
         return mv;
     }
 
+    /**
+     * The enum Path variables list.
+     */
     enum PathVariablesList {
+        /**
+         * Path variables service instance id path variables list.
+         */
         PATH_VARIABLES_SERVICE_INSTANCE_ID("serviceInstancesId"),
+        /**
+         * Path variables id path variables list.
+         */
         PATH_VARIABLES_ID("id");
 
         private String actualValue;
@@ -59,11 +79,29 @@ public class CommonService {
         }
     }
 
+    /**
+     * The enum Parameters list.
+     */
     enum ParametersList {
+        /**
+         * Parameters id parameters list.
+         */
         PARAMETERS_ID("id"),
+        /**
+         * Parameters name parameters list.
+         */
         PARAMETERS_NAME("name"),
+        /**
+         * Parameters page parameters list.
+         */
         PARAMETERS_PAGE("page"),
+        /**
+         * Parameters size parameters list.
+         */
         PARAMETERS_SIZE("size"),
+        /**
+         * Parameters sort parameters list.
+         */
         PARAMETERS_SORT("sort");
 
         private String actualValue;

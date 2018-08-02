@@ -6,6 +6,9 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+/**
+ * The type User.
+ */
 @Setter
 @Getter
 @ToString

@@ -18,7 +18,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Objects;
 
+/**
+ * The type Rest template service.
+ */
 @Service
 public class RestTemplateService {
 
@@ -27,11 +31,9 @@ public class RestTemplateService {
     private static final String CONTENT_TYPE = "Content-Type";
     private final String commonApiBase64Authorization;
     private final String caasApiBase64Authorization;
+    private final RestTemplate restTemplate;
     private String base64Authorization;
     private String baseUrl;
-
-    private final RestTemplate restTemplate;
-
     // COMMON API
     @Value("${commonApi.url}")
     private String commonApiUrl;
@@ -41,6 +43,15 @@ public class RestTemplateService {
     private String caasApiUrl;
 
 
+    /**
+     * Instantiates a new Rest template service.
+     *
+     * @param restTemplate                   the rest template
+     * @param commonApiAuthorizationId       the common api authorization id
+     * @param commonApiAuthorizationPassword the common api authorization password
+     * @param caasApiAuthorizationId         the caas api authorization id
+     * @param caasApiAuthorizationPassword   the caas api authorization password
+     */
     @Autowired
     public RestTemplateService(RestTemplate restTemplate,
                                @Value("${commonApi.authorization.id}") String commonApiAuthorizationId,
@@ -58,6 +69,15 @@ public class RestTemplateService {
     }
 
 
+    /**
+     * Send map.
+     *
+     * @param reqApi     the req api
+     * @param reqUrl     the req url
+     * @param httpMethod the http method
+     * @param bodyObject the body object
+     * @return the map
+     */
     public Map send(String reqApi, String reqUrl, HttpMethod httpMethod, Object bodyObject) {
 
         setApiUrlAuthorization(reqApi);
@@ -70,12 +90,23 @@ public class RestTemplateService {
 
         LOGGER.info("POST >> Request: {}, {baseUrl} : {}, Content-Type: {}", HttpMethod.POST, reqUrl, reqHeaders.get(CONTENT_TYPE));
         ResponseEntity<Map> resEntity = restTemplate.exchange(baseUrl + reqUrl, httpMethod, reqEntity, Map.class);
-        LOGGER.info("Map send :: Response Type: {}", resEntity.getBody().getClass());
+        LOGGER.info("Map send :: Response Type: {}", Objects.requireNonNull(resEntity.getBody()).getClass());
 
         return resEntity.getBody();
     }
 
 
+    /**
+     * Send t.
+     *
+     * @param <T>          the type parameter
+     * @param reqApi       the req api
+     * @param reqUrl       the req url
+     * @param httpMethod   the http method
+     * @param bodyObject   the body object
+     * @param responseType the response type
+     * @return the t
+     */
     public <T> T send(String reqApi, String reqUrl, HttpMethod httpMethod, Object bodyObject, Class<T> responseType) {
 
         setApiUrlAuthorization(reqApi);
@@ -99,6 +130,17 @@ public class RestTemplateService {
     }
 
 
+    /**
+     * Cf send t.
+     *
+     * @param <T>          the type parameter
+     * @param reqToken     the req token
+     * @param reqUrl       the req url
+     * @param httpMethod   the http method
+     * @param bodyObject   the body object
+     * @param responseType the response type
+     * @return the t
+     */
     public <T> T cfSend(String reqToken, String reqUrl, HttpMethod httpMethod, Object bodyObject, Class<T> responseType) {
 
         HttpHeaders reqHeaders = new HttpHeaders();
@@ -119,6 +161,17 @@ public class RestTemplateService {
         return resEntity.getBody();
     }
 
+    /**
+     * Send multipart t.
+     *
+     * @param <T>          the type parameter
+     * @param reqApi       the req api
+     * @param reqUrl       the req url
+     * @param file         the file
+     * @param responseType the response type
+     * @return the t
+     * @throws Exception the exception
+     */
     public <T> T sendMultipart(String reqApi, String reqUrl, MultipartFile file, Class<T> responseType) throws Exception {
 
         setApiUrlAuthorization(reqApi);
@@ -173,27 +226,34 @@ public class RestTemplateService {
         this.baseUrl = apiUrl;
     }
 
+    /**
+     * Make query param string.
+     *
+     * @param reqUrl      the req url
+     * @param obj         the obj
+     * @param exceptParam the except param
+     * @return the string
+     */
     public String makeQueryParam(String reqUrl, Object obj, String exceptParam) {
 
         ObjectMapper om = new ObjectMapper();
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(reqUrl);
         Map<String, Object> codingRulesMap = om.convertValue(obj, Map.class);
-        String exceptQuery = "";
+        StringBuilder exceptQuery = new StringBuilder();
 
         for (String key : codingRulesMap.keySet()) {
 
             if (codingRulesMap.get(key) != null && !key.equals(exceptParam)) {
                 builder.queryParam(key, codingRulesMap.get(key));
             } else if (key.equals(exceptParam)) {
-                exceptQuery += exceptParam + "="+codingRulesMap.get(key);
+                exceptQuery.append(exceptParam).append("=").append(codingRulesMap.get(key));
             }
         }
 
         String queryParam = builder.build().encode().toUriString();
-        String result = StringUtils.isEmpty(queryParam) ? "?" + exceptQuery : queryParam + "&" + exceptQuery;
 
-        return result;
+        return StringUtils.isEmpty(queryParam) ? "?" + exceptQuery : queryParam + "&" + exceptQuery;
     }
 
 }
