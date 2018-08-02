@@ -9,6 +9,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'jacoco'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'war'
 
@@ -19,10 +20,11 @@ repositories {
 ext {
     appGroup = 'org.paasta.caas.dashboard'
     springIoPlatformVersion = 'Cairo-SR3'
-    lombokVersion = '1.18.2'
+    springSecurityTagLibsVersion = '5.0.7.RELEASE'
     tomcatEmbedJasperVersion = '9.0.10'
     jstlVersion = '1.2'
-    springSecurityTagLibsVersion = '5.0.7.RELEASE'
+    lombokVersion = '1.18.2'
+    jacocoVersion = '0.8.1'
 
 }
 
@@ -43,10 +45,20 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-aop"
     compile "org.springframework.security.oauth:spring-security-oauth2"
+    compile "org.springframework.security:spring-security-taglibs:${springSecurityTagLibsVersion}"
     compile "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatEmbedJasperVersion}"
     compile "javax.servlet:jstl:${jstlVersion}"
-    compile "org.springframework.security:spring-security-taglibs:${springSecurityTagLibsVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }
 
+jacoco {
+    toolVersion = "${jacocoVersion}"
+}
+
+test {
+    ignoreFailures=true
+    jacoco {
+        destinationFile = file("$buildDir/jacoco/jacoco-overall.exec")
+    }
+}
