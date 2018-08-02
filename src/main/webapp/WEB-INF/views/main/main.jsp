@@ -30,7 +30,8 @@
 </div>
 
 <div class="row" style="padding: 50px; width: 1000px;">
-
+    <span>User Account Token: </span>
+    <textarea id="inputToken"></textarea>
 </div>
 
 <div class="row" style="padding: 50px; width: 1000px;">
@@ -53,10 +54,11 @@
         });
     });
 
-    // Get Depth2 Data by API
+    //
     function getNamespaces(){
 
         var param = {
+            token : $('#inputToken').text()
             //code : $('#condition01').val()
         }
         procCallAjax("/namespaces", "GET", param , null, procCallbackGetNamespaces);
