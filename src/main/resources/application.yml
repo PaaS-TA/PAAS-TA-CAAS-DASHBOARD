@@ -21,6 +21,14 @@ server:
 spring:
   profiles: local
 
+caas:
+  api:
+    url: http://localhost:3333
+
 ---
 spring:
   profiles: dev
+
+caas:
+  api:
+    url: CAAS_API_URL

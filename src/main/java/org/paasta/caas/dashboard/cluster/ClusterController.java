@@ -1,11 +1,16 @@
-package org.paasta.caas.dashboard.controller;
+package org.paasta.caas.dashboard.cluster;
 
 //import org.springframework.http.HttpMethod;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 //import org.springframework.web.bind.annotation.PathVariable;
 //import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Map;
 
 //import java.util.Map;
 
@@ -17,7 +22,14 @@ import org.springframework.web.servlet.ModelAndView;
  * @since 2016.09.08 최초작성
  */
 @RestController
-public class DashboardMainController{
+public class ClusterController {
+
+    private final ClusterService clusterService;
+
+    @Autowired
+    public ClusterController(ClusterService clusterService) {
+        this.clusterService = clusterService;
+    }
 
     //private final String V2_URL = "/v2";
 
@@ -32,6 +44,19 @@ public class DashboardMainController{
             setViewName("main/main");
             //addObject("ORGANIZATION_ID", "");
         }};
+    }
+
+    /**
+     * description.
+     *
+     * //@param req   HttpServletRequest(자바클래스)
+     * @return Map(자바클래스)
+     * @throws Exception Exception(자바클래스)
+     */
+    @GetMapping("/namespaces")
+    @ResponseBody
+    public Map<String, Object> getNamespaceList(@RequestParam Map<String, Object> map) throws Exception {
+        return clusterService.getNamespaceList(map);
     }
 
 
