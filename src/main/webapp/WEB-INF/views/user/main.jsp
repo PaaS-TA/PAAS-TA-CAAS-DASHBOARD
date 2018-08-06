@@ -1,9 +1,8 @@
 <%--
-  Created by IntelliJ IDEA.
-  User: GT63
-  Date: 2018-08-02
-  Time: 오후 3:04
-  To change this template use File | Settings | File Templates.
+  User main
+  @author REX
+  @version 1.0
+  @since 2018.08.02
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -52,9 +51,7 @@
                 + "email :: " + data[i].email + " || "
                 + "description :: " + data[i].description + " || "
                 + "created :: " + data[i].created + " || "
-                + "lastModified :: " + data[i].lastModified + " || "
-                + "createdString :: " + data[i].createdString + " || "
-                + "lastModifiedString :: " + data[i].lastModifiedString
+                + "lastModified :: " + data[i].lastModified
                 + "<br><br>");
         }
 

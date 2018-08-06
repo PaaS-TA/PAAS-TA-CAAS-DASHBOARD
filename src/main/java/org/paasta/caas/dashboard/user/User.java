@@ -1,17 +1,15 @@
 package org.paasta.caas.dashboard.user;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import java.time.LocalDateTime;
+import lombok.Data;
 
 /**
- * The type User.
+ * User Model 클래스
+ *
+ * @author REX
+ * @version 1.0
+ * @since 2018.08.02
  */
-@Setter
-@Getter
-@ToString
+@Data
 public class User {
 
     private long id;
@@ -19,8 +17,6 @@ public class User {
     private String userName;
     private String email;
     private String description;
-    private LocalDateTime created;
-    private LocalDateTime lastModified;
-    private String createdString;
-    private String lastModifiedString;
+    private String created;
+    private String lastModified;
 }

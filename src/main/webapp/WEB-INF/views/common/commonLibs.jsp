@@ -1,9 +1,9 @@
 <%--
-  Created by IntelliJ IDEA.
-  User: GT63
-  Date: 2018-08-02
-  Time: 오후 3:10
-  To change this template use File | Settings | File Templates.
+  Common library
+
+  author: REX
+  version: 1.0
+  since: 2018.08.02
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>

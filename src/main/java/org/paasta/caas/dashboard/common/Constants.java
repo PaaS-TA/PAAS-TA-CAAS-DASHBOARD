@@ -1,7 +1,11 @@
 package org.paasta.caas.dashboard.common;
 
 /**
- * The type Constants.
+ * Constants 클래스
+ *
+ * @author REX
+ * @version 1.0
+ * @since 2018.08.02
  */
 public class Constants {
 
@@ -22,4 +26,8 @@ public class Constants {
      * The constant TARGET_CAAS_API.
      */
     public static final String TARGET_CAAS_API = "caasApi";
+
+    private Constants() {
+        throw new IllegalStateException();
+    }
 }

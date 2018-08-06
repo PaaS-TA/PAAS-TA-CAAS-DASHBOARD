@@ -9,7 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * The type User service.
+ * User Service 클래스
+ *
+ * @author REX
+ * @version 1.0
+ * @since 2018.08.02
  */
 @Service
 public class UserService {

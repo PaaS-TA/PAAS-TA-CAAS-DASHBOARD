@@ -21,7 +21,11 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * The type Rest template service.
+ * Rest Template Service 클래스
+ *
+ * @author REX
+ * @version 1.0
+ * @since 2018.08.02
  */
 @Service
 public class RestTemplateService {
@@ -34,6 +38,7 @@ public class RestTemplateService {
     private final RestTemplate restTemplate;
     private String base64Authorization;
     private String baseUrl;
+
     // COMMON API
     @Value("${commonApi.url}")
     private String commonApiUrl;
@@ -255,5 +260,4 @@ public class RestTemplateService {
 
         return StringUtils.isEmpty(queryParam) ? "?" + exceptQuery : queryParam + "&" + exceptQuery;
     }
-
 }

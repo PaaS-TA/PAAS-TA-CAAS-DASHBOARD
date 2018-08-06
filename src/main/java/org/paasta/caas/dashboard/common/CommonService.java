@@ -10,7 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
- * The type Common service.
+ * Common Service 클래스
+ *
+ * @author REX
+ * @version 1.0
+ * @since 2018.08.02
  */
 @Service
 public class CommonService {

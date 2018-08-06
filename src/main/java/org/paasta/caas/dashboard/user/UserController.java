@@ -12,7 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * The type User controller.
+ * User Controller 클래스
+ *
+ * @author REX
+ * @version 1.0
+ * @since 2018.08.02
  */
 @Controller
 @RequestMapping(value = "/user")
