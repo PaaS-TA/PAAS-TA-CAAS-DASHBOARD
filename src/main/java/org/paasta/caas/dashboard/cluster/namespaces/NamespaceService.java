@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.cluster;
+package org.paasta.caas.dashboard.cluster.namespaces;
 
 import org.paasta.caas.dashboard.config.EnvConfig;
 import org.slf4j.Logger;
@@ -9,7 +9,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,9 +28,9 @@ import java.util.Map;
  * @since 2018.8.01 최초작성
  */
 @Service
-public class ClusterService {
+public class NamespaceService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClusterService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceService.class);
 
     @Autowired
     RestTemplate restTemplate;
@@ -49,11 +51,17 @@ public class ClusterService {
         //headers.add("Content-Type", "application/json");
 
         Map<String, Object> param = new HashMap<>();
-        param.put("reqParam_sample_1", "1");
-        param.put("reqParam_sample_2", "2");
+        String kubeAccountToken = "";
+        if (!ObjectUtils.isEmpty(map.get("token"))) {
+            kubeAccountToken = map.get("token").toString();
+            LOGGER.info("Get InputToken : "+ kubeAccountToken);
+        }
+        //URI Builder
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(envConfig.getCaasApiUrl()+"/cluster/namespaces")
+                .queryParam("token", kubeAccountToken);
 
-        HttpEntity<Map> resetEntity = new HttpEntity(param, headers);
-        ResponseEntity<Map> responseEntity = restTemplate.exchange(envConfig.getCaasApiUrl() + "/cluster/namespaces", HttpMethod.GET, resetEntity, Map.class);
+        HttpEntity<Map> resetEntity = new HttpEntity(headers);
+        ResponseEntity<Map> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, resetEntity, Map.class);
 
         LOGGER.debug(responseEntity.getBody().toString());
 

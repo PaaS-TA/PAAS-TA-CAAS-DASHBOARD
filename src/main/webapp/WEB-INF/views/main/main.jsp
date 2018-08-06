@@ -31,18 +31,26 @@
 
 <div class="row" style="padding: 50px; width: 1000px;">
     <span>User Account Token: </span>
-    <textarea id="inputToken"></textarea>
+    <input type="text" id="inputToken">
+</div>
+<div class="row" style="padding: 50px; width: 1000px;">
+    <span>Target Namespace: </span>
+    <input type="text" id="inputNamespace">
 </div>
 
 <div class="row" style="padding: 50px; width: 1000px;">
-    <div class="col-md-8">
-        <table style="border: 0px;" class="table">
+    <div class="col-md-6">
+        <table style="border: 0px;" class="table text-left">
             <tr>
-                <td id="namespaces" style="cursor: hand">Get namespaces</td>
+                <td id="namespaces" style="cursor: hand">[A] Get namespaces(ALL)</td>
             </tr>
+            <tr>
+                <td id="pods" style="cursor: hand">[B] Get Pod List(By Namespace)</td>
+            </tr>
+        </tr>
         </table>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div id="json-container" style="height: 865px; width: 700px; margin-right: 50px;"></div>
     </div>
 </div>
@@ -52,16 +60,21 @@
         $("#namespaces").on("click", function (e) {
             getNamespaces();
         });
+
+        $("#pods").on("click", function (e) {
+            getPods();
+        });
+
     });
 
     //
     function getNamespaces(){
 
         var param = {
-            token : $('#inputToken').text()
+            token : $('#inputToken').val()
             //code : $('#condition01').val()
         }
-        procCallAjax("/namespaces", "GET", param , null, procCallbackGetNamespaces);
+        procCallAjax("/cluster/namespaces", "GET", param , null, procCallbackGetNamespaces);
     }
 
     // Callback Proc
@@ -70,6 +83,33 @@
             json: {result}  // JSON objects here
         })
     }
+
+
+    //
+    function getPods(){
+
+        var param = {
+            token : $('#inputToken').val()
+            //code : $('#condition01').val()
+        }
+
+        var targetNamespace = $('#inputNamespace').val();
+
+        if(targetNamespace.trim() == ''){
+            targetNamespace = 'hrjin-namespace';
+        }
+
+        procCallAjax("/workload/namespaces/"+targetNamespace+"/pods", "GET", param , null, procCallbackGetPods);
+    }
+
+    // Callback Proc
+    var procCallbackGetPods = function(result){
+        $('#json-container').jsonPresenter({
+            json: {result}  // JSON objects here
+        })
+    }
+
+
 
 </script>
 </body>
