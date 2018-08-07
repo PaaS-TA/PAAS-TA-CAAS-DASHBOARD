@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+    <!-- TEMPLATES -->
+    <definition name="layout.basic" template="/WEB-INF/tiles/layout/basic.jsp">
+        <put-attribute name="title" value="CaaS Dashboard"/>
+        <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+        <put-attribute name="left-menu" value="/WEB-INF/views/common/left-menu.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
+    </definition>
+
+    <!-- PAGES -->
+    <definition name="index" extends="layout.basic">
+        <put-attribute name="body" value="/WEB-INF/views/index.jsp"/>
+    </definition>
+
+    <definition name="/users/main" extends="layout.basic">
+        <put-attribute name="body" value="/WEB-INF/views/users/main.jsp"/>
+    </definition>
+
+    <definition name="/namespaces/main" extends="layout.basic">
+        <put-attribute name="body" value="/WEB-INF/views/namespaces/main.jsp"/>
+    </definition>
+
+    <definition name="main/main" extends="layout.basic">
+        <put-attribute name="body" value="/WEB-INF/views/main/main.jsp"/>
+    </definition>
+
+</tiles-definitions>

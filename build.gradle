@@ -26,6 +26,7 @@ ext {
     tomcatEmbedJasperVersion = '9.0.10'
     jstlVersion = '1.2'
     lombokVersion = '1.18.2'
+    apacheTilesJspVersion = '3.0.8'
     jacocoVersion = '0.8.1'
 
 }
@@ -50,6 +51,7 @@ dependencies {
     compile "org.springframework.security:spring-security-taglibs:${springSecurityTagLibsVersion}"
     compile "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatEmbedJasperVersion}"
     compile "javax.servlet:jstl:${jstlVersion}"
+    compile "org.apache.tiles:tiles-jsp:${apacheTilesJspVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }
