@@ -42,6 +42,7 @@ war {
 }
 
 dependencies {
+    compile "org.springframework.boot:spring-boot-loader"
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-aop"
     compile "org.springframework.security.oauth:spring-security-oauth2"
