@@ -30,13 +30,7 @@ public class RestTemplateService {
     private String base64Authorization;
     private String baseUrl;
 
-    // COMMON API
-    @Value("${commonApi.url}")
-    private String commonApiUrl;
-
-    // CAAS API
-    @Value("${caasApi.url}")
-    private String caasApiUrl;
+    private final PropertyService propertyService;
 
 
     /**
@@ -47,14 +41,16 @@ public class RestTemplateService {
      * @param commonApiAuthorizationPassword the common api authorization password
      * @param caasApiAuthorizationId         the caas api authorization id
      * @param caasApiAuthorizationPassword   the caas api authorization password
+     * @param propertyService                the property service
      */
     @Autowired
     public RestTemplateService(RestTemplate restTemplate,
                                @Value("${commonApi.authorization.id}") String commonApiAuthorizationId,
                                @Value("${commonApi.authorization.password}") String commonApiAuthorizationPassword,
                                @Value("${caasApi.authorization.id}") String caasApiAuthorizationId,
-                               @Value("${caasApi.authorization.password}") String caasApiAuthorizationPassword) {
+                               @Value("${caasApi.authorization.password}") String caasApiAuthorizationPassword, PropertyService propertyService) {
         this.restTemplate = restTemplate;
+        this.propertyService = propertyService;
 
         this.commonApiBase64Authorization = "Basic "
                 + Base64Utils.encodeToString(
@@ -105,13 +101,13 @@ public class RestTemplateService {
 
         // COMMON API
         if (Constants.TARGET_COMMON_API.equals(reqApi)) {
-            apiUrl = commonApiUrl;
+            apiUrl = propertyService.getCommonApiUrl();
             authorization = commonApiBase64Authorization;
         }
 
         // CAAS API
         if (Constants.TARGET_CAAS_API.equals(reqApi)) {
-            apiUrl = caasApiUrl;
+            apiUrl = propertyService.getCaasApiUrl();
             authorization = caasApiBase64Authorization;
         }
 
