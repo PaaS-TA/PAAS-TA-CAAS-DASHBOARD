@@ -12,10 +12,14 @@ import lombok.Data;
 @Data
 public class User {
 
+    // COMMON
+    private String resultCode;
+    private String resultMessage;
+
     private long id;
     private String userId;
-    private String userName;
-    private String email;
+    private String roleCode;
+    private String roleDescription;
     private String description;
     private String created;
     private String lastModified;
