@@ -1,5 +1,6 @@
 package org.paasta.caas.dashboard.security;
 
+import org.paasta.caas.dashboard.common.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
@@ -29,21 +30,17 @@ public class SsoAuthenticationProcessingFilter extends OAuth2ClientAuthenticatio
 
     private AuthenticationDetailsSource<HttpServletRequest, ?> detailsSource;
 
+    private CommonService commonService;
+
     public SsoAuthenticationProcessingFilter() {
         super("/");
     }
 
 
-
-
-
-/*
-*   여기서 토큰 리플레쉬 해주쟈.
- */
-
     @Override
     protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
         Authentication securityAuthentication = SecurityContextHolder.getContext().getAuthentication();
+
         if(!(securityAuthentication == null && super.requiresAuthentication(request, response))){
             return false;
         } else {
@@ -57,6 +54,7 @@ public class SsoAuthenticationProcessingFilter extends OAuth2ClientAuthenticatio
         final Authentication authentication = super.attemptAuthentication(request, response);
 
         if (detailsSource != null) {
+            request.getSession().invalidate();
             ((OAuth2Authentication) authentication).setDetails(detailsSource.buildDetails(request));
         }
 
@@ -70,6 +68,10 @@ public class SsoAuthenticationProcessingFilter extends OAuth2ClientAuthenticatio
      */
     public void setDetailsSource(AuthenticationDetailsSource<HttpServletRequest, ?> detailsSource) {
         this.detailsSource = detailsSource;
+    }
+
+    public void setCommonService(CommonService commonService) {
+        this.commonService = commonService;
     }
 
 

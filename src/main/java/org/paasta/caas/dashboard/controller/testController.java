@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -20,6 +21,24 @@ public class testController {
         LOGGER.info("test controller in!!");
         ModelAndView model = new ModelAndView();
 
+        model.setViewName("/test/test");
+        return model;
+    }
+
+    @RequestMapping(value = {"/dashboard/test2"}, method = RequestMethod.GET)
+    public ModelAndView test22Page() {
+        LOGGER.info("test2 controller in!!");
+        ModelAndView model = new ModelAndView();
+
+        model.setViewName("/test/test2");
+        return model;
+    }
+
+    @RequestMapping(value = {"/dashboard/gogo"}, method = RequestMethod.GET)
+    public ModelAndView test2Page() {
+        LOGGER.info("indra controller in!!");
+        ModelAndView model = new ModelAndView();
+        System.out.println("=====================================================================================indra");
         model.setViewName("/test/test");
         return model;
     }

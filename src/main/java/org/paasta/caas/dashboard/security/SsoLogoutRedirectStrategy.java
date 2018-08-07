@@ -36,7 +36,8 @@ public class SsoLogoutRedirectStrategy implements RedirectStrategy {
     @Override
     public void sendRedirect(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {
         LOGGER.info("Logout : " + uaaLogoutUrl + "?redirect=" + serverDomain(request));
-        response.sendRedirect(uaaLogoutUrl + "?redirect=" + serverDomain(request) + "/login");
+        request.getSession().invalidate();
+//        response.sendRedirect(uaaLogoutUrl + "?redirect=" + serverDomain(request) + "/login");
     }
 
     private String serverDomain(HttpServletRequest request) {

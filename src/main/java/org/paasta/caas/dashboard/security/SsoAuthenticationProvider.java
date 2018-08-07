@@ -1,14 +1,6 @@
 package org.paasta.caas.dashboard.security;
 
-/**
- * 스프링 시큐리티의 사용자 인증방식을 구현한 클래스
- * 기존의 id를 이용하여 Password를 비교하여 인증하는 방식대신
- * PaaS-TA API의 Login 을 사용하여 인증하도록 수정하였다.
- *
- * @author 조민구
- * @version 1.0
- * @since 2016-05-12
- */
+
 //import org.openpaas.paasta.common.security.userdetails.User;
 //import org.openpaas.paasta.portal.web.user.config.security.userdetail.CustomUserDetailsService;
 import org.paasta.caas.dashboard.config.security.userdetail.CustomUserDetailsService;
@@ -22,10 +14,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 
 public class SsoAuthenticationProvider implements AuthenticationProvider {
@@ -44,13 +41,6 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 */
 
-	/**
-	 * 로그인 폼에서 입력받은 id와 password를 이용하여 사용자 인증을 수행하는 메소드
-	 *
-	 * @param authentication
-	 * @return Authentication 사용자 인증정보
-	 * @throws AuthenticationException
-	 */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         final Object details = authentication.getDetails();
@@ -77,8 +67,11 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
             role = user.getAuthorities();
             ssoAuthenticationDetails.setUsername(user.getUsername());
             ssoAuthenticationDetails.setImgPath(user.getImgPath());
+//            List authorities = new ArrayList();
+//            authentication = new OAuth2Authentication(((OAuth2Authentication) authentication).getOAuth2Request(), new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), "N/A", authorities));
             authentication = new OAuth2Authentication(((OAuth2Authentication) authentication).getOAuth2Request(), new UsernamePasswordAuthenticationToken(ssoAuthenticationDetails.getUserid(), "N/A", role));
             ((OAuth2Authentication) authentication).setDetails(ssoAuthenticationDetails);
+
             LOGGER.info(((SsoAuthenticationDetails) details).getAccessToken().getValue());
             LOGGER.info("############### authenticate out!!!!!!!!!!");
         } catch(UsernameNotFoundException e) {

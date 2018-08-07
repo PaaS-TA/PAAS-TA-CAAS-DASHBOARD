@@ -25,6 +25,14 @@ public class CommonErrorController {
         return "common/error401";
     }
 
+    @RequestMapping(value = "/unauthorized2")
+    public String page2Error401(HttpServletRequest request, Model model) {
+        LOGGER.info("page2 error code unauthorized");
+        pageErrorLog(request);
+        model.addAttribute("msg", "접근이 금지되었습니다.");
+        return "common/error401";
+    }
+
     private void pageErrorLog(HttpServletRequest request) {
         LOGGER.info("status_code : " + request.getAttribute("javax.servlet.error.status_code"));
         LOGGER.info("exception_type : " + request.getAttribute("javax.servlet.error.exception_type"));

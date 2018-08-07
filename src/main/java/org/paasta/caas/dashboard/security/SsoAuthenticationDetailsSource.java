@@ -22,8 +22,16 @@ public class SsoAuthenticationDetailsSource
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SsoAuthenticationDetailsSource.class);
 
+    /**
+     * Token to use in {@link #getCheckUrl(String serviceInstanceId)} to specify the service instance id.
+     */
+    public static final String TOKEN_SUID = "[SUID]";
+
+    public static final String MANAGED_KEY = "manage";
+
     private final RestTemplate restTemplate;
     private final String userInfoUrl;
+    private final String apiUrl;
 
     protected static String getUserId(Map<String, String> map) {
         if (map.containsKey("user_name")) {
@@ -47,26 +55,60 @@ public class SsoAuthenticationDetailsSource
      * @param userInfoUrl the URL used to get the current OAuth user details
      */
     public SsoAuthenticationDetailsSource(RestTemplate restTemplate,
-                                          String userInfoUrl) {
+                                          String userInfoUrl, String apiUrl) {
         this.restTemplate = restTemplate;
         this.userInfoUrl = userInfoUrl;
+        this.apiUrl = apiUrl;
     }
 
     @Override
     public SsoAuthenticationDetails buildDetails(HttpServletRequest request) {
+
+        String serviceInstanceId = request.getServletPath().split("/")[2];
 
         Map<String, String> uaaUserInfo = null;
         try {
             uaaUserInfo = restTemplate.getForObject(userInfoUrl, Map.class);
         } catch (RestClientException e) {
             LOGGER.error("Error while user full name from [" + userInfoUrl + "].", e);
+            return null;
         }
 
-        String token_id = uaaUserInfo.get("user_id");
-        SsoAuthenticationDetails authenticationDetails = new SsoAuthenticationDetails(request, token_id, getUserId(uaaUserInfo));
+//        String token_id = uaaUserInfo.get("user_id");
+//        SsoAuthenticationDetails authenticationDetails = new SsoAuthenticationDetails(request, token_id, getUserId(uaaUserInfo));
+        String id = uaaUserInfo.get("user_id");
+        String userid = uaaUserInfo.get("user_name");
+        boolean managingService = isManagingApp(serviceInstanceId);
+        SsoAuthenticationDetails authenticationDetails = new SsoAuthenticationDetails(request, id, userid);
+        authenticationDetails.setManagingServiceInstance(serviceInstanceId);
         authenticationDetails.setAccessToken(((OAuth2RestTemplate) restTemplate).getAccessToken());
 
         return authenticationDetails;
 
+    }
+
+    /**
+     * Checks whether the user is allowed to manage the current service instance.
+     */
+    private boolean isManagingApp(String serviceInstanceId) {
+        final String url = getCheckUrl(serviceInstanceId);
+        try {
+            LOGGER.info("URL : " + url);
+            final Map<?, ?> result = restTemplate.getForObject(url, Map.class);
+            LOGGER.info(result.toString());
+            return true;
+//            return Boolean.TRUE.toString().equals(result.get(MANAGED_KEY).toString().toLowerCase());
+        } catch (RestClientException e) {
+            LOGGER.error("Error while retrieving authorization from [" + url + "].", e);
+            return false;
+        }
+    }
+
+    /**
+     * Returns the URL used to check whether the current user is allowed
+     * to access the current service instance.
+     */
+    private String getCheckUrl(String serviceInstanceId) {
+        return apiUrl.replace(TOKEN_SUID, serviceInstanceId);
     }
 }

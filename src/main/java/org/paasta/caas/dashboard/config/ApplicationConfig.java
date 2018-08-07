@@ -2,7 +2,7 @@ package org.paasta.caas.dashboard.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.paasta.caas.dashboard.config.security.CustomIntercepter;
+import org.paasta.caas.dashboard.config.security.CustomInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
@@ -73,12 +73,12 @@ public class ApplicationConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    CustomIntercepter customIntercepter() {
-        return new CustomIntercepter();
+    CustomInterceptor customInterceptor() {
+        return new CustomInterceptor();
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(customIntercepter());
+        registry.addInterceptor(customInterceptor());
     }
 }

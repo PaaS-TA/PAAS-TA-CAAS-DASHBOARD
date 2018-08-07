@@ -20,16 +20,22 @@ import org.springframework.security.oauth2.client.token.AccessTokenRequest;
 import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.provider.token.*;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Enumeration;
+import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 
@@ -46,6 +52,8 @@ public class SsoSecurityConfiguration {
                 + "and authentication.details.managingService ";
     }
 
+    private String sessionRedirectUrl = "";
+
     @Value("${cf.uaa.oauth.client.id}")
     private String clientId;
 
@@ -54,6 +62,9 @@ public class SsoSecurityConfiguration {
 
     @Value("${cf.uaa.oauth.info.uri}")
     private String oauthInfoUrl;
+
+    @Value("${cf.api.url}")
+    private String apiUrl;
 
     @Value("${cf.uaa.oauth.token.check.uri}")
     private String checkTokenUri;
@@ -186,7 +197,7 @@ public class SsoSecurityConfiguration {
     @Bean(name = "ssoAuthenticationDetailsSource")
     @Autowired
     public AuthenticationDetailsSource ssoAuthenticationDetailsSource() {
-        return new SsoAuthenticationDetailsSource(ssoRestOperations(), oauthInfoUrl);
+        return new SsoAuthenticationDetailsSource(ssoRestOperations(), oauthInfoUrl, apiUrl);
     }
 
 
@@ -205,8 +216,6 @@ public class SsoSecurityConfiguration {
 
 
     private String serverDomain(HttpServletRequest request) {
-
-
         String serverDomain = request.getRequestURL().toString();
         try {
             HttpSession session =  request.getSession();
@@ -219,6 +228,38 @@ public class SsoSecurityConfiguration {
         }catch (Exception e){
 
         }
+        String uri = request.getRequestURI();
+        StringBuffer addParam = new StringBuffer();
+        Enumeration<String> paramNames = request.getParameterNames();
+
+        int i = 0;
+        while (paramNames.hasMoreElements()) {
+            String key = (String) paramNames.nextElement();
+            String value = request.getParameter(key);
+            LOGGER.info(" RequestParameter Data ==>  " + key + " : " + value + "");
+            if(i == 0) {
+                addParam.append("?");
+            } else {
+                addParam.append("&");
+            }
+            addParam.append(key+"="+value);
+            i++;
+        }
+        if(!addParam.toString().equals("") && !addParam.toString().contains("?code=") && !addParam.toString().contains("&state=")) {
+            LOGGER.info("session test save");
+            LOGGER.info("="+addParam.toString()+"=");
+            LOGGER.info("sessionRedirectUrl = "+uri+addParam);
+            request.getSession().setAttribute("sessionRedirectUrl",uri+addParam);
+            sessionRedirectUrl = uri+addParam;
+        } else if(addParam.toString().equals("")) {
+            request.getSession().setAttribute("sessionRedirectUrl","");
+            sessionRedirectUrl = uri;
+        }
+        LOGGER.info("sessionRedirectUrl22 = "+sessionRedirectUrl);
+        if(!sessionRedirectUrl.equals("")) {
+            request.getSession().setAttribute("sessionRedirectUrl",sessionRedirectUrl);
+        }
+
         LOGGER.info("Login ::::::::  " + serverDomain);
         return serverDomain;
     }

@@ -17,11 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author 조민구
- * @version 1.0
- * @since 2016-05-11
- */
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -75,7 +71,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 //            role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 //        else
 //            role.add(new SimpleGrantedAuthority("ROLE_USER"));
-        role.add(new SimpleGrantedAuthority("ROLE_USER"));
+        LOGGER.info("name : "+username);
+        if(username.equals("demo")) {
+            role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else {
+            role.add(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+//        role.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         User user = new User(username, "N/A", role);
 //        user.setImgPath(imgPath);

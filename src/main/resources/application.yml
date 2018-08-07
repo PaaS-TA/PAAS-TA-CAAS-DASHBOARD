@@ -58,6 +58,8 @@ cf:
       client:
         id: caasclient
         secret: clientsecret
+  api:
+    url: https://api.115.68.46.187.xip.io
 
 ---
 spring:

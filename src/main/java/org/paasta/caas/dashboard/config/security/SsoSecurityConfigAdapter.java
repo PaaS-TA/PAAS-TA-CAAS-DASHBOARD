@@ -17,6 +17,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -30,6 +34,8 @@ import static org.paasta.caas.dashboard.config.security.SsoSecurityConfiguration
 @Configuration
 @Order(1)
 @EnableWebSecurity
+//@EnableOAuth2Sso
+//@EnableOAuth2Client
 public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SsoSecurityConfigAdapter.class);
@@ -74,6 +80,8 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
                 .antMatcher("/css/**")
                 .antMatcher("/js/**")
                 .antMatcher("/common/error/**")
+                .antMatcher("/error/**")
+                .antMatcher("/resources/**")
                 .authorizeRequests()
                 .anyRequest()
                 .permitAll()
@@ -107,19 +115,43 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
 
             http
+                    .csrf().disable()
 //                    .requestMatcher(ssoEntryPointMatcher)
                     .authorizeRequests()
-                    .antMatchers("/dashboard/**").permitAll()
-                    .antMatchers("/main").access("hasRole('ROLE_ADMIN')")
+//                    .antMatchers("/dashboard/**").permitAll()
+//                    .antMatchers("/dashboard/**").authenticated()
+                    .antMatchers("/dashboard/test").access("hasRole('ROLE_ADMIN')")
+                    .antMatchers("/dashboard/test2").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+//                    .antMatchers("/dashboard/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                    .antMatchers("/main").permitAll()
+                    .antMatchers("/common/**").permitAll()
 //                    .anyRequest().access(isManagingApp())
                     .and()
-                    .addFilterBefore(ssoClientContextFilter.unwrap(), AbstractPreAuthenticatedProcessingFilter.class)
-                    .addFilterBefore(ssoSocialClientFilter.unwrap(), AbstractPreAuthenticatedProcessingFilter.class)
-                    .logout()
-                    .logoutSuccessHandler(ssoLogoutSuccessHandler)
-                    .logoutRequestMatcher(ssoLogoutUrlMatcher)
-                    .and().formLogin().loginPage("/common/error/unauthorized")
-                    .and().exceptionHandling().accessDeniedPage("/common/error/unauthorized");
+                        .addFilterBefore(ssoClientContextFilter.unwrap(), AbstractPreAuthenticatedProcessingFilter.class)
+                        .addFilterBefore(ssoSocialClientFilter.unwrap(), AbstractPreAuthenticatedProcessingFilter.class)
+                        .logout()
+                        .logoutSuccessHandler(ssoLogoutSuccessHandler)
+                        .logoutRequestMatcher(ssoLogoutUrlMatcher)
+//                        .deleteCookies("JSESSIONID")
+//                        .clearAuthentication(true)
+//                        .invalidateHttpSession(true)
+//                    .and()
+//                        .formLogin()
+//                        .loginPage("/common/error/unauthorized2")
+//                    .and()
+//                    .oauth2Login()
+//                    .and()
+//                    .userDetailsService()
+                    .and()
+                        .exceptionHandling()
+                        .accessDeniedPage("/common/error/unauthorized");
+//                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//                    .and()
+//                        .sessionManagement()
+//                        .invalidSessionUrl("/common/error/unauthorized")
+//                        .maximumSessions(1)
+//                        .maxSessionsPreventsLogin(true)
+//                        .expiredUrl("/common/error/unauthorized");
 
 //            http
 //                    .csrf().disable()

@@ -12,9 +12,7 @@
         location.href='/common/error/unauthorized';
     </script>
 </sec:authorize>
-test1
-<br>
-<br>
+
 userid = ${userid}
 <br>
 username = ${username}
