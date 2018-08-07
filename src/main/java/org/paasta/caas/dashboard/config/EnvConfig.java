@@ -15,7 +15,8 @@ import org.springframework.stereotype.Component;
 @Data
 public class EnvConfig {
 
-	@Value("${caas.api.url}")
+	// TODO :: REMOVE
+	@Value("${caasApi.url}")
 	String caasApiUrl;
 
 }

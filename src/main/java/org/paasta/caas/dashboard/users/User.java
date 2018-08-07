@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.user;
+package org.paasta.caas.dashboard.users;
 
 import lombok.Data;
 

@@ -1,13 +1,17 @@
 package org.paasta.caas.dashboard.cluster.namespaces;
 
 //import org.springframework.http.HttpMethod;
+
+import org.paasta.caas.dashboard.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+
+//import org.springframework.web.bind.annotation.PathVariable;
+//import org.springframework.web.bind.annotation.ResponseBody;
 
 //import java.util.Map;
 
@@ -22,10 +26,14 @@ import java.util.Map;
 @RequestMapping("/cluster")
 public class NamespaceController {
 
+    private static final String BASE_URL = "/namespaces";
+
+    private final CommonService commonService;
     private final NamespaceService namespaceService;
 
     @Autowired
-    public NamespaceController(NamespaceService namespaceService) {
+    public NamespaceController(CommonService commonService, NamespaceService namespaceService) {
+        this.commonService = commonService;
         this.namespaceService = namespaceService;
     }
 
@@ -36,6 +44,7 @@ public class NamespaceController {
      *
      * @return ModelAndView(Spring 클래스)
      */
+    // TODO :: REMOVE
     @GetMapping(value = {"/main"})
     public ModelAndView getDashboardMain() {
         return new ModelAndView() {{
@@ -51,23 +60,23 @@ public class NamespaceController {
      * @return Map(자바클래스)
      * @throws Exception Exception(자바클래스)
      */
-    @GetMapping("/namespaces")
+    // TODO :: REMOVE
+    @GetMapping("/namespaces2")
     @ResponseBody
     public Map<String, Object> getNamespaceList(@RequestParam Map<String, Object> map) throws Exception {
         return namespaceService.getNamespaceList(map);
     }
 
 
-    /**
-     * 해당 조직에 대한 공간들의 통계 목록들을 조회한다.
-     * *
-     * @return Map(자바클래스)
-     */
-//    @GetMapping(value = {V2_URL + "/statistics/organizations/{organizationId}/spaces"})
-//    @ResponseBody
-//    public Map<String, Object> getTotalSpaceList(@PathVariable String organizationId) {
-//        // spaceId, spaceName, applicationCount Info
-//        return commonService.procCommonApiRestTemplate(V2_URL + "/statistics/organizations/"+organizationId+"/spaces", HttpMethod.GET, null, null);
-//    }
+    @GetMapping(value = {"/namespaces"})
+    public ModelAndView getUserMain(HttpServletRequest httpServletRequest) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
+    }
 
+
+    @GetMapping(value = "/namespaces/getList.do")
+    @ResponseBody
+    public Namespace getServiceInstanceList() {
+        return namespaceService.getNamespaceList();
+    }
 }

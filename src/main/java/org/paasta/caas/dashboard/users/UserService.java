@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.user;
+package org.paasta.caas.dashboard.users;
 
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private static final String REQ_URL = "/user";
+    private static final String REQ_URL = "/users";
     private final RestTemplateService restTemplateService;
 
     /**

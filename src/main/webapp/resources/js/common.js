@@ -25,3 +25,30 @@ var procCallAjax = function(reqUrl, reqMethod, param, preFunc, callback) {
         }
     });
 };
+
+
+// MOVE PAGE
+var procMovePage = function (pageUrl) {
+    if (pageUrl === null || pageUrl.length < 1) {
+        return false;
+    }
+
+    if ((!!pageUrl && typeof pageUrl === 'number') && -1 === pageUrl) {
+        history.back();
+    } else {
+        pageUrl = ("/" === pageUrl) ? "" : pageUrl;
+        // location.href = procGetDashboardUrl() + pageUrl;
+        location.href = pageUrl;
+    }
+
+};
+
+
+// GET DASHBOARD URL
+var procGetDashboardUrl = function () {
+    var currentUrl = location.pathname;
+    var splitString = "/";
+    var splits = currentUrl.split(splitString);
+
+    return splitString + splits[1] + splitString + splits[2];
+};
