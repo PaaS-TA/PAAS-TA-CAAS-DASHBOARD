@@ -1,5 +1,5 @@
 <%--
-  Namespace main
+  Namespaces main
   @author REX
   @version 1.0
   @since 2018.08.07
@@ -18,7 +18,7 @@
 </head>
 <body>
 <div style="padding: 10px;">
-    NAMESPACE 대시보드 :: NAMESPACE DASHBOARD
+    NAMESPACES 대시보드 :: NAMESPACES DASHBOARD
     <div style="padding: 10px;">
         <button type="button" id="btnSearch"> [ 조회 ] </button>
         <button type="button" id="btnReset"> [ 목록 초기화 ] </button>
@@ -31,7 +31,7 @@
 
     // GET LIST
     var getList = function() {
-        procCallAjax("/cluster/namespace/getList.do", "GET", null, null, callbackGetList);
+        procCallAjax("/cluster/namespaces/getList.do", "GET", null, null, callbackGetList);
     };
 
 
@@ -42,7 +42,7 @@
         var items = data.items;
         var listLength = items.length;
         var htmlString = [];
-        htmlString.push("NAMESPACE LIST :: <br><br>");
+        htmlString.push("NAMESPACES LIST :: <br><br>");
 
         for (var i = 0; i < listLength; i++) {
             htmlString.push(

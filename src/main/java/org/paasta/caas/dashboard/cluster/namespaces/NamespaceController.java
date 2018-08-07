@@ -4,13 +4,11 @@ package org.paasta.caas.dashboard.cluster.namespaces;
 
 import org.paasta.caas.dashboard.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 //import org.springframework.web.bind.annotation.PathVariable;
 //import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/cluster")
 public class NamespaceController {
 
-    private static final String BASE_URL = "/namespace";
+    private static final String BASE_URL = "/namespaces";
 
     private final CommonService commonService;
     private final NamespaceService namespaceService;
@@ -63,20 +61,20 @@ public class NamespaceController {
      * @throws Exception Exception(자바클래스)
      */
     // TODO :: REMOVE
-//    @GetMapping("/namespaces")
-//    @ResponseBody
-//    public Map<String, Object> getNamespaceList(@RequestParam Map<String, Object> map) throws Exception {
-//        return namespaceService.getNamespaceList(map);
-//    }
+    @GetMapping("/namespaces2")
+    @ResponseBody
+    public Map<String, Object> getNamespaceList(@RequestParam Map<String, Object> map) throws Exception {
+        return namespaceService.getNamespaceList(map);
+    }
 
 
-    @GetMapping(value = {"/namespace"})
+    @GetMapping(value = {"/namespaces"})
     public ModelAndView getUserMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
 
 
-    @GetMapping(value = "/namespace/getList.do")
+    @GetMapping(value = "/namespaces/getList.do")
     @ResponseBody
     public Namespace getServiceInstanceList() {
         return namespaceService.getNamespaceList();

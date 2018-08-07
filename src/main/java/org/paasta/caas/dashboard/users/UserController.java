@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.user;
+package org.paasta.caas.dashboard.users;
 
 import org.paasta.caas.dashboard.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ import java.util.List;
  * @since 2018.08.02
  */
 @Controller
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/users")
 public class UserController {
 
-    private static final String BASE_URL = "/user";
+    private static final String BASE_URL = "/users";
     private final CommonService commonService;
     private final UserService userService;
 

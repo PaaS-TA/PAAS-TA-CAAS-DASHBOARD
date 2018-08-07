@@ -74,7 +74,7 @@
             token : $('#inputToken').val()
             //code : $('#condition01').val()
         }
-        procCallAjax("/cluster/namespaces", "GET", param , null, procCallbackGetNamespaces);
+        procCallAjax("/cluster/namespaces2", "GET", param , null, procCallbackGetNamespaces);
     }
 
     // Callback Proc

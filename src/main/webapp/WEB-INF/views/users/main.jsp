@@ -1,5 +1,5 @@
 <%--
-  User main
+  Users main
   @author REX
   @version 1.0
   @since 2018.08.02
@@ -18,7 +18,7 @@
 </head>
 <body>
 <div style="padding: 10px;">
-    USER 대시보드 :: USER DASHBOARD
+    USERS 대시보드 :: USERS DASHBOARD
     <div style="padding: 10px;">
         <button type="button" id="btnSearch"> [ 조회 ] </button>
         <button type="button" id="btnReset"> [ 목록 초기화 ] </button>
@@ -31,7 +31,7 @@
 
     // GET LIST
     var getList = function() {
-        procCallAjax("/user/getList.do", "GET", null, null, callbackGetList);
+        procCallAjax("/users/getList.do", "GET", null, null, callbackGetList);
     };
 
 
@@ -41,7 +41,7 @@
 
         var listLength = data.length;
         var htmlString = [];
-        htmlString.push("USER LIST :: <br><br>");
+        htmlString.push("USERS LIST :: <br><br>");
 
         for (var i = 0; i < listLength; i++) {
             htmlString.push(
