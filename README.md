@@ -20,3 +20,4 @@
 - Jstl 1.2
 - Lombok 1.18.2
 - Jacoco 0.8.1
+- Tiles 3.0.8
