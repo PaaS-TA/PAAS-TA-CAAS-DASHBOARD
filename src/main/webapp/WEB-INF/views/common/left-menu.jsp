@@ -6,3 +6,12 @@
   since: 2018.08.07
 --%>
 <div>Left Menu</div>
+<div>
+    <ul>
+        <li><a href="javascript:void(0);" onclick="procMovePage('/index');">[ HOME ]</a></li>
+        <li><a href="javascript:void(0);" onclick="procMovePage('/users');">[ USERS ]</a></li>
+        <li><a href="javascript:void(0);" onclick="procMovePage('/cluster/namespaces');">[ NAMESPACES ]</a></li>
+        <%--TODO :: MODIFY--%>
+        <li><a href="javascript:void(0);" onclick="procMovePage('/cluster/main');">[ CLUSTER ]</a></li>
+    </ul>
+</div>

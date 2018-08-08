@@ -5,7 +5,7 @@
 <tiles-definitions>
 
     <!-- TEMPLATES -->
-    <definition name="layout.basic" template="/WEB-INF/tiles/layout/basic.jsp">
+    <definition name="layout.default" template="/WEB-INF/views/common/default-layout.jsp">
         <put-attribute name="title" value="CaaS Dashboard"/>
         <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
         <put-attribute name="left-menu" value="/WEB-INF/views/common/left-menu.jsp"/>
@@ -14,19 +14,19 @@
     </definition>
 
     <!-- PAGES -->
-    <definition name="index" extends="layout.basic">
+    <definition name="index" extends="layout.default">
         <put-attribute name="body" value="/WEB-INF/views/index.jsp"/>
     </definition>
 
-    <definition name="/users/main" extends="layout.basic">
+    <definition name="/users/main" extends="layout.default">
         <put-attribute name="body" value="/WEB-INF/views/users/main.jsp"/>
     </definition>
 
-    <definition name="/namespaces/main" extends="layout.basic">
+    <definition name="/namespaces/main" extends="layout.default">
         <put-attribute name="body" value="/WEB-INF/views/namespaces/main.jsp"/>
     </definition>
 
-    <definition name="main/main" extends="layout.basic">
+    <definition name="main/main" extends="layout.default">
         <put-attribute name="body" value="/WEB-INF/views/main/main.jsp"/>
     </definition>
 
