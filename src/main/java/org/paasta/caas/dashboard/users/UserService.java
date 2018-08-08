@@ -34,7 +34,7 @@ public class UserService {
      *
      * @return the user list
      */
-    List<User> getUserList() {
+    List getUserList() {
         return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL, HttpMethod.GET, null, List.class);
     }
 

@@ -56,7 +56,7 @@ public class UserController {
      */
     @GetMapping(value = "/getList.do")
     @ResponseBody
-    public List<User> getServiceInstanceList() {
+    public List getServiceInstanceList() {
         return userService.getUserList();
     }
 }
