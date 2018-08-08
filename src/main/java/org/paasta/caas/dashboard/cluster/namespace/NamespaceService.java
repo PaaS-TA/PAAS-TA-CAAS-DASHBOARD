@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.cluster.namespaces;
+package org.paasta.caas.dashboard.cluster.namespace;
 
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
