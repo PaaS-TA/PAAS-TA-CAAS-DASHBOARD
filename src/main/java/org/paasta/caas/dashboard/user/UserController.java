@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.users;
+package org.paasta.caas.dashboard.user;
 
 import org.paasta.caas.dashboard.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
