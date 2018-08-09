@@ -58,8 +58,6 @@ public class CommonService {
 
         mv.setViewName(viewName);
 
-        LOGGER.info("ModelAndView :: {}", mv);
-
         return mv;
     }
 

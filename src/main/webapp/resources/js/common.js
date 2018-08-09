@@ -36,7 +36,7 @@ var procMovePage = function (pageUrl) {
     if ((!!pageUrl && typeof pageUrl === 'number') && -1 === pageUrl) {
         history.back();
     } else {
-        pageUrl = ("/" === pageUrl) ? "" : pageUrl;
+        // pageUrl = ("/" === pageUrl) ? "" : pageUrl;
         // location.href = procGetDashboardUrl() + pageUrl;
         location.href = pageUrl;
     }
