@@ -16,7 +16,7 @@
 - Spring Io Platform Cairo-SR3
 - Spring boot 2.0.4
 - Spring Security Tag Libs 5.0.7.RELEASE
-- Tomcat Embed Jasper 9.0.10
+- Tomcat Embed Jasper 8.5.32
 - Jstl 1.2
 - Lombok 1.18.2
 - Jacoco 0.8.1

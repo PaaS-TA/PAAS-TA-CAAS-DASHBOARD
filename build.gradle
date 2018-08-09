@@ -23,7 +23,7 @@ ext {
     appGroup = 'org.paasta.caas.dashboard'
     springIoPlatformVersion = 'Cairo-SR3'
     springSecurityTagLibsVersion = '5.0.7.RELEASE'
-    tomcatEmbedJasperVersion = '9.0.10'
+    tomcatEmbedJasperVersion = '8.5.32'
     jstlVersion = '1.2'
     lombokVersion = '1.18.2'
     apacheTilesJspVersion = '3.0.8'
