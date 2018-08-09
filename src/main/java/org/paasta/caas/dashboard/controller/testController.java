@@ -34,7 +34,7 @@ public class testController {
         return model;
     }
 
-    @RequestMapping(value = {"/dashboard/gogo"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/dashboard/main"}, method = RequestMethod.GET)
     public ModelAndView test2Page() {
         LOGGER.info("indra controller in!!");
         ModelAndView model = new ModelAndView();

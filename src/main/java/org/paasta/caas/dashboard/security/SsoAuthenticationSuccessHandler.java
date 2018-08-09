@@ -1,7 +1,9 @@
 package org.paasta.caas.dashboard.security;
 
+import org.paasta.caas.dashboard.common.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Random;
 
 /**
  * Extension of {@link SavedRequestAwareAuthenticationSuccessHandler}
@@ -34,6 +37,7 @@ public class SsoAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
 
     private final RequestCache requestCache = new HttpSessionRequestCache();
 
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws ServletException, IOException {
@@ -41,7 +45,6 @@ public class SsoAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
         LOGGER.info("** onAuthenticationSuccess in");
         requestCache.saveRequest(request, response);
 
-        LOGGER.info("start");
         String sessionRedirectUrl = "";
         if (request.getSession() != null && request.getSession().getAttribute("sessionRedirectUrl") != null) {
             LOGGER.info("in");
@@ -50,42 +53,44 @@ public class SsoAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
         }
 
         if(!sessionRedirectUrl.equals("")) {
-            Cookie errorRefreshCookie = new Cookie("errorRefresh", "false");
-            response.addCookie(errorRefreshCookie);
+//            Cookie errorRefreshCookie = new Cookie("errorRefresh", "false");
+//            response.addCookie(errorRefreshCookie);
 
             getRedirectStrategy().sendRedirect(request, response, sessionRedirectUrl);
         } else {
-            LOGGER.info("in 1");
-            Cookie prevPageCookieCookie = WebUtils.getCookie(request, "prevPageCookie");
-            LOGGER.info("in 2");
-            if (prevPageCookieCookie != null) {
-                LOGGER.info("in 3");
-                LOGGER.info(prevPageCookieCookie.getValue());
-                String redirectUrl = prevPageCookieCookie.getValue();
-                if (redirectUrl != null && !redirectUrl.equals("")) {
-                    LOGGER.info("in 4");
-                    Cookie prevPageCookieCookie2 = new Cookie("prevPageCookie", "");
-                    response.addCookie(prevPageCookieCookie2);
-                    LOGGER.info("in 5");
-                    LOGGER.info(redirectUrl);
-                    getRedirectStrategy().sendRedirect(request, response, redirectUrl);
-                } else {
-                    LOGGER.info("in 6");
-                    if(request.getRequestURI().contains("/common/error/unauthorized")) {
-                        Cookie errorRefreshCookie = new Cookie("errorRefresh", "false");
-                        response.addCookie(errorRefreshCookie);
-                    }
-
-                    super.onAuthenticationSuccess(request, response, authentication);
-                }
-            } else {
-                LOGGER.info("in 7");
-                super.onAuthenticationSuccess(request, response, authentication);
-            }
+            super.onAuthenticationSuccess(request, response, authentication);
+//            LOGGER.info("in 1");
+//            Cookie prevPageCookieCookie = WebUtils.getCookie(request, "prevPageCookie");
+//            LOGGER.info("in 2");
+//            if (prevPageCookieCookie != null) {
+//                LOGGER.info("in 3");
+//                LOGGER.info(prevPageCookieCookie.getValue());
+//                String redirectUrl = prevPageCookieCookie.getValue();
+//                if (redirectUrl != null && !redirectUrl.equals("")) {
+//                    LOGGER.info("in 4");
+//                    Cookie prevPageCookieCookie2 = new Cookie("prevPageCookie", "");
+//                    response.addCookie(prevPageCookieCookie2);
+//                    LOGGER.info("in 5");
+//                    LOGGER.info(redirectUrl);
+//                    getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+//                } else {
+//                    LOGGER.info("in 6");
+//                    if(request.getRequestURI().contains("/common/error/unauthorized")) {
+//                        Cookie errorRefreshCookie = new Cookie("errorRefresh", "false");
+//                        response.addCookie(errorRefreshCookie);
+//                    }
+//
+//                    super.onAuthenticationSuccess(request, response, authentication);
+//                }
+//            } else {
+//                LOGGER.info("in 7");
+//                super.onAuthenticationSuccess(request, response, authentication);
+//            }
         }
 
-
-
+//        String userName = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+//
+//        request.getSession().setAttribute(userName, "test");
 
 //        getRedirectStrategy().sendRedirect(request, response, "/dashboard/test?aa=b");
 //        super.onAuthenticationSuccess(request, response, authentication);

@@ -69,6 +69,8 @@ public class SsoAuthenticationDetailsSource
         Map<String, String> uaaUserInfo = null;
         try {
             uaaUserInfo = restTemplate.getForObject(userInfoUrl, Map.class);
+            LOGGER.info("** buildDetails");
+            LOGGER.info(uaaUserInfo.toString());
         } catch (RestClientException e) {
             LOGGER.error("Error while user full name from [" + userInfoUrl + "].", e);
             return null;

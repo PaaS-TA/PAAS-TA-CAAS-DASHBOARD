@@ -65,6 +65,7 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
             customUserDetailsService.setToken(ssoAuthenticationDetails.getAccessToken().getValue());
             user = (User) customUserDetailsService.loadUserByUsername(ssoAuthenticationDetails.getUserid());
             role = user.getAuthorities();
+            LOGGER.info("uaa user guid : "+ssoAuthenticationDetails.getId());
             ssoAuthenticationDetails.setUsername(user.getUsername());
             ssoAuthenticationDetails.setImgPath(user.getImgPath());
 //            List authorities = new ArrayList();

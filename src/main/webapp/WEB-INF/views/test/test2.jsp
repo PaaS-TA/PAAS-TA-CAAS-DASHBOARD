@@ -12,6 +12,10 @@
         location.href='/common/error/unauthorized';
     </script>
 </sec:authorize>
+<%
+    String aa = request.getParameter("aa");
+    out.println(aa);
+%>
 test2
 <br>
 <br>

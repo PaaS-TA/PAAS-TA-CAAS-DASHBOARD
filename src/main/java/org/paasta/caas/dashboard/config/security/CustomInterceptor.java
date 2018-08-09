@@ -5,7 +5,9 @@ import org.paasta.caas.dashboard.common.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.util.WebUtils;
@@ -14,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
+import java.util.Random;
 
 
 public class CustomInterceptor extends HandlerInterceptorAdapter {
@@ -22,14 +25,14 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     CommonService commonService;
 
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String uri = request.getRequestURI();
+        String url = request.getRequestURI();
         StringBuffer addParam = new StringBuffer();
 
         LOGGER.info("### Intercepter start ###");
-        LOGGER.info("** Request URI - "+uri);
-//        LOGGER.info(request.getParameterMap().toString());
+        LOGGER.info("** Request URI - "+url);
 
         Enumeration<String> paramNames = request.getParameterNames();
         int i = 0;
@@ -45,62 +48,105 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
                 addParam.append(key+"="+value);
                 i++;
         }
-        LOGGER.info(" RequestParameter ==>  " + addParam);
-        Cookie prevPageCookie = new Cookie("prevPageCookie", uri+addParam);
-        response.addCookie(prevPageCookie);
 
+        if(commonService.isLoginUrl(request)){
+            LOGGER.info("Spring-Boot");
+            request.getSession().invalidate();
+        }
 
-//        if(commonService.isLoginUrl(request)){
-//            request.getSession().invalidate();
-//            commonService.updateSession();
-//        }
-
-//        if (!(url.indexOf("/common") >= 0 ||
-//                url.indexOf("/css") >= 0 ||
-//                url.indexOf("/webjars") >= 0 ||
-//                url.indexOf("/js") >= 0
-
-
-
-        if (uri.contains("/dashboard/")) {
-            LOGGER.info("** SecurityContextHolder.getContext().getAuthentication().getPrincipal() = "+SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-            if (SecurityContextHolder.getContext() != null) {
+        if (url.contains("/dashboard/main")) {
+//            if (SecurityContextHolder.getContext() != null) {
                 try {
-                    Cookie cookie0 = WebUtils.getCookie(request, "ssoRefresh");
-                    if(cookie0 != null && cookie0.getValue().equals("true")) {
-                        Cookie ssoRefreshCookie = new Cookie("ssoRefresh", "false");
-                        response.addCookie(ssoRefreshCookie);
-                    } else {
-                        SecurityContextHolder.clearContext();
-
-                        Cookie ssoRefreshCookie = new Cookie("ssoRefresh", "true");
-                        response.addCookie(ssoRefreshCookie);
-                        response.sendRedirect(uri+addParam);
-                    }
+//                    commonService.updateSession();
+                    SecurityContextHolder.clearContext();
+                    LOGGER.info("test1");
+                    response.sendRedirect("/dashboard/test"+addParam);
+                    return false;
                 } catch (Exception e) {
                     e.printStackTrace();
                     response.sendRedirect(request.getContextPath() + "/common/error/unauthorized");
                 }
-            } else {
-            }
-        } else if(uri.contains("/common/error/unauthorized")) {
-            Cookie prevPageCookie2 = new Cookie("prevPageCookie", "");
-            response.addCookie(prevPageCookie2);
-
-            Cookie errorRefreshCookie0 = WebUtils.getCookie(request, "errorRefresh");
-            if(errorRefreshCookie0 != null && errorRefreshCookie0.getValue().equals("true")) {
-                LOGGER.info("error in 1");
-                Cookie errorRefreshCookie = new Cookie("errorRefresh", "false");
-                response.addCookie(errorRefreshCookie);
-            } else {
-                LOGGER.info("error in 2");
-                SecurityContextHolder.clearContext();
-
-                Cookie errorRefreshCookie = new Cookie("errorRefresh", "true");
-                response.addCookie(errorRefreshCookie);
-                response.sendRedirect(uri);
-            }
+//            }
         }
+
+//        LOGGER.info(request.getParameterMap().toString());
+
+//        Enumeration<String> paramNames = request.getParameterNames();
+//        int i = 0;
+//        while (paramNames.hasMoreElements()) {
+//            String key = (String) paramNames.nextElement();
+//            String value = request.getParameter(key);
+//            LOGGER.info(" RequestParameter Data ==>  " + key + " : " + value + "");
+//                if(i == 0) {
+//                    addParam.append("?");
+//                } else {
+//                    addParam.append("&");
+//                }
+//                addParam.append(key+"="+value);
+//                i++;
+//        }
+//        LOGGER.info(" RequestParameter ==>  " + addParam);
+//        Cookie prevPageCookie = new Cookie("prevPageCookie", uri+addParam);
+//        response.addCookie(prevPageCookie);
+//
+////        if(commonService.isLoginUrl(request)){
+////            request.getSession().invalidate();
+////            commonService.updateSession();
+////        }
+//
+////        if (!(url.indexOf("/common") >= 0 ||
+////                url.indexOf("/css") >= 0 ||
+////                url.indexOf("/webjars") >= 0 ||
+////                url.indexOf("/js") >= 0
+//
+//        String userName = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+//
+//        LOGGER.info("===================================================================");
+//        boolean aa = false;
+//        if(addParam.toString().contains("&open=ture")) {
+//            aa = true;
+//        }
+//
+//
+//        if (uri.contains("/dashboard/")) {
+//            LOGGER.info("** SecurityContextHolder.getContext().getAuthentication().getPrincipal() = "+userName);
+//            if (SecurityContextHolder.getContext() != null && aa) {
+//                try {
+//                    Cookie cookie0 = WebUtils.getCookie(request, "ssoRefresh");
+//                    if(cookie0 != null && cookie0.getValue().equals("true")) {
+//                        Cookie ssoRefreshCookie = new Cookie("ssoRefresh", "false");
+//                        response.addCookie(ssoRefreshCookie);
+//                    } else {
+//                        SecurityContextHolder.clearContext();
+//
+//                        Cookie ssoRefreshCookie = new Cookie("ssoRefresh", "true");
+//                        response.addCookie(ssoRefreshCookie);
+//                        response.sendRedirect(uri+addParam);
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    response.sendRedirect(request.getContextPath() + "/common/error/unauthorized");
+//                }
+//            } else {
+//            }
+//        } else if(uri.contains("/common/error/unauthorized")) {
+//            Cookie prevPageCookie2 = new Cookie("prevPageCookie", "");
+//            response.addCookie(prevPageCookie2);
+//
+//            Cookie errorRefreshCookie0 = WebUtils.getCookie(request, "errorRefresh");
+//            if(errorRefreshCookie0 != null && errorRefreshCookie0.getValue().equals("true")) {
+//                LOGGER.info("error in 1");
+//                Cookie errorRefreshCookie = new Cookie("errorRefresh", "false");
+//                response.addCookie(errorRefreshCookie);
+//            } else {
+//                LOGGER.info("error in 2");
+//                SecurityContextHolder.clearContext();
+//
+//                Cookie errorRefreshCookie = new Cookie("errorRefresh", "true");
+//                response.addCookie(errorRefreshCookie);
+//                response.sendRedirect(uri);
+//            }
+//        }
 
         LOGGER.info("### Intercepter end ###");
         return super.preHandle(request, response, handler);
