@@ -11,7 +11,7 @@
     SERVICE 대시보드 :: SERVICE DASHBOARD
     <div style="padding: 10px;">
         <button type="button" id="btnSearch"> [ 조회 ] </button>
-        <button type="button" id="btnReset"> [ 목록 초기화 ] </button>
+        <button type="button" id="btnReset"> [ 초기화 ] </button>
     </div>
     <h1>RESULT</h1>
     <div id="resultArea" style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted green 4px;">
@@ -34,7 +34,7 @@
         var nodePort;
         var specPortsList;
         var specPortsListLength;
-        var endpoints;
+        var endpoints ="";
         var postfixString;
         var items = data.items;
         var listLength = items.length;
@@ -65,12 +65,13 @@
             }
 
             htmlString.push(
-                "name :: " + serviceName + " || "
+                "<a href='javascript:void(0);' onclick='procMovePage(\"/services/" + serviceName + "\");'>[ DETAIL ]</a>" + " || "
+                + "name :: " + serviceName + " || "
                 + "type :: " + items[i].spec.type + " || "
                 + "clusterIP :: " + items[i].spec.clusterIP + " || "
                 + "endpoints :: " + endpoints + " || "
-                + "creationTimestamp :: " + items[i].metadata.creationTimestamp + " "
-                + "<a href='javascript:void(0);' onclick='alert(\"" + serviceName + "\");'>[ DETAIL ]</a>"
+                + "creationTimestamp :: " + items[i].metadata.creationTimestamp
+
                 + "<br><br>");
             endpoints = "";
         }
@@ -100,7 +101,7 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        //
+        getList();
     });
 
 </script>

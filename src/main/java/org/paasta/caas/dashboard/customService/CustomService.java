@@ -22,4 +22,7 @@ public class CustomService {
     private CommonSpec spec;
     private CommonStatus status;
 
+    // FOR DASHBOARD
+    private String serviceName;
+
 }

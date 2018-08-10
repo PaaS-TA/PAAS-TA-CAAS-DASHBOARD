@@ -4,6 +4,7 @@ import org.paasta.caas.dashboard.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -49,6 +50,18 @@ public class CustomServiceController {
     }
 
     /**
+     * Gets custom service detail.
+     *
+     * @param httpServletRequest the http servlet request
+     * @param serviceName        the service name
+     * @return the custom service detail
+     */
+    @GetMapping(value = "/{serviceName:.+}")
+    public ModelAndView getCustomServiceDetail(HttpServletRequest httpServletRequest, @PathVariable("serviceName") String serviceName) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/detail", new ModelAndView());
+    }
+
+    /**
      * Gets custom service list.
      *
      * @return the custom service list
@@ -57,6 +70,18 @@ public class CustomServiceController {
     @ResponseBody
     public CustomServiceList getCustomServiceList() {
         return customServiceService.getCustomServiceList();
+    }
+
+    /**
+     * Gets custom service.
+     *
+     * @param customService the custom service
+     * @return the custom service
+     */
+    @GetMapping(value = "/get.do")
+    @ResponseBody
+    public CustomService getCustomService(CustomService customService) {
+        return customServiceService.getCustomService(customService.getServiceName());
     }
 
 }

@@ -16,7 +16,7 @@ public class Constants {
     public static final String TARGET_CAAS_API = "caasApi";
 
     // TODO :: REMOVE
-    public static final String NAMESPACE_NAME = "/hrjin_namespace";
+    public static final String NAMESPACE_NAME = "kube-system";
 
     private Constants() {
         throw new IllegalStateException();
