@@ -48,7 +48,7 @@ public class NamespaceController {
     @GetMapping(value = {"/main"})
     public ModelAndView getDashboardMain() {
         return new ModelAndView() {{
-            setViewName("main/main");
+            setViewName("/main/main");
             //addObject("ORGANIZATION_ID", "");
         }};
     }
