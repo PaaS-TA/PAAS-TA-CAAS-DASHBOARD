@@ -10,6 +10,8 @@
     <ul>
         <li><a href="javascript:void(0);" onclick="procMovePage('/');">[ HOME ]</a></li>
         <li><a href="javascript:void(0);" onclick="procMovePage('/users');">[ USERS ]</a></li>
+        <li><a href="javascript:void(0);" onclick="procMovePage('/services');">[ SERVICES ]</a></li>
+        <%--TODO :: REMOVE--%>
         <li><a href="javascript:void(0);" onclick="procMovePage('/cluster/namespaces');">[ NAMESPACES ]</a></li>
         <%--TODO :: MODIFY--%>
         <li><a href="javascript:void(0);" onclick="procMovePage('/cluster/main');">[ CLUSTER ]</a></li>
