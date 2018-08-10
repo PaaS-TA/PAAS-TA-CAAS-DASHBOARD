@@ -18,16 +18,17 @@
         <put-attribute name="body" value="/WEB-INF/views/index.jsp"/>
     </definition>
 
-    <definition name="/users/main" extends="layout.default">
-        <put-attribute name="body" value="/WEB-INF/views/users/main.jsp"/>
+    <definition name="/*/*" extends="layout.default">
+        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"/>
     </definition>
 
-    <definition name="/namespaces/main" extends="layout.default">
-        <put-attribute name="body" value="/WEB-INF/views/namespaces/main.jsp"/>
-    </definition>
+    <!--TODO :: REMOVE-->
+    <!--<definition name="/namespaces/main" extends="layout.default">-->
+        <!--<put-attribute name="body" value="/WEB-INF/views/namespaces/main.jsp"/>-->
+    <!--</definition>-->
 
-    <definition name="main/main" extends="layout.default">
-        <put-attribute name="body" value="/WEB-INF/views/main/main.jsp"/>
-    </definition>
+    <!--<definition name="main/main" extends="layout.default">-->
+        <!--<put-attribute name="body" value="/WEB-INF/views/main/main.jsp"/>-->
+    <!--</definition>-->
 
 </tiles-definitions>
