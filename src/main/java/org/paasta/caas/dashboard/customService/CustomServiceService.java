@@ -45,4 +45,5 @@ public class CustomServiceService {
     CustomService getCustomService(String serviceName) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL + "/" + serviceName, HttpMethod.GET, null, CustomService.class);
     }
+
 }

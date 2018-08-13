@@ -121,4 +121,5 @@ public class CommonSpec {
 //
 //    @SerializedName("hostAliases")
 //    private List<HostAlias> hostAliases;
+
 }

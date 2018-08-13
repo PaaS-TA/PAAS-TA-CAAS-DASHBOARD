@@ -40,4 +40,5 @@ public class CommonStatus {
 
     //@SerializedName("conditions")
     //private List<ReplicaSetCondition> conditions;
+
 }
