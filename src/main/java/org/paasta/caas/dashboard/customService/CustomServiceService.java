@@ -7,7 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 /**
- * Custom Service 클래스
+ * Custom Service Service 클래스
  *
  * @author REX
  * @version 1.0

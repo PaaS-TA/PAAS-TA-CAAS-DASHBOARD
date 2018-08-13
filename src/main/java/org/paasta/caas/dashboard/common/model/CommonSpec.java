@@ -83,13 +83,17 @@ public class CommonSpec {
     @SerializedName("clusterIP")
     private String clusterIP;
 
-
     @SerializedName("ports")
     private List ports;
 
     @SerializedName("sessionAffinity")
     private String sessionAffinity;
+
+    @SerializedName("selector")
+    private Map selector;
     // FOR SERVICE :: END
+
+
 
 //    @SerializedName("tolerations")
 //    private List<Toleration> tolerations;
