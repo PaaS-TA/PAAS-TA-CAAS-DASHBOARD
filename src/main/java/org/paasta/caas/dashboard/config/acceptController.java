@@ -45,7 +45,7 @@ public class acceptController {
         // TEST SETTING
         session.setAttribute("REPLICASET", "TRUE" );
         session.setAttribute("REPLICASET_VIEW", "TRUE" );
-        session.setAttribute("REPLICASET_EXCUTE", "TRUE" );
+        session.setAttribute("REPLICASET_EXECUTE", "TRUE" );
 
         //session.invalidate();
 
