@@ -2,7 +2,7 @@ package org.paasta.caas.dashboard.workload.replicaSet;
 
 //import org.springframework.http.HttpMethod;
 
-import org.paasta.caas.dashboard.workload.pods.PodService;
+import org.paasta.caas.dashboard.workload.pod.PodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
