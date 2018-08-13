@@ -124,6 +124,7 @@
 
         var items = data.subsets;
         var subsetsListLength = items.length;
+
         for (var i = 0; i < subsetsListLength; i++) {
 
             var addresses = items[i].addresses;
@@ -131,7 +132,9 @@
             var listLength = addresses.length;
             var separatorString = ", ";
             var portsString = '';
+            var nodeName = '';
             var htmlString = [];
+            var nodeNameList = [];
 
             htmlString.push("ENDPOINT LIST :: <br><br>");
 
@@ -144,17 +147,46 @@
                 }
 
                 portsString = portNameString + separatorString + ports[j].port + separatorString + ports[j].protocol;
+                nodeName = addresses[j].nodeName;
 
                 htmlString.push(
                     "host :: " + addresses[j].ip + " || "
                     + "ports :: " + portsString + " || "
-                    + "node :: " + addresses[j].nodeName + " || "
-                    // + "ready :: " + addresses[i].status.phase
+                    + "node :: " + nodeName + " || "
+                    + "ready :: " + "<span id='" + nodeName + "'></span>"
                     + "<br><br>");
+
+                nodeNameList.push(nodeName)
             }
         }
 
         $('#resultAreaForEndpoints').html(htmlString);
+        getDetailForNodes(nodeNameList);
+    };
+
+
+    // GET DETAIL
+    var getDetailForNodes = function(nodeNameList) {
+        var listLength = nodeNameList.length;
+
+        for (var i = 0; i < listLength; i++) {
+            procCallAjax("/nodes/get.do", "GET", {nodeName : nodeNameList[i]}, null, callbackGetDetailForNodes);
+        }
+    };
+
+
+    // CALLBACK
+    var callbackGetDetailForNodes = function(data) {
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+
+        var items = data.status.conditions;
+        var conditionsListLength = items.length;
+
+        for (var i = 0; i < conditionsListLength; i++) {
+            if (items[i].type === "Ready") {
+                $('#' + data.metadata.name).text(items[i].status);
+            }
+        }
     };
 
 

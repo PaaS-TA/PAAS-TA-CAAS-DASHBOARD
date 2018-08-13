@@ -13,10 +13,12 @@ import lombok.Data;
 @Data
 public class CommonCondition {
 
+    // FOR NODE :: BEGIN
     @SerializedName("type")
     private String type;
 
     @SerializedName("status")
     private String status;
+    // FOR NODE :: END
 
 }
