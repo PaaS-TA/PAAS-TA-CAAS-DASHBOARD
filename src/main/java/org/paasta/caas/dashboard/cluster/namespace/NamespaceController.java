@@ -37,37 +37,6 @@ public class NamespaceController {
         this.namespaceService = namespaceService;
     }
 
-    //private final String V2_URL = "/v2";
-
-    /**
-     * 메인페이지로 이동한다.
-     *
-     * @return ModelAndView(Spring 클래스)
-     */
-    // TODO :: REMOVE
-    @GetMapping(value = {"/main"})
-    public ModelAndView getDashboardMain() {
-        return new ModelAndView() {{
-            setViewName("/main/main");
-            //addObject("ORGANIZATION_ID", "");
-        }};
-    }
-
-    /**
-     * description.
-     *
-     * //@param req   HttpServletRequest(자바클래스)
-     * @return Map(자바클래스)
-     * @throws Exception Exception(자바클래스)
-     */
-    // TODO :: REMOVE
-    @GetMapping("/namespaces2")
-    @ResponseBody
-    public Map<String, Object> getNamespaceList(@RequestParam Map<String, Object> map) throws Exception {
-        return namespaceService.getNamespaceList(map);
-    }
-
-
     @GetMapping(value = {"/namespaces"})
     public ModelAndView getUserMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
