@@ -25,7 +25,7 @@ ext {
     springSecurityTagLibsVersion = '5.0.7.RELEASE'
     tomcatEmbedJasperVersion = '8.5.32'
     jstlVersion = '1.2'
-    gSonVersion = '2.8.5'
+    gsonVersion = '2.8.5'
     apacheTilesJspVersion = '3.0.8'
     lombokVersion = '1.18.2'
     jacocoVersion = '0.8.1'
@@ -52,7 +52,7 @@ dependencies {
     compile "org.springframework.security:spring-security-taglibs:${springSecurityTagLibsVersion}"
     compile "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatEmbedJasperVersion}"
     compile "javax.servlet:jstl:${jstlVersion}"
-    compile "com.google.code.gson:gson:${gSonVersion}"
+    compile "com.google.code.gson:gson:${gsonVersion}"
     compile "org.apache.tiles:tiles-jsp:${apacheTilesJspVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     testCompile "org.springframework.boot:spring-boot-starter-test"
