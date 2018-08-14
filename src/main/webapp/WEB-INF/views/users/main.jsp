@@ -37,8 +37,9 @@
             htmlString.push(
                 "id :: " + data[i].id + " || "
                 + "userId :: " + data[i].userId + " || "
-                + "roleCode :: " + data[i].roleCode + " || "
-                + "roleDescription :: " + data[i].roleDescription + " || "
+                + "roleName :: " + data[i].roleName + " || "
+                + "roleSetCode :: " + data[i].roleSetCode + " || "
+                + "namespace :: " + data[i].namespace + " || "
                 + "description :: " + data[i].description + " || "
                 + "created :: " + data[i].created + " || "
                 + "lastModified :: " + data[i].lastModified

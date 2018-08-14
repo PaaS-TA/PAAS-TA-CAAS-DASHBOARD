@@ -18,8 +18,10 @@ public class User {
 
     private long id;
     private String userId;
-    private String roleCode;
-    private String roleDescription;
+    private String roleName;
+    private String roleSetCode;
+    private String namespace;
+    //private String roleDescription;
     private String description;
     private String created;
     private String lastModified;
