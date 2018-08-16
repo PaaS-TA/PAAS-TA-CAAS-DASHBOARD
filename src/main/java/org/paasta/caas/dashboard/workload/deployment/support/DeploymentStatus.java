@@ -2,7 +2,7 @@ package org.paasta.caas.dashboard.workload.deployment.support;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
-import org.paasta.caas.api.common.model.CommonCondition;
+import org.paasta.caas.dashboard.common.model.CommonCondition;
 
 import java.util.List;
 

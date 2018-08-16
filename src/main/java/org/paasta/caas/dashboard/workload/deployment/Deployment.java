@@ -20,6 +20,9 @@ public class Deployment {
 
 //    @SerializedName("apiVersion")
 //    private String apiVersion = null;
+    private String resultCode;
+    private String resultMessage;
+
 
     @SerializedName( "metadata" )
     private CommonMetaData metadata;

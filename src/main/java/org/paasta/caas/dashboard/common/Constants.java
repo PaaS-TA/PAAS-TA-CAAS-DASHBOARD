@@ -18,6 +18,10 @@ public class Constants {
     // TODO :: REMOVE
     public static final String NAMESPACE_NAME = "kube-system";
 
+    public static final String API_WORKLOAD = "/workload";
+
+
+
     private Constants() {
         throw new IllegalStateException();
     }

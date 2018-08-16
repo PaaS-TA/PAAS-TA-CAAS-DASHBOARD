@@ -56,17 +56,7 @@ public class DeploymentController {
      * @return List of deployment (All namespaces)
      */
     @GetMapping( "/deployments/getList.do" )
-    public Map<String, Object> getDeploymentListByAllNamespaces(@RequestHeader HttpHeaders headers) {
-        // TODO : Filter user using Authorization in request header.
-        if (headers.containsKey( "Authorization" )) {
-            String authorizationValue = headers.get( "Authorization" ).toString();
-            if ( "// TODO" .equals( authorizationValue ) ) {
-                // TODO
-            }
-        } else {
-
-        }
-
+    public DeploymentList getDeploymentListByAllNamespaces(@RequestHeader HttpHeaders headers) {
         return deploymentService.getDeploymentListByAllNamespaces();
     }
 
@@ -77,7 +67,7 @@ public class DeploymentController {
      * @return List of deployment (specific namespace)
      */
     @GetMapping( "/deployments/{namespace}/getList.do" )
-    public Map<String, Object> getDeploymentList(@PathVariable String namespace) {
+    public DeploymentList getDeploymentList(@PathVariable String namespace) {
         return deploymentService.getDeploymentList(namespace);
     }
 
@@ -89,7 +79,7 @@ public class DeploymentController {
      * @return Deployment's detail content (specific namespace and deployment)
      */
     @GetMapping( "/deployments/{namespace}/getDeployment.do")
-    public Map<String, Object> getDeployment(@PathVariable String namespace, @RequestParam Map<String, Object> params) {
+    public Deployment getDeployment(@PathVariable String namespace, @RequestParam Map<String, Object> params) {
         String deploymentName = params.get("name").toString();
         return deploymentService.getDeployment(namespace, deploymentName);
     }

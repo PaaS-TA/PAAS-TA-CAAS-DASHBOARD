@@ -21,6 +21,8 @@ public class DeploymentList {
 
 //    @SerializedName("apiVersion")
 //    private String apiVersion = null;
+    private String resultCode;
+    private String resultMessage;
 
     @SerializedName("items")
     private List<Deployment> items = new ArrayList<>();
