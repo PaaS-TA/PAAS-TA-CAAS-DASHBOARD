@@ -60,7 +60,18 @@ public class RoleController {
     }
 
     /**
-     * Gets Role List
+     * Gets Role List (모든 네임스페이스에서 조회)
+     *
+     * @return RoleList
+     */
+    @GetMapping(value = "/getListByAllNamespaces.do")
+    @ResponseBody
+    public RoleList getRoleListByAllNamespaces(){
+        return roleService.getRoleListByAllNamespaces();
+    }
+
+    /**
+     * Gets Role List (특정 네임스페이스에서 조회)
      *
      * @return RoleList
      */
@@ -71,7 +82,7 @@ public class RoleController {
     }
 
     /**
-     * Gets Role Detail
+     * Gets Role Detail (특정 네임스페이스에서 조회)
      *
      * @param role the role
      * @return the role

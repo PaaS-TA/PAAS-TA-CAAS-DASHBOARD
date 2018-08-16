@@ -26,7 +26,16 @@ public class RoleService {
     }
 
     /**
-     * Gets role list
+     * Gets role list (모든 네임스페이스에서 조회)
+     *
+     * @return the role list
+     */
+    public RoleList getRoleListByAllNamespaces() {
+        return restTemplateService.send(Constants.TARGET_CAAS_API,"/cluster/roles", HttpMethod.GET, null, RoleList.class);
+    }
+
+    /**
+     * Gets role list (특정 네임스페이스에서 조회)
      *
      * @return the role list
      */
@@ -36,7 +45,7 @@ public class RoleService {
     }
 
     /**
-     * Gets role
+     * Gets role (특정 네임스페이스에서 조회)
      *
      * @param roleName the role name
      * @return the role
