@@ -16,5 +16,8 @@
         <%--TODO :: MODIFY--%>
         <li><a href="javascript:void(0);" onclick="procMovePage('/cluster/main');">[ CLUSTER ]</a></li>
         <li><a href="javascript:void(0);" onclick="procMovePage('/workload/deployments');">[ DEPLOYMENTS ]</a></li>
+
+        <li><a href="javascript:void(0);" onclick="procMovePage('/workload/replicasets');">[ REPLICASETS ]</a></li>
+
     </ul>
 </div>

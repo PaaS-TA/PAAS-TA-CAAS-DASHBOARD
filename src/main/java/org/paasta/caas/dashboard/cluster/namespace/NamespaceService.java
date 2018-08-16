@@ -32,16 +32,8 @@ import java.util.Map;
 @Service
 public class NamespaceService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceService.class);
+    //private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceService.class);
     private static final String REQ_URL = "/cluster/namespaces";
-
-    // TODO :: REMOVE
-    @Autowired
-    RestTemplate restTemplate;
-
-    // TODO :: REMOVE
-    @Autowired
-    private EnvConfig envConfig;
 
     private final RestTemplateService restTemplateService;
 
@@ -53,36 +45,6 @@ public class NamespaceService {
      *
      * @return int int
      */
-    // TODO :: REMOVE
-    public Map<String, Object> getNamespaceList(Map<String, Object> map) {
-        Map result = new HashMap();
-
-        HttpHeaders headers = new HttpHeaders();
-        //headers.add("Authorization", "Bearer "+kubeAccountToken);
-        //headers.add("Content-Type", "application/json");
-
-        Map<String, Object> param = new HashMap<>();
-        String kubeAccountToken = "";
-        if (!ObjectUtils.isEmpty(map.get("token"))) {
-            kubeAccountToken = map.get("token").toString();
-            LOGGER.info("Get InputToken : "+ kubeAccountToken);
-        }
-        //URI Builder
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(envConfig.getCaasApiUrl()+"/cluster/namespaces2")
-                .queryParam("token", kubeAccountToken);
-
-        HttpEntity<Map> resetEntity = new HttpEntity(headers);
-        ResponseEntity<Map> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, resetEntity, Map.class);
-
-        LOGGER.debug(responseEntity.getBody().toString());
-
-        result.put("result", "success");
-        result.put("data", responseEntity.getBody());
-        result.put("statusCode", responseEntity.getStatusCodeValue());
-
-        return result;
-    }
-
     Namespace getNamespaceList() {
         return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL, HttpMethod.GET, null, Namespace.class);
     }

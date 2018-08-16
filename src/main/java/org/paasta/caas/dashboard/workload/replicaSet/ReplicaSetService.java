@@ -1,77 +1,58 @@
-package org.paasta.caas.dashboard.workload.replicaSet;
+package org.paasta.caas.dashboard.workload.replicaset;
 
-import org.paasta.caas.dashboard.config.EnvConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.paasta.caas.dashboard.common.Constants;
+import org.paasta.caas.dashboard.common.RestTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.HashMap;
-import java.util.Map;
-
-//import org.apache.http.client.HttpClient;
-//import javax.servlet.http.HttpServletResponse;
-
 
 /**
- * CLUSTER Service
+ * Endpoint Service 클래스
  *
  * @author 최윤석
  * @version 1.0
- * @since 2018.8.01 최초작성
+ * @since 2018.08.13
  */
 @Service
-public class ReplicaSetService {
+public class ReplicasetService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReplicaSetService.class);
-
-    @Autowired
-    RestTemplate restTemplate;
-
-    @Autowired
-    private EnvConfig envConfig;
+    //private static final String REQ_URL = "/" + Constants.NAMESPACE_NAME + "/replicaset";
+    private final RestTemplateService restTemplateService;
 
     /**
-     * 네임스페이스 리스트 조회
+     * Instantiates a new replicaset service.
      *
-     * @return int int
+     * @param restTemplateService the rest template service
      */
-    public Map<String, Object> getPodList(String namespace, Map<String, Object> map) {
-        Map result = new HashMap();
+    @Autowired
+    public ReplicasetService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
 
-        HttpHeaders headers = new HttpHeaders();
-        //headers.add("Authorization", "Bearer "+kubeAccountToken);
-        //headers.add("Content-Type", "application/json");
 
-        String kubeAccountToken = "";
-        if (!ObjectUtils.isEmpty(map.get("token"))) {
-            kubeAccountToken = map.get("token").toString();
-            LOGGER.info("Get InputToken : "+ kubeAccountToken);
-        }
-
-        //URI Builder
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(envConfig.getCaasApiUrl()+"/workload/namespaces/"+namespace+"/pods")
-                .queryParam("token", kubeAccountToken);
-
-        HttpEntity<Map> resetEntity = new HttpEntity(headers);
-        ResponseEntity<Map> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, resetEntity, Map.class);
-
-        LOGGER.debug(responseEntity.getBody().toString());
-
-        result.put("result", "success");
-        result.put("data", responseEntity.getBody());
-        result.put("statusCode", responseEntity.getStatusCodeValue());
-
-        return result;
+    /**
+     * Gets replicaset list.
+     *
+     * @return the replicaset list
+     */
+    ReplicasetList getReplicasetList(String namespace) {
+        // TODO :: reqUrl 따로 관리 여부 결정
+        String reqUrl = "/workload/namespaces/{namespace}/replicasets"
+                .replaceAll("\\{" + "namespace" + "\\}", namespace);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, ReplicasetList.class);
     }
 
 
+    /**
+     * Gets replicaset.
+     *
+     * @param replicasetsName the replicaset name
+     * @return the replicaset
+     */
+    Replicaset getReplicaset(String namespace, String replicasetsName) {
+        // TODO :: reqUrl 따로 관리 여부 결정
+        String reqUrl = "/workload/namespaces/{namespace}/replicasets/{name}"
+                .replaceAll("\\{" + "namespace" + "\\}", namespace)
+                .replaceAll("\\{" + "name" + "\\}", replicasetsName);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, Replicaset.class);
+    }
 
 }
