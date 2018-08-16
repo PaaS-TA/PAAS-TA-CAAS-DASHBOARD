@@ -3,12 +3,15 @@ package org.paasta.caas.dashboard.common.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import org.paasta.caas.dashboard.common.Constants;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Common Meta Data Model 클래스
+ * ListMeta Model 클래스
  *
  * @author REX
  * @version 1.0
@@ -17,50 +20,50 @@ import java.util.Map;
 @Data
 public class CommonMetaData {
 
-    @SerializedName("labels")
+    @SerializedName( "labels" )
     private Map<String, String> labels;
 
-    @SerializedName("name")
+    @SerializedName( "name" )
     private String name;
 
-    @SerializedName("namespace")
+    @SerializedName( "namespace" )
     private String namespace;
 
-    @SerializedName("annotations")
+    @SerializedName( "annotations" )
     private Map<String, String> annotations;
 
-    @SerializedName("clusterName")
+    @SerializedName( "clusterName" )
     private String clusterName;
 
-    @SerializedName("creationTimestamp")
+    @SerializedName( "creationTimestamp" )
     private String creationTimestamp;
 
-    @SerializedName("deletionGracePeriodSeconds")
+    @SerializedName( "deletionGracePeriodSeconds" )
     private long deletionGracePeriodSeconds;
 
-    @SerializedName("deletionTimestamp")
+    @SerializedName( "deletionTimestamp" )
     private String deletionTimestamp;
 
-    @SerializedName("finalizers")
+    @SerializedName( "finalizers" )
     private List<String> finalizers;
 
-    @SerializedName("generateName")
+    @SerializedName( "generateName" )
     private String generateName;
 
-    @SerializedName("generation")
+    @SerializedName( "generation" )
     private long generation;
 
-    @SerializedName("uid")
+    @SerializedName( "uid" )
     private String uid;
 
-    @SerializedName("continue")
-    @JsonProperty("continue")
+    @SerializedName( "continue" )
+    @JsonProperty( "continue" )
     private String _continue;
 
-    @SerializedName("resourceVersion")
+    @SerializedName( "resourceVersion" )
     private String resourceVersion;
 
-    @SerializedName("selfLink")
+    @SerializedName( "selfLink" )
     private String selfLink;
 
     //@SerializedName("initializers")

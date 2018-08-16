@@ -4,7 +4,7 @@ import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;
 import org.paasta.caas.dashboard.common.model.CommonSpec;
 import org.paasta.caas.dashboard.common.model.CommonStatus;
-import org.paasta.caas.dashboard.common.model.CommonSubsets;
+import org.paasta.caas.dashboard.common.model.CommonSubset;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class Endpoint {
     private CommonMetaData metadata;
     private CommonSpec spec;
     private CommonStatus status;
-    private List<CommonSubsets> subsets;
+    private List<CommonSubset> subsets;
 
     // FOR DASHBOARD
     private String serviceName;
