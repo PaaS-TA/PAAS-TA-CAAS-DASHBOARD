@@ -22,10 +22,6 @@
         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"/>
     </definition>
 
-    <definition name="/deployments/main" extends="layout.default">
-        <put-attribute name="body" value="/WEB-INF/views/deployments/main.jsp"/>
-    </definition>
-
     <!--TODO :: REMOVE-->
     <!--<definition name="/namespaces/main" extends="layout.default">-->
         <!--<put-attribute name="body" value="/WEB-INF/views/namespaces/main.jsp"/>-->
