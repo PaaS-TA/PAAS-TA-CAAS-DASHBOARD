@@ -20,7 +20,7 @@
     </div>
     <div id="resultAreaForServices" style="display:none; width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted greenyellow 4px;">
     </div>
-    <div id="resultAreaForHPA" style="display:none; width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted greenyellow 4px;">
+    <div id="resultAreaForHPA" style="display:none; width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted darkgreen 4px;">
     </div>
 <script type="text/javascript">
 
@@ -54,13 +54,12 @@
 
             var replicasetName = itemList.metadata.name;
             var namespace = itemList.metadata.namespace;
-            var labelsList = JSON.stringify(itemList.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
+            var labels = JSON.stringify(itemList.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
             var creationTimestamp = itemList.metadata.creationTimestamp;
             var replicas = itemList.status.replicas;   //  TOBE ::  current / desired
             var images = new Array;
 
             var containers = itemList.spec.template.spec.containers;
-
             for(var i=0; i < containers.length; i++){
                 images.push(containers[i].image);
             }
@@ -68,7 +67,7 @@
             $resultArea.append("<a href='javascript:void(0);'>[ DETAIL ]</a>" + " || "
                     + "Name :: " + replicasetName + " || "
                     + "Namespace :: " + namespace + " || "
-                    + "Labels :: " + labelsList+ " || "
+                    + "Labels :: " + labels+ " || "
                     + "Pods :: " + replicas+ " || "
                     + "Created on :: " + creationTimestamp + " || "
                     + "Images :: " + images.join(",")
@@ -93,8 +92,15 @@
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
         console.log(data);
-
+        // Detail init
         $('#headTextType').text("DETAIL");
+        $('#btnSearch').hide();
+        $('#btnReset').hide();
+
+        // TODO :: develop Pods / Services / Horizontal Pod Autoscaler(HorizontalPodAutoscaler 리소스 등록 필요)
+        //$('#resultAreaForPods').show();
+        //$('#resultAreaForServices').show();
+        //$('#resultAreaForHPA').show();
 
         var $resultArea = $('#resultArea');
 
@@ -111,15 +117,31 @@
         //spec.containers.image
         //managing deployment // label selector로 deployment 조회 및 링크
 
-        $.each(data, function (index, itemList) {
+        var replicasetName = data.metadata.name;
+        var namespace = data.metadata.namespace;
+        var labels = JSON.stringify(data.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
+        var creationTimestamp = data.metadata.creationTimestamp;
+        var replicas = data.status.replicas;   //  TOBE ::  current / desired
+        var images = new Array;
+        var annotations = JSON.stringify(data.metadata.annotations).replace(/["{}]/g, '').replace(/:/g, '=');
+        var deployment = ""; // TODO :: label selector로 deployment 조회 및 링크
 
-            $resultArea.append(
-                    "name :: " + "aaa" + " || "
-                    + "type :: " + "bbb" + " || "
-                    + "creationTimestamp :: " + "cccc"
-                    + "<br><br>");
+        var containers = data.spec.template.spec.containers;
+        for(var i=0; i < containers.length; i++){
+            images.push(containers[i].image);
+        }
 
-        });
+
+        $resultArea.append(
+                  "Name :: " + replicasetName + " || "
+                + "Namespace :: " + namespace + " || "
+                + "Labels :: " + labels+ " || "
+                + "Annotations :: " + annotations+ " || "
+                + "Created on :: " + creationTimestamp + " || "
+                + "Images :: " + images.join(",")
+                + "Pods :: " + replicas+ " || "
+                + "Managing deployment:: " + deployment+ " || "
+                + "<br><br>");
 
     };
 
