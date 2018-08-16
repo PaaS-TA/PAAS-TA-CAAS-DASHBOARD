@@ -9,9 +9,9 @@ import java.util.Map;
 /**
  * Common Spec Model 클래스
  *
- * @author REX
+ * @author 최윤석
  * @version 1.0
- * @since 2018.08.09
+ * @since 2018.08.07
  */
 @Data
 public class CommonSpec {
@@ -21,6 +21,12 @@ public class CommonSpec {
 
     @SerializedName("replicas")
     private int replicas;
+
+//    @SerializedName("selector")
+//    private CommonLabelSelector selector;
+
+    @SerializedName("template")
+    private CommonPodTemplateSpec template;
 
     @SerializedName("activeDeadlineSeconds")
     private long activeDeadlineSeconds;
@@ -92,7 +98,6 @@ public class CommonSpec {
     @SerializedName("selector")
     private Map selector;
     // FOR SERVICE :: END
-
 
 
 //    @SerializedName("tolerations")

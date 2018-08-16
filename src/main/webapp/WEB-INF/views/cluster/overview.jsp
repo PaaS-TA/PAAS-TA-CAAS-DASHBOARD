@@ -52,7 +52,7 @@
     <!-- if 문법 참고용입니다.
          실제로 아래 경우에는 c:choose c:when c:otherwise 사용 권장 -->
     <c:if test="${empty sessionScope}">
-        <button><a href="/accept/ruleset">Admin Session Create.</a></button></br>
+        <button><a href="/accept/ruleset">Admin Session(for RuleSet) Create.</a></button></br>
     </c:if>
 
     <c:if test="${!empty sessionScope}">
