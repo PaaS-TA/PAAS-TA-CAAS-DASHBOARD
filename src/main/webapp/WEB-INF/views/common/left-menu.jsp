@@ -43,6 +43,7 @@
     최윤석 책임님 ::
     <ul>
         <li><a href="javascript:void(0);" onclick="procMovePage('/workload/replicasets');">[ REPLICASETS ]</a></li>
+        <li><a href="javascript:void(0);" onclick="procMovePage('/cluster/persistentvolume');">[ PERSISTENT VOL ]</a></li>
     </ul>
 </div>
 <div>
