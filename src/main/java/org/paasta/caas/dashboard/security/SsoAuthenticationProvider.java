@@ -58,14 +58,16 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
 
         try {
             /*
-            *   SSO 를 통해서 들어온 정보를 이용하여, PaasTa DB상에 사용자 정보를 취득한다.
-            *   취득후 사용자 롤을 이용하여, 권한을 부여한다.
-            */
+             *   SSO 를 통해서 들어온 정보를 이용하여, PaasTa DB상에 사용자 정보를 취득한다.
+             *   취득후 사용자 롤을 이용하여, 권한을 부여한다.
+             */
             SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) details;
             customUserDetailsService.setToken(ssoAuthenticationDetails.getAccessToken().getValue());
-            user = (User) customUserDetailsService.loadUserByUsername(ssoAuthenticationDetails.getUserid());
+//            user = (User) customUserDetailsService.loadUserByUsername(ssoAuthenticationDetails.getUserid());
+            user = (User) customUserDetailsService.loadUserBySsoAuthenticationDetails(ssoAuthenticationDetails);
             role = user.getAuthorities();
-            LOGGER.info("uaa user guid : "+ssoAuthenticationDetails.getId());
+//            LOGGER.info("uaa user guid : "+ssoAuthenticationDetails.getId());
+//            LOGGER.info("uaa user token : "+ssoAuthenticationDetails.getAccessToken().toString());
             ssoAuthenticationDetails.setUsername(user.getUsername());
             ssoAuthenticationDetails.setImgPath(user.getImgPath());
 //            List authorities = new ArrayList();

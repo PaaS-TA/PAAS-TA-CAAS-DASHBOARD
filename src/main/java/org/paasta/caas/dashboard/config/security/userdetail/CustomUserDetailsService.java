@@ -1,6 +1,8 @@
 package org.paasta.caas.dashboard.config.security.userdetail;
 
 //import org.openpaas.paasta.portal.web.user.service.CommonService;
+import org.paasta.caas.dashboard.cf.CfService;
+import org.paasta.caas.dashboard.security.SsoAuthenticationDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 //    @Autowired
 //    private CommonService commonService;
+
+    @Autowired
+    private CfService cfService;
 
 
     private String token;
@@ -81,6 +86,30 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         User user = new User(username, "N/A", role);
 //        user.setImgPath(imgPath);
+        return user;
+    }
+
+    public UserDetails loadUserBySsoAuthenticationDetails(SsoAuthenticationDetails ssoAuthenticationDetails) {
+        List role = new ArrayList();
+
+        LOGGER.info("username : "+ssoAuthenticationDetails.getUserid());
+        LOGGER.info("uaaid : "+ssoAuthenticationDetails.getId());
+        LOGGER.info("token : "+ssoAuthenticationDetails.getAccessToken());
+
+        String username = ssoAuthenticationDetails.getUserid();
+        String uaaid = ssoAuthenticationDetails.getId();
+        String token = ssoAuthenticationDetails.getAccessToken().toString();
+
+        Map cfResult = cfService.getCfOrgsByUaaIdAndToken(uaaid, token);
+        LOGGER.info(cfResult.toString());
+
+        if(username.equals("demo")) {
+            role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else {
+            role.add(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+
+        User user = new User(username, "N/A", role);
         return user;
     }
 
