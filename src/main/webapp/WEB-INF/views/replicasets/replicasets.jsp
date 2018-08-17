@@ -39,6 +39,8 @@
         var htmlString = [];
         var $resultArea = $('#resultArea');
 
+        // TODO :: RESET HTML AREA
+        $resultArea.html("");
         $resultArea.append("REPLICASET LIST :: <br><br>");
 
         //-- Replica Set List
