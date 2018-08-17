@@ -65,7 +65,7 @@
 //                images.push(containers[i].image);
 //            }
 
-            $resultArea.append("<a href='javascript:void(0);'>[ DETAIL ]</a>" + " || "
+            $resultArea.append("<a href='javascript:void(0);'><span style='color: orangered;'>[ DETAIL ]</span></a>"
                     + "Name :: " + pvName + " || "
                     + "Capacity :: " + capacity + " || "
                     + "Access Modes :: " + accessModes + " || "
