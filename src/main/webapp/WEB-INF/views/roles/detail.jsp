@@ -22,7 +22,7 @@
 
 <script type="text/javascript">
     var getRoleDetail = function () {
-      procCallAjax("/cluster/roles/get.do","GET", {roleName : document.getElementById('requestRoleName').value}, null, callbackGetRoleDetail);
+      procCallAjax("/roles/get.do","GET", {roleName : document.getElementById('requestRoleName').value}, null, callbackGetRoleDetail);
     };
 
     var callbackGetRoleDetail = function (data) {
@@ -34,9 +34,9 @@
         var annotations = metadata.annotations;
         var htmlString = [];
 
-        console.log(" ggg ", annotations);
+        //console.log(" ggg ", annotations);
         annotations = JSON.stringify(annotations).replace(/\\/g, '');
-        console.log("버스커버스커", annotations);
+        //console.log("버스커버스커", annotations);
 
         htmlString.push("ROLE DETAIL :: <br><br>");
 

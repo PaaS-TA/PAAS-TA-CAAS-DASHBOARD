@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.cluster.role;
+package org.paasta.caas.dashboard.role;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;

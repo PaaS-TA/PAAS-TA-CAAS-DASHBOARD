@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.cluster.role;
+package org.paasta.caas.dashboard.role;
 
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class RoleService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleService.class);
-    private static final String REQ_URL = "/cluster/namespaces/hrjin-namespace/roles";
+    private static final String REQ_URL = "/roles/namespaces/hrjin-namespace/roles";
     private final RestTemplateService restTemplateService;
 
     @Autowired
@@ -31,7 +31,7 @@ public class RoleService {
      * @return the role list
      */
     public RoleList getRoleListByAllNamespaces() {
-        return restTemplateService.send(Constants.TARGET_CAAS_API,"/cluster/roles", HttpMethod.GET, null, RoleList.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API,"/roles", HttpMethod.GET, null, RoleList.class);
     }
 
     /**

@@ -22,7 +22,7 @@
 
     // GET LIST
     var getRoleList = function() {
-        procCallAjax("/cluster/roles/getList.do", "GET", null, null, callbackGetRoleList);
+        procCallAjax("/roles/getList.do", "GET", null, null, callbackGetRoleList);
     };
 
     var callbackGetRoleList = function (data) {
@@ -45,7 +45,7 @@
             namespace = metadata.namespace;
 
             htmlString.push(
-                "<a href='javascript:void(0);' onclick='procMovePage(\"/cluster/roles/" + roleName + "\");'>[ DETAIL ]</a>" + " || "
+                "<a href='javascript:void(0);' onclick='procMovePage(\"/roles/" + roleName + "\");'>[ DETAIL ]</a>" + " || "
                 + "name :: " + roleName + " || "
                 + "namespace :: " + namespace + " || "
                 + "creationTimestamp :: " + items[i].metadata.creationTimestamp

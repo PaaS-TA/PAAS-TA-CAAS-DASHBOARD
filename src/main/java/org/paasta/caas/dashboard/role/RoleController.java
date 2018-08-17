@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.cluster.role;
+package org.paasta.caas.dashboard.role;
 
 import org.paasta.caas.dashboard.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018-08-16
  */
 @Controller
-@RequestMapping(value = "/cluster/roles")
+@RequestMapping(value = "/roles")
 public class RoleController {
 
     private static final String BASE_URL = "/roles";
