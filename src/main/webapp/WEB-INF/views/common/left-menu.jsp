@@ -28,7 +28,7 @@
     </ul>
 </div>
 <div>
-    박현리 전임님 ::
+    박혜린 전임님 ::
     <ul>
         <li>Service broker</li>
     </ul>
