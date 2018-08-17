@@ -3,7 +3,7 @@ package org.paasta.caas.dashboard.node;
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;
 import org.paasta.caas.dashboard.common.model.CommonSpec;
-import org.paasta.caas.dashboard.common.model.CommonStatus;
+import org.paasta.caas.dashboard.node.support.NodeStatus;
 
 /**
  * Node Model 클래스
@@ -14,14 +14,12 @@ import org.paasta.caas.dashboard.common.model.CommonStatus;
  */
 @Data
 public class Node {
-
     private String resultCode;
     private String resultMessage;
 
     private CommonMetaData metadata;
     private CommonSpec spec;
-    private CommonStatus status;
+    private NodeStatus status;
 
     private String nodeName;
-
 }

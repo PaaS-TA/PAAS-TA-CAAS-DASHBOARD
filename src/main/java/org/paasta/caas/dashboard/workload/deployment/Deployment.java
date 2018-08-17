@@ -15,21 +15,10 @@ import org.paasta.caas.dashboard.workload.deployment.support.DeploymentStatus;
  */
 @Data
 public class Deployment {
-//    @SerializedName("kind")
-//    private String kind = null;
-
-//    @SerializedName("apiVersion")
-//    private String apiVersion = null;
     private String resultCode;
     private String resultMessage;
 
-
-    @SerializedName( "metadata" )
     private CommonMetaData metadata;
-
-    @SerializedName( "spec" )
     private DeploymentSpec spec;
-
-    @SerializedName( "status" )
     private DeploymentStatus status;
 }

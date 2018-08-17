@@ -1,6 +1,5 @@
 package org.paasta.caas.dashboard.common.model;
 
-import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 import java.util.List;
@@ -16,10 +15,7 @@ import java.util.List;
 public class CommonSubset {
 
     // FOR ENDPOINT :: BEGIN
-    @SerializedName("addresses")
     private List<CommonAddresses> addresses;
-
-    @SerializedName("ports")
     private List<CommonPort> ports;
     // FOR ENDPOINT :: END
 

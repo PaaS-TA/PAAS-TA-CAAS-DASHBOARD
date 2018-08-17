@@ -2,7 +2,6 @@ package org.paasta.caas.dashboard.node;
 
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,10 +13,8 @@ import java.util.List;
  */
 @Data
 public class NodeList {
-
     private String resultCode;
     private String resultMessage;
 
-    private List<Node> items = new ArrayList<>();
-
+    private List<Node> items;
 }

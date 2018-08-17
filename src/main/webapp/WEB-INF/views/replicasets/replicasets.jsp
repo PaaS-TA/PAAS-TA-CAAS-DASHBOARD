@@ -39,6 +39,8 @@
         var htmlString = [];
         var $resultArea = $('#resultArea');
 
+        // TODO :: RESET HTML AREA
+        $resultArea.html("");
         $resultArea.append("REPLICASET LIST :: <br><br>");
 
         //-- Replica Set List
@@ -64,7 +66,7 @@
                 images.push(containers[i].image);
             }
 
-            $resultArea.append("<a href='javascript:void(0);'>[ DETAIL ]</a>" + " || "
+            $resultArea.append("<a href='javascript:void(0);'><span style='color: orangered;'>[ DETAIL ]</span></a>" + " || "
                     + "Name :: " + replicasetName + " || "
                     + "Namespace :: " + namespace + " || "
                     + "Labels :: " + labels+ " || "

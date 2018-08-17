@@ -18,8 +18,7 @@
                 <span>Deployment: </span>
                 <input type="text" id="deployment">
             </div>
-            <button type="button" id="btnAllSearch"> [ 전체 조회 ] </button>
-            <button type="button" id="btnSearch"> [ 부분 조회(Namespace+All / Namespace+Deployment) ] </button>
+            <button type="button" id="btnSearch"> [ 조회(None / NS / NS+Dep) ] </button>
             <button type="button" id="btnReset2"> [ 목록 초기화 ] </button>
         </div>
     </div>
@@ -89,6 +88,10 @@
       var deployName = _metadata.name;
       var namespace = _metadata.namespace;
       var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
+      if (labels == null || labels == "null") {
+        labels = "None"
+      }
+
       var creationTimestamp = _metadata.creationTimestamp;
 
       // Set replicas and total Pods are same.
@@ -210,7 +213,7 @@
 
   // ON LOAD
   $(document.body).ready(function () {
-    //
+      getAllDeployments();
   });
 
 </script>

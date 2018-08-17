@@ -3,8 +3,6 @@ package org.paasta.caas.dashboard.common.model;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 /**
  * Common Condition Model 클래스
  *
@@ -23,25 +21,14 @@ public class CommonCondition {
      * DaemonSetConditionType : [ ]
      * </pre>
      */
-    @SerializedName("type")
     private String type;
-
-    @SerializedName("status")
     private String status;
     // FOR NODE :: END
-    
-    @SerializedName("lastTransitionTime")
-    private String lastTransitionTime;
 
-    @SerializedName("message")
     private String message;
-
-    @SerializedName("reason")
     private String reason;
 
-    /**
-     * DeploymentCondition only variable.
-     */
-    @SerializedName("lastUpdateTime")
-    private String lastUpdateTime;
+//    /* DeploymentCondition only variable. */
+//    private String lastTransitionTime;
+//    private String lastUpdateTime;
 }

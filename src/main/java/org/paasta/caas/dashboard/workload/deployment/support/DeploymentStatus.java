@@ -15,27 +15,19 @@ import java.util.List;
  */
 @Data
 public class DeploymentStatus {
-    @SerializedName("availableReplicas")
     private int availableReplicas;
 
-    @SerializedName("collisionCount")
     private int collisionCount;
 
-    @SerializedName("conditions")
     private List<CommonCondition> conditions;
 
-    @SerializedName("observedGeneration")
     private long observedGeneration;
 
-    @SerializedName("readyReplicas")
     private int readyReplicas;
 
-    @SerializedName("replicas")
     private int replicas;
 
-    @SerializedName("unavailableReplicas")
     private int unavailableReplicas;
 
-    @SerializedName("updatedReplicas")
     private int updatedReplicas;
 }

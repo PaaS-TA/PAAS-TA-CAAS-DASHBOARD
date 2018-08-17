@@ -12,9 +12,7 @@ import lombok.Data;
  */
 @Data
 public class DeploymentStrategy {
-    @SerializedName("type")
     private String type;
 
-    @SerializedName("rollingUpdate")
     private RollingUpdateDeployment rollingUpdate;
 }

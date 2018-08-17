@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class NodeService {
-
-    private static final String REQ_URL = "/" + Constants.NAMESPACE_NAME + "/nodes";
+    private static final String REQ_URL = "/nodes";
     private final RestTemplateService restTemplateService;
 
     /**
@@ -45,7 +44,8 @@ public class NodeService {
      * @return the node
      */
     Node getNode(String nodeName) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, "/nodes/" + nodeName, HttpMethod.GET, null, Node.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API,
+            REQ_URL + "/" + nodeName, HttpMethod.GET, null, Node.class);
     }
 
 }

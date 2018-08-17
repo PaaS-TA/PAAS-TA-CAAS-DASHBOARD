@@ -37,9 +37,14 @@
             htmlString.push(
                 "id :: " + data[i].id + " || "
                 + "userId :: " + data[i].userId + " || "
+                + "serviceInstanceId :: " + data[i].serviceInstanceId + " || "
+                + "caasAccountAccessToken :: " + data[i].caasAccountAccessToken + " || "
+                + "caasAccountName :: " + data[i].caasAccountName + " || "
+                + "namespace :: " + data[i].namespace + " || "
+                + "organizationGuid :: " + data[i].organizationGuid + " || "
+                + "spaceGuid :: " + data[i].spaceGuid + " || "
                 + "roleName :: " + data[i].roleName + " || "
                 + "roleSetCode :: " + data[i].roleSetCode + " || "
-                + "namespace :: " + data[i].namespace + " || "
                 + "description :: " + data[i].description + " || "
                 + "created :: " + data[i].created + " || "
                 + "lastModified :: " + data[i].lastModified
@@ -64,7 +69,7 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        //
+        getList();
     });
 
 </script>
