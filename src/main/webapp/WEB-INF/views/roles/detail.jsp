@@ -31,21 +31,35 @@
         //console.log("버즈", JSON.stringify(data.metadata));
 
         var metadata = data.metadata;
-        var annotations = metadata.annotations;
+        var rules = data.rules;
         var htmlString = [];
 
         //console.log(" ggg ", annotations);
-        annotations = JSON.stringify(annotations).replace(/\\/g, '');
-        //console.log("버스커버스커", annotations);
+
+        //console.log("버스커버스커", JSON.stringify(rules));
 
         htmlString.push("ROLE DETAIL :: <br><br>");
 
-        htmlString.push(
-            "name :: " + metadata.name + "<br>"
-            + "namespace :: " + metadata.namespace + "<br>"
-            + "annotations :: " + annotations + "<br>"
-            + "creationTimestamp :: " + metadata.creationTimestamp
-            + "<br><br>");
+        for(var i = 0; i < rules.length; i++){
+            var apiGroups = JSON.stringify(rules[i].apiGroups);
+            var resources = JSON.stringify(rules[i].resources);
+            var verbs = JSON.stringify(rules[i].verbs);
+
+
+            htmlString.push(
+                "name :: " + metadata.name + "<br>"
+                + "namespace :: " + metadata.namespace + "<br>"
+                + "rules :: " + "<br>"
+                + "1) apiGroups :: " + apiGroups + "<br>"
+                + "2) resources :: " + resources + "<br>"
+                + "3) verbs :: " + verbs + "<br>"
+                + "creationTimestamp :: " + metadata.creationTimestamp
+                + "<br><br>");
+        }
+
+
+
+
 
         $('#resultArea').html(htmlString);
     };

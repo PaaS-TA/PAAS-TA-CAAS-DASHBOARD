@@ -2,8 +2,13 @@ package org.paasta.caas.dashboard.role;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;
+import org.paasta.caas.dashboard.common.model.CommonRoleRule;
 import org.paasta.caas.dashboard.common.model.CommonSpec;
 import org.paasta.caas.dashboard.common.model.CommonStatus;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author hrjin
@@ -17,8 +22,7 @@ public class Role {
     private String resultMessage;
 
     private CommonMetaData metadata;
-    private CommonSpec spec;
-    private CommonStatus status;
+    private List<CommonRoleRule> rules = new ArrayList<>();
 
     // FOR DASHBOARD
     private String roleName;
