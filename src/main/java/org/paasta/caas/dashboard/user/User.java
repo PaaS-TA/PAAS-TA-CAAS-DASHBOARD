@@ -18,9 +18,15 @@ public class User {
 
     private long id;
     private String userId;
+    private String serviceInstanceId;
+    private String namespace;
+    private String caasAccountAccessToken;
+    private String caasAcountName;
+    private String organizationGuid;
+    private String spaceGuid;
     private String roleName;
     private String roleSetCode;
-    private String namespace;
+
     //private String roleDescription;
     private String description;
     private String created;
