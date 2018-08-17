@@ -83,19 +83,10 @@ public class CommonSpec {
     private long terminationGracePeriodSeconds;
 
     // FOR SERVICE :: BEGIN
-    @SerializedName( "type" )
     private String type;
-
-    @SerializedName( "clusterIP" )
     private String clusterIP;
-
-    @SerializedName( "ports" )
     private List ports;
-
-    @SerializedName( "sessionAffinity" )
     private String sessionAffinity;
-
-    @SerializedName( "selector" )
     private Map selector;
     // FOR SERVICE :: END
 

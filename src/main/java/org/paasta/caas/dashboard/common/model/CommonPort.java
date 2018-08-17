@@ -1,6 +1,5 @@
 package org.paasta.caas.dashboard.common.model;
 
-import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 /**
@@ -14,13 +13,8 @@ import lombok.Data;
 public class CommonPort {
 
     // FOR ENDPOINT :: BEGIN
-    @SerializedName("name")
     private  String name;
-
-    @SerializedName("port")
     private  String port;
-
-    @SerializedName("protocol")
     private  String protocol;
     // FOR ENDPOINT :: BEGIN
 
