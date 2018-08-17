@@ -153,7 +153,7 @@
                     "host :: " + addresses[j].ip + " || "
                     + "ports :: " + portsString + " || "
                     + "node :: " + nodeName + " || "
-                    + "ready :: " + "<span id='" + nodeName + "'></span>"
+                    + "ready :: " + "<span class='" + nodeName + "'></span>"
                     + "<br><br>");
 
                 nodeNameList.push(nodeName)
@@ -184,7 +184,7 @@
 
         for (var i = 0; i < conditionsListLength; i++) {
             if (items[i].type === "Ready") {
-                $('#' + data.metadata.name).text(items[i].status);
+                $('.' + data.metadata.name).text(items[i].status);
             }
         }
     };
