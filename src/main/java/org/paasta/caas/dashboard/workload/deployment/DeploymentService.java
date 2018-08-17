@@ -75,6 +75,7 @@ public class DeploymentService {
         String urlWithDeploymentName =
             TARGET_DEPLOYMENT_IN_NAMESPACE.replace( "{namespace}", namespace )
             .replace( "{deploymentName}", deploymentName );
+
         return restTemplateService.send(
             Constants.TARGET_CAAS_API, urlWithDeploymentName, HttpMethod.GET, null, Deployment.class);
     }

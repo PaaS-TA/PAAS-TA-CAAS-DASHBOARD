@@ -10,21 +10,18 @@
 <div style="padding: 10px;">
     DEPLOYMENT 대시보드 :: DEPLOYMENT DASHBOARD
     <div style="padding: 10px;">
-        <button type="button" id="btnAllSearch"> [ 전체 조회 ] </button>
-        <button type="button" id="btnReset"> [ 목록 초기화 ] </button>
-
-        <div class="row" style="padding: 5px;"> = = = = = = = = = = </div>
-
-        <div class="row" style="padding: 5px;">
-            <span>Namespace: </span>
-            <input type="text" id="namespace">
+        <div style="padding: 5px;">
+            <div style="padding: 5px;">
+                <span>Namespace: </span>
+                <input type="text" id="namespace">
+                <span>&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;</span>
+                <span>Deployment: </span>
+                <input type="text" id="deployment">
+            </div>
+            <button type="button" id="btnAllSearch"> [ 전체 조회 ] </button>
+            <button type="button" id="btnSearch"> [ 부분 조회(Namespace+All / Namespace+Deployment) ] </button>
+            <button type="button" id="btnReset2"> [ 목록 초기화 ] </button>
         </div>
-        <div class="row" style="padding: 5px;">
-            <span>Deployment: </span>
-            <input type="text" id="deployment">
-        </div>
-        <button type="button" id="btnSearch"> [ 부분 조회(Namespace+All / Namespace+Deployment) ] </button>
-        <button type="button" id="btnReset2"> [ 목록 초기화 ] </button>
     </div>
     <h1>RESULT</h1>
     <div id="resultArea" style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted deepskyblue 4px;">
@@ -38,11 +35,16 @@
   function getDeployments() {
     var namespaceVal = $( "#namespace" ).val();
     var deploymentVal = $( "#deployment" ).val();
+    if (false == ( namespaceVal != null && namespaceVal.replace(/\s/g, '').length > 0 ))
+      namespaceVal = undefined;
+    if (false == ( deploymentVal != null && deploymentVal.replace(/\s/g, '').length > 0 ))
+      deploymentVal = undefined;
+
     var reqUrl = "/workload/deployments";
 
-    if ( namespaceVal != null && namespaceVal.replace(/\s/g, '').length > 0 ) {
+    if ( namespaceVal != null ) {
       reqUrl += "/" + namespaceVal;
-      if ( deploymentVal != null && deploymentVal.replace(/\s/g, '').length > 0 ) {
+      if ( deploymentVal != null ) {
         reqUrl += "/getDeployment.do";
         var param = {
           name: deploymentVal
@@ -63,7 +65,12 @@
 
   // CALLBACK
   var callbackGetList = function(data) {
-    if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+    if (RESULT_STATUS_FAIL === data.resultCode) {
+      $('#resultArea').html(
+        "ResultStatus :: " + data.resultCode + " <br><br>"
+        + "ResultMessage :: " + data.resultMessage + " <br><br>");
+      return false;
+    }
 
     console.log("CONSOLE DEBUG PRINT :: " + data);
 
@@ -105,7 +112,12 @@
   };
 
   var callbackGetDeployment = function(data) {
-    if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+    if (RESULT_STATUS_FAIL === data.resultCode) {
+      $('#resultArea').html(
+        "ResultStatus :: " + data.resultCode + " <br><br>"
+        + "ResultMessage :: " + data.resultMessage + " <br><br>");
+      return false;
+    }
 
     console.log("CONSOLE DEBUG PRINT :: " + data);
 
@@ -145,18 +157,7 @@
     var rollingUpdateStrategy =
       "Max surge: " + _spec.strategy.rollingUpdate.maxSurge + ", "
       + "Max unavailable: " + _spec.strategy.rollingUpdate.maxUnavailable;
-
-    /*
-    // Non-used fields
-    var replicas = _spec.replicas;
-    var pods = _spec.template.spec.containers * replicas;
-    var runningPods = _spec.template.spec.containers;
     var images = _spec.images;
-    */
-
-    var totalPods = _spec.replicas;
-    var runningPods = totalPods - _status.unavailableReplicas;
-    var failPods = _status.unavailableReplicas;
 
     var updatedReplicas = _status.updatedReplicas;
     var totalReplicas = _status.replicas;
@@ -166,7 +167,6 @@
       + totalReplicas + " total, "
       + availableReplicas + " available, "
       + unavailableReplicas + " unavailable.";
-
 
     // htmlString push
     htmlString.push(
