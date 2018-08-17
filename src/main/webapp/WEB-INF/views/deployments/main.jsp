@@ -84,9 +84,10 @@
       var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
       var creationTimestamp = _metadata.creationTimestamp;
 
-      var replicas = _spec.replicas;
-      var pods = _spec.template.spec.containers.length * replicas;
-      var runningPods = _spec.template.spec.containers.length;
+      // Set replicas and total Pods are same.
+      var totalPods = _spec.replicas;
+      var runningPods = totalPods - _status.unavailableReplicas;
+      var failPods = _status.unavailableReplicas;
       var images = _spec.images;
 
       // htmlString push
@@ -94,7 +95,7 @@
         + "Namespace :: " + namespace + " || "
         + "Labels :: " + labels + " || "
         + "CreationTimestamp :: " + creationTimestamp + " || "
-        + "Pods :: " + runningPods + "/" + pods + " || "
+        + "Pods :: " + runningPods + "/" + totalPods + " || "
         + "Images :: " + images
         + "<br><br>" );
     });
@@ -153,6 +154,10 @@
     var images = _spec.images;
     */
 
+    var totalPods = _spec.replicas;
+    var runningPods = totalPods - _status.unavailableReplicas;
+    var failPods = _status.unavailableReplicas;
+
     var updatedReplicas = _status.updatedReplicas;
     var totalReplicas = _status.replicas;
     var availableReplicas = _status.availableReplicas;
@@ -160,7 +165,7 @@
     var replicaStatus = updatedReplicas + " updated, "
       + totalReplicas + " total, "
       + availableReplicas + " available, "
-      + unavailableReplicas + " unavailable";
+      + unavailableReplicas + " unavailable.";
 
 
     // htmlString push
