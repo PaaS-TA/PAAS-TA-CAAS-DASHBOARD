@@ -165,7 +165,7 @@
 
   // ON LOAD
   $(document.body).ready(function () {
-    //
+      getNodes();
   });
 
 </script>

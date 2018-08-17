@@ -68,7 +68,7 @@
             var selector = procSetSelector(items[i].spec.selector);
 
             htmlString.push(
-                "<a href='javascript:void(0);' onclick='procMovePage(\"/services/" + serviceName + "\");'><span style='color: orangered;'>[ DETAIL ]</span></a> " +
+                "<a href='javascript:void(0);' onclick='procMovePage(\"/services/" + serviceName + "\");'><span style='color: orangered;'>[ DETAIL ]</span></a> "
                 + "name :: " + serviceName + " || "
                 + "type :: " + items[i].spec.type + " || "
                 + "clusterIP :: " + items[i].spec.clusterIP + " || "

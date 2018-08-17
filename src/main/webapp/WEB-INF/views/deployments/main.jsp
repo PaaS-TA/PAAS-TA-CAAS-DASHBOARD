@@ -209,7 +209,7 @@
 
   // ON LOAD
   $(document.body).ready(function () {
-    //
+      getAllDeployments();
   });
 
 </script>

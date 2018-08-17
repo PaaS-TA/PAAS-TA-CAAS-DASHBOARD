@@ -69,7 +69,7 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        //
+        getList();
     });
 
 </script>
