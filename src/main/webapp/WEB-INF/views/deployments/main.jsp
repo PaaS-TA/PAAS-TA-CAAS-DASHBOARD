@@ -18,8 +18,7 @@
                 <span>Deployment: </span>
                 <input type="text" id="deployment">
             </div>
-            <button type="button" id="btnAllSearch"> [ 전체 조회 ] </button>
-            <button type="button" id="btnSearch"> [ 부분 조회(Namespace+All / Namespace+Deployment) ] </button>
+            <button type="button" id="btnSearch"> [ 조회(None / NS / NS+Dep) ] </button>
             <button type="button" id="btnReset2"> [ 목록 초기화 ] </button>
         </div>
     </div>

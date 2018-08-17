@@ -20,7 +20,7 @@ import java.util.Map;
 @RequestMapping( "/workload" )
 public class DeploymentController {
     private final CommonService commonService;
-    private DeploymentService deploymentService;
+    private final DeploymentService deploymentService;
 
     private static final String BASE_URL = "/deployments";
 
