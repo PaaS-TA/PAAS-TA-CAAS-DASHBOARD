@@ -33,7 +33,7 @@
 
     if ( nodeNameVal != null ) {
       var param = {
-        name: deploymentVal
+        nodeName: nodeNameVal
       }
       procCallAjax( reqUrl + "/get.do", "GET", param, null, callbackGetNode );
     } else {
@@ -62,8 +62,17 @@
     return capacity.substring(0, capacity.length - 2) * multipleSize;
   }
 
-  var formatCapacity = function(capacity) {
+  var formatCapacity = function(capacity, unit) {
+    var unitSize;
+    if (unit == null || "" == unit)
+      unitSize = 1;
+    else {
+      if (unit === "Ki")    unitSize = 1024
+      if (unit === "Mi")    unitSize = Math.pow(1024, 2);
+      if (unit === "Gi")    unitSize = Math.pow(1024, 3);
+    }
 
+    return ((capacity / unitSize).toFixed(2) + ' ' + unit);
   }
 
   // CALLBACK
@@ -101,8 +110,8 @@
         + "Ready :: " + ready + " || "
         + "Request CPU :: " + requestCPU + " || "
         + "Limit CPU :: " + limitCPU + " || "
-        + "Request Memory :: " + requestMemory + " || "
-        + "Limit Memory :: " + limitMemory + " || "
+        + "Request Memory :: " + formatCapacity(requestMemory, "Mi") + " || "
+        + "Limit Memory :: " + formatCapacity(limitMemory, "Mi") + " || "
         + "CreationTimestamp :: " + creationTimestamp + "<br><br>" );
     });
 
@@ -139,12 +148,12 @@
     var creationTimestamp = _metadata.creationTimestamp;
 
     // htmlString push
-    htmlString.push("Name :: " + name + " || "
-      + "Ready :: " + ready + " || "
-      + "Request CPU :: " + requestCPU + " || "
-      + "Limit CPU :: " + limitCPU + " || "
-      + "Request Memory :: " + requestMemory + " || "
-      + "Limit Memory :: " + limitMemory + " || "
+    htmlString.push("Name :: " + name + " <br><br>"
+      + "Ready :: " + ready + " <br><br>"
+      + "Request CPU :: " + requestCPU + " <br><br>"
+      + "Limit CPU :: " + limitCPU + " <br><br>"
+      + "Request Memory :: " + formatCapacity(requestMemory, "Mi") + " <br><br>"
+      + "Limit Memory :: " + formatCapacity(limitMemory, "Mi") + " <br><br>"
       + "CreationTimestamp :: " + creationTimestamp + "<br><br>" );
 
     // finally

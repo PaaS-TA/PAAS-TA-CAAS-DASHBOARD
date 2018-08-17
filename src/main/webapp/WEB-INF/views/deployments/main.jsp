@@ -88,6 +88,10 @@
       var deployName = _metadata.name;
       var namespace = _metadata.namespace;
       var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
+      if (labels == null || labels == "null") {
+        labels = "None"
+      }
+
       var creationTimestamp = _metadata.creationTimestamp;
 
       // Set replicas and total Pods are same.

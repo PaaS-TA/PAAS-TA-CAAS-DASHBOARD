@@ -20,4 +20,6 @@ public class Node {
     private CommonMetaData metadata;
     private CommonSpec spec;
     private NodeStatus status;
+
+    private String nodeName;
 }

@@ -56,11 +56,11 @@ public class NodeController {
     /**
      * Gets node.
      *
-     * @param name node's name
+     * @param node node
      * @return the node
      */
     @GetMapping( value = "/get.do" )
-    public Node getNode ( @RequestParam String name ) {
-        return nodeService.getNode( name );
+    public Node getNode ( Node node ) {
+        return nodeService.getNode( node.getNodeName() );
     }
 }
