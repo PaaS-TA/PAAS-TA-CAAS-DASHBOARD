@@ -135,14 +135,14 @@
 
 
         $resultArea.append(
-                  "Name :: " + replicasetName + " || "
-                + "Namespace :: " + namespace + " || "
-                + "Labels :: " + labels+ " || "
-                + "Annotations :: " + annotations+ " || "
-                + "Created on :: " + creationTimestamp + " || "
-                + "Images :: " + images.join(",")
-                + "Pods :: " + replicas+ " || "
-                + "Managing deployment:: " + deployment+ " || "
+                  "Name :: " + replicasetName + "<br>"
+                + "Namespace :: " + namespace + "<br>"
+                + "Labels :: " + labels+ "<br>"
+                + "Annotations :: " + annotations+ "<br>"
+                + "Created on :: " + creationTimestamp + "<br>"
+                + "Images :: " + images.join(",") + "<br>"
+                + "Pods :: " + replicas+ "<br>"
+                + "Managing deployment:: " + deployment+ "<br>"
                 + "<br><br>");
 
     };

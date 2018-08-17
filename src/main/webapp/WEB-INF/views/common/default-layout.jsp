@@ -24,13 +24,13 @@
     </header>
 
     <div style="width: 100%; background-color: #99ff77;">
-        <div style="float: left; width: 200px; min-height: 60%; padding: 10px;">
+        <div style="float: left; width: 200px; min-height: 550px; padding: 10px;">
         <section id="section-left-menu">
             <tiles:insertAttribute name="left-menu" />
         </section>
         </div>
 
-        <div style="margin-left: 200px; min-height: 60%; background-color: #ffffff;">
+        <div style="margin-left: 200px; min-height: 550px; background-color: #ffffff;">
         <section id="section-body">
             <div id="body-contents">
                 <tiles:insertAttribute name="body" />

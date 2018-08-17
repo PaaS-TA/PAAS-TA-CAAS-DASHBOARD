@@ -100,8 +100,6 @@
         $('#btnSearch').hide();
         $('#btnReset').hide();
 
-        //$('#resultAreaForSource').show();
-        //$('#resultAreaForCapacity').show();
 
         var $resultArea = $('#resultArea');
 
@@ -133,17 +131,63 @@
         var message = "";
 
         $resultArea.append(
-                  "Name :: " + pvName + " || "
-                + "Labels :: " + labels+ " || "
-                + "Creation Time :: " + creationTimestamp + " || "
-                + "Status :: " + status+ " || "
-                + "Claim :: " + claim+ " || "
-                + "Reclaim policy:: " + reclaimPolicy+ " || "
-                + "accessModes :: " + accessModes+ " || "
-                + "storageClass :: " + storageClass+ " || "
-                + "reason :: " + reason+ " || "
+                  "Name :: " + pvName + "<br>"
+                + "Labels :: " + labels+ "<br>"
+                + "Creation Time :: " + creationTimestamp + "<br>"
+                + "Status :: " + status+ "<br>"
+                + "Claim :: " + claim+ "<br>"
+                + "Reclaim policy:: " + reclaimPolicy+ "<br>"
+                + "accessModes :: " + accessModes+ "<br>"
+                + "storageClass :: " + storageClass+ "<br>"
+                + "reason :: " + reason+ "<br>"
                 + "message :: " + message
                 + "<br><br>");
+
+
+        // Get Source
+        //        Path    spec.hostPath.path
+        var $resultAreaForSource = $('#resultAreaForSource');
+        $resultAreaForSource.show();
+
+        $resultAreaForSource.html("");
+        $resultAreaForSource.append("Source :: <br><br>");
+
+        var sourcePath = data.spec.hostPath.path;
+
+        $resultAreaForSource.append(
+                "Path :: " + sourcePath
+                + "<br><br>");
+
+        // Capacity (List)
+        //        Resource name  storage     spec.capacity. key
+        //        Quantity       100M        spec.capacity. value
+        var $resultAreaForCapacity = $('#resultAreaForCapacity');
+        $resultAreaForCapacity.show();
+
+        $resultAreaForCapacity.html("");
+        $resultAreaForCapacity.append("Capacity :: <br><br>");
+
+        var capacity = data.spec.capacity;
+
+        var headerHtml = "<tr><td style='padding-right: 30px;'>Resource name</td><td>Quantity</td></tr>";
+
+        $resultAreaForCapacity.append("<table frame=void>")
+        var count  = 0;
+        for(var key in capacity){
+            if( count == 0){
+                $resultAreaForCapacity.append(headerHtml);
+                count++;
+            }
+
+            $resultAreaForCapacity.append(
+                    "<tr align='center'>" +
+                    "<td>"+key+"</td>" +
+                    "<td>"+capacity[key]+"</td>" +
+                    "</tr>"
+            );
+        }
+        $resultAreaForCapacity.append("</table>")
+
     };
 
     // BIND
