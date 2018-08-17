@@ -2,7 +2,6 @@ package org.paasta.caas.dashboard.endpoint;
 
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +17,6 @@ public class EndpointList {
     private String resultCode;
     private String resultMessage;
 
-    private List<Endpoint> items = new ArrayList<>();
+    private List<Endpoint> items;
 
 }
