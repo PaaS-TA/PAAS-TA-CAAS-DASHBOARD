@@ -18,70 +18,40 @@ import java.util.Map;
 @Data
 public class CommonContainer {
    /* For PodTemplateSpec -- START */
-   @SerializedName( "name" )
    String name;
-
-   @SerializedName( "image" )
    String image;
-
-   @SerializedName( "args" )
    List<String> args;
-
-   // before : List<CommonEnvVariable> env;
-   @SerializedName( "env" )
    List<Map> env;
-
-   @SerializedName( "ports" )
    List<CommonPort> ports;
-
-   // before : List<CommonResourceRequirement> resources;
-   @SerializedName( "resources" )
    CommonResourceRequirement resources;
-   //Map resources;
-
-   @SerializedName("command")
    List<String> command;
 
-//   @SerializedName("envFrom")
-//   private List<EnvFromSource> envFrom = null;
+//   private List<EnvFromSource> envFrom;
+
+//   private String imagePullPolicy;
+
+//   private CommonLifecycle lifecycle;
+
+//   private CommonProbe livenessProbe;
+
+//   private CommonProbe readinessProbe;
+
+//   private CommonSecurityContext securityContext;
+
+//   private boolean stdin;
+
+//   private boolean stdinOnce;
+
+//   private String terminationMessagePath;
 //
-//   @SerializedName("imagePullPolicy")
-//   private String imagePullPolicy = null;
+//   private String terminationMessagePolicy;
 //
-//   @SerializedName("lifecycle")
-//   private CommonLifecycle lifecycle = null;
+//   private boolean tty;
 //
-//   @SerializedName("livenessProbe")
-//   private CommonProbe livenessProbe = null;
+//   List<VolumeMount> volumeMounts;
 //
-//   @SerializedName("readinessProbe")
-//   private CommonProbe readinessProbe = null;
+//   List<VolumeDevice> volumeDevices;
 //
-//   @SerializedName("securityContext")
-//   private CommonSecurityContext securityContext = null;
-//
-//   @SerializedName("stdin")
-//   private boolean stdin = null;
-//
-//   @SerializedName("stdinOnce")
-//   private boolean stdinOnce = null;
-//
-//   @SerializedName("terminationMessagePath")
-//   private String terminationMessagePath = null;
-//
-//   @SerializedName("terminationMessagePolicy")
-//   private String terminationMessagePolicy = null;
-//
-//   @SerializedName("tty")
-//   private boolean tty = null;
-//
-//     @SerializedName( "volumeMounts" )
-//     List<VolumeMount> volumeMounts;
-//
-//     @SerializedName( "volumeDevices" )
-//     List<VolumeDevice> volumeDevices;
-//
-//     @SerializedName( "workingDir" )
-//     String workingDir;
+//   String workingDir;
    /* For PodTemplateSpec -- END   */
 }

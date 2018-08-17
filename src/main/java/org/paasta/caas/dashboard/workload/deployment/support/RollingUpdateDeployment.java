@@ -12,9 +12,7 @@ import lombok.Data;
  */
 @Data
 public class RollingUpdateDeployment {
-    @SerializedName("maxSurge")
     private String maxSurge;
 
-    @SerializedName("maxUnavailable")
     private String maxUnavailable;
 }

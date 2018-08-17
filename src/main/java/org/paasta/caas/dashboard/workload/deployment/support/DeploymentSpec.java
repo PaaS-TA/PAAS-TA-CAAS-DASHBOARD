@@ -20,30 +20,21 @@ import java.util.Set;
  */
 @Data
 public class DeploymentSpec {
-    @SerializedName("minReadySeconds")
     private int minReadySeconds;
 
-    @SerializedName("paused")
     private boolean paused;
 
-    @SerializedName("progressDeadlineSeconds")
     private int progressDeadlineSeconds;
 
-    @SerializedName("replicas")
     private int replicas;
 
-    @SerializedName("revisionHistoryLimit")
     private int revisionHistoryLimit;
 
-    @SerializedName("selector")
     private CommonLabelSelector selector;
 
-    @SerializedName("strategy")
     private DeploymentStrategy strategy;
 
-    @SerializedName("template")
     private CommonPodTemplateSpec template;
 
-    @SerializedName( "images" )
     public Set<String> images;
 }
