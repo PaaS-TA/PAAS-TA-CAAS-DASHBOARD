@@ -74,7 +74,10 @@ public class PodController {
     @GetMapping(value = "/getListBySelector.do")
     @ResponseBody
     public PodList getCustomServiceList(Pod pod) {
-        return podService.getPodList(pod.getSelector());
+        PodList podList = podService.getPodList(pod.getSelector());
+        podList.setServiceName(pod.getServiceName()); // FOR DASHBOARD
+
+        return podList;
     }
 
 }

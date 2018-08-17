@@ -38,6 +38,7 @@
         var postfixString;
         var items = data.items;
         var listLength = items.length;
+        var selectorList = [];
         var htmlString = [];
 
         htmlString.push("SERVICE LIST :: <br><br>");
@@ -64,19 +65,55 @@
                     + endpointsPreString + nodePort + " " + specPortsList[j].protocol + postfixString;
             }
 
+            var selector = procSetSelector(items[i].spec.selector);
+
             htmlString.push(
-                "<a href='javascript:void(0);' onclick='procMovePage(\"/services/" + serviceName + "\");'>[ DETAIL ]</a>" + " || "
+                "<a href='javascript:void(0);' onclick='procMovePage(\"/services/" + serviceName + "\");'><span style='color: orangered;'>[ DETAIL ]</span></a> " +
                 + "name :: " + serviceName + " || "
                 + "type :: " + items[i].spec.type + " || "
                 + "clusterIP :: " + items[i].spec.clusterIP + " || "
                 + "endpoints :: " + endpoints + " || "
+                + "pods :: " + "<span id='" + serviceName + "'></span> || "
                 + "creationTimestamp :: " + items[i].metadata.creationTimestamp
 
                 + "<br><br>");
             endpoints = "";
+            selectorList.push(selector + "," + serviceName);
         }
 
         $('#resultArea').html(htmlString);
+        getDetailForPods(selectorList);
+    };
+
+
+    // GET DETAIL
+    var getDetailForPods = function(selectorList) {
+        var listLength = selectorList.length;
+
+        for (var i = 0; i < listLength; i++) {
+            var tempSelectorList = selectorList[i].split(",");
+            procCallAjax("/workload/pods/getListBySelector.do", "GET", {selector : tempSelectorList[0], serviceName : tempSelectorList[1]}, null, callbackGetDetailForPods);
+        }
+    };
+
+
+    // CALLBACK
+    var callbackGetDetailForPods = function(data) {
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+
+        var items = data.items;
+        var listLength = items.length;
+        var runningSum = 0;
+        var totalSum = 0;
+
+        for (var i = 0; i < listLength; i++) {
+            if (items[i].status.phase.toLowerCase() === "running") {
+                runningSum++
+            }
+            totalSum++;
+        }
+
+        $('#' + data.serviceName).html(runningSum + "/" + totalSum);
     };
 
 

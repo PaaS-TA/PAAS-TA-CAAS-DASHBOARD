@@ -52,3 +52,13 @@ var procGetDashboardUrl = function () {
 
     return splitString + splits[1] + splitString + splits[2];
 };
+
+
+// SET SELECTOR
+var procSetSelector = function (requestMapString) {
+    if (requestMapString === null || requestMapString.length < 1) {
+        return false;
+    }
+
+    return JSON.stringify(requestMapString).replace(/["{}]/g, '').replace(/:/g, '=');
+};

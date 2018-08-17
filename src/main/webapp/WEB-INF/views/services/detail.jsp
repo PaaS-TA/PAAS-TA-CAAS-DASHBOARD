@@ -64,7 +64,7 @@
 
         htmlString.push("SERVICE DETAIL :: <br><br>");
 
-        var selector = JSON.stringify(data.spec.selector).replace(/["{}]/g, '').replace(/:/g, '=');
+        var selector = procSetSelector(data.spec.selector);
 
         htmlString.push(
             "name :: " + data.metadata.name + "<br>"
@@ -82,8 +82,8 @@
 
 
     // GET DETAIL
-    var getDetailForPods = function(reqSelector) {
-        procCallAjax("/workload/pods/getListBySelector.do", "GET", {selector : reqSelector}, null, callbackGetDetailForPods);
+    var getDetailForPods = function(selector) {
+        procCallAjax("/workload/pods/getListBySelector.do", "GET", {selector : selector}, null, callbackGetDetailForPods);
     };
 
 
