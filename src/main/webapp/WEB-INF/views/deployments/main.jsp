@@ -19,7 +19,7 @@
                 <input type="text" id="deployment">
             </div>
             <button type="button" id="btnSearch"> [ 조회(None / NS / NS+Dep) ] </button>
-            <button type="button" id="btnReset2"> [ 목록 초기화 ] </button>
+            <button type="button" id="btnReset"> [ 목록 초기화 ] </button>
         </div>
     </div>
     <h1>RESULT</h1>
@@ -27,11 +27,11 @@
     </div>
 </div>
 <script type="text/javascript">
-  function getAllDeployments(){
+  var getAllDeployments = function (){
     procCallAjax("/workload/deployments/getList.do", "GET", null, null, callbackGetList);
   }
 
-  function getDeployments() {
+  var getDeployments = function () {
     var namespaceVal = $( "#namespace" ).val();
     var deploymentVal = $( "#deployment" ).val();
     if (false == ( namespaceVal != null && namespaceVal.replace(/\s/g, '').length > 0 ))
@@ -196,16 +196,8 @@
     $('#resultArea').html("");
   });
 
-  $("#btnReset2").on("click", function() {
-    $('#resultArea').html("");
-  });
-
   // ALREADY READY STATE
   $(document).ready(function(){
-    $("#btnAllSearch").on("click", function (e) {
-      getAllDeployments();
-    });
-
     $("#btnSearch").on("click", function (e) {
       getDeployments();
     });
