@@ -21,5 +21,4 @@ class PodList {
 
     // FOR DASHBOARD
     private String serviceName;
-
 }

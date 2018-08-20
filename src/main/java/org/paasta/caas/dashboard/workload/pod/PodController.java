@@ -3,10 +3,7 @@ package org.paasta.caas.dashboard.workload.pod;
 //import org.springframework.http.HttpMethod;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 // TODO :: REMOVE
 //import org.springframework.web.bind.annotation.PathVariable;
@@ -37,47 +34,51 @@ public class PodController {
         this.podService = podService;
     }
 
-    // TODO :: REMOVE
-//    //private final String V2_URL = "/v2";
-//
-//    /**
-//     * description.
-//     *
-//     * //@param req   HttpServletRequest(자바클래스)
-//     * @return Map(자바클래스)
-//     * @throws Exception Exception(자바클래스)
-//     */
-//    @GetMapping(value = "/namespaces/{namespace}/pods")
-//    @ResponseBody
-//    public Map<String, Object> getPodList(@PathVariable("namespace") String namespace, @RequestParam Map<String, Object> map) throws Exception {
-//        return podService.getPodList(namespace, map);
-//    }
-
     /**
-     * Gets custom service list.
+     * Gets pod list. (kube-system)
      *
      * @return the custom service list
      */
     @GetMapping(value = "/getList.do")
     @ResponseBody
-    public PodList getCustomServiceList() {
+    public PodList getPodList() {
         return podService.getPodList();
     }
 
 
     /**
-     * Gets custom service list.
+     * Gets pod list using selector.
      *
      * @param pod the pod
      * @return the custom service list
      */
     @GetMapping(value = "/getListBySelector.do")
     @ResponseBody
-    public PodList getCustomServiceList(Pod pod) {
-        PodList podList = podService.getPodList(pod.getSelector());
+    public PodList getPodListBySelector(Pod pod) {
+        PodList podList = podService.getPodListBySelector(pod.getSelector());
         podList.setServiceName(pod.getServiceName()); // FOR DASHBOARD
 
         return podList;
     }
 
+    /**
+     * Get pod list using namespace (_all is All namespaces)
+     * @param namespace
+     * @return
+     */
+    @GetMapping( "/{namespace}/getList.do" )
+    public PodList getPodList( @PathVariable String namespace ) {
+        return podService.getPodListInNamespace(namespace);
+    }
+
+    /**
+     * Get pod using namespace
+     * @param namespace
+     * @param podName
+     * @return
+     */
+    @GetMapping( "/{namespace}/getPod.do" )
+    public Pod getPod( @PathVariable String namespace, @RequestParam String podName ) {
+        return podService.getPod(namespace, podName);
+    }
 }
