@@ -36,8 +36,8 @@
 
         for (var i = 0; i < listLength; i++) {
             htmlString.push(
-                "name :: " + items[i].name + " || "
-                + "uid :: " + items[i].uid
+                "name :: " + items[i].metadata.name + " || "
+                + "uid :: " + items[i].metadata.uid
                 + "<br><br>");
         }
 
