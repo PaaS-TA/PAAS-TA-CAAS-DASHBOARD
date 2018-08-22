@@ -2,8 +2,12 @@ package org.paasta.caas.dashboard.workload.pod;
 
 //import org.springframework.http.HttpMethod;
 
+import org.paasta.caas.dashboard.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 // TODO :: REMOVE
 //import org.springframework.web.bind.annotation.PathVariable;
@@ -21,17 +25,24 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/workload/pods")
 public class PodController {
-
+    private final CommonService commonService;
     private final PodService podService;
 
+    private static final String VIEW_BASE_URL = "/pods";
     /**
      * Instantiates a new Pod controller.
      *
      * @param podService the pod service
      */
     @Autowired
-    public PodController(PodService podService) {
+    public PodController( CommonService commonService, PodService podService) {
+        this.commonService = commonService;
         this.podService = podService;
+    }
+
+    @GetMapping
+    public ModelAndView getUserMain( HttpServletRequest httpServletRequest) {
+        return commonService.setPathVariables(httpServletRequest, VIEW_BASE_URL + "/main", new ModelAndView());
     }
 
     /**

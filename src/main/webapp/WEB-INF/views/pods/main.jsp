@@ -29,7 +29,7 @@
 <script type="text/javascript">
   var getAllPods = function(){
     // get all pod list
-    procCallAjax("/workload/pods/getList.do", "GET", null, null, callbackGetList);
+    procCallAjax("/workload/pods/_all/getList.do", "GET", null, null, callbackGetList);
   }
 
   var getPods = function() {
@@ -50,7 +50,7 @@
       if ( podVal != null ) {
         reqUrl += "/getPod.do";
         var param = {
-          name: podVal
+          podName: podVal
         }
         procCallAjax( reqUrl, "GET", param, null, callbackGetPod );
       } else {
@@ -63,7 +63,18 @@
   }
 
   var stringifyJSON = function(obj) {
-    return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
+    return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=').replace(/\,/g, ', ');
+  }
+
+  var processIfDataIsNull = function (data, procCallback, defaultValue) {
+    if (data == null)
+      return defaultValue;
+    else {
+      if (procCallback == null)
+        return defaultValue;
+      else
+        return procCallback( data );
+    }
   }
 
   // CALLBACK
@@ -94,9 +105,12 @@
       var namespace = _metadata.namespace;
       var nodeName = _spec.nodeName;
       var podStatus = _status.phase;
-      var restartCount = _status.containerStatuses.reduce(function(a, b) {
-        return { restartCount: a.restartCount + b.restartCount };
-      }, { restartCount: 0 }).restartCount;
+      var restartCount = processIfDataIsNull( _status.containerStatuses,
+        function ( data ) {
+          return data.reduce( function ( a, b ) {
+            return { restartCount: a.restartCount + b.restartCount };
+          }, { restartCount: 0 } ).restartCount;
+        }, 0 );
       //var restartCount = _status.containerStatuses
       //  .map(function(datum) { return datum.restartCount; })
       //  .reduce(function(a, b) { return a + b; }, 0 );
@@ -132,46 +146,53 @@
     console.log("CONSOLE DEBUG PRINT :: " + data);
 
     // get data
-    var _metadata = itemList.metadata;
-    var _spec = itemList.spec;
-    var _status = itemList.status;
+    var _metadata = data.metadata;
+    var _spec = data.spec;
+    var _status = data.status;
 
-    // required : name, namespace, labels, created time, status, QoS Class, Node, IP (Internal, External), Conditions, Controllers, Volumes
+    // required : name, namespace, labels, created time, status, QoS Class, Node, IP (host, internal network IP for pod), Conditions, Controllers, Volumes
+    // QOS Class, IPs, Conditions, Controllers, Volumes -> null or undefined.
     var podName = _metadata.name;
     var namespace = _metadata.namespace;
-    var label;
-    var creationTimestamp;
-    var status;
-    var qosClass;
-    var nodeName;
-    var internalIP;
-    var externalIP;
-    var conditions;
-    var controllers;
-    var volumes;
-
-
-    var nodeName = _spec.nodeName;
-    var podStatus = _status.phase;
-    var restartCount = _status.containerStatuses.reduce(function(a, b) {
-      return { restartCount: a.restartCount + b.restartCount };
-    }, { restartCount: 0 }).restartCount;
-    //var restartCount = _status.containerStatuses
-    //  .map(function(datum) { return datum.restartCount; })
-    //  .reduce(function(a, b) { return a + b; }, 0 );
-
+    var labels = stringifyJSON(_metadata.labels);
     var creationTimestamp = _metadata.creationTimestamp;
-    // error message will be filtering from namespace's event. a variable value is like...
-    //var errorMessage = _status.error.message;
+    var status = _status.phase;
+    var nodeName = _spec.nodeName;
+    var qosClass = processIfDataIsNull(_status.qosClass, null, "None");
+    var ips = stringifyJSON({
+      hostIP: processIfDataIsNull(_status.hostIP, null, "Not allocated"),
+      podIP: processIfDataIsNull(_status.podIP, null, "Not allocated")
+    });
+    var conditions = processIfDataIsNull( _status.conditions, function ( data ) {
+      return data.map( function ( value ) {
+        return value.type + ": " + value.status;
+      } );
+    }, "Unknown status of condition(s)" );
+    var controllers = processIfDataIsNull(_metadata.ownerReferences, function (data) {
+      return _metadata.ownerReferences.filter( function ( value ) {
+        return value.controller == true;
+      } ).reduce( function ( a, b ) {
+        a[ b.type ] = b.name;
+      }, {} );
+    }, "None");
+    var volumes = processIfDataIsNull(_spec.volumes, function(data) {
+      return stringifyJSON(data.map(function (value) { return value.name; }));
+    }, "None");
     var errorMessage = "";
 
     // htmlString push
+    var htmlString = [];
     htmlString.push("Name :: " + podName + " <br><br>"
       + "Namespace :: " + namespace + " <br><br>"
-      + "Node :: " + nodeName + " <br><br>"
-      + "Status :: " + podStatus + " <br><br>"
-      + "Restart Count :: " + restartCount + " <br><br>"
+      + "Labels :: " + labels + " <br><br>"
       + "Created At :: " + creationTimestamp + " <br><br>"
+      + "Status :: " + status + " <br><br>"
+      + "QOS Class :: " + qosClass + " <br><br>"
+      + "Node :: " + nodeName + " <br><br>"
+      + "IP :: " + ips + " <br><br>"
+      + "Conditions :: " + conditions + " <br><br>"
+      + "Controllers :: " + controllers + " <br><br>"
+      + "Volumes :: " + volumes + " <br><br>"
       + "Error message :: " + errorMessage + "<br><br>" );
 
     //var $resultArea = $('#resultArea');
