@@ -1,9 +1,11 @@
 package org.paasta.caas.dashboard.node;
 
 import org.paasta.caas.dashboard.common.CommonService;
+import org.paasta.caas.dashboard.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,18 +19,16 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018.08.13
  */
 @RestController
-@RequestMapping(value = "/nodes")
 public class NodeController {
+    private static final String BASE_URL = "/nodes";
     private final CommonService commonService;
     private final NodeService nodeService;
-
-    private static final String BASE_URL = "/nodes";
 
     /**
      * Instantiates a new Node controller.
      *
-     * @param nodeService the node service
      * @param commonService the common service
+     * @param nodeService   the node service
      */
     @Autowired
     public NodeController(CommonService commonService, NodeService nodeService) {
@@ -36,7 +36,14 @@ public class NodeController {
         this.nodeService = nodeService;
     }
 
-    @GetMapping
+    // TODO :: MODIFY
+    /**
+     * Gets user main.
+     *
+     * @param httpServletRequest the http servlet request
+     * @return the user main
+     */
+    @GetMapping(value = BASE_URL)
     public ModelAndView getUserMain( HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
@@ -47,20 +54,34 @@ public class NodeController {
      *
      * @return the node list
      */
-    @GetMapping(value = "/getList.do")
+    @GetMapping( value = Constants.API_URL + BASE_URL)
     public NodeList getNodeList() {
         return nodeService.getNodeList();
     }
 
 
+    // TODO :: REMOVE
     /**
      * Gets node.
      *
      * @param node node
      * @return the node
      */
-    @GetMapping( value = "/get.do" )
-    public Node getNode ( Node node ) {
-        return nodeService.getNode( node.getNodeName() );
+//    @GetMapping( value = "/get.do" )
+//    public Node getNode ( Node node ) {
+//        return nodeService.getNode( node.getNodeName() );
+//    }
+
+
+    /**
+     * Gets node.
+     *
+     * @param nodeName the node name
+     * @return the node
+     */
+    @GetMapping(value = Constants.API_URL + BASE_URL + "/{nodeName:.+}")
+    public Node getNode (@PathVariable("nodeName") String nodeName) {
+        return nodeService.getNode(nodeName);
     }
+
 }

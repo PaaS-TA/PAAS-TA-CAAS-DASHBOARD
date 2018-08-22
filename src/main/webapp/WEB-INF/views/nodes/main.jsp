@@ -5,6 +5,7 @@
   @since 2018.08.14
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div style="padding: 10px;">
@@ -29,15 +30,18 @@
     if (false == ( nodeNameVal != null && nodeNameVal.replace(/\s/g, '').length > 0 ))
       nodeNameVal = undefined;
 
-    var reqUrl = "/nodes";
+    // TODO :: CHECK
+    var reqUrl = "<%= Constants.API_URL %>/nodes";
 
     if ( nodeNameVal != null ) {
-      var param = {
-        nodeName: nodeNameVal
-      }
-      procCallAjax( reqUrl + "/get.do", "GET", param, null, callbackGetNode );
+      // var param = {
+      //   nodeName: nodeNameVal
+      // };
+        reqUrl += "/" + nodeNameVal;
+        procCallAjax(reqUrl, "GET", null, null, callbackGetNode);
     } else {
-      procCallAjax( reqUrl + "/getList.do", "GET", null, null, callbackGetListNodes );
+        procCallAjax(reqUrl, "GET", null, null, callbackGetListNodes);
+      // procCallAjax( reqUrl + "/getList.do", "GET", null, null, callbackGetListNodes );
     }
   }
 
