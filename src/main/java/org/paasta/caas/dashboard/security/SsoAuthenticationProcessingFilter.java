@@ -53,9 +53,16 @@ public class SsoAuthenticationProcessingFilter extends OAuth2ClientAuthenticatio
           throws AuthenticationException, IOException, ServletException {
         final Authentication authentication = super.attemptAuthentication(request, response);
 
+        LOGGER.info("** attemptAuthentication");
+
         if (detailsSource != null) {
             request.getSession().invalidate();
             ((OAuth2Authentication) authentication).setDetails(detailsSource.buildDetails(request));
+        }
+
+        if (request.getSession() != null && request.getSession().getAttribute("serviceInstanceId") != null) {
+            SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) authentication.getDetails();
+            ssoAuthenticationDetails.setManagingServiceInstance(request.getSession().getAttribute("serviceInstanceId").toString());
         }
 
         AuthenticationManager authenticationManager = getAuthenticationManager();

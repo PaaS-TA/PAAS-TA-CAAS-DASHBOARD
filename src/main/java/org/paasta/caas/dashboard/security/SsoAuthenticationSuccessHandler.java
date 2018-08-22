@@ -46,46 +46,20 @@ public class SsoAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
         requestCache.saveRequest(request, response);
 
         String sessionRedirectUrl = "";
-        if (request.getSession() != null && request.getSession().getAttribute("sessionRedirectUrl") != null) {
+        if(request.getSession() != null && request.getSession().getAttribute("sessionRedirectUrl") != null) {
             LOGGER.info("in");
             LOGGER.info(request.getSession().getAttribute("sessionRedirectUrl").toString());
-            sessionRedirectUrl = request.getSession().getAttribute("sessionRedirectUrl").toString();
+            String reUrl = request.getSession().getAttribute("sessionRedirectUrl").toString();
+            if(request.getSession().getAttribute("sessionRedirectUrl").toString().contains("?serviceInstanceId=")) {
+                reUrl = "/caas/dashboard";
+            }
+            sessionRedirectUrl = reUrl;
         }
 
         if(!sessionRedirectUrl.equals("")) {
-//            Cookie errorRefreshCookie = new Cookie("errorRefresh", "false");
-//            response.addCookie(errorRefreshCookie);
-
             getRedirectStrategy().sendRedirect(request, response, sessionRedirectUrl);
         } else {
             super.onAuthenticationSuccess(request, response, authentication);
-//            LOGGER.info("in 1");
-//            Cookie prevPageCookieCookie = WebUtils.getCookie(request, "prevPageCookie");
-//            LOGGER.info("in 2");
-//            if (prevPageCookieCookie != null) {
-//                LOGGER.info("in 3");
-//                LOGGER.info(prevPageCookieCookie.getValue());
-//                String redirectUrl = prevPageCookieCookie.getValue();
-//                if (redirectUrl != null && !redirectUrl.equals("")) {
-//                    LOGGER.info("in 4");
-//                    Cookie prevPageCookieCookie2 = new Cookie("prevPageCookie", "");
-//                    response.addCookie(prevPageCookieCookie2);
-//                    LOGGER.info("in 5");
-//                    LOGGER.info(redirectUrl);
-//                    getRedirectStrategy().sendRedirect(request, response, redirectUrl);
-//                } else {
-//                    LOGGER.info("in 6");
-//                    if(request.getRequestURI().contains("/common/error/unauthorized")) {
-//                        Cookie errorRefreshCookie = new Cookie("errorRefresh", "false");
-//                        response.addCookie(errorRefreshCookie);
-//                    }
-//
-//                    super.onAuthenticationSuccess(request, response, authentication);
-//                }
-//            } else {
-//                LOGGER.info("in 7");
-//                super.onAuthenticationSuccess(request, response, authentication);
-//            }
         }
 
 //        String userName = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();

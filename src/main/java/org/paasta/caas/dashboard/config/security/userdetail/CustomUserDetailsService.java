@@ -95,120 +95,26 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOGGER.info("username : "+ssoAuthenticationDetails.getUserid());
         LOGGER.info("uaaid : "+ssoAuthenticationDetails.getId());
         LOGGER.info("token : "+ssoAuthenticationDetails.getAccessToken());
+        LOGGER.info("Instance id : "+ssoAuthenticationDetails.getManagingServiceInstance());
 
         String username = ssoAuthenticationDetails.getUserid();
         String uaaid = ssoAuthenticationDetails.getId();
         String token = ssoAuthenticationDetails.getAccessToken().toString();
+        String instanceId = ssoAuthenticationDetails.getManagingServiceInstance();
 
         Map cfResult = cfService.getCfOrgsByUaaIdAndToken(uaaid, token);
         LOGGER.info(cfResult.toString());
 
-        if(username.equals("demo")) {
+        if(instanceId.equals("28135c3e-95b8-4fb2-bf57-2084e8db939a")) {
             role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         } else {
             role.add(new SimpleGrantedAuthority("ROLE_USER"));
         }
 
         User user = new User(username, "N/A", role);
+        user.setServiceInstanceId(ssoAuthenticationDetails.getManagingServiceInstance());
         return user;
     }
 
 
-    private void insertUser(String username){
-//        LOGGER.info("insertUser Start : " + username);
-//        Map user = new HashMap();
-//        user.put("userId" , username);
-//        user.put("userName" , username);
-//        user.put("status" , "1");
-//        user.put("tellPhone" ,null);
-//        user.put("zipCode" , null);
-//        user.put("address" , null);
-//        user.put("addressDetail" , null);
-//        user.put("adminYn" , "Y");
-//        user.put("imgPath" , null);
-//        ResponseEntity rssResponse = commonService.procRestTemplate("/user/insertUser", HttpMethod.POST, user, token, String.class);
-//        LOGGER.info("insertUser End ");
-    }
-
-//    public UserDetails loginByUsernameAndPassword(String username, String password) throws UsernameNotFoundException {
-//
-//
-//        Map<String,Object> resBody = new HashMap();
-//
-//        resBody.put("id", username);
-//        resBody.put("password", password);
-///*
-//
-//        HttpEntity requestEntity = new HttpEntity(resBody);
-//*/
-//
-//        Map result;
-//
-//
-//        try{
-//
-//            result = commonService.procRestTemplate("/login", HttpMethod.POST, resBody, "");
-//
-//        } catch (Exception e) {
-//            throw new BadCredentialsException(e.getMessage());
-//
-//        }
-//
-//
-//        List role = new ArrayList();
-//
-//
-//        for(String auth : (List<String>)result.get("auth"))
-//        {
-//            role.add(new SimpleGrantedAuthority(auth));
-//        }
-//
-//
-//        User user = new User((String)result.get("id"), (String)result.get("password"), role);
-//
-//        user.setToken((String)result.get("token"));
-//        user.setExpireDate((Long)result.get("expireDate"));
-//        user.setName((String)result.get("name"));
-//        user.setImgPath((String)result.get("imgPath"));
-//
-//        return user;
-//    }
-
-
-//    public UserDetails loadUserInfoByUsername(String username,SsoAuthenticationDetails details) throws UsernameNotFoundException {
-//
-//
-//        Map result;
-//        Map restUserInfo;
-//
-//        try{
-//            result = commonService.procRestTemplate("/user/getUser/"+username+"/", HttpMethod.GET, null, "");
-//        } catch (Exception e) {
-//            throw new BadCredentialsException(e.getMessage());
-//        }
-//        List role = new ArrayList();
-//
-//
-//        restUserInfo = (Map) result.get("User");
-//        String adminYn = (String) restUserInfo.get("adminYn");
-//
-//
-//        if (adminYn.equalsIgnoreCase("Y"))
-//            role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-//        else
-//            role.add(new SimpleGrantedAuthority("ROLE_USER"));
-//
-//
-//
-//        User user = new User((String)restUserInfo.get("userId"), "N/A", role);
-//       /*
-//        *  햇갈림....세션아디가 토큰인지...유저아디가 토큰인지;;;
-//        */
-//        //user.setToken(details.getId());
-////        user.setToken(details.getSessionId());
-////        user.setName((String)restUserInfo.get("name"));
-////        user.setImgPath((String)restUserInfo.get("imgPath"));
-//
-//        return user;
-//    }
 }

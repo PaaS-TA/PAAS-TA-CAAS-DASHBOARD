@@ -8,8 +8,12 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+
+import static java.lang.System.out;
+import static java.lang.System.setOut;
 
 /**
  * {@link AuthenticationDetailsSource} providing extra details about the current
@@ -63,24 +67,22 @@ public class SsoAuthenticationDetailsSource
 
     @Override
     public SsoAuthenticationDetails buildDetails(HttpServletRequest request) {
-
-        String serviceInstanceId = request.getServletPath().split("/")[2];
+        LOGGER.info("** buildDetails");
+//        String serviceInstanceId = request.getServletPath().split("/")[3];
+        String serviceInstanceId = "";
 
         Map<String, String> uaaUserInfo = null;
         try {
             uaaUserInfo = restTemplate.getForObject(userInfoUrl, Map.class);
-            LOGGER.info("** buildDetails");
             LOGGER.info(uaaUserInfo.toString());
         } catch (RestClientException e) {
             LOGGER.error("Error while user full name from [" + userInfoUrl + "].", e);
             return null;
         }
 
-//        String token_id = uaaUserInfo.get("user_id");
-//        SsoAuthenticationDetails authenticationDetails = new SsoAuthenticationDetails(request, token_id, getUserId(uaaUserInfo));
         String id = uaaUserInfo.get("user_id");
         String userid = uaaUserInfo.get("user_name");
-        boolean managingService = isManagingApp(serviceInstanceId);
+//        boolean managingService = isManagingApp(serviceInstanceId);
         SsoAuthenticationDetails authenticationDetails = new SsoAuthenticationDetails(request, id, userid);
         authenticationDetails.setManagingServiceInstance(serviceInstanceId);
         authenticationDetails.setAccessToken(((OAuth2RestTemplate) restTemplate).getAccessToken());

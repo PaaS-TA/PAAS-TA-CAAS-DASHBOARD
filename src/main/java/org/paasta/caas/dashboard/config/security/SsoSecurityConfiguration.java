@@ -35,6 +35,7 @@ import javax.servlet.http.HttpSession;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
@@ -87,7 +88,8 @@ public class SsoSecurityConfiguration {
 
     @Bean(name = "ssoEntryPointMatcher")
     public RequestMatcher ssoEntryPointMatcher() {
-        return new AntPathRequestMatcher("/dashboard/**");
+//        return new AntPathRequestMatcher("/dashboard/**");
+        return new AntPathRequestMatcher("/caas/dashboard/**");
     }
 
     @Bean(name = "ssoClientContextFilter")
@@ -246,18 +248,19 @@ public class SsoSecurityConfiguration {
             i++;
         }
         if(!addParam.toString().equals("") && !addParam.toString().contains("?code=") && !addParam.toString().contains("&state=")) {
-            LOGGER.info("session test save");
-            LOGGER.info("="+addParam.toString()+"=");
-            LOGGER.info("sessionRedirectUrl = "+uri+addParam);
             request.getSession().setAttribute("sessionRedirectUrl",uri+addParam);
             sessionRedirectUrl = uri+addParam;
         } else if(addParam.toString().equals("")) {
             request.getSession().setAttribute("sessionRedirectUrl","");
             sessionRedirectUrl = uri;
         }
-        LOGGER.info("sessionRedirectUrl22 = "+sessionRedirectUrl);
+        LOGGER.info("sessionRedirectUrl = "+sessionRedirectUrl);
         if(!sessionRedirectUrl.equals("")) {
             request.getSession().setAttribute("sessionRedirectUrl",sessionRedirectUrl);
+
+            if(sessionRedirectUrl.contains("?serviceInstanceId=")) {
+                request.getSession().setAttribute("serviceInstanceId", sessionRedirectUrl.substring(sessionRedirectUrl.indexOf("?serviceInstanceId=")+19));
+            }
         }
 
         LOGGER.info("Login ::::::::  " + serverDomain);

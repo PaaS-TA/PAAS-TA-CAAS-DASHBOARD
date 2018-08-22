@@ -31,6 +31,7 @@ public class SsoAuthenticationDetails extends OAuth2AuthenticationDetails {
 
     private String username;
     private String imgPath;
+    private String serviceInstanceId;
 
 
     public SsoAuthenticationDetails(HttpServletRequest request, String id, String userid) {
@@ -152,7 +153,15 @@ public class SsoAuthenticationDetails extends OAuth2AuthenticationDetails {
         this.imgPath = imgPath;
     }
 
-//    private static final Logger LOGGER = LoggerFactory.getLogger(SsoAuthenticationDetails.class);
+    public String getServiceInstanceId() {
+        return serviceInstanceId;
+    }
+
+    public void setServiceInstanceId(String serviceInstanceId) {
+        this.serviceInstanceId = serviceInstanceId;
+    }
+
+    //    private static final Logger LOGGER = LoggerFactory.getLogger(SsoAuthenticationDetails.class);
 //
 //    private final String token_id;
 //    private String userid;

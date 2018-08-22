@@ -1,68 +1,73 @@
 buildscript {
-	ext {
-		springBootVersion = '2.1.0.BUILD-SNAPSHOT'
-	}
 	repositories {
-		mavenCentral()
-		maven { url "https://repo.spring.io/snapshot" }
-		maven { url "https://repo.spring.io/milestone" }
+		jcenter()
 	}
 	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'io.spring.gradle:dependency-management-plugin:1.0.0.RELEASE'
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.4.RELEASE")
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'jacoco'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'war'
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	appGroup = 'org.paasta.caas.dashboard'
+	springIoPlatformVersion = 'Cairo-SR3'
+	springSecurityTagLibsVersion = '5.0.7.RELEASE'
+	tomcatEmbedJasperVersion = '8.5.32'
+	jstlVersion = '1.2'
+	gsonVersion = '2.8.5'
+	apacheTilesJspVersion = '3.0.8'
+	lombokVersion = '1.18.2'
+	jacocoVersion = '0.8.1'
+
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "io.spring.platform:platform-bom:${springIoPlatformVersion}"
+	}
+}
+
+sourceCompatibility = 1.8
+group = "${appGroup}"
 
 war {
 	archivesBaseName = 'paas-ta-caas-dashboard'
 }
 
-group = 'org.paasta.caas.dashboard'
-
-repositories {
-	mavenCentral()
-	maven { url "https://repo.spring.io/snapshot" }
-	maven { url "https://repo.spring.io/milestone" }
-}
-
-ext {
-	//springCloudVersion = 'Edgware.RELEASE'
-	tomcatEmbedJasperVersion = '8.5.14'
-	jstlVersion = '1.2'
-	springSecurityTagLibsVersion = '4.2.3.RELEASE'
-	springSession = '1.3.1.RELEASE'
-}
-
 dependencies {
-	//Security
-	//compile("org.springframework.security.oauth:spring-security-oauth2")
-//	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.0.RELEASE'
-//	compile('org.springframework.security.oauth:spring-security-oauth2:2.0.10.RELEASE')
-
-//	compile 'org.springframework.cloud:spring-cloud-starter-oauth2'
-//	compile('org.springframework.boot:spring-boot-starter-security')
-	compile("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.0.BUILD-SNAPSHOT")
+	compile "org.springframework.boot:spring-boot-starter-web"
+	compile "org.springframework.boot:spring-boot-starter-aop"
+//	compile "org.springframework.security.oauth:spring-security-oauth2"
+	compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.0.3.RELEASE'
 	compile('org.springframework.security.oauth:spring-security-oauth2:2.0.10.RELEASE')
 
-	//Json
-	compile('org.codehaus.jettison:jettison:1.3.8')
-	//WEB
-	compile("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatEmbedJasperVersion}")
-	compile("org.springframework.security:spring-security-taglibs:${springSecurityTagLibsVersion}")
-	compile("javax.servlet:jstl:${jstlVersion}")
+	compile "org.springframework.security:spring-security-taglibs:${springSecurityTagLibsVersion}"
+	compile "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatEmbedJasperVersion}"
+	compile "javax.servlet:jstl:${jstlVersion}"
+	compile "com.google.code.gson:gson:${gsonVersion}"
+	compile "org.apache.tiles:tiles-jsp:${apacheTilesJspVersion}"
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	testCompile "org.springframework.boot:spring-boot-starter-test"
+}
 
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.boot:spring-boot-starter-web-services')
+jacoco {
+	toolVersion = "${jacocoVersion}"
+}
 
-//	compile ('org.springframework.boot:spring-boot-starter-security')
-//	compile("org.springframework.security.oauth:spring-security-oauth2")
-
-	compile('org.springframework.security:spring-security-taglibs:4.2.3.RELEASE')
-
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+test {
+	ignoreFailures=true
+	jacoco {
+		destinationFile = file("$buildDir/jacoco/jacoco-overall.exec")
+	}
 }

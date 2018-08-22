@@ -47,6 +47,7 @@ public class User implements UserDetails, CredentialsContainer {
     private String name;
     private Long expireDate;
     private String imgPath;
+    private String serviceInstanceId;
     private final String username;
     private final Set<GrantedAuthority> authorities;
     private final boolean accountNonExpired;
@@ -234,6 +235,14 @@ public class User implements UserDetails, CredentialsContainer {
 
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+    }
+
+    public String getServiceInstanceId() {
+        return serviceInstanceId;
+    }
+
+    public void setServiceInstanceId(String serviceInstanceId) {
+        this.serviceInstanceId = serviceInstanceId;
     }
 
     private static class AuthorityComparator implements Comparator<GrantedAuthority>, Serializable {

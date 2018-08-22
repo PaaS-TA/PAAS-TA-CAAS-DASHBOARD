@@ -63,6 +63,8 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
              */
             SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) details;
             customUserDetailsService.setToken(ssoAuthenticationDetails.getAccessToken().getValue());
+
+
 //            user = (User) customUserDetailsService.loadUserByUsername(ssoAuthenticationDetails.getUserid());
             user = (User) customUserDetailsService.loadUserBySsoAuthenticationDetails(ssoAuthenticationDetails);
             role = user.getAuthorities();
@@ -70,6 +72,7 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
 //            LOGGER.info("uaa user token : "+ssoAuthenticationDetails.getAccessToken().toString());
             ssoAuthenticationDetails.setUsername(user.getUsername());
             ssoAuthenticationDetails.setImgPath(user.getImgPath());
+            ssoAuthenticationDetails.setServiceInstanceId(user.getServiceInstanceId());
 //            List authorities = new ArrayList();
 //            authentication = new OAuth2Authentication(((OAuth2Authentication) authentication).getOAuth2Request(), new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), "N/A", authorities));
             authentication = new OAuth2Authentication(((OAuth2Authentication) authentication).getOAuth2Request(), new UsernamePasswordAuthenticationToken(ssoAuthenticationDetails.getUserid(), "N/A", role));
