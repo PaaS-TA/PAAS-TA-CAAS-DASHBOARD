@@ -22,5 +22,4 @@ class PodList {
     // FOR DASHBOARD
     private String selector;
     private String serviceName;
-
 }

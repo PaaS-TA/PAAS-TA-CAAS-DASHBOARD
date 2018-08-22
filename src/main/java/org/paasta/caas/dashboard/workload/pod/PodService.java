@@ -22,6 +22,9 @@ import org.springframework.stereotype.Service;
 public class PodService {
 
     private static final String REQ_URL = "/" + Constants.NAMESPACE_NAME + "/workload/pods";
+
+    private static final String NEW_REQ_URL = "/{namespace}/workload/pods";
+
     private final RestTemplateService restTemplateService;
 
     /**
@@ -47,7 +50,7 @@ public class PodService {
 //     *
 //     * @return int int
 //     */
-//    public Map<String, Object> getPodList(String namespace, Map<String, Object> map) {
+//    public Map<String, Object> getPodListBySelector(String namespace, Map<String, Object> map) {
 //        Map result = new HashMap();
 //
 //        HttpHeaders headers = new HttpHeaders();
@@ -77,15 +80,14 @@ public class PodService {
 //    }
 
 
-    // TODO :: REMOVE
     /**
      * Gets pod list.
      *
      * @return the pod list
      */
-//    PodList getPodList() {
-//        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL, HttpMethod.GET, null, PodList.class);
-//    }
+    PodList getPodList () {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL, HttpMethod.GET, null, PodList.class);
+    }
 
 
     /**
@@ -94,8 +96,30 @@ public class PodService {
      * @param selector the selector
      * @return the pod list
      */
-    PodList getPodList(String selector) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL + "/" + selector, HttpMethod.GET, null, PodList.class);
+    PodList getPodListBySelector ( String selector ) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL + "/?selector=" + selector, HttpMethod.GET,
+            null, PodList.class);
     }
 
+    /**
+     * Get pod list in namespace
+     * @param namespace
+     * @return
+     */
+    PodList getPodListInNamespace ( String namespace ) {
+        String reqURL = NEW_REQ_URL.replace( "{namespace}", namespace );
+        return restTemplateService.send( Constants.TARGET_CAAS_API, reqURL, HttpMethod.GET, null, PodList.class );
+    }
+
+    /**
+     * Get pod in namespace.
+     * @param namespace
+     * @param podName
+     * @return
+     */
+    Pod getPod ( String namespace, String podName ) {
+        // TODO :: remove "detail" path or add "selector" path.
+        String reqURL = NEW_REQ_URL.replace( "{namespace}", namespace ) + "/detail/" + podName;
+        return restTemplateService.send( Constants.TARGET_CAAS_API, reqURL, HttpMethod.GET, null, Pod.class );
+    }
 }
