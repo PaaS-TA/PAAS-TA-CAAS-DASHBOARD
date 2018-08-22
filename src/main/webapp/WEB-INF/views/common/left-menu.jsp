@@ -18,6 +18,7 @@
     <ul>
         <li><a href="javascript:void(0);" onclick="procMovePage('/nodes');">[ NODES ]</a></li>
         <li><a href="javascript:void(0);" onclick="procMovePage('/workload/deployments');">[ DEPLOYMENTS ]</a></li>
+        <li><a href="javascript:void(0);" onclick="procMovePage('/workload/pods');">[ PODS ]</a></li>
     </ul>
 </div>
 <div>
