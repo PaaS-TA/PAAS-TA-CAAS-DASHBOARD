@@ -96,8 +96,9 @@ public class PodService {
      * @param selector the selector
      * @return the pod list
      */
-    PodList getPodListBySelector ( String selector) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL + "/" + selector, HttpMethod.GET, null, PodList.class);
+    PodList getPodListBySelector ( String selector ) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL + "/?selector=" + selector, HttpMethod.GET,
+            null, PodList.class);
     }
 
     /**
