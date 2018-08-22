@@ -27,6 +27,7 @@ public class CustomServiceService {
     @Autowired
     public CustomServiceService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
 
+
     /**
      * Gets custom service list.
      *
@@ -35,6 +36,7 @@ public class CustomServiceService {
     CustomServiceList getCustomServiceList() {
         return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL, HttpMethod.GET, null, CustomServiceList.class);
     }
+
 
     /**
      * Gets custom service.

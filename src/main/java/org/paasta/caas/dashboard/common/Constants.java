@@ -19,6 +19,7 @@ public class Constants {
     public static final String NAMESPACE_NAME = "kube-system";
 
     public static final String API_WORKLOAD = "/workload";
+    public static final String API_URL = "/api";
 
 
 

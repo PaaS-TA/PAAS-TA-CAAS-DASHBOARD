@@ -5,6 +5,7 @@
   @since 2018.08.10
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div style="padding: 10px;">
@@ -27,7 +28,8 @@
 
     // GET DETAIL
     var getDetail = function() {
-        procCallAjax("/services/get.do", "GET", {serviceName : document.getElementById('requestServiceName').value}, null, callbackGetDetail);
+        var reqUrl = "<%= Constants.API_URL %>/services/" + document.getElementById('requestServiceName').value;
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
 
 
@@ -83,7 +85,8 @@
 
     // GET DETAIL
     var getDetailForPods = function(selector) {
-        procCallAjax("/workload/pods/getListBySelector.do", "GET", {selector : selector}, null, callbackGetDetailForPods);
+        var reqUrl = "<%= Constants.API_URL %>/workload/pods/" + selector;
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPods);
     };
 
 
@@ -109,12 +112,14 @@
         }
 
         $('#resultAreaForPods').html(htmlString);
+        getDetailForEndpoints();
     };
 
 
     // GET DETAIL
     var getDetailForEndpoints = function() {
-        procCallAjax("/endpoints/get.do", "GET", {serviceName : document.getElementById('requestServiceName').value}, null, callbackGetDetailForEndpoints);
+        var reqUrl = "<%= Constants.API_URL %>/endpoints/" + document.getElementById('requestServiceName').value;
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForEndpoints);
     };
 
 
@@ -168,9 +173,11 @@
     // GET DETAIL
     var getDetailForNodes = function(nodeNameList) {
         var listLength = nodeNameList.length;
+        var reqUrl;
 
         for (var i = 0; i < listLength; i++) {
-            procCallAjax("/nodes/get.do", "GET", {nodeName : nodeNameList[i]}, null, callbackGetDetailForNodes);
+            reqUrl = "<%= Constants.API_URL %>/nodes/" + nodeNameList[i];
+            procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForNodes);
         }
     };
 
@@ -212,7 +219,6 @@
     // ON LOAD
     $(document.body).ready(function () {
         getDetail();
-        getDetailForEndpoints();
     });
 
 </script>

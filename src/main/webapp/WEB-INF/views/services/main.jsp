@@ -5,6 +5,7 @@
   @since 2018.08.09
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div style="padding: 10px;">
@@ -21,7 +22,7 @@
 
     // GET LIST
     var getList = function() {
-        procCallAjax("/services/getList.do", "GET", null, null, callbackGetList);
+        procCallAjax("<%= Constants.API_URL %>/services", "GET", null, null, callbackGetList);
     };
 
 
@@ -89,10 +90,14 @@
     // GET DETAIL
     var getDetailForPods = function(selectorList) {
         var listLength = selectorList.length;
+        var tempSelectorList;
+        var reqUrl;
 
         for (var i = 0; i < listLength; i++) {
-            var tempSelectorList = selectorList[i].split(",");
-            procCallAjax("/workload/pods/getListBySelector.do", "GET", {selector : tempSelectorList[0], serviceName : tempSelectorList[1]}, null, callbackGetDetailForPods);
+            tempSelectorList = selectorList[i].split(",");
+            reqUrl = "<%= Constants.API_URL %>/workload/pods/" + tempSelectorList[1] + "/" + tempSelectorList[0];
+
+            procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPods);
         }
     };
 
@@ -126,13 +131,6 @@
     // BIND
     $("#btnReset").on("click", function() {
         $('#resultArea').html("");
-    });
-
-
-    // BIND
-    $(".btnDetail").on("click", function() {
-        var serviceName = this.value();
-        alert("serviceName :: " + serviceName);
     });
 
 

@@ -20,6 +20,7 @@ class PodList {
     private List<Pod> items;
 
     // FOR DASHBOARD
+    private String selector;
     private String serviceName;
 
 }

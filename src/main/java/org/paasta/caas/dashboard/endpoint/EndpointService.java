@@ -28,14 +28,15 @@ public class EndpointService {
     public EndpointService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
 
 
+    // TODO :: REMOVE
     /**
      * Gets endpoint list.
      *
      * @return the endpoint list
      */
-    EndpointList getEndpointList() {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL, HttpMethod.GET, null, EndpointList.class);
-    }
+//    EndpointList getEndpointList() {
+//        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL, HttpMethod.GET, null, EndpointList.class);
+//    }
 
 
     /**

@@ -1,9 +1,10 @@
 package org.paasta.caas.dashboard.endpoint;
 
+import org.paasta.caas.dashboard.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @since 2018.08.13
  */
 @Controller
-@RequestMapping(value = "/endpoints")
 public class EndpointController {
 
+    private static final String BASE_URL = "/endpoints";
     private final EndpointService endpointService;
 
     /**
@@ -29,28 +30,30 @@ public class EndpointController {
         this.endpointService = endpointService;
     }
 
+
+    // TODO :: REMOVE
     /**
      * Gets endpoint list.
      *
      * @return the endpoint list
      */
-    @GetMapping(value = "/getList.do")
-    @ResponseBody
-    public EndpointList getEndpointList() {
-        return endpointService.getEndpointList();
-    }
+//    @GetMapping(value = Constants.API_URL + BASE_URL)
+//    @ResponseBody
+//    public EndpointList getEndpointList() {
+//        return endpointService.getEndpointList();
+//    }
 
 
     /**
      * Gets endpoint.
      *
-     * @param endpoint the endpoint
+     * @param serviceName the service name
      * @return the endpoint
      */
-    @GetMapping(value = "/get.do")
+    @GetMapping(value = Constants.API_URL + BASE_URL + "/{serviceName:.+}")
     @ResponseBody
-    public Endpoint getEndpoint(Endpoint endpoint) {
-        return endpointService.getEndpoint(endpoint.getServiceName());
+    public Endpoint getEndpoint(@PathVariable("serviceName") String serviceName) {
+        return endpointService.getEndpoint(serviceName);
     }
 
 }

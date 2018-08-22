@@ -77,14 +77,15 @@ public class PodService {
 //    }
 
 
+    // TODO :: REMOVE
     /**
      * Gets pod list.
      *
      * @return the pod list
      */
-    PodList getPodList() {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL, HttpMethod.GET, null, PodList.class);
-    }
+//    PodList getPodList() {
+//        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL, HttpMethod.GET, null, PodList.class);
+//    }
 
 
     /**
