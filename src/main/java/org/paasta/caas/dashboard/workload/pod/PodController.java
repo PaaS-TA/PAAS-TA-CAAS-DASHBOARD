@@ -27,8 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class PodController {
     // URL Rule : Constants.API_URL + /workload/namespaces/{namespace}/pods[/.+]
-    private static final String BASE_URL = "/workload/namespaces/{namespace}/pods";
-    private static final String POD_PAGE_URL = "/workload/pods";
+    private static final String BASE_URL = "/workloads/namespaces/{namespace}/pods";
+    private static final String POD_PAGE_URL = "/workloads/pods";
     private static final String VIEW_BASE_URL = "/pods/main";
     private final CommonService commonService;
     private final PodService podService;
@@ -49,7 +49,7 @@ public class PodController {
         return commonService.setPathVariables(httpServletRequest, VIEW_BASE_URL, new ModelAndView());
     }
 
-    @GetMapping(value = Constants.API_URL + "/workload/pods")
+    @GetMapping(value = Constants.API_URL + "/workloads/pods")
     public PodList getPodList() {
         return podService.getPodList();
     }
@@ -111,7 +111,7 @@ public class PodController {
         return podList;
     }
 
-    @GetMapping(value = Constants.API_URL + "/workload/pods/node/{nodeName:.+}")
+    @GetMapping(value = Constants.API_URL + "/workloads/pods/node/{nodeName:.+}")
     @ResponseBody
     public PodList getPodListAllNamespacesByNode(@PathVariable String nodeName) {
         return podService.getPodListAllNamespacesByNode( nodeName );

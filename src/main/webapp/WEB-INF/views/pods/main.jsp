@@ -652,13 +652,13 @@ metadata:
 
     var getAllPods = function () {
         // get all pod list
-        procCallAjax(apiURL + "/workload/pods", "GET", null, null, callbackGetList);
+        procCallAjax(apiURL + "/workloads/pods", "GET", null, null, callbackGetList);
     }
 
     var getPods = function () {
         // get pod list in namespace or pod detail
-        // ex) get pod list ->  /workload/pods/default/getList.do
-        // ex) get pod detail -> /workload/pods/default/getPod.do?podName=nginx-deployment-67594d6bf6-h5fh7
+        // ex) get pod list ->  /workloads/pods/default/getList.do
+        // ex) get pod detail -> /workloads/pods/default/getPod.do?podName=nginx-deployment-67594d6bf6-h5fh7
         var namespaceVal = $("#namespace").val();
         var podVal = $("#pod").val();
         if (false == (namespaceVal != null && namespaceVal.replace(/\s/g, '').length > 0))
@@ -666,7 +666,7 @@ metadata:
         if (false == (podVal != null && podVal.replace(/\s/g, '').length > 0))
             podVal = undefined;
 
-        var reqUrl = apiURL + "/workload/namespaces/{namespace}/pods";
+        var reqUrl = apiURL + "/workloads/namespaces/{namespace}/pods";
         if (namespaceVal != null) {
             reqUrl = reqUrl.replace("{namespace}", namespaceVal);
             if (podVal != null) {
@@ -834,8 +834,6 @@ metadata:
         $("#btnSearch").on("click", function (e) {
             getPods();
         });
-    });
-
     });
 
     // ON LOAD

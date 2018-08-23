@@ -548,7 +548,7 @@
             procCallAjax(reqUrl, "GET", null, null, callbackGetNodeDetail);
 
             // after detail, print theses; conditions, get pods in node,
-            var podsReqUrl = "<%= Constants.API_URL %>/workload/pods/node/" + nodeNameVal;
+            var podsReqUrl = "<%= Constants.API_URL %>/workloads/pods/node/" + nodeNameVal;
             procCallAjax(podsReqUrl, "GET", null, null, callbackGetPodsInNode);
         } else {
             procCallAjax(reqUrl, "GET", null, null, callbackGetListNodes);

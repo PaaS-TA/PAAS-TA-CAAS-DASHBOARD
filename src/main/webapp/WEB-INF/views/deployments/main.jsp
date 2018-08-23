@@ -649,7 +649,7 @@ metadata:
 </div>
 <script type="text/javascript">
   var getAllDeployments = function () {
-    procCallAjax("/workload/deployments/getList.do", "GET", null, null, callbackGetList);
+    procCallAjax("/workloads/deployments/getList.do", "GET", null, null, callbackGetList);
   }
 
   var getDeployments = function () {
@@ -660,7 +660,7 @@ metadata:
     if (false == (deploymentVal != null && deploymentVal.replace(/\s/g, '').length > 0))
       deploymentVal = undefined;
 
-    var reqUrl = "/workload/deployments";
+    var reqUrl = "/workloads/deployments";
 
     if (namespaceVal != null) {
       reqUrl += "/" + namespaceVal;
@@ -810,8 +810,8 @@ metadata:
     //var $resultArea = $('#resultArea');
     $('#resultArea').html(htmlString);
 
-    procCallAjax( "/workload/namespaces/"+ namespace + "/replicasets/resource/" + hoho(labels), "GET", null, null, callbackGetReplicasetList);
-    procCallAjax( "/workload/namespaces/"+ namespace + "/replicasets/resource/" + hoho(labels), "GET", null, null, callbackGetReplicasetList);
+    procCallAjax( "/workloads/namespaces/"+ namespace + "/replicasets/resource/" + hoho(labels), "GET", null, null, callbackGetReplicasetList);
+    procCallAjax( "/workloads/namespaces/"+ namespace + "/replicasets/resource/" + hoho(labels), "GET", null, null, callbackGetReplicasetList);
     //procCallAjax( reqUrl + "/getList.do", "GET", null, null, callbackGetList );
   }
 
