@@ -8,6 +8,513 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<div class="content">
+    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> ip-172-31-20-237 (Node_sample)</h1>
+    <div class="cluster_tabs clearfix">
+        <ul>
+            <li name="tab01" class="cluster_tabs_on">Summary</li>
+            <li name="tab02" class="cluster_tabs_right">Details</li>
+            <li name="tab03" class="cluster_tabs_right">Events</li>
+        </ul>
+        <div class="cluster_tabs_line"></div>
+    </div>
+    <!-- Nodes Summary 시작 -->
+    <div class="cluster_content01 row two_line two_view harf_view">
+        <ul class="maT30">
+            <!-- 그래프 시작 -->
+            <li class="cluster_first_box">
+                <div class="graph-legend-wrap clearfix">
+                    <ul class="graph-legend">
+                        <li rel="current" class="on">현재</li>
+                        <li rel="1h">1시간</li>
+                        <li rel="6h">6시간</li>
+                        <li rel="1d">1일</li>
+                        <li rel="7d">7일</li>
+                        <li rel="30d">30일</li>
+                    </ul>
+                </div>
+                <div class="graph-nodes">
+                    <div class="graph-tit-wrap">
+                        <p class="graph-tit">
+                            CPU<br/>
+                            현재 사용량
+                        </p>
+                        <p class="graph-rate tit-color1">
+                            <span>60</span>%
+                        </p>
+                    </div>
+                    <div class="graph-cnt">
+                        <div id="areachartcpu" style="min-width: 250px; height: 170px; margin: 0 auto"></div>
+                    </div>
+                </div>
+                <div class="graph-nodes">
+                    <div class="graph-tit-wrap">
+                        <p class="graph-tit">
+                            메모리<br/>
+                            현재 사용량
+                        </p>
+                        <p class="graph-rate tit-color2">
+                            <span>60</span>%
+                        </p>
+                    </div>
+                    <div class="graph-cnt">
+                        <div id="areachartmem" style="min-width: 250px; height: 170px; margin: 0 auto"></div>
+                    </div>
+                </div>
+                <div class="graph-nodes">
+                    <div class="graph-tit-wrap">
+                        <p class="graph-tit">
+                            디스크<br/>
+                            현재 사용량
+                        </p>
+                        <p class="graph-rate tit-color3">
+                            <span>60</span>%
+                        </p>
+                    </div>
+                    <div class="graph-cnt">
+                        <div id="areachartdisk" style="min-width: 250px; height: 170px; margin: 0 auto"></div>
+                    </div>
+                </div>
+            </li>
+            <!-- 그래프 끝 -->
+            <li class="cluster_second_box">
+                <div class="sortable_wrap">
+                    <div class="sortable_top">
+                        <p>Pods</p>
+                        <ul class="colright_btn">
+                            <li>
+                                <input type="text" id="table-search-01" name="" class="table-search" placeholder="search" />
+                                <button name="button" class="btn table-search-on" type="button">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="view_table_wrap">
+                        <table class="table_event condition alignL">
+                            <colgroup>
+                                <col style='width:auto;'>
+                                <col style='width:15%;'>
+                                <col style='width:15%;'>
+                                <col style='width:8%;'>
+                                <col style='width:8%;'>
+                                <col style='width:20%;'>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Namespace</td>
+                                <td>Node</td>
+                                <td>Status</td>
+                                <td>Restarts</td>
+                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a></td>
+                                <td>Namespace_sample_1</td>
+                                <td>Node_sample_1</td>
+                                <td>Running</td>
+                                <td>0</td>
+                                <td>2018-07-04 20:15:30</td>
+                            </tr>
+                            <tr>
+                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">spring-cloud-web-user</a></td>
+                                <td>Namespace_sample_2</td>
+                                <td>Node_sample_2</td>
+                                <td>Running</td>
+                                <td>1</td>
+                                <td>2018-07-04 20:15:30</td>
+                            </tr>
+                            <tr>
+                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">spring-cloud-web-user</a></td>
+                                <td>Namespace_sample_3</td>
+                                <td>Node_sample_3</td>
+                                <td>Running</td>
+                                <td>1</td>
+                                <td>2018-07-04 20:15:30</td>
+                            </tr>
+                            <tr>
+                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a></td>
+                                <td>Namespace_sample_4</td>
+                                <td>Node_sample_4</td>
+                                <td>Running</td>
+                                <td>0</td>
+                                <td>2018-07-04 20:15:30</td>
+                            </tr>
+                            <tr>
+                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">spring-cloud-web-user</a></td>
+                                <td>Namespace_sample_5</td>
+                                <td>Node_sample_5</td>
+                                <td>Running</td>
+                                <td>1</td>
+                                <td>2018-07-04 20:15:30</td>
+                            </tr>
+                            <tr>
+                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">spring-cloud-web-user</a></td>
+                                <td>Namespace_sample_6</td>
+                                <td>Node_sample_6</td>
+                                <td>Running</td>
+                                <td>1</td>
+                                <td>2018-07-04 20:15:30</td>
+                            </tr>
+                            <tr>
+                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a></td>
+                                <td>Namespace_sample_7</td>
+                                <td>Node_sample_7</td>
+                                <td>Running</td>
+                                <td>0</td>
+                                <td>2018-07-04 20:15:30</td>
+                            </tr>
+                            <tr>
+                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">spring-cloud-web-user</a></td>
+                                <td>Namespace_sample_8</td>
+                                <td>Node_sample_8</td>
+                                <td>Running</td>
+                                <td>1</td>
+                                <td>2018-07-04 20:15:30</td>
+                            </tr>
+                            <tr>
+                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">spring-cloud-web-user</a></td>
+                                <td>Namespace_sample_9</td>
+                                <td>Node_sample_9</td>
+                                <td>Running</td>
+                                <td>1</td>
+                                <td>2018-07-04 20:15:30</td>
+                            </tr>
+                            <tr>
+                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">spring-cloud-web-user</a></td>
+                                <td>Namespace_sample_10</td>
+                                <td>Node_sample_10</td>
+                                <td>Running</td>
+                                <td>1</td>
+                                <td>2018-07-04 20:15:30</td>
+                            </tr>
+                            </tbody>
+                            <tfoot class="caas-pagenation-wrap">
+                            <tr>
+                                <td colspan="6" class="caas-pagenation">
+                                    <ul class="caas-pagenation-angle">
+                                        <li><i class="fas fa-angle-double-left"></i></li>
+                                        <li><i class="fas fa-angle-left"></i></li>
+                                        <li><i class="fas fa-angle-right"></i></li>
+                                        <li><i class="fas fa-angle-double-right"></i></li>
+                                    </ul>
+                                    <div class="caas-pagenation-pages">
+                                        <span>1</span> - <span>10</span> of <span>58</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </li>
+            <li class="cluster_third_box maB50">
+                <div class="sortable_wrap">
+                    <div class="sortable_top">
+                        <p>Conditions</p>
+                    </div>
+                    <div class="view_table_wrap">
+                        <table class="table_event condition alignL">
+                            <colgroup>
+                                <col style=".">
+                                <col style=".">
+                                <col style=".">
+                                <col style=".">
+                                <col style=".">
+                                <col style=".">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <td>Type</td>
+                                <td>Status</td>
+                                <td>Last heartbeat time</td>
+                                <td>Last transition time</td>
+                                <td>Reason</td>
+                                <td>Message</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>OutOfDisk</td>
+                                <td>False</td>
+                                <td>2018-07-04 20:15:30</td>
+                                <td>2018-07-04 20:15:30</td>
+                                <td>KubeletHasSufficientDisk</td>
+                                <td>kubelet has sufficient disk space available</td>
+                            </tr>
+                            <tr>
+                                <td>MemoryPressure</td>
+                                <td>False</td>
+                                <td>2018-07-04 20:15:30</td>
+                                <td>2018-07-04 20:15:30</td>
+                                <td>KubeletHasSufficientMemory</td>
+                                <td>kubelet has sufficient memory available</td>
+                            </tr>
+                            <tr>
+                                <td>DiskPressure</td>
+                                <td>False</td>
+                                <td>2018-07-04 20:15:30</td>
+                                <td>2018-07-04 20:15:30</td>
+                                <td>KubeletHasNoDiskPressure</td>
+                                <td>kubelet has no disk pressure</td>
+                            </tr>
+                            <tr>
+                                <td>PIDPressure</td>
+                                <td>False</td>
+                                <td>2018-07-04 20:15:30</td>
+                                <td>2018-07-04 20:15:30</td>
+                                <td>KubeletHasSufficientPID</td>
+                                <td>kubelet has sufficient PID available</td>
+                            </tr>
+                            <tr>
+                                <td>Ready</td>
+                                <td>True</td>
+                                <td>2018-07-04 20:15:30</td>
+                                <td>2018-07-04 20:15:30</td>
+                                <td>KubeletReady</td>
+                                <td>kubelet is posting ready status. AppArmor enabled</td>
+                            </tr>
+                            </tbody>
+                            <!--tfoot>
+                                <tr>
+                                    <td colspan="6">
+                                        <button class="btns2 btns2_1 colors4 event_btns">더보기</button>
+                                    </td>
+                                </tr>
+                            </tfoot-->
+                        </table>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- Nodes Summary 끝 -->
+    <!-- Nodes Details 시작-->
+    <div class="cluster_content02 row two_line two_view harf_view">
+        <ul class="maT30">
+            <li class="cluster_first_box">
+                <div class="sortable_wrap">
+                    <div class="sortable_top">
+                        <p>Details</p>
+                    </div>
+                    <div class="account_table view">
+                        <table>
+                            <colgroup>
+                                <col style="width:20%">
+                                <col style=".">
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Name</th>
+                                <td>ip-172-31-20-237</td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Labels</th>
+                                <td><span class="bg_gray">app : nginx-2</span> <span class="bg_gray">tier : node</span></td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Annotations</th>
+                                <td><span class="bg_gray">deprecated.daemonset.template.generation: 1</span> <span class="bg_blue"><a href="#" data-target="#layerpop" data-toggle="modal">kubectl.kubernetes.io/last-applied-Config</a></span></td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Creation Time</th>
+                                <td>2018-07-04 20:15:30</td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Addresses</th>
+                                <td><span class="bg_gray">InternalIP : 172.31.22.173</span> <span class="bg_gray">Hostname : ip-172-31-22-173</span></td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Pod CIDR</th>
+                                <td>10.244.1.0/24</td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Unschedulable</th>
+                                <td>false</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </li>
+            <li class="cluster_second_box maB50">
+                <div class="sortable_wrap">
+                    <div class="sortable_top">
+                        <p>System info</p>
+                    </div>
+                    <div class="account_table view">
+                        <table>
+                            <colgroup>
+                                <col style="width:20%">
+                                <col style=".">
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Machine ID</th>
+                                <td>fd43cfb2cc92450eb65e9d24660e0bc7</td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> System UUID</th>
+                                <td>EC29F5E7-A61F-19FB-DABA-C4F461DDD978</td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Boot ID</th>
+                                <td>8bb12b22-eb47-4dbf-ba87-403a57df178c</td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Kernel Version</th>
+                                <td>4.4.0-1062-aws</td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> OS Images</th>
+                                <td>Ubuntu 16.04.4 LTS</td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Container Runtime Version</th>
+                                <td>docker://1.13.1</td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Kubelet version</th>
+                                <td>v1.11.0</td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Kube-Proxy Version</th>
+                                <td>v1.11.0</td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Operation system</th>
+                                <td>linux</td>
+                            </tr>
+                            <tr>
+                                <th><i class="cWrapDot"></i> Architecture</th>
+                                <td>amd64</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- Nodes Details 끝 -->
+    <!-- NodeEvents 시작-->
+    <div class="cluster_content03 row two_line two_view harf_view">
+        <ul class="maT30">
+            <li class="cluster_first_box">
+                <div class="sortable_wrap">
+                    <div class="sortable_top">
+                        <p>Events</p>
+                    </div>
+                    <div class="view_table_wrap">
+                        <table class="table_event condition alignL">
+                            <colgroup>
+                                <col style=".">
+                                <col style=".">
+                                <col style=".">
+                                <col style=".">
+                                <col style=".">
+                                <col style=".">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <td>Message</td>
+                                <td>Source</td>
+                                <td>Sub-object</td>
+                                <td>Count</td>
+                                <td>First seen</td>
+                                <td>Last seen</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Back-off pulling Images "aa"</td>
+                                <td>kubelet ip-172-31-27-131</td>
+                                <td>spec.containers{aa}</td>
+                                <td>41923</td>
+                                <td>2018-07-08 18:31:01</td>
+                                <td>2018-07-09 18:31:01</td>
+                            </tr>
+                            <tr>
+                                <td><span class="red2"><i class="fas fa-exclamation-circle"></i> Error: ImagesPullBackOff</span></td>
+                                <td>kubelet ip-172-31-27-131</td>
+                                <td>spec.containers{aa}</td>
+                                <td>41278</td>
+                                <td>2018-07-08 18:31:01</td>
+                                <td>2018-07-09 18:31:01</td>
+                            </tr>
+                            <tr>
+                                <td>Back-off pulling Images "bb"</td>
+                                <td>kubelet ip-172-31-27-131</td>
+                                <td>spec.containers{bb}</td>
+                                <td>129005</td>
+                                <td>2018-07-08 18:31:01</td>
+                                <td>2018-07-09 18:31:01</td>
+                            </tr>
+                            <tr>
+                                <td><span class="red2"><i class="fas fa-exclamation-circle"></i> Error: ImagesPullBackOff</span></td>
+                                <td>kubelet ip-172-31-27-131</td>
+                                <td>spec.containers{bb}</td>
+                                <td>129005</td>
+                                <td>2018-07-08 18:31:01</td>
+                                <td>2018-07-09 18:31:01</td>
+                            </tr>
+                            </tbody>
+                            <!--tfoot>
+                                <tr>
+                                    <td colspan="6">
+                                        <button class="btns2 btns2_1 colors4 event_btns">더보기</button>
+                                    </td>
+                                </tr>
+                            </tfoot-->
+                        </table>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- NodeEvents 끝 -->
+</div>
+<!-- modal -->
+<div class="modal fade in" id="layerpop">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center nodes">
+            <div class="modal-content">
+                <!-- header -->
+                <div class="modal-header">
+                    <!-- 닫기(x) 버튼 -->
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <!-- header title -->
+                    <h4 class="modal-title">kubectl.kubernetes.io/last-applied-configuration</h4>
+                </div>
+                <!-- body -->
+                <div class="modal-body">
+                    <p>
+                        {"apiVersion":"extensions/v1beta1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"hrjin-spring-music"},"name":"hrjin-spring-music","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"hrjin-spring-music"}},"template":{"metadata":{"labels":{"app":"hrjin-spring-music"}},"spec":{"automountServiceAccountToken":true,"containers":[{"image":"bluedigm/hrjin-music:0.3","imagePullPolicy":"Always","name":"hrjin-spring-music-container","ports":[{"containerPort":7878}]}],"serviceAccountName":"hrjin-sa4"}}}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
+<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>
+
+<script type="text/javascript">
+    // ON LOAD
+    $(document.body).ready(function () {
+        createChart("current", "cpu");
+        createChart("current", "mem");
+        createChart("current", "disk");
+    });
+</script>
+
+
+<%--TODO :: REMOVE--%>
 <div style="padding: 10px;">
     NODE 대시보드 :: NODE LIST
     <div style="padding: 10px;">
@@ -178,7 +685,7 @@
 
   // ON LOAD
   $(document.body).ready(function () {
-      getNodes();
+      // getNodes();
   });
 
 </script>
