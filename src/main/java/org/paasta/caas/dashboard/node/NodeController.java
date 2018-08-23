@@ -59,20 +59,6 @@ public class NodeController {
         return nodeService.getNodeList();
     }
 
-
-    // TODO :: REMOVE
-    /**
-     * Gets node.
-     *
-     * @param node node
-     * @return the node
-     */
-//    @GetMapping( value = "/get.do" )
-//    public Node getNode ( Node node ) {
-//        return nodeService.getNode( node.getNodeName() );
-//    }
-
-
     /**
      * Gets node.
      *
