@@ -13,6 +13,14 @@
         <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
     </definition>
 
+    <definition name="layout.admin" template="/WEB-INF/views/common/default-layout.jsp">
+        <put-attribute name="title" value="CaaS Dashboard"/>
+        <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+        <put-attribute name="left-menu" value="/WEB-INF/views/common/admin-left-menu.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
+    </definition>
+
     <!-- PAGES -->
     <definition name="index" extends="layout.default">
         <put-attribute name="body" value="/WEB-INF/views/index.jsp"/>
@@ -20,6 +28,10 @@
 
     <definition name="/*/*" extends="layout.default">
         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"/>
+    </definition>
+
+    <definition name="/admin/*/*" extends="layout.admin">
+        <put-attribute name="body" value="/WEB-INF/views/admin/{1}/{2}.jsp"/>
     </definition>
 
     <!--TODO :: REMOVE-->
