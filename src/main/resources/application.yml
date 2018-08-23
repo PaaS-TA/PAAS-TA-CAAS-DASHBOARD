@@ -8,6 +8,8 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+  freemarker:
+    template-loader-path: classpath:/templates/
 
 
 ##INFRA_ADMIN Settings
@@ -40,6 +42,16 @@ server:
 ---
 spring:
   profiles: local
+datasource:
+  caas:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://
+    username:
+    password:
+jpa:
+  hibernate.ddl-auto: update
+  show-sql: true
+  database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
 
 

@@ -1,8 +1,5 @@
 package org.paasta.caas.dashboard.security;
 
-
-//import org.openpaas.paasta.common.security.userdetails.User;
-//import org.openpaas.paasta.portal.web.user.config.security.userdetail.CustomUserDetailsService;
 import org.paasta.caas.dashboard.config.security.userdetail.CustomUserDetailsService;
 import org.paasta.caas.dashboard.config.security.userdetail.User;
 import org.slf4j.Logger;
@@ -14,15 +11,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 
 public class SsoAuthenticationProvider implements AuthenticationProvider {
@@ -35,11 +27,6 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
     public SsoAuthenticationProvider(CustomUserDetailsService customUserDetailsService){
         this.customUserDetailsService = customUserDetailsService;
     }
-/*
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-*/
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -64,8 +51,6 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
             SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) details;
             customUserDetailsService.setToken(ssoAuthenticationDetails.getAccessToken().getValue());
 
-
-//            user = (User) customUserDetailsService.loadUserByUsername(ssoAuthenticationDetails.getUserid());
             user = (User) customUserDetailsService.loadUserBySsoAuthenticationDetails(ssoAuthenticationDetails);
             role = user.getAuthorities();
 //            LOGGER.info("uaa user guid : "+ssoAuthenticationDetails.getId());
@@ -73,8 +58,6 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
             ssoAuthenticationDetails.setUsername(user.getUsername());
             ssoAuthenticationDetails.setImgPath(user.getImgPath());
             ssoAuthenticationDetails.setServiceInstanceId(user.getServiceInstanceId());
-//            List authorities = new ArrayList();
-//            authentication = new OAuth2Authentication(((OAuth2Authentication) authentication).getOAuth2Request(), new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), "N/A", authorities));
             authentication = new OAuth2Authentication(((OAuth2Authentication) authentication).getOAuth2Request(), new UsernamePasswordAuthenticationToken(ssoAuthenticationDetails.getUserid(), "N/A", role));
             ((OAuth2Authentication) authentication).setDetails(ssoAuthenticationDetails);
 

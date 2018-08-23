@@ -1,24 +1,17 @@
 package org.paasta.caas.dashboard.security;
 
-import org.paasta.caas.dashboard.common.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
-import org.springframework.web.util.WebUtils;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Random;
 
 /**
  * Extension of {@link SavedRequestAwareAuthenticationSuccessHandler}
@@ -51,7 +44,7 @@ public class SsoAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
             LOGGER.info(request.getSession().getAttribute("sessionRedirectUrl").toString());
             String reUrl = request.getSession().getAttribute("sessionRedirectUrl").toString();
             if(request.getSession().getAttribute("sessionRedirectUrl").toString().contains("?serviceInstanceId=")) {
-                reUrl = "/caas/dashboard";
+                reUrl = "/caas/cluster/overview";
             }
             sessionRedirectUrl = reUrl;
         }
@@ -62,11 +55,6 @@ public class SsoAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
             super.onAuthenticationSuccess(request, response, authentication);
         }
 
-//        String userName = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-//
-//        request.getSession().setAttribute(userName, "test");
-
-//        getRedirectStrategy().sendRedirect(request, response, "/dashboard/test?aa=b");
 //        super.onAuthenticationSuccess(request, response, authentication);
     }
 }

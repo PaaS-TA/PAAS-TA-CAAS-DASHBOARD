@@ -29,11 +29,47 @@ public class CfService {
         this.restTemplateService = restTemplateService;
     }
 
-    public Map<String, Object> getCfOrgsByUaaIdAndToken(String uaaid, String token) {
+    public Map<String, Object> getCfOrgsByUaaId(String uaaid, String token) {
         Map resultMap = new HashMap();
 
         try {
             resultMap = restTemplateService.cfSend(token, apiUrl+"/v2/users/"+uaaid+"/organizations", HttpMethod.GET, null, Map.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return resultMap;
+    }
+
+    public Map<String, Object> getCfServiceInstancesById(String serviceInstanceId, String token) {
+        Map resultMap = new HashMap();
+
+        try {
+            resultMap = restTemplateService.cfSend(token, apiUrl+"/v2/service_instances/"+serviceInstanceId, HttpMethod.GET, null, Map.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return resultMap;
+    }
+
+    public Map<String, Object> getCfServiceById(String space_guid, String token) {
+        Map resultMap = new HashMap();
+
+        try {
+            resultMap = restTemplateService.cfSend(token, apiUrl+"/v2/spaces/"+space_guid, HttpMethod.GET, null, Map.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return resultMap;
+    }
+
+    public Map<String, Object> getCfOrgById(String organization_guid, String token) {
+        Map resultMap = new HashMap();
+
+        try {
+            resultMap = restTemplateService.cfSend(token, apiUrl+"/v2/organizations/"+organization_guid+"/summary", HttpMethod.GET, null, Map.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

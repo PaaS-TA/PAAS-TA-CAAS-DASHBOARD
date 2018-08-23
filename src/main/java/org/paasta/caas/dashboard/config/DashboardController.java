@@ -33,14 +33,4 @@ public class DashboardController {
         model.setViewName("/common/unauthorized");
         return model;
     }
-
-//    @RequestMapping(value = {"/dashboard/500ErrorTest"}, method = RequestMethod.GET)
-//    public ModelAndView testPage500() {
-//        ModelAndView model = new ModelAndView();
-//
-//        Integer.parseInt("aaa");
-//
-//        model.setViewName("/test/test");
-//        return model;
-//    }
 }

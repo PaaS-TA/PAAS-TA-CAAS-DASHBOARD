@@ -1,9 +1,7 @@
 package org.paasta.caas.dashboard.security;
 
-//import org.openpaas.paasta.portal.web.user.service.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.RedirectStrategy;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,10 +25,6 @@ public class SsoLogoutRedirectStrategy implements RedirectStrategy {
     public SsoLogoutRedirectStrategy(String uaaLogoutUrl) {
         this.uaaLogoutUrl = uaaLogoutUrl;
     }
-
-
-//    @Autowired
-//    public CommonService commonService;
 
 
     @Override

@@ -68,7 +68,6 @@ public class SsoAuthenticationDetailsSource
     @Override
     public SsoAuthenticationDetails buildDetails(HttpServletRequest request) {
         LOGGER.info("** buildDetails");
-//        String serviceInstanceId = request.getServletPath().split("/")[3];
         String serviceInstanceId = "";
 
         Map<String, String> uaaUserInfo = null;
@@ -82,7 +81,6 @@ public class SsoAuthenticationDetailsSource
 
         String id = uaaUserInfo.get("user_id");
         String userid = uaaUserInfo.get("user_name");
-//        boolean managingService = isManagingApp(serviceInstanceId);
         SsoAuthenticationDetails authenticationDetails = new SsoAuthenticationDetails(request, id, userid);
         authenticationDetails.setManagingServiceInstance(serviceInstanceId);
         authenticationDetails.setAccessToken(((OAuth2RestTemplate) restTemplate).getAccessToken());

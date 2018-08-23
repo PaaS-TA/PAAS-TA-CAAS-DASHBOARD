@@ -88,8 +88,7 @@ public class SsoSecurityConfiguration {
 
     @Bean(name = "ssoEntryPointMatcher")
     public RequestMatcher ssoEntryPointMatcher() {
-//        return new AntPathRequestMatcher("/dashboard/**");
-        return new AntPathRequestMatcher("/caas/dashboard/**");
+        return new AntPathRequestMatcher("/caas/cluster/overview/**");
     }
 
     @Bean(name = "ssoClientContextFilter")

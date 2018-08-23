@@ -26,7 +26,6 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.context.request.RequestContextListener;
 
-import static org.paasta.caas.dashboard.config.security.SsoSecurityConfiguration.isManagingApp;
 
 /**
  * Created by indra on 2018-07-31.
@@ -34,8 +33,6 @@ import static org.paasta.caas.dashboard.config.security.SsoSecurityConfiguration
 @Configuration
 @Order(1)
 @EnableWebSecurity
-//@EnableOAuth2Sso
-//@EnableOAuth2Client
 public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SsoSecurityConfigAdapter.class);
@@ -120,6 +117,8 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
 //                    .antMatchers("/dashboard/**").permitAll()
 //                    .antMatchers("/caas/dashboard/main").permitAll()
+                    .antMatchers("/caas/cluster/overview").access("hasRole('ROLE_ADMIN')")
+                    .antMatchers("/caas/cluster/overview/**").authenticated()
                     .antMatchers("/caas/dashboard").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/caas/dashboard/**").authenticated()
                     .antMatchers("/caas/users").access("hasRole('ROLE_ADMIN')")
