@@ -63,6 +63,7 @@ var procSetSelector = function (requestMapString) {
     return JSON.stringify(requestMapString).replace(/["{}]/g, '').replace(/:/g, '=');
 };
 
+
 /**
  * 문자열이 빈 문자열인지 체크하여 빈값("")으로 한다.
  * @param str           : 체크할 문자열
@@ -84,3 +85,31 @@ function nvl2(str, defaultStr){
         str = defaultStr ;
     return str ;
 }
+
+
+// SET MENU CURSOR
+var procSetMenuCursor = function () {
+    var leftMenuList = ["clusters", "workloads", "services", "accessInfo", "users", "roles"];
+    var headerMenuList = ["accessInfo", "users", "roles"];
+    var leftMenuListLength = leftMenuList.length;
+    var calledMenu = leftMenuList[0];
+
+    var currentUrl = location.pathname;
+    var splitString = "/";
+    var splits = currentUrl.split(splitString);
+    var splitsLength = splits.length;
+
+    for (var i = 0; i < leftMenuListLength; i++) {
+        for (var j = 0; j < splitsLength; j++) {
+            if (leftMenuList[i] === splits[j]) {
+                calledMenu = leftMenuList[i];
+
+                if (headerMenuList.includes(splits[j])) {
+                    $("#header-menu-" + calledMenu).addClass('cur');
+                }
+            }
+        }
+    }
+
+    $("#left-menu-" + calledMenu).addClass('cur');
+};
