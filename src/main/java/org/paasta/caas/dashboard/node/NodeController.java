@@ -43,7 +43,7 @@ public class NodeController {
      * @param httpServletRequest the http servlet request
      * @return the user main
      */
-    @GetMapping(value = BASE_URL)
+    @GetMapping(value = "/clusters" + BASE_URL)
     public ModelAndView getUserMain( HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
