@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018.08.06 최초작성
  */
 @RestController
-@RequestMapping("/cluster")
+@RequestMapping("/clusters")
 public class PersistentvolumeController {
 
     private final PersistentvolumeService persistentvolumeService;
@@ -43,18 +43,19 @@ public class PersistentvolumeController {
      * @param httpServletRequest the http servlet request
      * @return the persistentvolume main
      */
-    @GetMapping(value = "/persistentvolume")
+    @GetMapping(value = "/persistentVolumes")
     public ModelAndView getpersistentvolumesListMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, "/persistentvolumes/persistentvolumes", new ModelAndView());
     }
 
+    // TODO :: MODIFY
     /**
      * ReplicaSet 객체의 리스트를 조회한다.
      *
      * @return ReplicaSetList
      * @see PersistentvolumeService#getPersistentvolumeList
      */
-    @GetMapping(value = "/persistentvolumes")
+    @GetMapping(value = "/api/persistentvolumes") // TEMP
     @ResponseBody
     public PersistentvolumeList getPersistentvolumeList(){
         return persistentvolumeService.getPersistentvolumeList();
