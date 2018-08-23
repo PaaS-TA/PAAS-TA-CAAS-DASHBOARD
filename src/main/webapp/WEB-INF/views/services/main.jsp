@@ -337,7 +337,7 @@
 
         for (var i = 0; i < listLength; i++) {
             tempSelectorList = selectorList[i].split(",");
-            reqUrl = "<%= Constants.API_URL %>/workload/pods/" + tempSelectorList[1] + "/" + tempSelectorList[0];
+            reqUrl = "<%= Constants.API_URL %>/workload/namespaces/kube-system/pods/service/" + tempSelectorList[1] + "/" + tempSelectorList[0];
 
             procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPods);
         }

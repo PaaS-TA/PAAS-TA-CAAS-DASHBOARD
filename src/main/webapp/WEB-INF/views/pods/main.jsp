@@ -1,4 +1,5 @@
-<%@ page import="org.paasta.caas.dashboard.common.Constants" %><%--
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
+<%--
   Pod main
   @author Hyungu Cho
   @version 1.0
@@ -647,11 +648,11 @@ metadata:
     </div>
 </div>
 <script type="text/javascript">
-    var baseURL = <%= Constants.API_URL + "/workload/namespaces/{namespace}/pods" %>
+    var apiURL = "<%= Constants.API_URL %>";
 
     var getAllPods = function () {
         // get all pod list
-        procCallAjax("/workload/pods/_all/getList.do", "GET", null, null, callbackGetList);
+        procCallAjax(apiURL + "/workload/pods", "GET", null, null, callbackGetList);
     }
 
     var getPods = function () {
@@ -665,22 +666,17 @@ metadata:
         if (false == (podVal != null && podVal.replace(/\s/g, '').length > 0))
             podVal = undefined;
 
-        var reqUrl = "/workload/pods";
-
+        var reqUrl = apiURL + "/workload/namespaces/{namespace}/pods";
         if (namespaceVal != null) {
-            reqUrl += "/" + namespaceVal;
+            reqUrl = reqUrl.replace("{namespace}", namespaceVal);
             if (podVal != null) {
-                reqUrl += "/getPod.do";
-                var param = {
-                    podName: podVal
-                }
-                procCallAjax(reqUrl, "GET", param, null, callbackGetPod);
+                reqUrl += ("/" + podVal);
+                procCallAjax(reqUrl, "GET", null, null, callbackGetPod);
             } else {
-                reqUrl += "/getList.do"
                 procCallAjax(reqUrl, "GET", null, null, callbackGetList);
             }
         } else {
-            procCallAjax(reqUrl + "/getList.do", "GET", null, null, callbackGetList);
+            getAllPods();
         }
     }
 
