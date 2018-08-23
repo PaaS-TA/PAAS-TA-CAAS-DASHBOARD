@@ -22,6 +22,8 @@
     </div>
     <div id="resultAreaForHPA" style="display:none; width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted darkgreen 4px;">
     </div>
+    <div id="resultAreaForEvent" style="display:none; width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted blueviolet 4px;">
+    </div>
 <script type="text/javascript">
 
     // GET LIST
@@ -36,7 +38,6 @@
 
         console.log(data);
 
-        var htmlString = [];
         var $resultArea = $('#resultArea');
 
         // TODO :: RESET HTML AREA
@@ -83,7 +84,7 @@
 
     };
 
-    // GET LIST
+    // GET DETAIL
     var getDetail = function(replicasetName) {
         procCallAjax("/workload/namespaces/hrjin-namespace/replicasets/"+replicasetName, "GET", null, null, callbackGetDetail);
     };
@@ -92,6 +93,8 @@
     // CALLBACK
     var callbackGetDetail = function(data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+
+
 
         console.log(data);
         // Detail init
@@ -144,6 +147,62 @@
                 + "Pods :: " + replicas+ "<br>"
                 + "Managing deployment:: " + deployment+ "<br>"
                 + "<br><br>");
+
+        //getEventList(namespace,replicasetName);
+        getEventList("hyerin-test-case","kubernetes-ciss-test-d5f846fd7");
+
+    };
+
+    // GET EVENT LIST
+    var getEventList = function(namespace,replicasetName) {
+        procCallAjax("/namespaces/"+namespace+"/events/resource/"+replicasetName, "GET", null, null, callbackGetEventList);
+    };
+
+
+    // CALLBACK
+    var callbackGetEventList = function(data) {
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+
+        console.log("::EventList::"+JSON.stringify(data));
+
+        var $resultArea = $('#resultAreaForEvent');
+
+        $('#resultAreaForEvent').show();
+
+        // TODO :: RESET HTML AREA
+        $resultArea.html("");
+        $resultArea.append("REPLICASET EVENT LIST :: <br><br>");
+
+        //-- Replica Set List
+        //items
+        //metadata.name
+        //metadata.namespace
+        //metadata.labels
+        //status.replicas
+        //metadata.creationTimestamp
+        //spec.containers.image
+
+        $.each(data.items, function (index, itemList) {
+
+            var eventMessage = itemList.message;
+            var sourceComponent  = itemList.source.component;
+            var sourceHost   = itemList.source.host;
+            var subObject    = nvl2(itemList.object,"-");  // Each Item Not Found 'object'
+            var eventCount   = itemList.count;
+            var firstSeen    = itemList.firstTimestamp;
+            var lastSeen     = itemList.lastTimestamp;
+            var eventType    = itemList.type;
+
+            $resultArea.append(
+                    "Message :: " + eventMessage + " || "
+                    + "Source :: " + sourceComponent +" "+sourceHost +" || "
+                    + "Sub-object :: " + subObject+ " || "
+                    + "Count :: " + eventCount+ " || "
+                    + "First seen :: " + firstSeen + " || "
+                    + "Last seen :: " + lastSeen + " || "
+                    + "type :: " + eventType
+                    + "<br><br>");
+        });
 
     };
 
