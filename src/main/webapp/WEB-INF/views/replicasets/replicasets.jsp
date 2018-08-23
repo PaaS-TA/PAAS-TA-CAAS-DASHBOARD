@@ -150,6 +150,7 @@
 
         //getEventList(namespace,replicasetName);
         getEventList("hyerin-test-case","kubernetes-ciss-test-d5f846fd7");
+        // 현재 임시로 선택된 네임스페이스에 replicaset에 대한 이벤트가 없어서, 다른 네임스페이스의 replicaset을 지정함. 실제로는 위 주석처럼 참조할것.
 
     };
 
