@@ -17,7 +17,7 @@ import java.util.Map;
  * @since 2018.08.14
  */
 @RestController
-@RequestMapping( "/workload" )
+@RequestMapping( "/workloads" )
 public class DeploymentController {
     private final CommonService commonService;
     private final DeploymentService deploymentService;
@@ -36,18 +36,20 @@ public class DeploymentController {
      * @return ModelAndView(Spring 클래스)
      */
     // TODO :: REMOVE
-    @GetMapping(value = {"/main"})
-    public ModelAndView getDashboardMain() {
-        return new ModelAndView() {{
-            setViewName("main/main");
-            //addObject("ORGANIZATION_ID", "");
-        }};
+    @GetMapping(value = {"/deployments"})
+    public ModelAndView getDashboardMain(HttpServletRequest httpServletRequest) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
+//        return new ModelAndView() {{
+//            setViewName("main/main");
+//            addObject("ORGANIZATION_ID", "");
+//        }};
     }
 
-    @GetMapping( BASE_URL )
-    public ModelAndView getUserMain( HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
-    }
+    // TODO :: REMOVE
+//    @GetMapping( BASE_URL )
+//    public ModelAndView getUserMain( HttpServletRequest httpServletRequest) {
+//        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
+//    }
 
     /**
      * 모든 네임스페이스에 있는 deployment의 목록을 서비스를 통해 호출하여 받은 결과값을 반환한다.

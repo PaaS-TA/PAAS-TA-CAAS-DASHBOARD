@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 public class PodController {
-    private static final String BASE_URL = "/workload/pods";
+    private static final String BASE_URL = "/workloads/pods";
     private final CommonService commonService;
     private final PodService podService;
 

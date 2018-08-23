@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018.08.06 최초작성
  */
 @RestController
-@RequestMapping("/workload")
+@RequestMapping("/workloads")
 public class ReplicasetController {
 
     private final ReplicasetService replicaSetService;
@@ -46,7 +46,7 @@ public class ReplicasetController {
      * @param httpServletRequest the http servlet request
      * @return the custom service main
      */
-    @GetMapping(value = "/replicasets")
+    @GetMapping(value = "/replicaSets")
     public ModelAndView getReplicaSetListMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, "/replicasets/replicasets", new ModelAndView());
     }
