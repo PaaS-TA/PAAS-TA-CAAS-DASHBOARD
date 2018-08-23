@@ -25,6 +25,13 @@
     <h1>RESULT</h1>
     <div id="resultArea" style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted deepskyblue 4px;">
     </div>
+    <h1>Replica Set</h1>
+    <div id="replicaArea" style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted deepskyblue 4px;">
+    </div>
+    <h1>Pod</h1>
+    <div id="podArea" style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted deepskyblue 4px;">
+    </div>
+
 </div>
 <script type="text/javascript">
   var getAllDeployments = function (){
@@ -188,7 +195,90 @@
 
     //var $resultArea = $('#resultArea');
     $('#resultArea').html(htmlString);
+
+    procCallAjax( "/workload/namespaces/"+ namespace + "/replicasets/resource/" + hoho(labels), "GET", null, null, callbackGetReplicasetList);
+    procCallAjax( "/workload/namespaces/"+ namespace + "/replicasets/resource/" + hoho(labels), "GET", null, null, callbackGetReplicasetList);
+    //procCallAjax( reqUrl + "/getList.do", "GET", null, null, callbackGetList );
   }
+
+
+
+    var hoho = function (data) {
+      console.log("데이터다 " + data)
+        return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
+    }
+
+  // CALLBACK
+  var callbackGetReplicasetList = function(data) {
+      console.log("히히 드러와땅!");
+      if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+
+      console.log(data);
+
+      var $resultArea = $('#replicaArea');
+
+      // TODO :: RESET HTML AREA
+      $resultArea.html("");
+      $resultArea.append("REPLICASET LIST :: <br><br>");
+
+      //-- Replica Set List
+      //items
+      //metadata.name
+      //metadata.namespace
+      //metadata.labels
+      //status.replicas
+      //metadata.creationTimestamp
+      //spec.containers.image
+
+      $.each(data.items, function (index, itemList) {
+
+          var replicasetName = itemList.metadata.name;
+          var namespace = itemList.metadata.namespace;
+          var labels = JSON.stringify(itemList.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
+          var creationTimestamp = itemList.metadata.creationTimestamp;
+          var replicas = itemList.status.replicas;   //  TOBE ::  current / desired
+          var images = new Array;
+
+          var containers = itemList.spec.template.spec.containers;
+          for(var i=0; i < containers.length; i++){
+              images.push(containers[i].image);
+          }
+
+          $resultArea.append("<a href='javascript:void(0);'><span style='color: orangered;'>[ DETAIL ]</span></a>"
+              + "Name :: " + replicasetName + " || "
+              + "Namespace :: " + namespace + " || "
+              + "Labels :: " + labels+ " || "
+              + "Pods :: " + replicas+ " || "
+              + "Created on :: " + creationTimestamp + " || "
+              + "Images :: " + images.join(",")
+              + "<br><br>");
+
+          $(document).on( "click", "#resultArea a:eq("+index+")" ,function(e){
+              getDetail(replicasetName);
+          });
+
+      });
+
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   // BIND
