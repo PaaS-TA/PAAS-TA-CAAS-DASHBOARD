@@ -1,11 +1,10 @@
-<%--
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %><%--
   Deployment main
   @author Hyungu Cho
   @version 1.0
   @since 2018.08.14
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
@@ -523,169 +522,267 @@
                 <span>Node: </span>
                 <input type="text" id="node">
             </div>
-            <button type="button" id="btnSearch"> [ 조회 ] </button>
-            <button type="button" id="btnReset"> [ 목록 초기화 ] </button>
+            <button type="button" id="btnSearch"> [ 조회 ]</button>
+            <button type="button" id="btnReset"> [ 목록 초기화 ]</button>
         </div>
     </div>
     <h1>RESULT</h1>
-    <div id="resultArea" style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted deepskyblue 4px;">
+    <div id="resultArea"
+         style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted deepskyblue 4px;">
     </div>
 </div>
 <script type="text/javascript">
-  function getNodes() {
-    var nodeNameVal = $( "#node" ).val();
-    if (false == ( nodeNameVal != null && nodeNameVal.replace(/\s/g, '').length > 0 ))
-      nodeNameVal = undefined;
+    function getNodes() {
+        var nodeNameVal = $("#node").val();
+        if (false == (nodeNameVal != null && nodeNameVal.replace(/\s/g, '').length > 0))
+            nodeNameVal = undefined;
 
-    // TODO :: CHECK
-    var reqUrl = "<%= Constants.API_URL %>/nodes";
+        // TODO :: CHECK
+        var reqUrl = "<%= Constants.API_URL %>/nodes";
 
-    if ( nodeNameVal != null ) {
-      // var param = {
-      //   nodeName: nodeNameVal
-      // };
-        reqUrl += "/" + nodeNameVal;
-        procCallAjax(reqUrl, "GET", null, null, callbackGetNode);
-    } else {
-        procCallAjax(reqUrl, "GET", null, null, callbackGetListNodes);
-      // procCallAjax( reqUrl + "/getList.do", "GET", null, null, callbackGetListNodes );
-    }
-  }
+        if (nodeNameVal != null) {
+            // var param = {
+            //   nodeName: nodeNameVal
+            // };
+            reqUrl += "/" + nodeNameVal;
+            procCallAjax(reqUrl, "GET", null, null, callbackGetNodeDetail);
 
-  /*
-  var stringifyJSON = function(obj) {
-    return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
-  }
-  */
-
-  var convertByte = function(capacity) {
-    var multipleSize;
-    if (capacity.match("Ki").index != -1) {
-      multipleSize = 1024;
-    } else if (capacity.match("Mi").index != -1) {
-      multipleSize = 1024 * 1024;
-    } else if (capacity.match("Gi").index != -1) {
-      multipleSize = 1024 * 1024 * 1024;
-    } else {
-      multipleSize = 1;
+            // after detail, print theses; conditions, get pods in node,
+            var podsReqUrl = "<%= Constants.API_URL %>/workload/pods/node/" + nodeNameVal;
+            procCallAjax(podsReqUrl, "GET", null, null, callbackGetPodsInNode);
+        } else {
+            procCallAjax(reqUrl, "GET", null, null, callbackGetListNodes);
+            // procCallAjax( reqUrl + "/getList.do", "GET", null, null, callbackGetListNodes );
+        }
     }
 
-    return capacity.substring(0, capacity.length - 2) * multipleSize;
-  }
-
-  var formatCapacity = function(capacity, unit) {
-    var unitSize;
-    if (unit == null || "" == unit)
-      unitSize = 1;
-    else {
-      if (unit === "Ki")    unitSize = 1024
-      if (unit === "Mi")    unitSize = Math.pow(1024, 2);
-      if (unit === "Gi")    unitSize = Math.pow(1024, 3);
+    var stringifyJSON = function (obj) {
+        return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
     }
 
-    return ((capacity / unitSize).toFixed(2) + ' ' + unit);
-  }
-
-  // CALLBACK
-  var callbackGetListNodes = function(data) {
-    console.log("CONSOLE DEBUG PRINT :: " + data);
-
-    var htmlString = [];
-    htmlString.push("NODES LIST :: <br><br>");
-    htmlString.push( "ResultCode :: " + data.resultCode + " || "
-      + "Message :: " + data.resultMessage + " <br><br>");
-
-    if (RESULT_STATUS_FAIL === data.resultCode) {
-      $('#resultArea').html(htmlString);
-      return false;
+    var processIfDataIsNull = function (data, procCallback, defaultValue) {
+        if (data == null)
+            return defaultValue;
+        else {
+            if (procCallback == null)
+                return defaultValue;
+            else
+                return procCallback(data);
+        }
     }
 
-    // get data
-    $.each(data.items, function(index, itemList) {
-      var _metadata = itemList.metadata;
-      var _status = itemList.status;
+    var convertByte = function (capacity) {
+        var multipleSize;
+        if (capacity.match("Ki").index != -1) {
+            multipleSize = 1024;
+        } else if (capacity.match("Mi").index != -1) {
+            multipleSize = 1024 * 1024;
+        } else if (capacity.match("Gi").index != -1) {
+            multipleSize = 1024 * 1024 * 1024;
+        } else {
+            multipleSize = 1;
+        }
 
-      var name = _metadata.name;
-      var ready = _status.conditions.filter(function(condition) {
-        return condition.type === "Ready";
-      })[0].status;
-      var limitCPU = _status.capacity.cpu;
-      var requestCPU = limitCPU - _status.allocatable.cpu;
-      var limitMemory = convertByte(_status.capacity.memory);
+        return capacity.substring(0, capacity.length - 2) * multipleSize;
+    }
 
-      var requestMemory = limitMemory - convertByte(_status.allocatable.memory);
-      var creationTimestamp = _metadata.creationTimestamp;
+    var formatCapacity = function (capacity, unit) {
+        var unitSize;
+        if (unit == null || "" == unit)
+            unitSize = 1;
+        else {
+            if (unit === "Ki") unitSize = 1024;
+            if (unit === "Mi") unitSize = Math.pow(1024, 2);
+            if (unit === "Gi") unitSize = Math.pow(1024, 3);
+        }
 
-      // htmlString push
-      htmlString.push("Name :: " + name + " || "
-        + "Ready :: " + ready + " || "
-        + "Request CPU :: " + requestCPU + " || "
-        + "Limit CPU :: " + limitCPU + " || "
-        + "Request Memory :: " + formatCapacity(requestMemory, "Mi") + " || "
-        + "Limit Memory :: " + formatCapacity(limitMemory, "Mi") + " || "
-        + "CreationTimestamp :: " + creationTimestamp + "<br><br>" );
+        return ((capacity / unitSize).toFixed(2) + ' ' + unit + 'B');
+    }
+
+    // CALLBACK
+    var callbackGetListNodes = function (data) {
+        console.log("CONSOLE DEBUG PRINT :: " + data);
+
+        var htmlString = [];
+        htmlString.push("NODES LIST :: <br><br>");
+        htmlString.push("ResultCode :: " + data.resultCode + " || "
+                + "Message :: " + data.resultMessage + " <br><br>");
+
+        if (RESULT_STATUS_FAIL === data.resultCode) {
+            $('#resultArea').html(htmlString);
+            return false;
+        }
+
+        // get data
+        $.each(data.items, function (index, itemList) {
+            var _metadata = itemList.metadata;
+            var _status = itemList.status;
+
+            var name = _metadata.name;
+            var ready = _status.conditions.filter(function (condition) {
+                return condition.type === "Ready";
+            })[0].status;
+            var limitCPU = _status.capacity.cpu;
+            var requestCPU = limitCPU - _status.allocatable.cpu;
+            var limitMemory = convertByte(_status.capacity.memory);
+
+            var requestMemory = limitMemory - convertByte(_status.allocatable.memory);
+            var creationTimestamp = _metadata.creationTimestamp;
+
+            // htmlString push
+            htmlString.push("Name :: " + name + " || "
+                    + "Ready :: " + ready + " || "
+                    + "Request CPU :: " + requestCPU + " || "
+                    + "Limit CPU :: " + limitCPU + " || "
+                    + "Request Memory :: " + formatCapacity(requestMemory, "Mi") + " || "
+                    + "Limit Memory :: " + formatCapacity(limitMemory, "Mi") + " || "
+                    + "CreationTimestamp :: " + creationTimestamp + "<br><br>");
+        });
+
+        // finally
+        $('#resultArea').html(htmlString);
+    }
+
+    var callbackGetPodsInNode = function (data) {
+        if (RESULT_STATUS_FAIL === data.resultCode) {
+            $('#resultArea').html(
+                    "ResultStatus :: " + data.resultCode + " <br><br>"
+                    + "ResultMessage :: " + data.resultMessage + " <br><br>");
+            return false;
+        }
+
+        console.log("CONSOLE DEBUG PRINT :: " + data);
+
+        var htmlString = [$('#resultArea').html()];
+        htmlString.push("PODS LIST IN NODE :: <br><br>");
+        htmlString.push("ResultCode :: " + data.resultCode + " || "
+                + "Message :: " + data.resultMessage + " <br><br>");
+
+        if (RESULT_STATUS_FAIL === data.resultCode) {
+            $('#resultArea').html(htmlString);
+            return false;
+        }
+
+        $.each(data.items, function (index, itemList) {
+            // required : name, namespace, node, status, restart(count), created on
+            var _metadata = itemList.metadata;
+            var _spec = itemList.spec;
+            var _status = itemList.status;
+
+            // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
+            var podName = _metadata.name;
+            var namespace = _metadata.namespace;
+            var nodeName = _spec.nodeName;
+            var podStatus = _status.phase;
+            var restartCount = processIfDataIsNull(_status.containerStatuses,
+                    function (data) {
+                        return data.reduce(function (a, b) {
+                            return { restartCount: a.restartCount + b.restartCount };
+                        }, { restartCount: 0 }).restartCount;
+                    }, 0);
+
+            var creationTimestamp = _metadata.creationTimestamp;
+
+            htmlString.push(">> Name :: " + podName + " || "
+                    + "Namespace :: " + namespace + " || "
+                    + "Node :: " + nodeName + " || "
+                    + "Status :: " + podStatus + " || "
+                    + "Restart Count :: " + restartCount + " || "
+                    + "Created At :: " + creationTimestamp + "<br><br>");
+        });
+
+        //var $resultArea = $('#resultArea');
+        $('#resultArea').html(htmlString);
+    }
+
+    var callbackGetNodeDetail = function (data) {
+        console.log("CONSOLE DEBUG PRINT :: " + data);
+
+        var htmlString = [];
+        htmlString.push("NODE DETAIL :: <br><br>");
+        htmlString.push("ResultCode :: " + data.resultCode + " || "
+                + "Message :: " + data.resultMessage + " <br><br>");
+
+        if (RESULT_STATUS_FAIL === data.resultCode) {
+            $('#resultArea').html(htmlString);
+            return false;
+        }
+
+        // get datum (basic detail)
+        var _metadata = data.metadata;
+        var _status = data.status;
+
+        var name = _metadata.name;
+        var ready = _status.conditions.filter(function (condition) {
+            return condition.type === "Ready";
+        })[0].status;
+        var limitCPU = _status.capacity.cpu;
+        var requestCPU = limitCPU - _status.allocatable.cpu;
+        var limitMemory = convertByte(_status.capacity.memory);
+
+        var requestMemory = limitMemory - convertByte(_status.allocatable.memory);
+        var creationTimestamp = _metadata.creationTimestamp;
+
+        // htmlString push
+        htmlString.push("Name :: " + name + " <br><br>"
+                + "Ready :: " + ready + " <br><br>"
+                + "Request CPU :: " + requestCPU + " <br><br>"
+                + "Limit CPU :: " + limitCPU + " <br><br>"
+                + "Request Memory :: " + formatCapacity(requestMemory, "Mi") + " <br><br>"
+                + "Limit Memory :: " + formatCapacity(limitMemory, "Mi") + " <br><br>"
+                + "CreationTimestamp :: " + creationTimestamp + "<br><br>");
+
+        htmlString.push("--------------------------------------------- <br><br>");
+
+        // get datum : system info
+        var nodeInfo = _status.nodeInfo;
+        var machineId = nodeInfo.machineID;
+        var systemUUID = nodeInfo.systemUUID;
+        var bootID = nodeInfo.bootID;
+        var kernalVersion = nodeInfo.kernelVersion;
+        var osImages = nodeInfo.osImage;
+        var containerRuntimeVersion = nodeInfo.containerRuntimeVersion;
+        var kubeletVersion = nodeInfo.kubeletVersion;
+        var kubeProxyVersion = nodeInfo.kubeProxyVersion;
+        var operatingSystem = nodeInfo.operatingSystem;
+        var architecture = nodeInfo.architecture;
+
+        htmlString.push("NODE SYSTEM INFO :: <br><br>");
+        htmlString.push("Machine Id :: " + machineId + " <br><br>"
+                + "System UUID :: " + systemUUID + " <br><br>"
+                + "Boot ID :: " + bootID + " <br><br>"
+                + "Kernal Version :: " + kernalVersion + " <br><br>"
+                + "Os Images :: " + osImages + " <br><br>"
+                + "Container Runtime Version :: " + containerRuntimeVersion + " <br><br>"
+                + "Kubelet Version :: " + kubeletVersion + " <br><br>"
+                + "Kube-Proxy Version :: " + kubeProxyVersion + " <br><br>"
+                + "Operating System :: " + operatingSystem + " <br><br>"
+                + "Architecture :: " + architecture + " <br><br>"
+                + "--------------------------------------------- <br><br>"
+        );
+        // finally
+        $('#resultArea').html(htmlString);
+    }
+
+    // BIND
+    $("#btnReset").on("click", function () {
+        $('#resultArea').html("");
     });
 
-    // finally
-    $('#resultArea').html(htmlString);
-  }
-
-  var callbackGetNode = function(data) {
-    console.log("CONSOLE DEBUG PRINT :: " + data);
-
-    var htmlString = [];
-    htmlString.push("NODE DETAIL :: <br><br>");
-    htmlString.push( "ResultCode :: " + data.resultCode + " || "
-      + "Message :: " + data.resultMessage + " <br><br>");
-
-    if (RESULT_STATUS_FAIL === data.resultCode) {
-      $('#resultArea').html(htmlString);
-      return false;
-    }
-
-    // get datum
-    var _metadata = data.metadata;
-    var _status = data.status;
-
-    var name = _metadata.name;
-    var ready = _status.conditions.filter(function(condition) {
-      return condition.type === "Ready";
-    })[0].status;
-    var limitCPU = _status.capacity.cpu;
-    var requestCPU = limitCPU - _status.allocatable.cpu;
-    var limitMemory = convertByte(_status.capacity.memory);
-
-    var requestMemory = limitMemory - convertByte(_status.allocatable.memory);
-    var creationTimestamp = _metadata.creationTimestamp;
-
-    // htmlString push
-    htmlString.push("Name :: " + name + " <br><br>"
-      + "Ready :: " + ready + " <br><br>"
-      + "Request CPU :: " + requestCPU + " <br><br>"
-      + "Limit CPU :: " + limitCPU + " <br><br>"
-      + "Request Memory :: " + formatCapacity(requestMemory, "Mi") + " <br><br>"
-      + "Limit Memory :: " + formatCapacity(limitMemory, "Mi") + " <br><br>"
-      + "CreationTimestamp :: " + creationTimestamp + "<br><br>" );
-
-    // finally
-    $('#resultArea').html(htmlString);
-  }
-
-  // BIND
-  $("#btnReset").on("click", function() {
-    $('#resultArea').html("");
-  });
-
-  // ALREADY READY STATE
-  $(document).ready(function(){
-    $("#btnSearch").on("click", function (e) {
-      getNodes();
+    // BIND
+    $("#btnReset").on("click", function() {
+      $('#resultArea').html("");
     });
-  });
 
-  // ON LOAD
-  $(document.body).ready(function () {
-      // getNodes();
-  });
+    // ALREADY READY STATE
+    $(document).ready(function () {
+        $("#btnSearch").on("click", function (e) {
+            getNodes();
+        });
+    });
 
+    // ON LOAD
+    $(document.body).ready(function () {
+        // getNodes();
+    });
 </script>

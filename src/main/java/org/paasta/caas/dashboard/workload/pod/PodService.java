@@ -20,10 +20,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PodService {
-
-    private static final String REQ_URL = "/" + Constants.NAMESPACE_NAME + "/workload/pods";
-
-    private static final String NEW_REQ_URL = "/{namespace}/workload/pods";
+    private static final String REQ_URL = "/{namespace}/workload/pods";
 
     private final RestTemplateService restTemplateService;
 
@@ -35,70 +32,26 @@ public class PodService {
     @Autowired
     public PodService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
 
-    // TODO :: REMOVE
-//    private static final Logger LOGGER = LoggerFactory.getLogger(PodService.class);
-//
-//    @Autowired
-//    RestTemplate restTemplate;
-//
-//    @Autowired
-
-//    private EnvConfig envConfig;
-
-//    /**
-//     * 네임스페이스 리스트 조회
-//     *
-//     * @return int int
-//     */
-//    public Map<String, Object> getPodListBySelector(String namespace, Map<String, Object> map) {
-//        Map result = new HashMap();
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        //headers.add("Authorization", "Bearer "+kubeAccountToken);
-//        //headers.add("Content-Type", "application/json");
-//
-//        String kubeAccountToken = "";
-//        if (!ObjectUtils.isEmpty(map.get("token"))) {
-//            kubeAccountToken = map.get("token").toString();
-//            LOGGER.info("Get InputToken : "+ kubeAccountToken);
-//        }
-//
-//        //URI Builder
-//        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(envConfig.getCaasApiUrl()+"/workload/namespaces/"+namespace+"/pods")
-//                .queryParam("token", kubeAccountToken);
-//
-//        HttpEntity<Map> resetEntity = new HttpEntity(headers);
-//        ResponseEntity<Map> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, resetEntity, Map.class);
-//
-//        LOGGER.debug(responseEntity.getBody().toString());
-//
-//        result.put("result", "success");
-//        result.put("data", responseEntity.getBody());
-//        result.put("statusCode", responseEntity.getStatusCodeValue());
-//
-//        return result;
-//    }
-
-
     /**
-     * Gets pod list.
+     * Gets pod list using label selector.
+     *
+     * @param namespace
+     * @param selector
+     * @return
+     */
+    PodList getPodListBySelector ( String namespace, String selector ) {
+        String reqUrl = REQ_URL.replace( "{namespace}", namespace) + "/?selector=" + selector;
+        return restTemplateService.send( Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, PodList.class );
+    }
+
+    // TODO :: REMOVE
+    /**
+     * Gets pod list for all namespaces.
      *
      * @return the pod list
      */
     PodList getPodList () {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL, HttpMethod.GET, null, PodList.class);
-    }
-
-
-    /**
-     * Gets pod list.
-     *
-     * @param selector the selector
-     * @return the pod list
-     */
-    PodList getPodListBySelector ( String selector ) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL + "/?selector=" + selector, HttpMethod.GET,
-            null, PodList.class);
+        return getPodList( "_all" );
     }
 
     /**
@@ -106,8 +59,13 @@ public class PodService {
      * @param namespace
      * @return
      */
-    PodList getPodListInNamespace ( String namespace ) {
-        String reqURL = NEW_REQ_URL.replace( "{namespace}", namespace );
+    PodList getPodList ( String namespace ) {
+        String reqURL = REQ_URL.replace( "{namespace}", namespace );
+        return restTemplateService.send( Constants.TARGET_CAAS_API, reqURL, HttpMethod.GET, null, PodList.class );
+    }
+
+    PodList getPodListAllNamespacesByNode( String nodeName ) {
+        String reqURL = REQ_URL.replace( "{namespace}", "_all" ) + "/nodes/" + nodeName;
         return restTemplateService.send( Constants.TARGET_CAAS_API, reqURL, HttpMethod.GET, null, PodList.class );
     }
 
@@ -119,7 +77,7 @@ public class PodService {
      */
     Pod getPod ( String namespace, String podName ) {
         // TODO :: remove "detail" path or add "selector" path.
-        String reqURL = NEW_REQ_URL.replace( "{namespace}", namespace ) + "/detail/" + podName;
+        String reqURL = REQ_URL.replace( "{namespace}", namespace ) + "/" + podName;
         return restTemplateService.send( Constants.TARGET_CAAS_API, reqURL, HttpMethod.GET, null, Pod.class );
     }
 }

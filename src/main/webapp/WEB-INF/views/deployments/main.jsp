@@ -648,47 +648,47 @@ metadata:
 
 </div>
 <script type="text/javascript">
-  var getAllDeployments = function (){
+  var getAllDeployments = function () {
     procCallAjax("/workload/deployments/getList.do", "GET", null, null, callbackGetList);
   }
 
   var getDeployments = function () {
-    var namespaceVal = $( "#namespace" ).val();
-    var deploymentVal = $( "#deployment" ).val();
-    if (false == ( namespaceVal != null && namespaceVal.replace(/\s/g, '').length > 0 ))
+    var namespaceVal = $("#namespace").val();
+    var deploymentVal = $("#deployment").val();
+    if (false == (namespaceVal != null && namespaceVal.replace(/\s/g, '').length > 0))
       namespaceVal = undefined;
-    if (false == ( deploymentVal != null && deploymentVal.replace(/\s/g, '').length > 0 ))
+    if (false == (deploymentVal != null && deploymentVal.replace(/\s/g, '').length > 0))
       deploymentVal = undefined;
 
     var reqUrl = "/workload/deployments";
 
-    if ( namespaceVal != null ) {
+    if (namespaceVal != null) {
       reqUrl += "/" + namespaceVal;
-      if ( deploymentVal != null ) {
+      if (deploymentVal != null) {
         reqUrl += "/getDeployment.do";
         var param = {
           name: deploymentVal
         }
-        procCallAjax( reqUrl, "GET", param, null, callbackGetDeployment );
+        procCallAjax(reqUrl, "GET", param, null, callbackGetDeployment);
       } else {
         reqUrl += "/getList.do"
-        procCallAjax( reqUrl, "GET", null, null, callbackGetList );
+        procCallAjax(reqUrl, "GET", null, null, callbackGetList);
       }
     } else {
-      procCallAjax( reqUrl + "/getList.do", "GET", null, null, callbackGetList );
+      procCallAjax(reqUrl + "/getList.do", "GET", null, null, callbackGetList);
     }
   }
 
-  var stringifyJSON = function(obj) {
+  var stringifyJSON = function (obj) {
     return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
   }
 
   // CALLBACK
-  var callbackGetList = function(data) {
+  var callbackGetList = function (data) {
     if (RESULT_STATUS_FAIL === data.resultCode) {
       $('#resultArea').html(
-        "ResultStatus :: " + data.resultCode + " <br><br>"
-        + "ResultMessage :: " + data.resultMessage + " <br><br>");
+          "ResultStatus :: " + data.resultCode + " <br><br>"
+          + "ResultMessage :: " + data.resultMessage + " <br><br>");
       return false;
     }
 
@@ -696,11 +696,11 @@ metadata:
 
     var htmlString = [];
     htmlString.push("DEPLOYMENTS LIST :: <br><br>");
-    htmlString.push( "ResultCode :: " + data.resultCode + " || "
-      + "Message :: " + data.resultMessage + " <br><br>");
+    htmlString.push("ResultCode :: " + data.resultCode + " || "
+        + "Message :: " + data.resultMessage + " <br><br>");
 
     //
-    $.each(data.items, function(index, itemList) {
+    $.each(data.items, function (index, itemList) {
       // get data
       var _metadata = itemList.metadata;
       var _spec = itemList.spec;
@@ -723,23 +723,23 @@ metadata:
 
       // htmlString push
       htmlString.push("Name :: " + deployName + " || "
-        + "Namespace :: " + namespace + " || "
-        + "Labels :: " + labels + " || "
-        + "CreationTimestamp :: " + creationTimestamp + " || "
-        + "Pods :: " + runningPods + "/" + totalPods + " || "
-        + "Images :: " + images
-        + "<br><br>" );
+          + "Namespace :: " + namespace + " || "
+          + "Labels :: " + labels + " || "
+          + "CreationTimestamp :: " + creationTimestamp + " || "
+          + "Pods :: " + runningPods + "/" + totalPods + " || "
+          + "Images :: " + images
+          + "<br><br>");
     });
 
     //var $resultArea = $('#resultArea');
     $('#resultArea').html(htmlString);
   };
 
-  var callbackGetDeployment = function(data) {
+  var callbackGetDeployment = function (data) {
     if (RESULT_STATUS_FAIL === data.resultCode) {
       $('#resultArea').html(
-        "ResultStatus :: " + data.resultCode + " <br><br>"
-        + "ResultMessage :: " + data.resultMessage + " <br><br>");
+          "ResultStatus :: " + data.resultCode + " <br><br>"
+          + "ResultMessage :: " + data.resultMessage + " <br><br>");
       return false;
     }
 
@@ -747,8 +747,8 @@ metadata:
 
     var htmlString = [];
     htmlString.push("DEPLOYMENTS LIST :: <br><br>");
-    htmlString.push( "ResultCode :: " + data.resultCode + " || "
-      + "Message :: " + data.resultMessage + " <br><br>");
+    htmlString.push("ResultCode :: " + data.resultCode + " || "
+        + "Message :: " + data.resultMessage + " <br><br>");
 
     // get data
     var _metadata = data.metadata;
@@ -779,8 +779,8 @@ metadata:
     var minReadySeconds = _spec.minReadySeconds;
     var revisionHistoryLimit = _spec.revisionHistoryLimit;
     var rollingUpdateStrategy =
-      "Max surge: " + _spec.strategy.rollingUpdate.maxSurge + ", "
-      + "Max unavailable: " + _spec.strategy.rollingUpdate.maxUnavailable;
+        "Max surge: " + _spec.strategy.rollingUpdate.maxSurge + ", "
+        + "Max unavailable: " + _spec.strategy.rollingUpdate.maxUnavailable;
     var images = _spec.images;
 
     var updatedReplicas = _status.updatedReplicas;
@@ -788,24 +788,24 @@ metadata:
     var availableReplicas = _status.availableReplicas;
     var unavailableReplicas = _status.unavailableReplicas;
     var replicaStatus = updatedReplicas + " updated, "
-      + totalReplicas + " total, "
-      + availableReplicas + " available, "
-      + unavailableReplicas + " unavailable.";
+        + totalReplicas + " total, "
+        + availableReplicas + " available, "
+        + unavailableReplicas + " unavailable.";
 
     // htmlString push
     htmlString.push(
-      "Deploy name :: " + deployName + " <br><br>"
-      + "Namespace :: " + namespace + " <br><br>"
-      + "Labels :: " + labels + " <br><br>"
-      + "Annotations :: " + annotations + " <br><br>"
-      + "Creation Time :: " + creationTimestamp + " <br><br>"
-      + "Selector :: " + selector + " <br><br>"
-      + "Images :: " + images + " <br><br>"
-      + "Strategy :: " + strategy + " <br><br>"
-      + "Min ready seconds :: " + minReadySeconds + " <br><br>"
-      + "Revision history limit :: " + revisionHistoryLimit + " <br><br>"
-      + "Rolling update strategy :: " + rollingUpdateStrategy + " <br><br>"
-      + "Status(Replica) :: " + replicaStatus + "<br><br>" );
+        "Deploy name :: " + deployName + " <br><br>"
+        + "Namespace :: " + namespace + " <br><br>"
+        + "Labels :: " + labels + " <br><br>"
+        + "Annotations :: " + annotations + " <br><br>"
+        + "Creation Time :: " + creationTimestamp + " <br><br>"
+        + "Selector :: " + selector + " <br><br>"
+        + "Images :: " + images + " <br><br>"
+        + "Strategy :: " + strategy + " <br><br>"
+        + "Min ready seconds :: " + minReadySeconds + " <br><br>"
+        + "Revision history limit :: " + revisionHistoryLimit + " <br><br>"
+        + "Rolling update strategy :: " + rollingUpdateStrategy + " <br><br>"
+        + "Status(Replica) :: " + replicaStatus + "<br><br>");
 
     //var $resultArea = $('#resultArea');
     $('#resultArea').html(htmlString);
@@ -816,92 +816,72 @@ metadata:
   }
 
 
-
-    var hoho = function (data) {
-      console.log("데이터다 " + data)
-        return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
-    }
+  var hoho = function (data) {
+    console.log("데이터다 " + data)
+    return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
+  }
 
   // CALLBACK
-  var callbackGetReplicasetList = function(data) {
-      console.log("히히 드러와땅!");
-      if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+  var callbackGetReplicasetList = function (data) {
+    console.log("히히 드러와땅!");
+    if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
-      console.log(data);
+    console.log(data);
 
-      var $resultArea = $('#replicaArea');
+    var $resultArea = $('#replicaArea');
 
-      // TODO :: RESET HTML AREA
-      $resultArea.html("");
-      $resultArea.append("REPLICASET LIST :: <br><br>");
+    // TODO :: RESET HTML AREA
+    $resultArea.html("");
+    $resultArea.append("REPLICASET LIST :: <br><br>");
 
-      //-- Replica Set List
-      //items
-      //metadata.name
-      //metadata.namespace
-      //metadata.labels
-      //status.replicas
-      //metadata.creationTimestamp
-      //spec.containers.image
+    //-- Replica Set List
+    //items
+    //metadata.name
+    //metadata.namespace
+    //metadata.labels
+    //status.replicas
+    //metadata.creationTimestamp
+    //spec.containers.image
 
-      $.each(data.items, function (index, itemList) {
+    $.each(data.items, function (index, itemList) {
 
-          var replicasetName = itemList.metadata.name;
-          var namespace = itemList.metadata.namespace;
-          var labels = JSON.stringify(itemList.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
-          var creationTimestamp = itemList.metadata.creationTimestamp;
-          var replicas = itemList.status.replicas;   //  TOBE ::  current / desired
-          var images = new Array;
+      var replicasetName = itemList.metadata.name;
+      var namespace = itemList.metadata.namespace;
+      var labels = JSON.stringify(itemList.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
+      var creationTimestamp = itemList.metadata.creationTimestamp;
+      var replicas = itemList.status.replicas;   //  TOBE ::  current / desired
+      var images = new Array;
 
-          var containers = itemList.spec.template.spec.containers;
-          for(var i=0; i < containers.length; i++){
-              images.push(containers[i].image);
-          }
+      var containers = itemList.spec.template.spec.containers;
+      for (var i = 0; i < containers.length; i++) {
+        images.push(containers[i].image);
+      }
 
-          $resultArea.append("<a href='javascript:void(0);'><span style='color: orangered;'>[ DETAIL ]</span></a>"
-              + "Name :: " + replicasetName + " || "
-              + "Namespace :: " + namespace + " || "
-              + "Labels :: " + labels+ " || "
-              + "Pods :: " + replicas+ " || "
-              + "Created on :: " + creationTimestamp + " || "
-              + "Images :: " + images.join(",")
-              + "<br><br>");
+      $resultArea.append("<a href='javascript:void(0);'><span style='color: orangered;'>[ DETAIL ]</span></a>"
+          + "Name :: " + replicasetName + " || "
+          + "Namespace :: " + namespace + " || "
+          + "Labels :: " + labels + " || "
+          + "Pods :: " + replicas + " || "
+          + "Created on :: " + creationTimestamp + " || "
+          + "Images :: " + images.join(",")
+          + "<br><br>");
 
-          $(document).on( "click", "#resultArea a:eq("+index+")" ,function(e){
-              getDetail(replicasetName);
-          });
-
+      $(document).on("click", "#resultArea a:eq(" + index + ")", function (e) {
+        getDetail(replicasetName);
       });
+
+    });
 
   };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   // BIND
-  $("#btnReset").on("click", function() {
+  $("#btnReset").on("click", function () {
     $('#resultArea').html("");
   });
 
   // ALREADY READY STATE
-  $(document).ready(function(){
+  $(document).ready(function () {
     $("#btnSearch").on("click", function (e) {
       getDeployments();
     });
@@ -909,7 +889,6 @@ metadata:
 
   // ON LOAD
   $(document.body).ready(function () {
-      // getAllDeployments();
+    // getAllDeployments();
   });
-
 </script>
