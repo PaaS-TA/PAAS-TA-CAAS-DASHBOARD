@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(value = "/roles")
 public class RoleController {
 
-    private static final String BASE_URL = "/roles";
+    private static final String BASE_URL = "/admin/roles";
     private final CommonService commonService;
     private final RoleService roleService;
     /**

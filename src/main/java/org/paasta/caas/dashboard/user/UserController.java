@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping(value = "/users")
 public class UserController {
 
-    private static final String BASE_URL = "/users";
+    private static final String BASE_URL = "/admin/users";
     private final CommonService commonService;
     private final UserService userService;
 

@@ -21,10 +21,12 @@ public class TempController {
      *
      * @return the temp main
      */
+    // TODO :: REMOVE
     @GetMapping
     public ModelAndView getTempMain() {
         return new ModelAndView() {{
-            setViewName("index");
+
+            setViewName("redirect:/clusters/overview");
         }};
     }
 }
