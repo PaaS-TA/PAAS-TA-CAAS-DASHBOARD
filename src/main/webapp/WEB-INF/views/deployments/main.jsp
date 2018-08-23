@@ -811,15 +811,25 @@ metadata:
     $('#resultArea').html(htmlString);
 
     procCallAjax( "/workloads/namespaces/"+ namespace + "/replicasets/resource/" + hoho(labels), "GET", null, null, callbackGetReplicasetList);
-    procCallAjax( "/workloads/namespaces/"+ namespace + "/replicasets/resource/" + hoho(labels), "GET", null, null, callbackGetReplicasetList);
-    //procCallAjax( reqUrl + "/getList.do", "GET", null, null, callbackGetList );
+    procCallAjax( "/api/workloads/namespaces/"+ namespace + "/pods/resource/" + hoho(labels), "GET", null, null, callbackGetPodsList);
   }
 
 
   var hoho = function (data) {
-    console.log("데이터다 " + data)
     return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
   }
+
+  var processIfDataIsNull = function (data, procCallback, defaultValue) {
+      if (data == null)
+          return defaultValue;
+      else {
+          if (procCallback == null)
+              return defaultValue;
+          else
+              return procCallback(data);
+      }
+  }
+
 
   // CALLBACK
   var callbackGetReplicasetList = function (data) {
@@ -872,6 +882,64 @@ metadata:
 
     });
 
+  };
+
+
+  var callbackGetPodsList = function (data) {
+      if (RESULT_STATUS_FAIL === data.resultCode) {
+          $('#podArea').html(
+              "ResultStatus :: " + data.resultCode + " <br><br>"
+              + "ResultMessage :: " + data.resultMessage + " <br><br>");
+          return false;
+      }
+
+      console.log("CONSOLE DEBUG PRINT :: " + data);
+
+      var htmlString = [];
+      htmlString.push("PODS LIST :: <br><br>");
+      htmlString.push("ResultCode :: " + data.resultCode + " || "
+          + "Message :: " + data.resultMessage + " <br><br>");
+
+      //
+      $.each(data.items, function (index, itemList) {
+          // get data
+          var _metadata = itemList.metadata;
+          var _spec = itemList.spec;
+          var _status = itemList.status;
+
+          // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
+          var podName = _metadata.name;
+          var namespace = _metadata.namespace;
+          var nodeName = _spec.nodeName;
+          var podStatus = _status.phase;
+          var restartCount = processIfDataIsNull(_status.containerStatuses,
+              function (data) {
+                  return data.reduce(function (a, b) {
+                      return { restartCount: a.restartCount + b.restartCount };
+                  }, { restartCount: 0 }).restartCount;
+              }, 0);
+          //var restartCount = _status.containerStatuses
+          //  .map(function(datum) { return datum.restartCount; })
+          //  .reduce(function(a, b) { return a + b; }, 0 );
+
+          var creationTimestamp = _metadata.creationTimestamp;
+          // error message will be filtering from namespace's event. a variable value is like...
+          //var errorMessage = _status.error.message;
+          var errorMessage = "";
+
+          // htmlString push
+          htmlString.push("Name :: " + podName + " || "
+              + "Namespace :: " + namespace + " || "
+              + "Node :: " + nodeName + " || "
+              + "Status :: " + podStatus + " || "
+              + "Restart Count :: " + restartCount + " || "
+              + "Created At :: " + creationTimestamp + " || "
+              + "Error message :: " + errorMessage
+              + "<br><br>");
+      });
+
+      //var $resultArea = $('#resultArea');
+      $('#podArea').html(htmlString);
   };
 
 
