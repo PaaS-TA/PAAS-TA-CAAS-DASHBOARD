@@ -55,4 +55,17 @@ public class ReplicasetService {
         return restTemplateService.send(Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, Replicaset.class);
     }
 
+    /**
+     * Gets replicaset.
+     *
+     *
+     * @return the replicaset
+     */
+    ReplicasetList getReplicasetListLabelSelector(String namespace, String selectors) {
+        // TODO :: reqUrl 따로 관리 여부 결정
+        String reqUrl = "/workload/namespaces/{namespace}/replicasets/resource/".replaceAll("\\{" + "namespace" + "\\}", namespace);
+        reqUrl = reqUrl + selectors;
+        return restTemplateService.send(Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, ReplicasetList.class);
+    }
+
 }

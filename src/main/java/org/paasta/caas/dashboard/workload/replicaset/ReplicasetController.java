@@ -77,5 +77,18 @@ public class ReplicasetController {
         return replicaSetService.getReplicaset(namespace, replicasetName);
     }
 
-    // TOBE
+
+    /**
+     * ReplicaSet 객체를 labelSelector로 필터링해서 조회한다.
+     *
+     * @param namespace 조회 대상 네임스페이스
+     * @return ReplicaSetList
+     * @see ReplicasetService#getReplicasetList
+     */
+    @GetMapping(value = "/namespaces/{namespace}/replicasets/resource/{selector}")
+    @ResponseBody
+    public ReplicasetList getReplicaSetLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selectors ){
+        return replicaSetService.getReplicasetListLabelSelector(namespace, selectors);
+    }
+
 }

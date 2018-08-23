@@ -38,7 +38,7 @@ public class acceptController {
         // "RESOURCE_CD"_"VERB_CD" 형식으로 iterator 해서 Session 에 Set 해주세요.
         // SELECT TRS.RESOURCE_CD, TRS.VERB_CD
         //  FROM TB_USER TU, TB_RULE_SET TRS
-        //  WHERE TU.RULE_SET_CD = TRS.RULE_SET_CD
+        //  WHERE TU.RULE_SET_CD = TRS.RULE_SET_CD // 0000   0001
         //        TU.ACC_ID = 'admin'
         // 테이블명은 가칭입니다.
 
