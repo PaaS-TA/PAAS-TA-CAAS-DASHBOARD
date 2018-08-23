@@ -2,6 +2,7 @@ package org.paasta.caas.dashboard.cluster.persistentvolume;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import org.paasta.caas.dashboard.common.model.CommonObjectReference;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class PersistentvolumeSpec {
     private Map<String, String> capacity;
 
     @SerializedName("claimRef")
-    private ObjectReference claimRef;
+    private CommonObjectReference claimRef;
 
     @SerializedName("hostPath")
     private HostPathVolumeSource hostPath;
@@ -43,27 +44,4 @@ public class PersistentvolumeSpec {
         private String type;
     }
 
-    @Data
-    public class ObjectReference {
-        @SerializedName("apiVersion")
-        private String apiVersion;
-
-        @SerializedName("fieldPath")
-        private String fieldPath;
-
-        @SerializedName("kind")
-        private String kind;
-
-        @SerializedName("name")
-        private String name;
-
-        @SerializedName("namespace")
-        private String namespace;
-
-        @SerializedName("resourceVersion")
-        private String resourceVersion;
-
-        @SerializedName("uid")
-        private String uid;
-    }
 }

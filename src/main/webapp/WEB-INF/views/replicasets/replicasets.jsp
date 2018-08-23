@@ -187,8 +187,8 @@
 
             var eventMessage = itemList.message;
             var sourceComponent  = itemList.source.component;
-            var sourceHost   = itemList.source.host;
-            var subObject    = nvl2(itemList.object,"-");  // Each Item Not Found 'object'
+            var sourceHost   = nvl(itemList.source.host);
+            var subObject    = nvl2(itemList.involvedObject.fieldPath,"-");  // Each Item Not Found 'object'
             var eventCount   = itemList.count;
             var firstSeen    = itemList.firstTimestamp;
             var lastSeen     = itemList.lastTimestamp;
