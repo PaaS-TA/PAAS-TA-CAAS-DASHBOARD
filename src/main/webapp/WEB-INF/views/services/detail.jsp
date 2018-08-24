@@ -599,7 +599,7 @@ metadata:
 
     // GET DETAIL
     var getDetailForPods = function(selector) {
-        var reqUrl = "<%= Constants.API_URL %>/workload/namespaces/kube-system/pods/service/_all/" + selector;
+        var reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/kube-system/pods/service/_all/" + selector;
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPods);
     };
 
