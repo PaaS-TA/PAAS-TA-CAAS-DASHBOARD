@@ -122,7 +122,8 @@
                 specPortsListLength = specPortsList.length;
 
                 for (var j = 0; j < specPortsListLength; j++) {
-                    endpoints += '<p>' + endpointsPreString + specPortsList[j].port + " " + specPortsList[j].protocol + '</p>';
+                    endpoints += '<p>' + endpointsPreString + specPortsList[j].port + " " + specPortsList[j].protocol + '</p>'
+                            + '<p>' + endpointsPreString + nodePort + " " + specPortsList[j].protocol + '</p>';
                 }
 
                 htmlString.push(
