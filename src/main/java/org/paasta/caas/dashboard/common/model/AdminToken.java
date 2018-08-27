@@ -1,12 +1,4 @@
-package org.paasta.caas.common.api.adminToken;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+package org.paasta.caas.dashboard.common.model;
 
 /**
  * kuber와 관련 api를 호출 할 때 필요한 admin token을 저장하기 위한 model
@@ -16,34 +8,24 @@ import javax.persistence.Table;
  * @since 2018.08.22
  * @version 20180822
  */
-@Entity
-@Table(name = "admin_token")
 public class AdminToken {
 
-    @JsonSerialize
-    @JsonProperty("token_name")
-    @Column(name = "token_name")
-    @Id
-    private final String tokenName = "caas_admin";
+    private String token_name;
+    private String token_value;
 
-    @JsonSerialize
-    @JsonProperty("token_value")
-    @Column(name = "token_value", length=1000)
-    private String tokenValue;
-
-    public AdminToken() {
-
+    public String getToken_name() {
+        return token_name;
     }
 
-    public AdminToken(String tokenValue) {
-        this.tokenValue = tokenValue;
+    public void setToken_name(String token_name) {
+        this.token_name = token_name;
     }
 
-    public String getTokenValue() {
-        return tokenValue;
+    public String getToken_value() {
+        return token_value;
     }
 
-    public void setTokenValue(String tokenValue) {
-        this.tokenValue = tokenValue;
+    public void setToken_value(String token_value) {
+        this.token_value = token_value;
     }
 }

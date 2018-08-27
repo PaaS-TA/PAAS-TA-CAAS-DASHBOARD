@@ -29,10 +29,11 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
         LOGGER.info("### Intercepter start ###");
         LOGGER.info("** Request URI - "+url);
 
-        Pattern pattern = Pattern.compile("(/caas/cluster/overview/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
+        Pattern pattern = Pattern.compile("(/caas/clusters/overview/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
         Matcher matcher = pattern.matcher(url);
 
-        if (url.contains("/caas/cluster/overview/") && matcher.find()) {
+        if (url.contains("/caas/clusters/overview/") && matcher.find()) {
+            LOGGER.info("in!!!!!!!!!!!!!!!!!!");
             try {
                 SecurityContextHolder.clearContext();
 
@@ -40,7 +41,7 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
 
                 addParam = new StringBuffer();
                 addParam.append("?serviceInstanceId="+serviceInstanceId);
-                response.sendRedirect("/caas/cluster/overview"+addParam);
+                response.sendRedirect("/caas/clusters/overview"+addParam);
                 return false;
             } catch (Exception e) {
                 e.printStackTrace();

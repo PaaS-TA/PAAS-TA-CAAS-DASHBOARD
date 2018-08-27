@@ -44,7 +44,7 @@ public class SsoAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
             LOGGER.info(request.getSession().getAttribute("sessionRedirectUrl").toString());
             String reUrl = request.getSession().getAttribute("sessionRedirectUrl").toString();
             if(request.getSession().getAttribute("sessionRedirectUrl").toString().contains("?serviceInstanceId=")) {
-                reUrl = "/caas/cluster/overview";
+                reUrl = "/caas/clusters/overview";
             }
             sessionRedirectUrl = reUrl;
         }

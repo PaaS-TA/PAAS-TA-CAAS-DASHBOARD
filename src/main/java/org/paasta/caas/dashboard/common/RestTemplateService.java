@@ -1,6 +1,5 @@
 package org.paasta.caas.dashboard.common;
 
-import org.paasta.caas.dashboard.common.repo.JpaAdminTokenRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.client.RestTemplate;
 
-import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -31,15 +29,8 @@ public class RestTemplateService {
     private final RestTemplate restTemplate;
     private String base64Authorization;
     private String baseUrl;
-    public String caas_adminValue = "";
 
     private final PropertyService propertyService;
-
-    JpaAdminTokenRepository adminTokenRepository;
-
-    @Value("${caas.admin-token}")
-    private String caasAdminToken;
-
 
     /**
      * Instantiates a new Rest template service.
@@ -53,13 +44,13 @@ public class RestTemplateService {
      */
     @Autowired
     public RestTemplateService(RestTemplate restTemplate,
-                               JpaAdminTokenRepository adminTokenRepository,
+//                               JpaAdminTokenRepository adminTokenRepository,
                                @Value("${commonApi.authorization.id}") String commonApiAuthorizationId,
                                @Value("${commonApi.authorization.password}") String commonApiAuthorizationPassword,
                                @Value("${caasApi.authorization.id}") String caasApiAuthorizationId,
                                @Value("${caasApi.authorization.password}") String caasApiAuthorizationPassword, PropertyService propertyService) {
         this.restTemplate = restTemplate;
-        this.adminTokenRepository = adminTokenRepository;
+//        this.adminTokenRepository = adminTokenRepository;
         this.propertyService = propertyService;
 
         this.commonApiBase64Authorization = "Basic "
@@ -96,6 +87,7 @@ public class RestTemplateService {
         ResponseEntity<T> resEntity = restTemplate.exchange(baseUrl + reqUrl, httpMethod, reqEntity, responseType);
         if (resEntity.getBody() != null) {
             LOGGER.info("Response Type: {}", resEntity.getBody().getClass());
+            LOGGER.info(resEntity.getBody().toString());
         } else {
             LOGGER.info("Response Type: {}", "response body is null");
         }
@@ -135,8 +127,8 @@ public class RestTemplateService {
         return resEntity.getBody();
     }
 
-    public <T> T cubeSend(String url, HttpMethod httpMethod, Class<T> responseType) {
-        return cubeSend(url, null, httpMethod, responseType);
+    public <T> T cubeSend(String url, String caas_adminValue, HttpMethod httpMethod, Class<T> responseType) {
+        return cubeSend(url, null, caas_adminValue, httpMethod, responseType);
     }
 
     /**
@@ -145,17 +137,9 @@ public class RestTemplateService {
      * @author Hyerin
      * @since 2018.08.22
      */
-    @Transactional
-    public <T> T cubeSend(String url, String yml, HttpMethod httpMethod, Class<T> responseType) {
+    public <T> T cubeSend(String url, String yml, String caas_adminValue, HttpMethod httpMethod, Class<T> responseType) {
         LOGGER.info("cubeSend start~");
-        try {
-            if(caas_adminValue.equals("")) {
-                caas_adminValue = adminTokenRepository.getOne(caasAdminToken).getTokenValue();
-            }
-            LOGGER.info(caas_adminValue);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        LOGGER.info(caas_adminValue);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + caas_adminValue);

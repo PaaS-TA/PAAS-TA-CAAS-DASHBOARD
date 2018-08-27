@@ -8,8 +8,8 @@ import org.paasta.caas.dashboard.common.CommonService;
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
 import org.paasta.caas.dashboard.common.TemplateService;
+import org.paasta.caas.dashboard.common.model.AdminToken;
 import org.paasta.caas.dashboard.common.model.Users;
-import org.paasta.caas.dashboard.endpoint.EndpointList;
 import org.paasta.caas.dashboard.security.SsoAuthenticationDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +40,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Value("${roleSet.initUserCode}")
     private String initUserCode;
 
+    @Value("${caas.admin-token}")
+    private String caasAdminToken;
+
     @Autowired
     private CfService cfService;
 
@@ -49,8 +52,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final RestTemplateService restTemplateService;
 
 
-
     private String token;
+
+    private String caas_adminValue;
 
     public void setToken(String token){
         this.token = token;
@@ -95,33 +99,39 @@ public class CustomUserDetailsService implements UserDetailsService {
         String space_guid = "";
         String organization_guid = "";
 
-        Map cfResult = cfService.getCfOrgsByUaaId(uaaid, token);
+        Map adminToken = restTemplateService.send(Constants.TARGET_COMMON_API, "/adminToken/"+caasAdminToken, HttpMethod.GET, null, Map.class);
 
-        if(serviceInstanceId != null && !serviceInstanceId.equals("")) {
-            Map cfServiceInstancesByIdResult = cfService.getCfServiceInstancesById(serviceInstanceId, token);
-            String serviceInstancesByIdResultEntity  = cfServiceInstancesByIdResult.get("entity").toString();
-            space_guid =  serviceInstancesByIdResultEntity.substring(serviceInstancesByIdResultEntity.indexOf("space_guid=")+11, serviceInstancesByIdResultEntity.indexOf(", gateway_data="));
-            LOGGER.info("space_guid = "+space_guid);
+        if(adminToken != null && !adminToken.get("tokenValue").toString().equals("")) {
+            caas_adminValue = adminToken.get("tokenValue").toString();
 
-            Map cfServiceByIdResult = cfService.getCfServiceById(space_guid, token);
-            String serviceByIdResultEntity  = cfServiceByIdResult.get("entity").toString();
-            organization_guid = serviceByIdResultEntity.substring(serviceByIdResultEntity.indexOf("organization_guid=")+18, serviceByIdResultEntity.indexOf(", space_quota_definition_guid="));
-            LOGGER.info("organization_guid = "+organization_guid);
+            Map cfResult = cfService.getCfOrgsByUaaId(uaaid, token);
 
-            Map cfOrgByIdResult = cfService.getCfOrgById(organization_guid, token);
-            String orgName  = cfOrgByIdResult.get("name").toString();
-            LOGGER.info("orgName = "+orgName);
+            if(serviceInstanceId != null && !serviceInstanceId.equals("")) {
+                Map cfServiceInstancesByIdResult = cfService.getCfServiceInstancesById(serviceInstanceId, token);
+                String serviceInstancesByIdResultEntity  = cfServiceInstancesByIdResult.get("entity").toString();
+                space_guid =  serviceInstancesByIdResultEntity.substring(serviceInstancesByIdResultEntity.indexOf("space_guid=")+11, serviceInstancesByIdResultEntity.indexOf(", gateway_data="));
+                LOGGER.info("space_guid = "+space_guid);
 
-            if(cfResult.toString().contains("entity={name="+orgName+",")) {
-                LOGGER.info("org in.");
-                certificationFlag = true;
+                Map cfServiceByIdResult = cfService.getCfServiceById(space_guid, token);
+                String serviceByIdResultEntity  = cfServiceByIdResult.get("entity").toString();
+                organization_guid = serviceByIdResultEntity.substring(serviceByIdResultEntity.indexOf("organization_guid=")+18, serviceByIdResultEntity.indexOf(", space_quota_definition_guid="));
+                LOGGER.info("organization_guid = "+organization_guid);
+
+                Map cfOrgByIdResult = cfService.getCfOrgById(organization_guid, token);
+                String orgName  = cfOrgByIdResult.get("name").toString();
+                LOGGER.info("orgName = "+orgName);
+
+                if(cfResult.toString().contains("entity={name="+orgName+",")) {
+                    LOGGER.info("org in.");
+                    certificationFlag = true;
+                }
             }
         }
 
         if(certificationFlag) {
             LOGGER.info("flag in!");
             List commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+serviceInstanceId+"/organizationGuid/"+organization_guid, HttpMethod.GET, null, List.class);
-            LOGGER.info(commonGetUsers.toString());
+
 //            List commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/79018229-f37a-44ff-864b-c486eabb3306/organizationGuid/6cb8be0d-67c6-4326-a78d-9a323a13ad19", HttpMethod.GET, null, List.class);
             if(commonGetUsers != null && commonGetUsers.size() > 0) {
                 if(commonGetUsers.toString().contains("userId="+username+",")) {
@@ -132,7 +142,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                     LOGGER.info("spaceName : "+spaceName);
                     String userName = (organization_guid + "-" + username.replaceAll("([:.#$&!_\\(\\)`*%^~,\\<\\>\\[\\];+|-])+", "")).toLowerCase() + "-user";
                     LOGGER.info("userName : "+userName);
-                    restTemplateService.caas_adminValue = "";
                     createUser(spaceName, userName);
                     createRole(spaceName, userName);
                     createRoleBinding(spaceName, userName);
@@ -169,13 +178,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             role.add(new SimpleGrantedAuthority("ROLE_USER"));
         }
 
-        //TODO 삭제
-//        if(serviceInstanceId.equals("28135c3e-95b8-4fb2-bf57-2084e8db939b")) {
-//            role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-//        } else {
-//            role.add(new SimpleGrantedAuthority("ROLE_USER"));
-//        }
-
         User user = new User(username, "N/A", role);
         user.setServiceInstanceId(ssoAuthenticationDetails.getManagingServiceInstance());
         return user;
@@ -199,7 +201,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         String yml = null;
         yml = templateService.convert("instance/create_account.ftl", model);
 
-        restTemplateService.cubeSend(caasUrl+"/api/v1/namespaces/" + spaceName + "/serviceaccounts", yml, HttpMethod.POST, String.class);
+        restTemplateService.cubeSend(caasUrl+"/api/v1/namespaces/" + spaceName + "/serviceaccounts", yml, caas_adminValue, HttpMethod.POST, String.class);
         LOGGER.info("createUser end~~");
     }
 
@@ -222,7 +224,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         yml = templateService.convert("instance/create_role.ftl", model);
 
         try {
-            restTemplateService.cubeSend(caasUrl+"/apis/rbac.authorization.k8s.io/v1/namespaces/" + spaceName + "/roles", yml, HttpMethod.POST, String.class);
+            restTemplateService.cubeSend(caasUrl+"/apis/rbac.authorization.k8s.io/v1/namespaces/" + spaceName + "/roles", yml, caas_adminValue, HttpMethod.POST, String.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -248,7 +250,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         yml = templateService.convert("instance/create_roleBinding.ftl", model);
 
         try {
-            restTemplateService.cubeSend(caasUrl+"/apis/rbac.authorization.k8s.io/v1/namespaces/" + spaceName + "/rolebindings", yml, HttpMethod.POST, String.class);
+            restTemplateService.cubeSend(caasUrl+"/apis/rbac.authorization.k8s.io/v1/namespaces/" + spaceName + "/rolebindings", yml, caas_adminValue, HttpMethod.POST, String.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -266,7 +268,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOGGER.info("getToken spaceName~~ {}", spaceName);
         LOGGER.info("getToken userName~~ {}", userName);
 
-        String jsonObj = restTemplateService.cubeSend(caasUrl+"/api/v1/namespaces/" + spaceName + "/serviceaccounts/" + userName, HttpMethod.GET, String.class);
+        String jsonObj = restTemplateService.cubeSend(caasUrl+"/api/v1/namespaces/" + spaceName + "/serviceaccounts/" + userName, caas_adminValue, HttpMethod.GET, String.class);
         LOGGER.info("getToken jsonObj~~ {}",jsonObj);
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(jsonObj);
