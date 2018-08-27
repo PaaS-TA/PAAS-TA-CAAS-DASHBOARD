@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.cluster.persistentvolume;
+package org.paasta.caas.dashboard.clusters.persistentVolumes;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;
@@ -14,12 +14,12 @@ import java.util.List;
  * @since 2018.08.07
  */
 @Data
-public class PersistentvolumeList {
+public class PersistentVolumesList {
 
 //    private String kind = null;
 //    private String apiVersion = null;
     private CommonMetaData metadata;
-    private List<Persistentvolume> items = new ArrayList<>();
+    private List<PersistentVolumes> items = new ArrayList<>();
 
     private String resultCode;
     private String resultMessage;

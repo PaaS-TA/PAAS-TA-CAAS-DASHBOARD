@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.event;
+package org.paasta.caas.dashboard.events;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;
@@ -6,14 +6,14 @@ import org.paasta.caas.dashboard.common.model.CommonObjectReference;
 
 
 /**
- * Event Model 클래스
+ * Events Model 클래스
  *
  * @author CISS
  * @version 1.0
  * @since 2018.08.13
  */
 @Data
-public class Event {
+public class Events {
 
     private String resultCode;
     private CommonMetaData metadata;

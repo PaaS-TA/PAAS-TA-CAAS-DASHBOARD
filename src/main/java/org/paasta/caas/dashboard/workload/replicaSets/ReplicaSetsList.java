@@ -1,20 +1,19 @@
-package org.paasta.caas.dashboard.workload.replicaset;
+package org.paasta.caas.dashboard.workload.replicaSets;
 
 import lombok.Data;
-import org.paasta.caas.dashboard.common.model.CommonMetaData;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Replicaset Model 클래스
+ * ReplicaSets Model 클래스
  *
  * @author 최윤석
  * @version 1.0
  * @since 2018.08.07
  */
 @Data
-public class ReplicasetList {
+public class ReplicaSetsList {
 
 //    private String kind;
 //    private String apiVersion;
@@ -22,5 +21,5 @@ public class ReplicasetList {
     private String resultCode;
     private String resultMessage;
 
-    private List<Replicaset> items = new ArrayList<Replicaset>();
+    private List<ReplicaSets> items = new ArrayList<ReplicaSets>();
 }

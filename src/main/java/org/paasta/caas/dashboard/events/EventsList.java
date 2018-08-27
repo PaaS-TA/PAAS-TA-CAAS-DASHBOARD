@@ -1,20 +1,20 @@
-package org.paasta.caas.dashboard.event;
+package org.paasta.caas.dashboard.events;
 
 import lombok.Data;
 
 import java.util.List;
 
 /**
- * Event List Model 클래스
+ * Events List Model 클래스
  *
  * @author Ciss
  * @version 1.0
  * @since 2018.8.13
  */
 @Data
-public class EventList {
+public class EventsList {
 
     private String resultCode;
-    private List<Event> items;
+    private List<Events> items;
 
 }
