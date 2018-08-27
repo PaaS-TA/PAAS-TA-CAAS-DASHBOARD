@@ -74,6 +74,10 @@ public class CommonService {
          */
         PATH_VARIABLES_SERVICE_NAME("serviceInstancesId"),
         /**
+         * Path service name path variables list.
+         */
+        PATH_SERVICE_NAME("serviceName"),
+        /**
          * Path variables id path variables list.
          */
         PATH_VARIABLES_ID("id");
