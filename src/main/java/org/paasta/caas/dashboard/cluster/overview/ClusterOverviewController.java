@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class ClusterOverviewController {
 
-    private static final String BASE_URL = "/clusters";
+    private static final String BASE_URL = "/caas/clusters";
     private final CommonService commonService;
 
     /**
@@ -38,7 +38,14 @@ public class ClusterOverviewController {
      */
     @GetMapping(value = BASE_URL + "/overview")
     public ModelAndView getClustersOverview(HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/overview", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, "/clusters/overview", new ModelAndView());
+    }
+
+    @GetMapping(value = BASE_URL + "/overview/{serviceInstanceId}")
+    public ModelAndView goClusterOverviewInstanceId(HttpServletRequest httpServletRequest) {
+        return new ModelAndView() {{
+            setViewName("/cluster/overview");
+        }};
     }
 
 }

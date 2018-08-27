@@ -50,7 +50,7 @@ public class acceptController {
         //session.invalidate();
 
         return new ModelAndView() {{
-            setViewName("redirect:/cluster/overview");
+            setViewName("redirect:/clusters/overview");
         }};
     }
 
@@ -63,7 +63,7 @@ public class acceptController {
         session.invalidate();
 
         return new ModelAndView() {{
-            setViewName("redirect:/cluster/overview");
+            setViewName("redirect:/clusters/overview");
         }};
 
     }

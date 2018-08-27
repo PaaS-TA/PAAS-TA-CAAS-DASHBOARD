@@ -1,7 +1,13 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-<div style="padding: 10px;">
-    인덱스 페이지 입니다.
-</div>
-<div style="padding: 10px;">
-    <img src="https://d1u5p3l4wpay3k.cloudfront.net/ko_wowpedia/e/e7/Tauren_Dancing.gif?version=86507bbaa23e8d962803cecc9c42d4d5">
-</div>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>index</title>
+</head>
+<body>
+인덱스 페이지 입니다.
+</body>
+</html>

@@ -19,7 +19,7 @@ import java.util.List;
  * @since 2018.08.02
  */
 @Controller
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/caas/users")
 public class UsersController {
 
     private static final String BASE_URL = "/admin/users";

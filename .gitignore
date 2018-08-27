@@ -37,9 +37,8 @@ hs_err_pid*
 # idea settings
 *.iml
 *.idea
-.idea/*
+.idea/**
 
 # remove spring bean configuration
 .spring*
 
-/logs/*

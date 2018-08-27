@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Header
-
   author: REX
   version: 1.0
   since: 2018.08.07

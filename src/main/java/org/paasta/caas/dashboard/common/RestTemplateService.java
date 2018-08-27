@@ -32,7 +32,6 @@ public class RestTemplateService {
 
     private final PropertyService propertyService;
 
-
     /**
      * Instantiates a new Rest template service.
      *
@@ -45,11 +44,13 @@ public class RestTemplateService {
      */
     @Autowired
     public RestTemplateService(RestTemplate restTemplate,
+//                               JpaAdminTokenRepository adminTokenRepository,
                                @Value("${commonApi.authorization.id}") String commonApiAuthorizationId,
                                @Value("${commonApi.authorization.password}") String commonApiAuthorizationPassword,
                                @Value("${caasApi.authorization.id}") String caasApiAuthorizationId,
                                @Value("${caasApi.authorization.password}") String caasApiAuthorizationPassword, PropertyService propertyService) {
         this.restTemplate = restTemplate;
+//        this.adminTokenRepository = adminTokenRepository;
         this.propertyService = propertyService;
 
         this.commonApiBase64Authorization = "Basic "
@@ -86,10 +87,76 @@ public class RestTemplateService {
         ResponseEntity<T> resEntity = restTemplate.exchange(baseUrl + reqUrl, httpMethod, reqEntity, responseType);
         if (resEntity.getBody() != null) {
             LOGGER.info("Response Type: {}", resEntity.getBody().getClass());
+            LOGGER.info(resEntity.getBody().toString());
         } else {
             LOGGER.info("Response Type: {}", "response body is null");
         }
 
+
+        return resEntity.getBody();
+    }
+
+    /**
+     * Cf send t.
+     *
+     * @param <T>          the type parameter
+     * @param reqToken     the req token
+     * @param reqUrl       the req url
+     * @param httpMethod   the http method
+     * @param bodyObject   the body object
+     * @param responseType the response type
+     * @return the t
+     */
+    public <T> T cfSend(String reqToken, String reqUrl, HttpMethod httpMethod, Object bodyObject, Class<T> responseType) {
+
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, "bearer " + reqToken);
+        reqHeaders.add(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+
+        HttpEntity<Object> reqEntity = new HttpEntity<>(bodyObject, reqHeaders);
+
+        LOGGER.info("<T> T send :: Request : {} {baseUrl} : {}, Content-Type: {}", httpMethod, reqUrl, reqHeaders.get(CONTENT_TYPE));
+        ResponseEntity<T> resEntity = restTemplate.exchange(reqUrl, httpMethod, reqEntity, responseType);
+        if (resEntity.getBody() != null) {
+            LOGGER.info("Response Type: {}", resEntity.getBody().getClass());
+        } else {
+            LOGGER.info("Response Type: {}", "response body is null");
+        }
+
+
+        return resEntity.getBody();
+    }
+
+    public <T> T cubeSend(String url, String caas_adminValue, HttpMethod httpMethod, Class<T> responseType) {
+        return cubeSend(url, null, caas_adminValue, httpMethod, responseType);
+    }
+
+    /**
+     * kuber api와 통신하기 위한 메소드
+     * get의 경우 body가 필요 없기 때문에 yml로 get,delete의 유무판별하여 body를 넣고 안넣고를 정함.
+     * @author Hyerin
+     * @since 2018.08.22
+     */
+    public <T> T cubeSend(String url, String yml, String caas_adminValue, HttpMethod httpMethod, Class<T> responseType) {
+        LOGGER.info("cubeSend start~");
+        LOGGER.info(caas_adminValue);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + caas_adminValue);
+        headers.add("Accept", "application/json,application/yaml,text/html");
+        headers.add("Content-Type", "application/yaml;charset=UTF-8");
+
+
+        HttpEntity<String> reqEntity;
+        if(yml == null) {  //null이면
+            reqEntity = new HttpEntity<>(headers);
+        } else { // null이 아니면
+            reqEntity = new HttpEntity<>(yml, headers);
+        }
+        ResponseEntity<T> resEntity = restTemplate.exchange(url, httpMethod, reqEntity, responseType);
+        if (reqEntity.getBody() != null) {
+            LOGGER.info("Response Type: {}", resEntity.getBody().getClass());
+        }
 
         return resEntity.getBody();
     }

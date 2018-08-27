@@ -2,12 +2,34 @@
 spring:
   application:
     name: CaasDashboard  # Identify this application
-#  main:
-#    allow-bean-definition-overriding: true
+  main:
+    allow-bean-definition-overriding: true
   mvc:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+  freemarker:
+    template-loader-path: classpath:/templates/
+
+
+##INFRA_ADMIN Settings
+project:
+  name: paasta-caas-dashboard
+  artifactId: paasta-caas-dashboard
+  description: paasta-caas-dashboard
+info:
+  app:
+    encoding: Encoding - UTF-8
+  java:
+    source: Source - java ver
+    target: Instance1 - Java ver
+  spring:
+    profiles: ${spring.profiles.active:default}
+  build:
+    name: ${project.name}
+    artifact: ${project.artifactId}
+    description: ${project.description}
+
 
 management:
   security:
@@ -20,15 +42,19 @@ server:
 ---
 spring:
   profiles: local
+datasource:
+  caas:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://
+    username:
+    password:
+jpa:
+  hibernate.ddl-auto: update
+  show-sql: true
+  database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
-caas:
-  api:
-    url: http://localhost:3333
+
 
 ---
 spring:
   profiles: dev
-
-caas:
-  api:
-    url: CAAS_API_URL
