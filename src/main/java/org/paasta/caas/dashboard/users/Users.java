@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.user;
+package org.paasta.caas.dashboard.users;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import lombok.Data;
  * @since 2018.08.02
  */
 @Data
-public class User {
+public class Users {
 
     // COMMON
     private String resultCode;

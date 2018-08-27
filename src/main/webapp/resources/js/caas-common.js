@@ -69,7 +69,7 @@ var procSetSelector = function (requestMapString) {
  * @param str           : 체크할 문자열
  */
 function nvl(str){
-    if(typeof str == "undefined" || str == null || str == "null" || str == ""){
+    if(typeof str === "undefined" || str == null || str === "null" || str === ""){
         str = "";
     }
     return str;
@@ -81,7 +81,7 @@ function nvl(str){
  * @param defaultStr    : 문자열이 비어있을경우 리턴할 기본 문자열
  */
 function nvl2(str, defaultStr){
-    if(typeof str == "undefined" || str == null || str == "null" || str == "")
+    if(typeof str === "undefined" || str == null || str === "null" || str === "")
         str = defaultStr ;
     return str ;
 }

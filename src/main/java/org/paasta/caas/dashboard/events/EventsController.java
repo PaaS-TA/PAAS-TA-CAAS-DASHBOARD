@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.event;
+package org.paasta.caas.dashboard.events;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Event Controller 클래스
+ * Events Controller 클래스
  *
  * @author CISS
  * @version 1.0
@@ -16,30 +16,30 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/namespaces/{namespace:.+}/events")
-public class EventController {
+public class EventsController {
 
-    private final EventService eventService;
+    private final EventsService eventsService;
 
     /**
-     * Instantiates a new Event controller.
+     * Instantiates a new Events controller.
      *
-     * @param eventService the event service
+     * @param eventsService the event service
      */
     @Autowired
-    public EventController(EventService eventService) {
-        this.eventService = eventService;
+    public EventsController(EventsService eventsService) {
+        this.eventsService = eventsService;
     }
 
     /**
-     * Gets Event list.
+     * Gets Events list.
      * @param namespace the namespace
      * @param resourceName the resourceName
      * @return the event list
      */
     @GetMapping(value = "/resource/{resourceName:.+}")
     @ResponseBody
-    public EventList getEventList(@PathVariable("namespace") String namespace
+    public EventsList getEventList(@PathVariable("namespace") String namespace
             , @PathVariable("resourceName") String resourceName) {
-        return eventService.getEventList( namespace, resourceName );
+        return eventsService.getEventList( namespace, resourceName );
     }
 }

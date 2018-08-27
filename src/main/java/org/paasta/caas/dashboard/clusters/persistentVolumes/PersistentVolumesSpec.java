@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.cluster.persistentvolume;
+package org.paasta.caas.dashboard.clusters.persistentVolumes;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
@@ -15,7 +15,7 @@ import java.util.Map;
  * @since 2018.08.07
  */
 @Data
-public class PersistentvolumeSpec {
+public class PersistentVolumesSpec {
 
     @SerializedName("accessModes")
     private List<String> accessModes;

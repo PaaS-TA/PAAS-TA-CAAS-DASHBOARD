@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomServicesService {
 
-    private static final String REQ_URL = "/" + Constants.NAMESPACE_NAME + "/services";
+    private static final String PATH_SEPARATOR = Constants.PATH_SEPARATOR_STRING;
+    private static final String TARGET_CAAS_API = Constants.TARGET_CAAS_API;
+    private static final String REQ_URL = "/services";
     private final RestTemplateService restTemplateService;
 
     /**
@@ -31,21 +33,25 @@ public class CustomServicesService {
     /**
      * Gets custom services list.
      *
+     * @param namespace the namespace
      * @return the custom services list
      */
-    CustomServicesList getCustomServicesList() {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL, HttpMethod.GET, null, CustomServicesList.class);
+    CustomServicesList getCustomServicesList(String namespace) {
+        return restTemplateService.send(TARGET_CAAS_API, PATH_SEPARATOR + namespace + REQ_URL,
+                HttpMethod.GET, null, CustomServicesList.class);
     }
 
 
     /**
      * Gets custom services.
      *
+     * @param namespace   the namespace
      * @param serviceName the service name
      * @return the custom services
      */
-    CustomServices getCustomServices(String serviceName) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL + "/" + serviceName, HttpMethod.GET, null, CustomServices.class);
+    CustomServices getCustomServices(String namespace, String serviceName) {
+        return restTemplateService.send(TARGET_CAAS_API, PATH_SEPARATOR + namespace + REQ_URL + PATH_SEPARATOR + serviceName,
+                HttpMethod.GET, null, CustomServices.class);
     }
 
 }

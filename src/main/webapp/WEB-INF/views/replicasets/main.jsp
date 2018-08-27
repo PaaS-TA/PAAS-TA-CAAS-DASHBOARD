@@ -753,7 +753,7 @@ metadata:
     var callbackGetEventList = function(data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
-        console.log("::EventList::"+JSON.stringify(data));
+        console.log("::EventsList::"+JSON.stringify(data));
 
         var $resultArea = $('#resultAreaForEvent');
 

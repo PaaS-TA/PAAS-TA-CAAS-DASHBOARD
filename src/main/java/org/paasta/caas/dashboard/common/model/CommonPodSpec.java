@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Replicaset Model 클래스
+ * ReplicaSets Model 클래스
  *
  * @author 최윤석
  * @version 1.0
