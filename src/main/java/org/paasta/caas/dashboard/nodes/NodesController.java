@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Node Controller 클래스
+ * Nodes Controller 클래스
  *
  * @author REX
  * @author Hyungu Cho
@@ -19,21 +19,21 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018.08.13
  */
 @RestController
-public class NodeController {
+public class NodesController {
     private static final String BASE_URL = "/nodes";
     private final CommonService commonService;
-    private final NodeService nodeService;
+    private final NodesService nodesService;
 
     /**
-     * Instantiates a new Node controller.
+     * Instantiates a new Nodes controller.
      *
      * @param commonService the common service
-     * @param nodeService   the node service
+     * @param nodesService   the node service
      */
     @Autowired
-    public NodeController(CommonService commonService, NodeService nodeService) {
+    public NodesController(CommonService commonService, NodesService nodesService) {
         this.commonService = commonService;
-        this.nodeService = nodeService;
+        this.nodesService = nodesService;
     }
 
     // TODO :: MODIFY
@@ -55,8 +55,8 @@ public class NodeController {
      * @return the node list
      */
     @GetMapping( value = Constants.API_URL + BASE_URL)
-    public NodeList getNodeList() {
-        return nodeService.getNodeList();
+    public NodesList getNodeList() {
+        return nodesService.getNodeList();
     }
 
     /**
@@ -66,8 +66,8 @@ public class NodeController {
      * @return the node
      */
     @GetMapping(value = Constants.API_URL + BASE_URL + "/{nodeName:.+}")
-    public Node getNode (@PathVariable("nodeName") String nodeName) {
-        return nodeService.getNode(nodeName);
+    public Nodes getNode (@PathVariable("nodeName") String nodeName) {
+        return nodesService.getNode(nodeName);
     }
 
 }

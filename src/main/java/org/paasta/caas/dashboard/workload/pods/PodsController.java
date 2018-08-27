@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 //import java.util.Map;
 
 /**
- * Pod 관련 Caas API 를 호출 하는 컨트롤러이다.
+ * Pods 관련 Caas API 를 호출 하는 컨트롤러이다.
  *
  * @author 최윤석
  * @author Hyungu Cho
@@ -25,23 +25,23 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018.08.06 최초작성
  */
 @RestController
-public class PodController {
+public class PodsController {
     // URL Rule : Constants.API_URL + /workload/namespaces/{namespace}/pods[/.+]
     private static final String BASE_URL = "/workloads/namespaces/{namespace}/pods";
     private static final String POD_PAGE_URL = "/workloads/pods";
     private static final String VIEW_BASE_URL = "/pods/main";
     private final CommonService commonService;
-    private final PodService podService;
+    private final PodsService podsService;
 
     /**
-     * Instantiates a new Pod controller.
+     * Instantiates a new Pods controller.
      *
-     * @param podService the pod service
+     * @param podsService the pod service
      */
     @Autowired
-    public PodController( CommonService commonService, PodService podService) {
+    public PodsController(CommonService commonService, PodsService podsService) {
         this.commonService = commonService;
-        this.podService = podService;
+        this.podsService = podsService;
     }
 
     @GetMapping(value = POD_PAGE_URL)
@@ -50,8 +50,8 @@ public class PodController {
     }
 
     @GetMapping(value = Constants.API_URL + "/workloads/pods")
-    public PodList getPodList() {
-        return podService.getPodList();
+    public PodsList getPodList() {
+        return podsService.getPodList();
     }
 
     /**
@@ -60,8 +60,8 @@ public class PodController {
      * @return
      */
     @GetMapping(value = Constants.API_URL + BASE_URL)
-    public PodList getPodList( @PathVariable String namespace ) {
-        return podService.getPodList( namespace );
+    public PodsList getPodList(@PathVariable String namespace ) {
+        return podsService.getPodList( namespace );
     }
 
     /**
@@ -71,8 +71,8 @@ public class PodController {
      * @return
      */
     @GetMapping(value = Constants.API_URL + BASE_URL + "/{podName:.+}")
-    public Pod getPod( @PathVariable String namespace, @PathVariable String podName ) {
-        return podService.getPod(namespace, podName);
+    public Pods getPod(@PathVariable String namespace, @PathVariable String podName ) {
+        return podsService.getPod(namespace, podName);
     }
 
 
@@ -84,9 +84,9 @@ public class PodController {
      */
     @GetMapping(value = Constants.API_URL + BASE_URL + "/resource/{selector:.+}")
     @ResponseBody
-    public PodList getPodListBySelector(@PathVariable("namespace") String namespace,
-                                        @PathVariable("selector") String selector) {
-        return podService.getPodListBySelector(namespace, selector);
+    public PodsList getPodListBySelector(@PathVariable("namespace") String namespace,
+                                         @PathVariable("selector") String selector) {
+        return podsService.getPodListBySelector(namespace, selector);
     }
 
 
@@ -99,21 +99,21 @@ public class PodController {
      */
     @GetMapping(value = Constants.API_URL + BASE_URL + "/service/{serviceName:.+}/{selector:.+}")
     @ResponseBody
-    public PodList getPodListBySelector(@PathVariable("namespace") String namespace,
-                                        @PathVariable("serviceName") String serviceName,
-                                        @PathVariable("selector") String selector) {
-        PodList podList = podService.getPodListBySelector(namespace, selector);
+    public PodsList getPodListBySelector(@PathVariable("namespace") String namespace,
+                                         @PathVariable("serviceName") String serviceName,
+                                         @PathVariable("selector") String selector) {
+        PodsList podsList = podsService.getPodListBySelector(namespace, selector);
 
         // FOR DASHBOARD
-        podList.setServiceName(serviceName);
-        podList.setSelector(selector);
+        podsList.setServiceName(serviceName);
+        podsList.setSelector(selector);
 
-        return podList;
+        return podsList;
     }
 
     @GetMapping(value = Constants.API_URL + "/workloads/pods/node/{nodeName:.+}")
     @ResponseBody
-    public PodList getPodListAllNamespacesByNode(@PathVariable String nodeName) {
-        return podService.getPodListAllNamespacesByNode( nodeName );
+    public PodsList getPodListAllNamespacesByNode(@PathVariable String nodeName) {
+        return podsService.getPodListAllNamespacesByNode( nodeName );
     }
 }

@@ -3,15 +3,15 @@ package org.paasta.caas.dashboard.workload.deployments.support;
 import lombok.Data;
 
 /**
- * DeploymentStrategy Model 클래스
+ * RollingUpdateDeployments
  *
  * @author Hyungu Cho
  * @version 1.0
  * @since 2018.08.13
  */
 @Data
-public class DeploymentStrategy {
-    private String type;
+public class RollingUpdateDeployments {
+    private String maxSurge;
 
-    private RollingUpdateDeployment rollingUpdate;
+    private String maxUnavailable;
 }

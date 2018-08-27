@@ -1,5 +1,5 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %><%--
-  Deployment main
+  Deployments main
   @author Hyungu Cho
   @version 1.0
   @since 2018.08.14

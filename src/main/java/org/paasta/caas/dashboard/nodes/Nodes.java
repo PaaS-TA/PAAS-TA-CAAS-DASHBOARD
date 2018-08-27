@@ -1,29 +1,25 @@
-package org.paasta.caas.dashboard.workload.pods;
+package org.paasta.caas.dashboard.nodes;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;
 import org.paasta.caas.dashboard.common.model.CommonSpec;
-import org.paasta.caas.dashboard.common.model.CommonStatus;
+import org.paasta.caas.dashboard.nodes.support.NodesStatus;
 
 /**
- * Pod Model 클래스
+ * Nodes Model 클래스
  *
  * @author REX
  * @version 1.0
  * @since 2018.08.13
  */
 @Data
-class Pod {
-
+public class Nodes {
     private String resultCode;
     private String resultMessage;
 
     private CommonMetaData metadata;
     private CommonSpec spec;
-    private CommonStatus status;
+    private NodesStatus status;
 
-    // FOR DASHBOARD
-    private String selector;
-    private String serviceName;
-
+    private String nodeName;
 }

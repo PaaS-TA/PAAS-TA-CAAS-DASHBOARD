@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
- * Deployment 관련 Caas API 를 호출 하는 컨트롤러이다.
+ * Deployments 관련 Caas API 를 호출 하는 컨트롤러이다.
  *
  * @author Hyungu Cho
  * @version 1.0
@@ -18,16 +18,16 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping( "/workloads" )
-public class DeploymentController {
+public class DeploymentsController {
     private final CommonService commonService;
-    private final DeploymentService deploymentService;
+    private final DeploymentsService deploymentsService;
 
     private static final String BASE_URL = "/deployments";
 
     @Autowired
-    public DeploymentController(CommonService commonService, DeploymentService deploymentService) {
+    public DeploymentsController(CommonService commonService, DeploymentsService deploymentsService) {
         this.commonService = commonService;
-        this.deploymentService = deploymentService;
+        this.deploymentsService = deploymentsService;
     }
 
     /**
@@ -58,8 +58,8 @@ public class DeploymentController {
      * @return List of deployment (All namespaces)
      */
     @GetMapping( "/deployments/getList.do" )
-    public DeploymentList getDeploymentListByAllNamespaces(@RequestHeader HttpHeaders headers) {
-        return deploymentService.getDeploymentListByAllNamespaces();
+    public DeploymentsList getDeploymentListByAllNamespaces(@RequestHeader HttpHeaders headers) {
+        return deploymentsService.getDeploymentListByAllNamespaces();
     }
 
     /**
@@ -69,8 +69,8 @@ public class DeploymentController {
      * @return List of deployment (specific namespace)
      */
     @GetMapping( "/deployments/{namespace}/getList.do" )
-    public DeploymentList getDeploymentList(@PathVariable String namespace) {
-        return deploymentService.getDeploymentList(namespace);
+    public DeploymentsList getDeploymentList(@PathVariable String namespace) {
+        return deploymentsService.getDeploymentList(namespace);
     }
 
     /**
@@ -78,11 +78,11 @@ public class DeploymentController {
      *
      * @param namespace request namespace
      * @param params request parameters
-     * @return Deployment's detail content (specific namespace and deployment)
+     * @return Deployments's detail content (specific namespace and deployment)
      */
     @GetMapping( "/deployments/{namespace}/getDeployment.do")
-    public Deployment getDeployment(@PathVariable String namespace, @RequestParam Map<String, Object> params) {
+    public Deployments getDeployment(@PathVariable String namespace, @RequestParam Map<String, Object> params) {
         String deploymentName = params.get("name").toString();
-        return deploymentService.getDeployment(namespace, deploymentName);
+        return deploymentsService.getDeployment(namespace, deploymentName);
     }
 }

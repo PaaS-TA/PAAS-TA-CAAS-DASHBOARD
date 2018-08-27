@@ -7,14 +7,14 @@ import org.paasta.caas.dashboard.common.model.CommonPodTemplateSpec;
 import java.util.Set;
 
 /**
- * DeploymentSpec Model 클래스
+ * DeploymentsSpec Model 클래스
  *
  * @author Hyungu Cho
  * @version 1.0
  * @since 2018.08.13
  */
 @Data
-public class DeploymentSpec {
+public class DeploymentsSpec {
     private int minReadySeconds;
 
     private boolean paused;
@@ -27,7 +27,7 @@ public class DeploymentSpec {
 
     private CommonLabelSelector selector;
 
-    private DeploymentStrategy strategy;
+    private DeploymentsStrategy strategy;
 
     private CommonPodTemplateSpec template;
 

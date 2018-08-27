@@ -9,19 +9,19 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 /**
- * Deployment 관련 Caas API 를 호출 하는 서비스이다.
+ * Deployments 관련 Caas API 를 호출 하는 서비스이다.
  *
  * @author Hyungu Cho
  * @version 1.0
  * @since 2018.08.14
  */
 @Service
-public class DeploymentService {
-    private static final Logger LOGGER = LoggerFactory.getLogger( DeploymentService.class );
+public class DeploymentsService {
+    private static final Logger LOGGER = LoggerFactory.getLogger( DeploymentsService.class );
 
     private static final String REQ_BASE_URL = Constants.API_WORKLOAD;
 
-    /* Deployment URL */
+    /* Deployments URL */
     public static final String TARGET_DEPLOYMENT_LIST =
         REQ_BASE_URL + "/deployments";
     public static final String TARGET_DEPLOYMENT_LIST_IN_NAMESPACE =
@@ -32,7 +32,7 @@ public class DeploymentService {
     private final RestTemplateService restTemplateService;
 
     @Autowired
-    public DeploymentService(RestTemplateService restTemplateService) {
+    public DeploymentsService(RestTemplateService restTemplateService) {
         this.restTemplateService = restTemplateService;
     }
 
@@ -42,9 +42,9 @@ public class DeploymentService {
      *
      * @return List of deployment (All namespaces)
      */
-    public DeploymentList getDeploymentListByAllNamespaces ( ) {
+    public DeploymentsList getDeploymentListByAllNamespaces ( ) {
         return restTemplateService.send(
-            Constants.TARGET_CAAS_API, TARGET_DEPLOYMENT_LIST, HttpMethod.GET, null, DeploymentList.class);
+            Constants.TARGET_CAAS_API, TARGET_DEPLOYMENT_LIST, HttpMethod.GET, null, DeploymentsList.class);
     }
 
     /**
@@ -53,10 +53,10 @@ public class DeploymentService {
      * @param namespace namespace
      * @return List of deployment (specific namespace)
      */
-    public DeploymentList getDeploymentList ( String namespace ) {
+    public DeploymentsList getDeploymentList (String namespace ) {
         String urlWithNamespace = TARGET_DEPLOYMENT_LIST_IN_NAMESPACE.replace( "{namespace}", namespace );
         return restTemplateService.send(
-            Constants.TARGET_CAAS_API, urlWithNamespace, HttpMethod.GET, null, DeploymentList.class);
+            Constants.TARGET_CAAS_API, urlWithNamespace, HttpMethod.GET, null, DeploymentsList.class);
     }
 
     /**
@@ -64,14 +64,14 @@ public class DeploymentService {
      *
      * @param namespace request namespace
      * @param deploymentName request deployment's name
-     * @return Deployment's detail content (specific namespace and deployment)
+     * @return Deployments's detail content (specific namespace and deployment)
      */
-    public Deployment getDeployment ( String namespace, String deploymentName ) {
+    public Deployments getDeployment (String namespace, String deploymentName ) {
         String urlWithDeploymentName =
             TARGET_DEPLOYMENT_IN_NAMESPACE.replace( "{namespace}", namespace )
             .replace( "{deploymentName}", deploymentName );
 
         return restTemplateService.send(
-            Constants.TARGET_CAAS_API, urlWithDeploymentName, HttpMethod.GET, null, Deployment.class);
+            Constants.TARGET_CAAS_API, urlWithDeploymentName, HttpMethod.GET, null, Deployments.class);
     }
 }
