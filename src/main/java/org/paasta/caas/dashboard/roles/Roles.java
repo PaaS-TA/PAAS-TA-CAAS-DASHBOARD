@@ -1,14 +1,11 @@
-package org.paasta.caas.dashboard.role;
+package org.paasta.caas.dashboard.roles;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;
 import org.paasta.caas.dashboard.common.model.CommonRoleRule;
-import org.paasta.caas.dashboard.common.model.CommonSpec;
-import org.paasta.caas.dashboard.common.model.CommonStatus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author hrjin
@@ -16,7 +13,7 @@ import java.util.Map;
  * @since 2018-08-16
  */
 @Data
-public class Role {
+public class Roles {
 
     private String resultCode;
     private String resultMessage;
