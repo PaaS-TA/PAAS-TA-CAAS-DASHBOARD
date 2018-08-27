@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.workload.replicaset;
+package org.paasta.caas.dashboard.workload.replicaSets;
 
 //import org.springframework.http.HttpMethod;
 
@@ -23,21 +23,22 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/workloads")
-public class ReplicasetController {
+public class ReplicaSetsController {
 
-    private final ReplicasetService replicaSetService;
+    private static final String BASE_URL = "/replicasets";
+    private final ReplicaSetsService replicaSetService;
     private final CommonService commonService;
 
     /**
-     * Instantiates a Replicaset controller.
+     * Instantiates a ReplicaSets controller.
      *
      * @param commonService     the common service
-     * @param replicasetService the replicaset service
+     * @param replicaSetsService the replicaset service
      */
     @Autowired
-    public ReplicasetController(CommonService commonService, ReplicasetService replicasetService) {
+    public ReplicaSetsController(CommonService commonService, ReplicaSetsService replicaSetsService) {
         this.commonService = commonService;
-        this.replicaSetService = replicasetService;
+        this.replicaSetService = replicaSetsService;
     }
 
     /**
@@ -46,9 +47,9 @@ public class ReplicasetController {
      * @param httpServletRequest the http servlet request
      * @return the custom service main
      */
-    @GetMapping(value = "/replicaSets")
+    @GetMapping(value = BASE_URL)
     public ModelAndView getReplicaSetListMain(HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, "/replicasets/replicasets", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
 
     /**
@@ -56,11 +57,11 @@ public class ReplicasetController {
      *
      * @param namespace 조회 대상 네임스페이스
      * @return ReplicaSetList
-     * @see ReplicasetService#getReplicasetList
+     * @see ReplicaSetsService#getReplicasetList
      */
     @GetMapping(value = "/namespaces/{namespace}/replicasets")
     @ResponseBody
-    public ReplicasetList getReplicaSetList(@PathVariable("namespace") String namespace ){
+    public ReplicaSetsList getReplicaSetList(@PathVariable("namespace") String namespace ){
         return replicaSetService.getReplicasetList(namespace);
     }
 
@@ -69,11 +70,11 @@ public class ReplicasetController {
      *
      * @param namespace 조회 대상 네임스페이스
      * @return ReplicaSetList
-     * @see ReplicasetService#getReplicasetList
+     * @see ReplicaSetsService#getReplicasetList
      */
     @GetMapping(value = "/namespaces/{namespace}/replicasets/{replicasetName}")
     @ResponseBody
-    public Replicaset getReplicaSet(@PathVariable("namespace") String namespace, @PathVariable("replicasetName") String replicasetName ){
+    public ReplicaSets getReplicaSet(@PathVariable("namespace") String namespace, @PathVariable("replicasetName") String replicasetName ){
         return replicaSetService.getReplicaset(namespace, replicasetName);
     }
 
@@ -83,11 +84,11 @@ public class ReplicasetController {
      *
      * @param namespace 조회 대상 네임스페이스
      * @return ReplicaSetList
-     * @see ReplicasetService#getReplicasetList
+     * @see ReplicaSetsService#getReplicasetList
      */
     @GetMapping(value = "/namespaces/{namespace}/replicasets/resource/{selector}")
     @ResponseBody
-    public ReplicasetList getReplicaSetLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selectors ){
+    public ReplicaSetsList getReplicaSetLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selectors ){
         return replicaSetService.getReplicasetListLabelSelector(namespace, selectors);
     }
 

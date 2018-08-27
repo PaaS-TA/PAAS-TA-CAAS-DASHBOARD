@@ -180,6 +180,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         User user = new User(username, "N/A", role);
         user.setServiceInstanceId(ssoAuthenticationDetails.getManagingServiceInstance());
+        user.setOrganizationGuid(organization_guid);
+        user.setSpaceGuid(space_guid);
         return user;
     }
 

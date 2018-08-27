@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.cluster.persistentvolume;
+package org.paasta.caas.dashboard.clusters.persistentVolumes;
 import org.paasta.caas.dashboard.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,21 +20,21 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/clusters")
-public class PersistentvolumeController {
+public class PersistentVolumesController {
 
-    private final PersistentvolumeService persistentvolumeService;
+    private final PersistentVolumesService persistentVolumesService;
     private final CommonService commonService;
 
     /**
-     * Instantiates a Replicaset controller.
+     * Instantiates a ReplicaSets controller.
      *
      * @param commonService     the common service
-     * @param persistentvolumeService the persistentvolume service
+     * @param persistentVolumesService the persistentvolume service
      */
     @Autowired
-    public PersistentvolumeController(CommonService commonService, PersistentvolumeService persistentvolumeService) {
+    public PersistentVolumesController(CommonService commonService, PersistentVolumesService persistentVolumesService) {
         this.commonService = commonService;
-        this.persistentvolumeService = persistentvolumeService;
+        this.persistentVolumesService = persistentVolumesService;
     }
 
     /**
@@ -53,12 +53,12 @@ public class PersistentvolumeController {
      * ReplicaSet 객체의 리스트를 조회한다.
      *
      * @return ReplicaSetList
-     * @see PersistentvolumeService#getPersistentvolumeList
+     * @see PersistentVolumesService#getPersistentvolumeList
      */
     @GetMapping(value = "/api/persistentvolumes") // TEMP
     @ResponseBody
-    public PersistentvolumeList getPersistentvolumeList(){
-        return persistentvolumeService.getPersistentvolumeList();
+    public PersistentVolumesList getPersistentvolumeList(){
+        return persistentVolumesService.getPersistentvolumeList();
     }
 
     /**
@@ -66,12 +66,12 @@ public class PersistentvolumeController {
      *
      * @param pvName 조회 대상 PersistentVolume
      * @return ReplicaSetList
-     * @see PersistentvolumeService#getPersistentvolume
+     * @see PersistentVolumesService#getPersistentvolume
      */
     @GetMapping(value = "/persistentvolumes/{pvName}")
     @ResponseBody
-    public Persistentvolume getReplicaSet(@PathVariable("pvName") String pvName ){
-        return persistentvolumeService.getPersistentvolume(pvName);
+    public PersistentVolumes getReplicaSet(@PathVariable("pvName") String pvName ){
+        return persistentVolumesService.getPersistentvolume(pvName);
     }
 
     // TOBE

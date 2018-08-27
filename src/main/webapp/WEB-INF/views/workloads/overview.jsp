@@ -18,7 +18,7 @@
             <%--TODO :: REMOVE--%>
             <li name="tab05" class="cluster_tabs_right" onclick="procMovePage('/workloads/deployments');">Deployments VIEW</li>
             <li name="tab06" class="cluster_tabs_right" onclick="procMovePage('/workloads/pods');">Pods VIEW</li>
-            <li name="tab07" class="cluster_tabs_right" onclick="procMovePage('/workloads/replicaSets');">Replica Sets VIEW</li>
+            <li name="tab07" class="cluster_tabs_right" onclick="procMovePage('/workloads/replicasets');">Replica Sets VIEW</li>
         </ul>
         <div class="cluster_tabs_line"></div>
     </div>
