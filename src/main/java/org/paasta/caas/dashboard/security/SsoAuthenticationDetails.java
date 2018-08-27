@@ -32,6 +32,8 @@ public class SsoAuthenticationDetails extends OAuth2AuthenticationDetails {
     private String username;
     private String imgPath;
     private String serviceInstanceId;
+    private String organizationGuid;
+    private String spaceGuid;
 
 
     public SsoAuthenticationDetails(HttpServletRequest request, String id, String userid) {
@@ -159,6 +161,22 @@ public class SsoAuthenticationDetails extends OAuth2AuthenticationDetails {
 
     public void setServiceInstanceId(String serviceInstanceId) {
         this.serviceInstanceId = serviceInstanceId;
+    }
+
+    public String getOrganizationGuid() {
+        return organizationGuid;
+    }
+
+    public void setOrganizationGuid(String organizationGuid) {
+        this.organizationGuid = organizationGuid;
+    }
+
+    public String getSpaceGuid() {
+        return spaceGuid;
+    }
+
+    public void setSpaceGuid(String spaceGuid) {
+        this.spaceGuid = spaceGuid;
     }
 
     //    private static final Logger LOGGER = LoggerFactory.getLogger(SsoAuthenticationDetails.class);
