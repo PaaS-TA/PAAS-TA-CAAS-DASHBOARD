@@ -82,7 +82,7 @@
             <li>Clusters</li>
         </ul>
         <div class="btn-kuber">
-            <button class="btns colors4" onclick="window.open('https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl')">Kuberctl download</button>
+            <button class="btns colors4" onclick="window.open('https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl')">Kubectl download</button>
         </div>
     </div>
 </header>
