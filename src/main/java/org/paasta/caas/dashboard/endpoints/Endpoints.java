@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.endpoint;
+package org.paasta.caas.dashboard.endpoints;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;
@@ -9,14 +9,14 @@ import org.paasta.caas.dashboard.common.model.CommonSubset;
 import java.util.List;
 
 /**
- * Endpoint Model 클래스
+ * Endpoints Model 클래스
  *
  * @author REX
  * @version 1.0
  * @since 2018.08.13
  */
 @Data
-public class Endpoint {
+public class Endpoints {
 
     private String resultCode;
     private String resultMessage;

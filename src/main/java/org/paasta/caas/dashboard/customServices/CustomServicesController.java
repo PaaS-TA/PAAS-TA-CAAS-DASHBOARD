@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.customService;
+package org.paasta.caas.dashboard.customServices;
 
 import org.paasta.caas.dashboard.common.CommonService;
 import org.paasta.caas.dashboard.common.Constants;
@@ -12,79 +12,79 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Custom Service Controller 클래스
+ * Custom Services Controller 클래스
  *
  * @author REX
  * @version 1.0
  * @since 2018.08.09
  */
 @Controller
-public class CustomServiceController {
+public class CustomServicesController {
 
     private static final String BASE_URL = "/services";
     private final CommonService commonService;
-    private final CustomServiceService customServiceService;
+    private final CustomServicesService customServicesService;
 
     /**
-     * Instantiates a new Custom service controller.
+     * Instantiates a new Custom services controller.
      *
      * @param commonService        the common service
-     * @param customServiceService the custom service service
+     * @param customServicesService the custom services service
      */
     @Autowired
-    public CustomServiceController(CommonService commonService, CustomServiceService customServiceService) {
+    public CustomServicesController(CommonService commonService, CustomServicesService customServicesService) {
         this.commonService = commonService;
-        this.customServiceService = customServiceService;
+        this.customServicesService = customServicesService;
     }
 
 
     /**
-     * Gets custom service main.
+     * Gets custom services main.
      *
      * @param httpServletRequest the http servlet request
-     * @return the custom service main
+     * @return the custom services main
      */
     @GetMapping(value = BASE_URL)
-    public ModelAndView getCustomServiceMain(HttpServletRequest httpServletRequest) {
+    public ModelAndView getCustomServicesMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
 
 
     /**
-     * Gets custom service detail.
+     * Gets custom services detail.
      *
      * @param httpServletRequest the http servlet request
      * @param serviceName        the service name
-     * @return the custom service detail
+     * @return the custom services detail
      */
     @GetMapping(value = BASE_URL + "/{serviceName:.+}")
-    public ModelAndView getCustomServiceDetail(HttpServletRequest httpServletRequest, @PathVariable("serviceName") String serviceName) {
+    public ModelAndView getCustomServicesDetail(HttpServletRequest httpServletRequest, @PathVariable("serviceName") String serviceName) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/detail", new ModelAndView());
     }
 
 
     /**
-     * Gets custom service list.
+     * Gets custom services list.
      *
-     * @return the custom service list
+     * @return the custom services list
      */
     @GetMapping(value = Constants.API_URL + BASE_URL)
     @ResponseBody
-    public CustomServiceList getCustomServiceList() {
-        return customServiceService.getCustomServiceList();
+    public CustomServicesList getCustomServicesList() {
+        return customServicesService.getCustomServicesList();
     }
 
 
     /**
-     * Gets custom service.
+     * Gets custom services.
      *
      * @param serviceName the service name
-     * @return the custom service
+     * @return the custom services
      */
     @GetMapping(value = Constants.API_URL + BASE_URL + "/{serviceName:.+}")
     @ResponseBody
-    public CustomService getCustomService(@PathVariable("serviceName") String serviceName) {
-        return customServiceService.getCustomService(serviceName);
+    public CustomServices getCustomService(@PathVariable("serviceName") String serviceName) {
+        return customServicesService.getCustomServices(serviceName);
     }
 
 }

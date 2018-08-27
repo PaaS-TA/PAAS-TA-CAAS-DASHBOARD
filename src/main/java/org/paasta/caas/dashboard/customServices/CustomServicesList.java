@@ -1,22 +1,22 @@
-package org.paasta.caas.dashboard.customService;
+package org.paasta.caas.dashboard.customServices;
 
 import lombok.Data;
 
 import java.util.List;
 
 /**
- * Custom Service List Model 클래스
+ * Custom Services List Model 클래스
  *
  * @author REX
  * @version 1.0
  * @since 2018.8.09
  */
 @Data
-public class CustomServiceList {
+public class CustomServicesList {
 
     private String resultCode;
     private String resultMessage;
 
-    private List<CustomService> items;
+    private List<CustomServices> items;
 
 }
