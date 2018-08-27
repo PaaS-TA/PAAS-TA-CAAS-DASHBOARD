@@ -87,9 +87,9 @@ public class RoleController {
      * @param role the role
      * @return the role
      */
-    @GetMapping(value = "/get.do")
-    @ResponseBody
-    public Role getRole(Role role){
-        return roleService.getRole(role.getRoleName());
-    }
+//    @GetMapping(value = "/get.do")
+//    @ResponseBody
+//    public Role getRole(Role role){
+//        return roleService.getRole(role.getRoleName());
+//    }
 }

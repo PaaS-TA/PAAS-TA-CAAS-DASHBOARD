@@ -1,11 +1,11 @@
 buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'io.spring.gradle:dependency-management-plugin:1.0.0.RELEASE'
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.4.RELEASE")
-    }
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'io.spring.gradle:dependency-management-plugin:1.0.0.RELEASE'
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.4.RELEASE")
+	}
 }
 
 apply plugin: 'java'
@@ -16,55 +16,64 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'war'
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 ext {
-    appGroup = 'org.paasta.caas.dashboard'
-    springIoPlatformVersion = 'Cairo-SR3'
-    springSecurityTagLibsVersion = '5.0.7.RELEASE'
-    tomcatEmbedJasperVersion = '8.5.32'
-    jstlVersion = '1.2'
-    gsonVersion = '2.8.5'
-    apacheTilesJspVersion = '3.0.8'
-    lombokVersion = '1.18.2'
-    jacocoVersion = '0.8.1'
+	appGroup = 'org.paasta.caas.dashboard'
+	springIoPlatformVersion = 'Cairo-SR3'
+	springSecurityTagLibsVersion = '5.0.7.RELEASE'
+	tomcatEmbedJasperVersion = '8.5.32'
+	jstlVersion = '1.2'
+	gsonVersion = '2.8.5'
+	apacheTilesJspVersion = '3.0.8'
+	lombokVersion = '1.18.2'
+	jacocoVersion = '0.8.1'
 
 }
 
 dependencyManagement {
-    imports {
-        mavenBom "io.spring.platform:platform-bom:${springIoPlatformVersion}"
-    }
+	imports {
+		mavenBom "io.spring.platform:platform-bom:${springIoPlatformVersion}"
+	}
 }
 
 sourceCompatibility = 1.8
 group = "${appGroup}"
 
 war {
-    archivesBaseName = 'paas-ta-caas-dashboard'
+	archivesBaseName = 'paas-ta-caas-dashboard'
 }
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-starter-web"
-    compile "org.springframework.boot:spring-boot-starter-aop"
-    compile "org.springframework.security.oauth:spring-security-oauth2"
-    compile "org.springframework.security:spring-security-taglibs:${springSecurityTagLibsVersion}"
-    compile "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatEmbedJasperVersion}"
-    compile "javax.servlet:jstl:${jstlVersion}"
-    compile "com.google.code.gson:gson:${gsonVersion}"
-    compile "org.apache.tiles:tiles-jsp:${apacheTilesJspVersion}"
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    testCompile "org.springframework.boot:spring-boot-starter-test"
+	compile "org.springframework.boot:spring-boot-starter-web"
+	compile "org.springframework.boot:spring-boot-starter-aop"
+//	compile "org.springframework.security.oauth:spring-security-oauth2"
+	compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.0.3.RELEASE'
+	compile('org.springframework.security.oauth:spring-security-oauth2:2.0.10.RELEASE')
+
+	compile('org.springframework.boot:spring-boot-starter-freemarker')
+	compile "org.springframework.boot:spring-boot-starter-data-jpa"
+	compile "org.springframework.boot:spring-boot-starter-jdbc"
+	runtime "mysql:mysql-connector-java:8.0.11"
+//	compile('org.apache.commons:commons-dbcp2')
+
+	compile "org.springframework.security:spring-security-taglibs:${springSecurityTagLibsVersion}"
+	compile "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatEmbedJasperVersion}"
+	compile "javax.servlet:jstl:${jstlVersion}"
+	compile "com.google.code.gson:gson:${gsonVersion}"
+	compile "org.apache.tiles:tiles-jsp:${apacheTilesJspVersion}"
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	testCompile "org.springframework.boot:spring-boot-starter-test"
 }
 
 jacoco {
-    toolVersion = "${jacocoVersion}"
+	toolVersion = "${jacocoVersion}"
 }
 
 test {
-    ignoreFailures=true
-    jacoco {
-        destinationFile = file("$buildDir/jacoco/jacoco-overall.exec")
-    }
+	ignoreFailures=true
+	jacoco {
+		destinationFile = file("$buildDir/jacoco/jacoco-overall.exec")
+	}
 }

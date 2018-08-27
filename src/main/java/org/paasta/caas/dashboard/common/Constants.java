@@ -21,6 +21,9 @@ public class Constants {
     public static final String API_WORKLOAD = "/workload";
     public static final String API_URL = "/api";
 
+    public static final String STRING_DATE_TYPE = "yyyy-MM-dd HH:mm:ss";
+    public static final String STRING_TIME_ZONE_ID = "Asia/Seoul";
+
 
 
     private Constants() {

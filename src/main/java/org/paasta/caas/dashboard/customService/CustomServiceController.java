@@ -1,11 +1,11 @@
 package org.paasta.caas.dashboard.customService;
 
 import org.paasta.caas.dashboard.common.CommonService;
-import org.paasta.caas.dashboard.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018.08.09
  */
 @Controller
+@RequestMapping(value = "/services")
 public class CustomServiceController {
 
     private static final String BASE_URL = "/services";
@@ -37,18 +38,16 @@ public class CustomServiceController {
         this.customServiceService = customServiceService;
     }
 
-
     /**
      * Gets custom service main.
      *
      * @param httpServletRequest the http servlet request
      * @return the custom service main
      */
-    @GetMapping(value = BASE_URL)
+    @GetMapping
     public ModelAndView getCustomServiceMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
-
 
     /**
      * Gets custom service detail.
@@ -57,34 +56,32 @@ public class CustomServiceController {
      * @param serviceName        the service name
      * @return the custom service detail
      */
-    @GetMapping(value = BASE_URL + "/{serviceName:.+}")
+    @GetMapping(value = "/{serviceName:.+}")
     public ModelAndView getCustomServiceDetail(HttpServletRequest httpServletRequest, @PathVariable("serviceName") String serviceName) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/detail", new ModelAndView());
     }
-
 
     /**
      * Gets custom service list.
      *
      * @return the custom service list
      */
-    @GetMapping(value = Constants.API_URL + BASE_URL)
+    @GetMapping(value = "/getList.do")
     @ResponseBody
     public CustomServiceList getCustomServiceList() {
         return customServiceService.getCustomServiceList();
     }
 
-
     /**
      * Gets custom service.
      *
-     * @param serviceName the service name
+     * @param customService the custom service
      * @return the custom service
      */
-    @GetMapping(value = Constants.API_URL + BASE_URL + "/{serviceName:.+}")
-    @ResponseBody
-    public CustomService getCustomService(@PathVariable("serviceName") String serviceName) {
-        return customServiceService.getCustomService(serviceName);
-    }
+//    @GetMapping(value = "/get.do")
+//    @ResponseBody
+//    public CustomService getCustomService(CustomService customService) {
+//        return customServiceService.getCustomService(customService.getServiceName());
+//    }
 
 }

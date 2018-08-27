@@ -34,6 +34,14 @@
         <put-attribute name="body" value="/WEB-INF/views/admin/{1}/{2}.jsp"/>
     </definition>
 
+    <definition name="layout.empty" template="/WEB-INF/views/common/empty-layout.jsp">
+        <put-attribute name="body" value=""/>
+    </definition>
+
+    <definition name="/common/unauthorized" extends="layout.empty">
+        <put-attribute name="body" value="/WEB-INF/views/common/unauthorized.jsp"/>
+    </definition>
+
     <!--TODO :: REMOVE-->
     <!--<definition name="/namespaces/main" extends="layout.default">-->
         <!--<put-attribute name="body" value="/WEB-INF/views/namespaces/main.jsp"/>-->
