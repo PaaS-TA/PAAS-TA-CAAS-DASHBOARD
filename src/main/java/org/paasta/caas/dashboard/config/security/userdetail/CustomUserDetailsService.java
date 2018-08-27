@@ -37,6 +37,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Value("${caas.url}")
     private String caasUrl;
 
+    @Value("${roleSet.initUserCode}")
+    private String initUserCode;
+
     @Autowired
     private CfService cfService;
 
@@ -145,7 +148,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     user.setCaasAccountName(userName);
                     user.setOrganizationGuid(organization_guid);
                     user.setSpaceGuid(space_guid);
-                    user.setRoleSetCode("0002");
+                    user.setRoleSetCode(initUserCode);
                     user.setDescription("user information");
 //                    user.setCreated("1");
 //                    user.setLastModified("2");
