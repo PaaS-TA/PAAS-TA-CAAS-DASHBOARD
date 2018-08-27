@@ -1,9 +1,9 @@
-package org.paasta.caas.dashboard.node;
+package org.paasta.caas.dashboard.nodes;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;
 import org.paasta.caas.dashboard.common.model.CommonSpec;
-import org.paasta.caas.dashboard.node.support.NodeStatus;
+import org.paasta.caas.dashboard.nodes.support.NodeStatus;
 
 /**
  * Node Model 클래스

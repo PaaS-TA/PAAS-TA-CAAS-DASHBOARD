@@ -1,14 +1,9 @@
-package org.paasta.caas.dashboard.workload.deployment.support;
+package org.paasta.caas.dashboard.workload.deployments.support;
 
-import com.google.gson.annotations.SerializedName;
 import lombok.Data;
-import org.paasta.caas.dashboard.common.model.CommonContainer;
 import org.paasta.caas.dashboard.common.model.CommonLabelSelector;
 import org.paasta.caas.dashboard.common.model.CommonPodTemplateSpec;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**

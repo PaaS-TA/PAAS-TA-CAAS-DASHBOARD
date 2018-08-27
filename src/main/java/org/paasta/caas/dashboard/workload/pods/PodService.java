@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.workload.pod;
+package org.paasta.caas.dashboard.workload.pods;
 
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;

@@ -1,17 +1,12 @@
-package org.paasta.caas.dashboard.workload.deployment;
+package org.paasta.caas.dashboard.workload.deployments;
 
-import org.apache.tomcat.util.bcel.Const;
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Deployment 관련 Caas API 를 호출 하는 서비스이다.

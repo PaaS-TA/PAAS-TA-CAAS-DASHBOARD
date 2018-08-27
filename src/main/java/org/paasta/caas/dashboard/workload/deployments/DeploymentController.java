@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.workload.deployment;
+package org.paasta.caas.dashboard.workload.deployments;
 
 import org.paasta.caas.dashboard.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;

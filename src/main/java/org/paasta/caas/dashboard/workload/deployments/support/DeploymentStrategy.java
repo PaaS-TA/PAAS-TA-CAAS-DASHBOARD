@@ -1,6 +1,5 @@
-package org.paasta.caas.dashboard.workload.deployment.support;
+package org.paasta.caas.dashboard.workload.deployments.support;
 
-import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 /**

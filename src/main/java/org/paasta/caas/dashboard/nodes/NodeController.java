@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.node;
+package org.paasta.caas.dashboard.nodes;
 
 import org.paasta.caas.dashboard.common.CommonService;
 import org.paasta.caas.dashboard.common.Constants;

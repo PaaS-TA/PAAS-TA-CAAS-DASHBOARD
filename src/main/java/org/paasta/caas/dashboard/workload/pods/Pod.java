@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.workload.pod;
+package org.paasta.caas.dashboard.workload.pods;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;

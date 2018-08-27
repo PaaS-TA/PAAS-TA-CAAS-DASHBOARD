@@ -1,8 +1,6 @@
-package org.paasta.caas.dashboard.workload.deployment;
+package org.paasta.caas.dashboard.workload.deployments;
 
-import com.google.gson.annotations.SerializedName;
 import lombok.Data;
-import org.paasta.caas.dashboard.common.model.CommonMetaData;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.node.support;
+package org.paasta.caas.dashboard.nodes.support;
 
 import lombok.Data;
 
