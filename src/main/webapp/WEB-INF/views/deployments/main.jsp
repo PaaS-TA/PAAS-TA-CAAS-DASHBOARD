@@ -9,7 +9,8 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> nginx-2-6bd764c757-jhgnd (Deployment명)</h1>
+    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> nginx-2-6bd764c757-jhgnd
+        (Deployment명)</h1>
     <div class="cluster_tabs clearfix">
         <ul>
             <li name="tab01" class="cluster_tabs_on">Details</li>
@@ -92,51 +93,49 @@
                             <tbody>
                             <tr>
                                 <th><i class="cWrapDot"></i> Name</th>
-                                <td>kube-flannel-ds</td>
+                                <td id="name"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Namespace</th>
-                                <td>default</td>
+                                <td id="namespaceID"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td><span class="bg_gray">app : nginx-2</span> <span class="bg_gray">tier: node</span></td>
+                                <td id="labels"></td>
                             </tr>
 
                             <tr>
                                 <th><i class="cWrapDot"></i> Annotations</th>
-                                <td>
-                                    <span class="bg_gray">deprecated.daemonset.template.generation: 1</span>
-                                    <span class="bg_blue"><a href="#">kubectl.kubernetes.io/last-applied-Config</a></span>
+                                <td id="annotations">
                                 </td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Creation Time</th>
-                                <td>2018-07-04 20:15:30</td>
+                                <td id="creationTime"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Selector</th>
-                                <td><span class="bg_gray">app : nginx-2</span></td>
+                                <td id="selector"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Strategy</th>
-                                <td>RollingUpdate</td>
+                                <td id="strategy"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Min ready seconds</th>
-                                <td>0</td>
+                                <td id="minReadySeconds"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Revision history limit</th>
-                                <td>10</td>
+                                <td id="revisionHistoryLimit"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Rolling update strategy</th>
-                                <td>Max surge: 25%, Max unavailable: 25%</td>
+                                <td id="rollingUpdateStrategy"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Status</th>
-                                <td>1 updated, 1 total, 1 available, 0 unavailable</td>
+                                <td id="status"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -162,49 +161,19 @@
                             </colgroup>
                             <thead>
                             <tr>
-                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Name
+                                    <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                </td>
                                 <td>Namespace</td>
                                 <td>Labels</td>
-                                <td>Pods</td>
-                                <td>Images</td>
-                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td id="replicaPods">Pods</td>
+                                <td id="replicaImages">Images</td>
+                                <td id="replicaCreationTime">Created on
+                                    <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                </td>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                     <a href="#"><span class="green2"><i class="fas fa-check-circle"></i></span> portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                    <span class="bg_gray">pod-template-hash : 26832</span>
-                                </td>
-                                <td>3 / 3
-                                </td>
-                                <td>bluedigm/hyerin:portalapi
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                     <a href="#"><span class="green2"><i class="fas fa-check-circle"></i></span> portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                    <span class="bg_gray">pod-template-hash : 26832</span>
-                                </td>
-                                <td>3 / 3
-                                </td>
-                                <td>bluedigm/hyerin:portalapi
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
+                            <tbody id="replicaSetTable">
                             </tbody>
                         </table>
                     </div>
@@ -268,48 +237,19 @@
                             </colgroup>
                             <thead>
                             <tr>
-                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Name
+                                    <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                </td>
                                 <td>Namespace</td>
                                 <td>Node</td>
                                 <td>Status</td>
                                 <td>Restarts</td>
-                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Created on
+                                    <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                </td>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <span class="red2"><i class="fas fa-exclamation-circle"></i></span> portal-api-deployment<br/>
-                                    <span class="red2">Back-off restarting failed container</span>
-                                </td>
-                                <td>
-                                    aaa
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>waiting
-                                </td>
-                                <td>0
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                     <span class="green2"><i class="fas fa-check-circle"></i></span> portal-api-deployment
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>waiting
-                                </td>
-                                <td>0
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
+                            <tbody id="podsListTable">
                             </tbody>
                         </table>
                     </div>
@@ -454,7 +394,7 @@ metadata:
                     <!-- 닫기(x) 버튼 -->
                     <button type="button" class="close" data-dismiss="modal">×</button>
                     <!-- header title -->
-                    <h4 class="modal-title">Auto- Scaling  설정</h4>
+                    <h4 class="modal-title">Auto- Scaling 설정</h4>
                 </div>
                 <!-- body -->
                 <div class="modal-body">
@@ -463,9 +403,9 @@ metadata:
                             앱 이름
                         </span>
                         <div class="pull-right">
-                            <input id="check1" checked="checked" type="checkbox" />
+                            <input id="check1" checked="checked" type="checkbox"/>
                             <label for="check1">자동확장 시</label>
-                            <input id="check2" type="checkbox" />
+                            <input id="check2" type="checkbox"/>
                             <label for="check2">자동축소 사용</label>
                         </div>
                     </div>
@@ -487,7 +427,7 @@ metadata:
                                 <td>최소</td>
                                 <td>
                                     <div>
-                                        <input type="text" value="1" />
+                                        <input type="text" value="1"/>
                                         <button><i class="fas fa-sort-up"></i>
                                         </button>
                                         <button><i class="fas fa-sort-down"></i>
@@ -499,7 +439,7 @@ metadata:
                                 <td>최대</td>
                                 <td>
                                     <div>
-                                        <input type="text" value="10" />
+                                        <input type="text" value="10"/>
                                         <button><i class="fas fa-sort-up"></i>
                                         </button>
                                         <button><i class="fas fa-sort-down"></i>
@@ -527,7 +467,7 @@ metadata:
                                 <td>최대</td>
                                 <td>
                                     <div>
-                                        <input type="text" value="80" />
+                                        <input type="text" value="80"/>
                                         <button><i class="fas fa-sort-up"></i>
                                         </button>
                                         <button><i class="fas fa-sort-down"></i>
@@ -543,7 +483,7 @@ metadata:
                                 <td>최소</td>
                                 <td>
                                     <div>
-                                        <input type="text" value="256" />
+                                        <input type="text" value="256"/>
                                         <button><i class="fas fa-sort-up"></i>
                                         </button>
                                         <button><i class="fas fa-sort-down"></i>
@@ -555,7 +495,7 @@ metadata:
                                 <td>최대</td>
                                 <td>
                                     <div>
-                                        <input type="text" value="2048" />
+                                        <input type="text" value="2048"/>
                                         <button><i class="fas fa-sort-up"></i>
                                         </button>
                                         <button><i class="fas fa-sort-down"></i>
@@ -567,12 +507,12 @@ metadata:
                             </tr>
                             <tr>
                                 <th>시간 설정</th>
-                                <td> </td>
+                                <td></td>
                                 <td>
-                                    <input class="time_left" type="text" value="10" />
+                                    <input class="time_left" type="text" value="10"/>
                                 </td>
-                                <td> </td>
-                                <td> </td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             </tbody>
                         </table>
@@ -606,7 +546,9 @@ metadata:
 </script>
 
 <style>
-    .syntaxhighlighter .gutter .line{border-right-color:#ddd !important;}
+    .syntaxhighlighter .gutter .line {
+        border-right-color: #ddd !important;
+    }
 </style>
 <!-- SyntexHighlighter -->
 
@@ -632,331 +574,357 @@ metadata:
                 <span>Deployment: </span>
                 <input type="text" id="deployment">
             </div>
-            <button type="button" id="btnSearch"> [ 조회(None / NS / NS+Dep) ] </button>
-            <button type="button" id="btnReset"> [ 목록 초기화 ] </button>
+            <button type="button" id="btnSearch"> [ 조회(None / NS / NS+Dep) ]</button>
+            <button type="button" id="btnReset"> [ 목록 초기화 ]</button>
         </div>
     </div>
     <h1>RESULT</h1>
-    <div id="resultArea" style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted deepskyblue 4px;">
-    </div>
-    <h1>Replica Set</h1>
-    <div id="replicaArea" style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted deepskyblue 4px;">
-    </div>
-    <h1>Pod</h1>
-    <div id="podArea" style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted deepskyblue 4px;">
+    <div id="resultArea"
+         style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted deepskyblue 4px;">
     </div>
 
 </div>
 <script type="text/javascript">
-  var getAllDeployments = function () {
-    procCallAjax("/workloads/deployments/getList.do", "GET", null, null, callbackGetList);
-  }
+    var getAllDeployments = function () {
+        procCallAjax("/workloads/deployments/getList.do", "GET", null, null, callbackGetList);
+    }
 
-  var getDeployments = function () {
-    var namespaceVal = $("#namespace").val();
-    var deploymentVal = $("#deployment").val();
-    if (false == (namespaceVal != null && namespaceVal.replace(/\s/g, '').length > 0))
-      namespaceVal = undefined;
-    if (false == (deploymentVal != null && deploymentVal.replace(/\s/g, '').length > 0))
-      deploymentVal = undefined;
+    var getDeployments = function () {
+        var namespaceVal = $("#namespace").val();
+        var deploymentVal = $("#deployment").val();
+        if (false == (namespaceVal != null && namespaceVal.replace(/\s/g, '').length > 0))
+            namespaceVal = undefined;
+        if (false == (deploymentVal != null && deploymentVal.replace(/\s/g, '').length > 0))
+            deploymentVal = undefined;
 
-    var reqUrl = "/workloads/deployments";
+        var reqUrl = "/workloads/deployments";
 
-    if (namespaceVal != null) {
-      reqUrl += "/" + namespaceVal;
-      if (deploymentVal != null) {
-        reqUrl += "/getDeployment.do";
-        var param = {
-          name: deploymentVal
+        if (namespaceVal != null) {
+            reqUrl += "/" + namespaceVal;
+            if (deploymentVal != null) {
+                reqUrl += "/getDeployment.do";
+                var param = {
+                    name: deploymentVal
+                }
+                procCallAjax(reqUrl, "GET", param, null, callbackGetDeployment);
+            } else {
+                reqUrl += "/getList.do"
+                procCallAjax(reqUrl, "GET", null, null, callbackGetList);
+            }
+        } else {
+            procCallAjax(reqUrl + "/getList.do", "GET", null, null, callbackGetList);
         }
-        procCallAjax(reqUrl, "GET", param, null, callbackGetDeployment);
-      } else {
-        reqUrl += "/getList.do"
-        procCallAjax(reqUrl, "GET", null, null, callbackGetList);
-      }
-    } else {
-      procCallAjax(reqUrl + "/getList.do", "GET", null, null, callbackGetList);
-    }
-  }
-
-  var stringifyJSON = function (obj) {
-    return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
-  }
-
-  // CALLBACK
-  var callbackGetList = function (data) {
-    if (RESULT_STATUS_FAIL === data.resultCode) {
-      $('#resultArea').html(
-          "ResultStatus :: " + data.resultCode + " <br><br>"
-          + "ResultMessage :: " + data.resultMessage + " <br><br>");
-      return false;
     }
 
-    console.log("CONSOLE DEBUG PRINT :: " + data);
-
-    var htmlString = [];
-    htmlString.push("DEPLOYMENTS LIST :: <br><br>");
-    htmlString.push("ResultCode :: " + data.resultCode + " || "
-        + "Message :: " + data.resultMessage + " <br><br>");
-
-    //
-    $.each(data.items, function (index, itemList) {
-      // get data
-      var _metadata = itemList.metadata;
-      var _spec = itemList.spec;
-      var _status = itemList.status;
-
-      var deployName = _metadata.name;
-      var namespace = _metadata.namespace;
-      var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
-      if (labels == null || labels == "null") {
-        labels = "None"
-      }
-
-      var creationTimestamp = _metadata.creationTimestamp;
-
-      // Set replicas and total Pods are same.
-      var totalPods = _spec.replicas;
-      var runningPods = totalPods - _status.unavailableReplicas;
-      var failPods = _status.unavailableReplicas;
-      var images = _spec.images;
-
-      // htmlString push
-      htmlString.push("Name :: " + deployName + " || "
-          + "Namespace :: " + namespace + " || "
-          + "Labels :: " + labels + " || "
-          + "CreationTimestamp :: " + creationTimestamp + " || "
-          + "Pods :: " + runningPods + "/" + totalPods + " || "
-          + "Images :: " + images
-          + "<br><br>");
-    });
-
-    //var $resultArea = $('#resultArea');
-    $('#resultArea').html(htmlString);
-  };
-
-  var callbackGetDeployment = function (data) {
-    if (RESULT_STATUS_FAIL === data.resultCode) {
-      $('#resultArea').html(
-          "ResultStatus :: " + data.resultCode + " <br><br>"
-          + "ResultMessage :: " + data.resultMessage + " <br><br>");
-      return false;
+    var stringifyJSON = function (obj) {
+        return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
     }
 
-    console.log("CONSOLE DEBUG PRINT :: " + data);
+    // CALLBACK
+    var callbackGetList = function (data) {
+        if (RESULT_STATUS_FAIL === data.resultCode) {
+            $('#resultArea').html(
+                "ResultStatus :: " + data.resultCode + " <br><br>"
+                + "ResultMessage :: " + data.resultMessage + " <br><br>");
+            return false;
+        }
 
-    var htmlString = [];
-    htmlString.push("DEPLOYMENTS LIST :: <br><br>");
-    htmlString.push("ResultCode :: " + data.resultCode + " || "
-        + "Message :: " + data.resultMessage + " <br><br>");
+        console.log("CONSOLE DEBUG PRINT :: " + data);
 
-    // get data
-    var _metadata = data.metadata;
-    var _spec = data.spec;
-    var _status = data.status;
+        var htmlString = [];
+        htmlString.push("DEPLOYMENTS LIST :: <br><br>");
+        htmlString.push("ResultCode :: " + data.resultCode + " || "
+            + "Message :: " + data.resultMessage + " <br><br>");
 
-    /* Deployment detail is under...
-     * - name
-     * - namespace
-     * - labels
-     * - annotations
-     * - creation time
-     * - selector
-     * - strategy (Pod deploy strategy)
-     * - min ready seconds
-     * - revision history limit
-     * - Rolling update strategy detail (maxSurge, maxUnavailable)
-     * - Replica status (updated, total, available, unavailable)
-     */
-    var deployName = _metadata.name;
-    var namespace = _metadata.namespace;
-    var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
-    var annotations = stringifyJSON(_metadata.annotations);
-    var creationTimestamp = _metadata.creationTimestamp;
+        //
+        $.each(data.items, function (index, itemList) {
+            // get data
+            var _metadata = itemList.metadata;
+            var _spec = itemList.spec;
+            var _status = itemList.status;
 
-    var selector = stringifyJSON(_spec.selector);
-    var strategy = _spec.strategy.type;
-    var minReadySeconds = _spec.minReadySeconds;
-    var revisionHistoryLimit = _spec.revisionHistoryLimit;
-    var rollingUpdateStrategy =
-        "Max surge: " + _spec.strategy.rollingUpdate.maxSurge + ", "
-        + "Max unavailable: " + _spec.strategy.rollingUpdate.maxUnavailable;
-    var images = _spec.images;
+            var deployName = _metadata.name;
+            var namespace = _metadata.namespace;
+            var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
+            if (labels == null || labels == "null") {
+                labels = "None"
+            }
 
-    var updatedReplicas = _status.updatedReplicas;
-    var totalReplicas = _status.replicas;
-    var availableReplicas = _status.availableReplicas;
-    var unavailableReplicas = _status.unavailableReplicas;
-    var replicaStatus = updatedReplicas + " updated, "
-        + totalReplicas + " total, "
-        + availableReplicas + " available, "
-        + unavailableReplicas + " unavailable.";
+            var creationTimestamp = _metadata.creationTimestamp;
 
-    // htmlString push
-    htmlString.push(
-        "Deploy name :: " + deployName + " <br><br>"
-        + "Namespace :: " + namespace + " <br><br>"
-        + "Labels :: " + labels + " <br><br>"
-        + "Annotations :: " + annotations + " <br><br>"
-        + "Creation Time :: " + creationTimestamp + " <br><br>"
-        + "Selector :: " + selector + " <br><br>"
-        + "Images :: " + images + " <br><br>"
-        + "Strategy :: " + strategy + " <br><br>"
-        + "Min ready seconds :: " + minReadySeconds + " <br><br>"
-        + "Revision history limit :: " + revisionHistoryLimit + " <br><br>"
-        + "Rolling update strategy :: " + rollingUpdateStrategy + " <br><br>"
-        + "Status(Replica) :: " + replicaStatus + "<br><br>");
+            // Set replicas and total Pods are same.
+            var totalPods = _spec.replicas;
+            var runningPods = totalPods - _status.unavailableReplicas;
+            var failPods = _status.unavailableReplicas;
+            var images = _spec.images;
 
-    //var $resultArea = $('#resultArea');
-    $('#resultArea').html(htmlString);
+            // htmlString push
+            htmlString.push("Name :: " + deployName + " || "
+                + "Namespace :: " + namespace + " || "
+                + "Labels :: " + labels + " || "
+                + "CreationTimestamp :: " + creationTimestamp + " || "
+                + "Pods :: " + runningPods + "/" + totalPods + " || "
+                + "Images :: " + images
+                + "<br><br>");
+        });
 
-    procCallAjax( "/workloads/namespaces/"+ namespace + "/replicasets/resource/" + hoho(labels), "GET", null, null, callbackGetReplicasetList);
-    procCallAjax( "/api/workloads/namespaces/"+ namespace + "/pods/resource/" + hoho(labels), "GET", null, null, callbackGetPodsList);
-  }
+        //var $resultArea = $('#resultArea');
+        $('#resultArea').html(htmlString);
+    };
+
+    var callbackGetDeployment = function (data) {
+        if (RESULT_STATUS_FAIL === data.resultCode) {
+            $('#resultArea').html(
+                "ResultStatus :: " + data.resultCode + " <br><br>"
+                + "ResultMessage :: " + data.resultMessage + " <br><br>");
+            return false;
+        }
+
+        console.log("CONSOLE DEBUG PRINT :: " + data);
+
+        var htmlString = [];
+        htmlString.push("DEPLOYMENTS LIST :: <br><br>");
+        htmlString.push("ResultCode :: " + data.resultCode + " || "
+            + "Message :: " + data.resultMessage + " <br><br>");
+
+        // get data
+        var _metadata = data.metadata;
+        var _spec = data.spec;
+        var _status = data.status;
+
+        /* Deployment detail is under...
+         * - name
+         * - namespace
+         * - labels
+         * - annotations
+         * - creation time
+         * - selector
+         * - strategy (Pod deploy strategy)
+         * - min ready seconds
+         * - revision history limit
+         * - Rolling update strategy detail (maxSurge, maxUnavailable)
+         * - Replica status (updated, total, available, unavailable)
+         */
+        var deployName = _metadata.name;
+        var namespace = _metadata.namespace;
+        var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');  //.replace(/=/g, ':')
+        var annotations = stringifyJSON(_metadata.annotations);
+        var creationTimestamp = _metadata.creationTimestamp;
+
+        var selector = stringifyJSON(_spec.selector);
+        var strategy = _spec.strategy.type;
+        var minReadySeconds = _spec.minReadySeconds;
+        var revisionHistoryLimit = _spec.revisionHistoryLimit;
+        var rollingUpdateStrategy =
+            "Max surge: " + _spec.strategy.rollingUpdate.maxSurge + ", "
+            + "Max unavailable: " + _spec.strategy.rollingUpdate.maxUnavailable;
+        var images = _spec.images;
+
+        var updatedReplicas = _status.updatedReplicas;
+        var totalReplicas = _status.replicas;
+        var availableReplicas = _status.availableReplicas;
+        var unavailableReplicas = _status.unavailableReplicas;
+        var replicaStatus = updatedReplicas + " updated, "
+            + totalReplicas + " total, "
+            + availableReplicas + " available, "
+            + unavailableReplicas + " unavailable.";
+
+        // htmlString push
+        htmlString.push(
+            "Deploy name :: " + deployName + " <br><br>"
+            + "Namespace :: " + namespace + " <br><br>"
+            + "Labels :: " + labels + " <br><br>"
+            + "Annotations :: " + annotations + " <br><br>"
+            + "Creation Time :: " + creationTimestamp + " <br><br>"
+            + "Selector :: " + selector + " <br><br>"
+            + "Images :: " + images + " <br><br>"
+            + "Strategy :: " + strategy + " <br><br>"
+            + "Min ready seconds :: " + minReadySeconds + " <br><br>"
+            + "Revision history limit :: " + revisionHistoryLimit + " <br><br>"
+            + "Rolling update strategy :: " + rollingUpdateStrategy + " <br><br>"
+            + "Status(Replica) :: " + replicaStatus + "<br><br>");
+
+        document.getElementById("name").textContent = deployName;
+        document.getElementById("namespaceID").textContent = namespace;
+        document.getElementById("labels").innerHTML = createSpans(labels, "false");
+        document.getElementById("annotations").innerHTML = createSpans(annotations, "false");
+        document.getElementById("creationTime").textContent = creationTimestamp;
+        document.getElementById("selector").innerHTML = createSpans(selector, "false");
+        document.getElementById("strategy").textContent = strategy;
+        document.getElementById("minReadySeconds").textContent = minReadySeconds;
+        document.getElementById("revisionHistoryLimit").textContent = revisionHistoryLimit;
+        document.getElementById("rollingUpdateStrategy").textContent = rollingUpdateStrategy;
+        document.getElementById("status").textContent = replicaStatus;
 
 
-  var hoho = function (data) {
-    return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
-  }
+        //var $resultArea = $('#resultArea');
+        $('#resultArea').html(htmlString);
 
-  var processIfDataIsNull = function (data, procCallback, defaultValue) {
-      if (data == null)
-          return defaultValue;
-      else {
-          if (procCallback == null)
-              return defaultValue;
-          else
-              return procCallback(data);
-      }
-  }
+        procCallAjax("/workloads/namespaces/" + namespace + "/replicasets/resource/" + replaceLabels(labels), "GET", null, null, callbackGetReplicasetList);
+        procCallAjax("/api/workloads/namespaces/" + namespace + "/pods/resource/" + replaceLabels(labels), "GET", null, null, callbackGetPodsList);
+    }
 
 
-  // CALLBACK
-  var callbackGetReplicasetList = function (data) {
-    console.log("히히 드러와땅!");
-    if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+    var replaceLabels = function (data) {
+        return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
+    }
 
-    console.log(data);
+    var processIfDataIsNull = function (data, procCallback, defaultValue) {
+        if (data == null)
+            return defaultValue;
+        else {
+            if (procCallback == null)
+                return defaultValue;
+            else
+                return procCallback(data);
+        }
+    }
 
-    var $resultArea = $('#replicaArea');
+    var createSpans = function (data, type) {
+        var datas = data.replace(/=/g, ':').split(',');
+        var spanTemplate = "";
+        console.log("타입이 뭐임?", type)
 
-    // TODO :: RESET HTML AREA
-    $resultArea.html("");
-    $resultArea.append("REPLICASET LIST :: <br><br>");
+        if (type === "true") {
+            $.each(datas, function (index, data) {
+                spanTemplate += '<span class="bg_gray">' + data + '</span>';
+                console.log('인덱스? ', index);
+                if (datas.length > 1) {
+                    console.log('여기 몇번옴??', index);
+                    spanTemplate += '<br>';
+                }
+            });
+        } else {
+            $.each(datas, function (index, data) {
+                spanTemplate += '<span class="bg_gray">' + data + '</span> ';
+            });
+        }
 
-    //-- Replica Set List
-    //items
-    //metadata.name
-    //metadata.namespace
-    //metadata.labels
-    //status.replicas
-    //metadata.creationTimestamp
-    //spec.containers.image
+        return spanTemplate;
+    }
 
-    $.each(data.items, function (index, itemList) {
 
-      var replicasetName = itemList.metadata.name;
-      var namespace = itemList.metadata.namespace;
-      var labels = JSON.stringify(itemList.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
-      var creationTimestamp = itemList.metadata.creationTimestamp;
-      var replicas = itemList.status.replicas;   //  TOBE ::  current / desired
-      var images = new Array;
+    // CALLBACK
+    var callbackGetReplicasetList = function (data) {
 
-      var containers = itemList.spec.template.spec.containers;
-      for (var i = 0; i < containers.length; i++) {
-        images.push(containers[i].image);
-      }
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
-      $resultArea.append("<a href='javascript:void(0);'><span style='color: orangered;'>[ DETAIL ]</span></a>"
-          + "Name :: " + replicasetName + " || "
-          + "Namespace :: " + namespace + " || "
-          + "Labels :: " + labels + " || "
-          + "Pods :: " + replicas + " || "
-          + "Created on :: " + creationTimestamp + " || "
-          + "Images :: " + images.join(",")
-          + "<br><br>");
+        var $resultArea = $('#replicaSetTable');
 
-      $(document).on("click", "#resultArea a:eq(" + index + ")", function (e) {
-        getDetail(replicasetName);
-      });
+        //-- Replica Set List
+        //items
+        //metadata.name
+        //metadata.namespace
+        //metadata.labels
+        //status.replicas
+        //metadata.creationTimestamp
+        //spec.containers.image
 
+        $.each(data.items, function (index, itemList) {
+
+            var replicasetName = itemList.metadata.name;
+            var namespace = itemList.metadata.namespace;
+            var labels = JSON.stringify(itemList.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
+            var creationTimestamp = itemList.metadata.creationTimestamp;
+            var replicas = itemList.status.replicas;   //  TOBE ::  current / desired
+            var images = new Array;
+
+            var containers = itemList.spec.template.spec.containers;
+            for (var i = 0; i < containers.length; i++) {
+                images.push(containers[i].image);
+            }
+
+            $resultArea.append('<tr>' +
+                '<td>' +
+                '<a href="#"><span class="green2"><i class="fas fa-check-circle"></i></span>' + replicasetName + '</a>' +
+                '</td>' +
+                '<td>' + namespace + '</td>' +
+                '<td>' + createSpans(labels, "true") + '</td>' +
+                '<td>' + replicas + '</td>' +
+                '<td>' + images + '</td>' +
+                '<td>' + creationTimestamp + '</td>' +
+                '</td>');
+
+
+            $(document).on("click", "#resultArea a:eq(" + index + ")", function (e) {
+                getDetail(replicasetName);
+            });
+
+        });
+
+    };
+
+
+    var callbackGetPodsList = function (data) {
+        if (RESULT_STATUS_FAIL === data.resultCode) {
+            $('#podArea').html(
+                "ResultStatus :: " + data.resultCode + " <br><br>"
+                + "ResultMessage :: " + data.resultMessage + " <br><br>");
+            return false;
+        }
+
+        console.log("CONSOLE DEBUG PRINT :: " + data);
+
+        var htmlString = [];
+        htmlString.push("PODS LIST :: <br><br>");
+        htmlString.push("ResultCode :: " + data.resultCode + " || "
+            + "Message :: " + data.resultMessage + " <br><br>");
+
+        var $resultArea = $('#podsListTable');
+
+        $.each(data.items, function (index, itemList) {
+            // get data
+            var _metadata = itemList.metadata;
+            var _spec = itemList.spec;
+            var _status = itemList.status;
+
+            // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
+            var podName = _metadata.name;
+            var namespace = _metadata.namespace;
+            var nodeName = _spec.nodeName;
+            var podStatus = _status.phase;
+            var restartCount = processIfDataIsNull(_status.containerStatuses,
+                function (data) {
+                    return data.reduce(function (a, b) {
+                        return {restartCount: a.restartCount + b.restartCount};
+                    }, {restartCount: 0}).restartCount;
+                }, 0);
+            //var restartCount = _status.containerStatuses
+            //  .map(function(datum) { return datum.restartCount; })
+            //  .reduce(function(a, b) { return a + b; }, 0 );
+
+            var creationTimestamp = _metadata.creationTimestamp;
+            // error message will be filtering from namespace's event. a variable value is like...
+            //var errorMessage = _status.error.message;
+            var errorMessage = "";
+
+            $resultArea.append('<tr>' +
+                                    '<td>' + podName + '</td>' +
+                                    '<td>' + namespace + '</td>' +
+                                    '<td>' + nodeName + '</td>' +
+                                    '<td>' + podStatus + '</td>' +
+                                    '<td>' + restartCount + '</td>' +
+                                    '<td>' + creationTimestamp + '</td>' +
+                                '</tr>');
+        });
+
+    };
+
+
+    // BIND
+    $("#btnReset").on("click", function () {
+        $('#resultArea').html("");
     });
 
-  };
-
-
-  var callbackGetPodsList = function (data) {
-      if (RESULT_STATUS_FAIL === data.resultCode) {
-          $('#podArea').html(
-              "ResultStatus :: " + data.resultCode + " <br><br>"
-              + "ResultMessage :: " + data.resultMessage + " <br><br>");
-          return false;
-      }
-
-      console.log("CONSOLE DEBUG PRINT :: " + data);
-
-      var htmlString = [];
-      htmlString.push("PODS LIST :: <br><br>");
-      htmlString.push("ResultCode :: " + data.resultCode + " || "
-          + "Message :: " + data.resultMessage + " <br><br>");
-
-      //
-      $.each(data.items, function (index, itemList) {
-          // get data
-          var _metadata = itemList.metadata;
-          var _spec = itemList.spec;
-          var _status = itemList.status;
-
-          // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
-          var podName = _metadata.name;
-          var namespace = _metadata.namespace;
-          var nodeName = _spec.nodeName;
-          var podStatus = _status.phase;
-          var restartCount = processIfDataIsNull(_status.containerStatuses,
-              function (data) {
-                  return data.reduce(function (a, b) {
-                      return { restartCount: a.restartCount + b.restartCount };
-                  }, { restartCount: 0 }).restartCount;
-              }, 0);
-          //var restartCount = _status.containerStatuses
-          //  .map(function(datum) { return datum.restartCount; })
-          //  .reduce(function(a, b) { return a + b; }, 0 );
-
-          var creationTimestamp = _metadata.creationTimestamp;
-          // error message will be filtering from namespace's event. a variable value is like...
-          //var errorMessage = _status.error.message;
-          var errorMessage = "";
-
-          // htmlString push
-          htmlString.push("Name :: " + podName + " || "
-              + "Namespace :: " + namespace + " || "
-              + "Node :: " + nodeName + " || "
-              + "Status :: " + podStatus + " || "
-              + "Restart Count :: " + restartCount + " || "
-              + "Created At :: " + creationTimestamp + " || "
-              + "Error message :: " + errorMessage
-              + "<br><br>");
-      });
-
-      //var $resultArea = $('#resultArea');
-      $('#podArea').html(htmlString);
-  };
-
-
-  // BIND
-  $("#btnReset").on("click", function () {
-    $('#resultArea').html("");
-  });
-
-  // ALREADY READY STATE
-  $(document).ready(function () {
-    $("#btnSearch").on("click", function (e) {
-      getDeployments();
+    // ALREADY READY STATE
+    $(document).ready(function () {
+        $("#btnSearch").on("click", function (e) {
+            getDeployments();
+        });
     });
-  });
 
-  // ON LOAD
-  $(document.body).ready(function () {
-    // getAllDeployments();
-  });
+    // ON LOAD
+    $(document.body).ready(function () {
+        // getAllDeployments();
+    });
 </script>
