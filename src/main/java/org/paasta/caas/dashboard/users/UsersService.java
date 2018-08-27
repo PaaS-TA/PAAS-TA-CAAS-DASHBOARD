@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.user;
+package org.paasta.caas.dashboard.users;
 
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
@@ -16,7 +16,7 @@ import java.util.List;
  * @since 2018.08.02
  */
 @Service
-public class UserService {
+public class UsersService {
 
     private static final String REQ_URL = "/users";
     private final RestTemplateService restTemplateService;
@@ -27,7 +27,7 @@ public class UserService {
      * @param restTemplateService the rest template service
      */
     @Autowired
-    public UserService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
+    public UsersService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
 
     /**
      * Gets user list.
