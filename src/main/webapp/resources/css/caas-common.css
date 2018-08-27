@@ -4,3 +4,10 @@
     display: block;
     margin: 30px auto 10px;
 }
+
+.custom-col-md-3 {
+    float: left;
+    position: relative;
+    width: 32%;
+    margin-left: 1%;
+}

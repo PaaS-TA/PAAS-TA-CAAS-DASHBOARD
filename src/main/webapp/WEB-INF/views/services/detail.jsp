@@ -10,7 +10,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span><span class="resultServiceName"> - </span></h1>
+    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span class="resultServiceName"> - </span></h1>
     <div class="cluster_tabs clearfix">
         <ul>
             <li name="tab01" class="cluster_tabs_on">Details</li>
@@ -24,58 +24,143 @@
         <ul class="maT30">
             <!-- 그래프 시작 -->
             <li class="cluster_first_box">
-                <div class="graph-legend-wrap clearfix">
-                    <ul class="graph-legend">
-                        <li rel="current" class="on">현재</li>
-                        <li rel="1h">1시간</li>
-                        <li rel="6h">6시간</li>
-                        <li rel="1d">1일</li>
-                        <li rel="7d">7일</li>
-                        <li rel="30d">30일</li>
-                    </ul>
-                </div>
-                <div class="graph-nodes">
-                    <div class="graph-tit-wrap">
-                        <p class="graph-tit">
-                            CPU<br/>
-                            현재 사용량
-                        </p>
-                        <p class="graph-rate tit-color1">
-                            <span>60</span>%
-                        </p>
-                    </div>
-                    <div class="graph-cnt">
-                        <div id="areachartcpu" style="min-width: 250px; height: 170px; margin: 0 auto"></div>
-                    </div>
-                </div>
-                <div class="graph-nodes">
-                    <div class="graph-tit-wrap">
-                        <p class="graph-tit">
-                            메모리<br/>
-                            현재 사용량
-                        </p>
-                        <p class="graph-rate tit-color2">
-                            <span>60</span>%
-                        </p>
-                    </div>
-                    <div class="graph-cnt">
-                        <div id="areachartmem" style="min-width: 250px; height: 170px; margin: 0 auto"></div>
-                    </div>
-                </div>
-                <div class="graph-nodes">
-                    <div class="graph-tit-wrap">
-                        <p class="graph-tit">
-                            디스크<br/>
-                            현재 사용량
-                        </p>
-                        <p class="graph-rate tit-color3">
-                            <span>60</span>%
-                        </p>
-                    </div>
-                    <div class="graph-cnt">
-                        <div id="areachartdisk" style="min-width: 250px; height: 170px; margin: 0 auto"></div>
+                <%--<div class="graph-legend-wrap clearfix">--%>
+                    <%--<ul class="graph-legend">--%>
+                        <%--<li rel="current" class="on">현재</li>--%>
+                        <%--<li rel="1h">1시간</li>--%>
+                        <%--<li rel="6h">6시간</li>--%>
+                        <%--<li rel="1d">1일</li>--%>
+                        <%--<li rel="7d">7일</li>--%>
+                        <%--<li rel="30d">30일</li>--%>
+                    <%--</ul>--%>
+                <%--</div>--%>
+
+
+                <%--TODO :: CHECK--%>
+                <div class="custom-col-md-3">
+                    <div class="col-in col-in-bg" id="cpu">
+                        <dl>
+                            <dt class="tit">CPU
+                                <span class="pull-right rights">0.38</span>
+                            </dt>
+                            <dd><span>0.38</span><i>%</i><small> / 100%</small>
+                                <div class="pull-right">
+                                    <div class="icon_wrap">
+                                        <img alt="" src="<c:url value="/resources/images/custom-caas/cpu_ico.png"/>">
+                                    </div>
+                                    <div class="BG_wrap" style="top: -0.38%;">
+                                        <img alt="" src="<c:url value="/resources/images/custom-caas/ico_bg.png"/>">
+                                        <input id="cpuPer" value="20" title="">
+                                    </div>
+                                </div>
+                            </dd>
+                            <dt>
+                                <ul class="instance_ul">
+                                </ul>
+                            </dt>
+                        </dl>
                     </div>
                 </div>
+
+                <div class="custom-col-md-3">
+                    <div class="col-in col-in-bg" id="memory">
+                        <dl>
+                            <dt class="tit">MEMORY
+                                <span class="pull-right rights">60</span>
+                            </dt>
+                            <dd>
+                                <span class="memS" id="memS1">512</span>
+                                <span class="memS" id="memS2" style="display:none;"><input class="instance_in" id="mem_in" style="font-size: 40px;" type="text" title=""></span>
+                                <i>M</i><small> / 최대 10G</small>
+                                <div class="pull-right">
+                                    <div class="icon_wrap">
+                                        <img alt="" src="<c:url value="/resources/images/custom-caas/memory_ico.png"/>">
+                                    </div>
+                                    <div class="BG_wrap" style="top: -60%;">
+                                        <img alt="" src="<c:url value="/resources/images/custom-caas/ico_bg.png"/>">
+                                        <input id="memoryPer" value="40" title="">
+                                    </div>
+                                </div>
+                            </dd>
+                            <dt>
+                                <ul class="instance_ul">
+                                </ul>
+                            </dt>
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="custom-col-md-3">
+                    <div class="col-in col-in-bg" id="disk">
+                        <dl>
+                            <dt class="tit">DISK
+                                <span class="pull-right rights">15</span>
+                            </dt>
+                            <dd>
+                                <span class="diskS" id="diskS1">1</span>
+                                <span class="diskS" id="diskS2" style="display:none;"><input class="instance_in" id="disk_in" style="font-size: 40px;" type="text" title=""></span>
+                                <i>G</i><small> / 최대 10G</small>
+                                <div class="pull-right">
+                                    <div class="icon_wrap">
+                                        <img alt="" src="<c:url value="/resources/images/custom-caas/disk_ico.png"/>">
+                                    </div>
+                                    <div class="BG_wrap" style="top: -15%;">
+                                        <img alt="" src="<c:url value="/resources/images/custom-caas/ico_bg.png"/>">
+                                        <input id="diskPer" value="60" title="">
+                                    </div>
+                                </div>
+                            </dd>
+                            <dt>
+                                <ul class="instance_ul">
+                                </ul>
+                            </dt>
+                        </dl>
+                    </div>
+                </div>
+
+                <%--<div class="graph-nodes">--%>
+                    <%--<div class="graph-tit-wrap">--%>
+                        <%--<p class="graph-tit">--%>
+                            <%--CPU<br/>--%>
+                            <%--현재 사용량--%>
+                        <%--</p>--%>
+                        <%--<p class="graph-rate tit-color1">--%>
+                            <%--<span>60</span>%--%>
+                        <%--</p>--%>
+                    <%--</div>--%>
+                    <%--<div class="graph-cnt">--%>
+                        <%--<div id="areachartcpu" style="min-width: 250px; height: 170px; margin: 0 auto"></div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+                <%--<div class="graph-nodes">--%>
+                    <%--<div class="graph-tit-wrap">--%>
+                        <%--<p class="graph-tit">--%>
+                            <%--메모리<br/>--%>
+                            <%--현재 사용량--%>
+                        <%--</p>--%>
+                        <%--<p class="graph-rate tit-color2">--%>
+                            <%--<span>60</span>%--%>
+                        <%--</p>--%>
+                    <%--</div>--%>
+                    <%--<div class="graph-cnt">--%>
+                        <%--<div id="areachartmem" style="min-width: 250px; height: 170px; margin: 0 auto"></div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+
+                <%--<div class="graph-nodes">--%>
+                    <%--<div class="graph-tit-wrap">--%>
+                        <%--<p class="graph-tit">--%>
+                            <%--디스크<br/>--%>
+                            <%--현재 사용량--%>
+                        <%--</p>--%>
+                        <%--<p class="graph-rate tit-color3">--%>
+                            <%--<span>60</span>%--%>
+                        <%--</p>--%>
+                    <%--</div>--%>
+                    <%--<div class="graph-cnt">--%>
+                        <%--<div id="areachartdisk" style="min-width: 250px; height: 170px; margin: 0 auto"></div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </li>
             <!-- 그래프 끝 -->
             <li class="cluster_second_box">
@@ -334,8 +419,8 @@ metadata:
 <link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">
 
 <script type="text/javascript">
-    SyntaxHighlighter.defaults['quick-code'] = false;
-    SyntaxHighlighter.all();
+    // SyntaxHighlighter.defaults['quick-code'] = false;
+    // SyntaxHighlighter.all();
 </script>
 
 <style>
@@ -346,9 +431,9 @@ metadata:
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function () {
-        createChart("current", "cpu");
-        createChart("current", "mem");
-        createChart("current", "disk");
+        // createChart("current", "cpu");
+        // createChart("current", "mem");
+        // createChart("current", "disk");
     });
 </script>
 
