@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+    <!-- TEMPLATES -->
+    <definition name="layout.default" template="/WEB-INF/views/common/default-layout.jsp">
+        <put-attribute name="title" value="CaaS Dashboard"/>
+        <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+        <put-attribute name="left-menu" value="/WEB-INF/views/common/left-menu.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
+    </definition>
+
+    <!-- PAGES -->
+    <definition name="index" extends="layout.default">
+        <put-attribute name="body" value="/WEB-INF/views/index.jsp"/>
+    </definition>
+
+    <definition name="/*/*" extends="layout.default">
+        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"/>
+    </definition>
+
+    <definition name="layout.empty" template="/WEB-INF/views/common/empty-layout.jsp">
+        <put-attribute name="body" value=""/>
+    </definition>
+
+    <definition name="/common/unauthorized" extends="layout.empty">
+        <put-attribute name="body" value="/WEB-INF/views/common/unauthorized.jsp"/>
+    </definition>
+
+    <!--TODO :: REMOVE-->
+    <!--<definition name="/namespaces/main" extends="layout.default">-->
+        <!--<put-attribute name="body" value="/WEB-INF/views/namespaces/main.jsp"/>-->
+    <!--</definition>-->
+
+    <!--<definition name="main/main" extends="layout.default">-->
+        <!--<put-attribute name="body" value="/WEB-INF/views/main/main.jsp"/>-->
+    <!--</definition>-->
+
+</tiles-definitions>
