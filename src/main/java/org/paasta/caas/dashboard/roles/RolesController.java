@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.role;
+package org.paasta.caas.dashboard.roles;
 
 import org.paasta.caas.dashboard.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +20,18 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @RequestMapping(value = "/roles")
-public class RoleController {
+public class RolesController {
 
     private static final String BASE_URL = "/admin/roles";
     private final CommonService commonService;
-    private final RoleService roleService;
+    private final RolesService roleService;
     /**
      * Instantiates a new Custom service controller.
      * @param commonService    the common service
      * @param roleService
      */
     @Autowired
-    public RoleController(CommonService commonService, RoleService roleService) {
+    public RolesController(CommonService commonService, RolesService roleService) {
         this.commonService = commonService;
         this.roleService = roleService;
     }
@@ -66,7 +66,7 @@ public class RoleController {
      */
     @GetMapping(value = "/getListByAllNamespaces.do")
     @ResponseBody
-    public RoleList getRoleListByAllNamespaces(){
+    public RolesList getRoleListByAllNamespaces(){
         return roleService.getRoleListByAllNamespaces();
     }
 
@@ -77,7 +77,7 @@ public class RoleController {
      */
     @GetMapping(value = "/getList.do")
     @ResponseBody
-    public RoleList getRoleList(){
+    public RolesList getRoleList(){
         return roleService.getRoleList();
     }
 
@@ -89,7 +89,7 @@ public class RoleController {
      */
     @GetMapping(value = "/get.do")
     @ResponseBody
-    public Role getRole(Role role){
+    public Roles getRole(Roles role){
         return roleService.getRole(role.getRoleName());
     }
 }

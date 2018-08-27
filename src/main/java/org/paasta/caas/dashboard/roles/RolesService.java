@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.role;
+package org.paasta.caas.dashboard.roles;
 
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
@@ -14,14 +14,14 @@ import org.springframework.stereotype.Service;
  * @since 2018-08-16
  */
 @Service
-public class RoleService {
+public class RolesService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RoleService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RolesService.class);
     private static final String REQ_URL = "/roles/namespaces/hrjin-namespace/roles";
     private final RestTemplateService restTemplateService;
 
     @Autowired
-    public RoleService(RestTemplateService restTemplateService) {
+    public RolesService(RestTemplateService restTemplateService) {
         this.restTemplateService = restTemplateService;
     }
 
@@ -30,8 +30,8 @@ public class RoleService {
      *
      * @return the role list
      */
-    public RoleList getRoleListByAllNamespaces() {
-        return restTemplateService.send(Constants.TARGET_CAAS_API,"/roles", HttpMethod.GET, null, RoleList.class);
+    public RolesList getRoleListByAllNamespaces() {
+        return restTemplateService.send(Constants.TARGET_CAAS_API,"/roles", HttpMethod.GET, null, RolesList.class);
     }
 
     /**
@@ -39,9 +39,9 @@ public class RoleService {
      *
      * @return the role list
      */
-    public RoleList getRoleList() {
+    public RolesList getRoleList() {
         // url :: /cluster/namespaces/{namespace}/roles
-        return restTemplateService.send(Constants.TARGET_CAAS_API,REQ_URL, HttpMethod.GET, null, RoleList.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API,REQ_URL, HttpMethod.GET, null, RolesList.class);
     }
 
     /**
@@ -50,7 +50,7 @@ public class RoleService {
      * @param roleName the role name
      * @return the role
      */
-    public Role getRole(String roleName) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API,REQ_URL + "/" + roleName, HttpMethod.GET, null, Role.class);
+    public Roles getRole(String roleName) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API,REQ_URL + "/" + roleName, HttpMethod.GET, null, Roles.class);
     }
 }

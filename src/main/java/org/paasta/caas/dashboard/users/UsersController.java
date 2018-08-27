@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.user;
+package org.paasta.caas.dashboard.users;
 
 import org.paasta.caas.dashboard.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,12 @@ import java.util.List;
  * @since 2018.08.02
  */
 @Controller
-@RequestMapping(value = "/users")
-public class UserController {
+@RequestMapping(value = "/caas/users")
+public class UsersController {
 
     private static final String BASE_URL = "/admin/users";
     private final CommonService commonService;
-    private final UserService userService;
+    private final UsersService userService;
 
     /**
      * Instantiates a new User controller.
@@ -33,7 +33,7 @@ public class UserController {
      * @param userService   the user service
      */
     @Autowired
-    public UserController(CommonService commonService, UserService userService) {
+    public UsersController(CommonService commonService, UsersService userService) {
         this.commonService = commonService;
         this.userService = userService;
     }
