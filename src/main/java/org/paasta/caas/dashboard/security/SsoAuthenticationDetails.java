@@ -34,6 +34,7 @@ public class SsoAuthenticationDetails extends OAuth2AuthenticationDetails {
     private String serviceInstanceId;
     private String organizationGuid;
     private String spaceGuid;
+    private String nameSpace;
 
 
     public SsoAuthenticationDetails(HttpServletRequest request, String id, String userid) {
@@ -177,6 +178,14 @@ public class SsoAuthenticationDetails extends OAuth2AuthenticationDetails {
 
     public void setSpaceGuid(String spaceGuid) {
         this.spaceGuid = spaceGuid;
+    }
+
+    public String getNameSpace() {
+        return nameSpace;
+    }
+
+    public void setNameSpace(String nameSpace) {
+        this.nameSpace = nameSpace;
     }
 
     //    private static final Logger LOGGER = LoggerFactory.getLogger(SsoAuthenticationDetails.class);

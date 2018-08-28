@@ -1,13 +1,16 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Header
   author: REX
   version: 1.0
   since: 2018.08.07
 --%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <header class="header">
     <div class="logo">
-        <a href="javascript:void(0);" onclick="procMovePage('/');"><h1><img src="<c:url value="/resources/images/main/logo.png"/>" alt=""/></h1></a>
+        <a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/clusters/overview');"><h1><img src="<c:url value="/resources/images/main/logo.png"/>" alt=""/></h1></a>
         <%--<a href="#"><h1><img src="../resources/images/main/logo.png" alt=""/></h1></a>--%>
     </div>
 
@@ -61,9 +64,9 @@
                 </button>
                 <div id="r_user" class="dropdown-menu">
                     <ul class="caas-user">
-                        <li id="header-menu-accessInfo"><a href="javascript:void(0);" onclick="procMovePage('/accessInfo');">Access</a></li>
-                        <li id="header-menu-users"><a href="javascript:void(0);" onclick="procMovePage('/caas/users');">User</a></li>
-                        <li id="header-menu-roles"><a href="javascript:void(0);" onclick="procMovePage('/roles');">Role</a></li>
+                        <li id="header-menu-accessInfo"><a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/accessInfo');">Access</a></li>
+                        <li id="header-menu-users"><a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/users');">User</a></li>
+                        <li id="header-menu-roles"><a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/roles');">Role</a></li>
                         <%--<li class="cur"><a href="#">Access</a></li>
                         <li><a href="#">User</a></li>
                         <li><a href="#">Role</a></li>--%>
@@ -82,7 +85,20 @@
             <li>Clusters</li>
         </ul>
         <div class="btn-kuber">
-            <button class="btns colors4" onclick="window.open('https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl')">Kubectl download</button>
+            <c:set var="servletPath" value="${requestScope['javax.servlet.forward.servlet_path']}" />
+            <c:set var="pathArray" value="${fn:split(servletPath,'/')}" />
+            <c:forEach var="path" items="${pathArray}" varStatus="g">
+                <c:choose>
+                    <c:when test="${path eq 'clusters' || path eq 'accessInfo'}">
+                        <button class="btns colors4" onclick="window.open('https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl')">Kubectl download</button>
+                    </c:when>
+                    <c:when test="${path eq 'workloads'}">
+                        <button class="btns colors4" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/accessInfo');">Access</button>
+                    </c:when>
+                    <c:otherwise>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
         </div>
     </div>
 </header>

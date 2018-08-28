@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.workload.replicaSets;
+package org.paasta.caas.dashboard.workloads.replicaSets;
 
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;

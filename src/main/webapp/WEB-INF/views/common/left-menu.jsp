@@ -5,11 +5,12 @@
   since: 2018.08.07
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <nav>
     <div class="scroll_style">
         <ul class="nav_1d caas_nav">
             <%--<li class="cur">--%>
-            <li id="left-menu-clusters" onclick="procMovePage('/caas/clusters/overview');">
+            <li id="left-menu-clusters" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/clusters/overview');">
                 <dl>
                     <dt>
                         <div id="lnbimg16" class="lefticos">
@@ -23,7 +24,7 @@
                 </dl>
             </li>
             <%--<li onclick="location.href='caas_workloads.html'">--%>
-            <li id="left-menu-workloads" onclick="procMovePage('/workloads/overview');">
+            <li id="left-menu-workloads" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/workloads/overview');">
                 <dl>
                     <dt>
                         <div id="lnbimg17" class="">
@@ -38,7 +39,7 @@
                 </dl>
             </li>
             <%--<li onclick="location.href='caas_services.html'">--%>
-            <li id="left-menu-services" onclick="procMovePage('/services');">
+            <li id="left-menu-services" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/services');">
                 <dl>
                     <dt>
                         <div id="lnbimg18" class="">

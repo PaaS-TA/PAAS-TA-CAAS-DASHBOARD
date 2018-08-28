@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.workloads.pods;
+package org.paasta.caas.dashboard.clusters.namespace;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;
@@ -6,24 +6,21 @@ import org.paasta.caas.dashboard.common.model.CommonSpec;
 import org.paasta.caas.dashboard.common.model.CommonStatus;
 
 /**
- * Pods Model 클래스
+ * Namespace Model 클래스
  *
- * @author REX
+ * @author kdh
  * @version 1.0
- * @since 2018.08.13
+ * @since 2018.08.28
  */
 @Data
-class Pods {
+public class Namespace {
 
     private String resultCode;
-    private String resultMessage;
+
+    private String kind;
+    private String apiVersion;
 
     private CommonMetaData metadata;
     private CommonSpec spec;
     private CommonStatus status;
-
-    // FOR DASHBOARD
-    private String selector;
-    private String serviceName;
-
 }

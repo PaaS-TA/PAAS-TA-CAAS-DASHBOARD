@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.workload.replicaSets;
+package org.paasta.caas.dashboard.workloads.replicaSets;
 
 import lombok.Data;
 

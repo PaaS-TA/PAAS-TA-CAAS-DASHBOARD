@@ -4,10 +4,7 @@ package org.paasta.caas.dashboard.clusters.namespace;
 
 import org.paasta.caas.dashboard.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,26 +25,26 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/caas/clusters")
 public class NamespaceController {
 
-//    private static final String BASE_URL = "/namespaces";
-//
-//    private final CommonService commonService;
-//    private final NamespaceService namespaceService;
-//
-//    @Autowired
-//    public NamespaceController(CommonService commonService, NamespaceService namespaceService) {
-//        this.commonService = commonService;
-//        this.namespaceService = namespaceService;
-//    }
-//
-//    @GetMapping(value = {"/namespaces"})
-//    public ModelAndView getUserMain(HttpServletRequest httpServletRequest) {
-//        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
-//    }
-//
-//
-//    @GetMapping(value = "/namespaces/getList.do")
-//    @ResponseBody
-//    public Namespace getServiceInstanceList() {
-//        return namespaceService.getNamespaceList();
-//    }
+    private static final String BASE_URL = "/namespaces";
+
+    private final CommonService commonService;
+    private final NamespaceService namespaceService;
+
+    @Autowired
+    public NamespaceController(CommonService commonService, NamespaceService namespaceService) {
+        this.commonService = commonService;
+        this.namespaceService = namespaceService;
+    }
+
+    @GetMapping(value = {"/namespaces"})
+    public ModelAndView getUserMain(HttpServletRequest httpServletRequest) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
+    }
+
+
+    @GetMapping(value = "/namespaces/{namespace}/getDetail.do")
+    @ResponseBody
+    public Namespace getNamespaces(@PathVariable String namespace) {
+        return namespaceService.getNamespaces(namespace);
+    }
 }

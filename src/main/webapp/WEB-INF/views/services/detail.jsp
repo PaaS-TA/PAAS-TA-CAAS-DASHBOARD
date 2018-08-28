@@ -13,17 +13,18 @@
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span class="resultServiceName"> - </span></h1>
     <div class="cluster_tabs clearfix">
         <ul>
-            <li name="tab01" class="cluster_tabs_on">Details</li>
-            <li name="tab02" class="cluster_tabs_right">Events</li>
-            <li name="tab03" class="cluster_tabs_right">YAML</li>
+            <li name="tab01" class="cluster_tabs_on" style="cursor: default;">Details</li>
+            <li name="tab02" class="cluster_tabs_right" onclick='movePage("events");'>Events</li>
+            <li name="tab03" class="cluster_tabs_right" onclick='movePage("yaml");'>YAML</li>
         </ul>
         <div class="cluster_tabs_line"></div>
     </div>
     <!-- Services Details 시작 -->
     <div class="cluster_content01 row two_line two_view harf_view">
-        <ul class="maT30">
+        <ul class="maT10">
+        <%--<ul class="maT30">--%>
             <!-- 그래프 시작 -->
-            <li class="cluster_first_box">
+            <%--<li class="cluster_first_box">--%>
                 <%--<div class="graph-legend-wrap clearfix">--%>
                     <%--<ul class="graph-legend">--%>
                         <%--<li rel="current" class="on">현재</li>--%>
@@ -35,9 +36,8 @@
                     <%--</ul>--%>
                 <%--</div>--%>
 
-
                 <%--TODO :: CHECK--%>
-                <div class="custom-col-md-3">
+                <%--<div class="custom-col-md-3">
                     <div class="col-in col-in-bg" id="cpu">
                         <dl>
                             <dt class="tit">CPU
@@ -61,7 +61,6 @@
                         </dl>
                     </div>
                 </div>
-
                 <div class="custom-col-md-3">
                     <div class="col-in col-in-bg" id="memory">
                         <dl>
@@ -89,7 +88,6 @@
                         </dl>
                     </div>
                 </div>
-
                 <div class="custom-col-md-3">
                     <div class="col-in col-in-bg" id="disk">
                         <dl>
@@ -116,7 +114,7 @@
                             </dt>
                         </dl>
                     </div>
-                </div>
+                </div>--%>
 
                 <%--<div class="graph-nodes">--%>
                     <%--<div class="graph-tit-wrap">--%>
@@ -161,7 +159,7 @@
                         <%--<div id="areachartdisk" style="min-width: 250px; height: 170px; margin: 0 auto"></div>--%>
                     <%--</div>--%>
                 <%--</div>--%>
-            </li>
+            <%--</li>--%>
             <!-- 그래프 끝 -->
             <li class="cluster_second_box">
                 <div class="sortable_wrap">
@@ -294,112 +292,6 @@
         </ul>
     </div>
     <!-- Services Details 끝 -->
-    <!-- Services Events 시작-->
-    <div class="cluster_content02 row two_line two_view harf_view">
-        <ul class="maT30">
-            <li>
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Events</p>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL service-lh">
-                            <colgroup>
-                                <col style=".">
-                                <col style=".">
-                                <col style=".">
-                                <col style=".">
-                                <col style=".">
-                                <col style=".">
-                            </colgroup>
-                            <thead>
-                            <tr>
-                                <td>Message</td>
-                                <td>Source</td>
-                                <td>Sub-object</td>
-                                <td>Count</td>
-                                <td>First seen</td>
-                                <td>Last seen</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>Created pod: aa-57cff4f9df-xcstf</td>
-                                <td>replicaset-controller</td>
-                                <td>-</td>
-                                <td>1</td>
-                                <td>2018-07-08 18:31:01</td>
-                                <td>2018-07-09 18:31:01</td>
-                            </tr>
-                            <tr>
-                                <td>Created pod: aa-57cff4f9df-xcstf</td>
-                                <td>replicaset-controller</td>
-                                <td>-</td>
-                                <td>1</td>
-                                <td>2018-07-08 18:31:01</td>
-                                <td>2018-07-09 18:31:01</td>
-                            </tr>
-                            <tr>
-                                <td>Created pod: aa-57cff4f9df-xcstf</td>
-                                <td>replicaset-controller</td>
-                                <td>-</td>
-                                <td>1</td>
-                                <td>2018-07-08 18:31:01</td>
-                                <td>2018-07-09 18:31:01</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <!-- Services Events 끝 -->
-    <!-- Services YAML 시작-->
-    <div class="cluster_content03 row two_line two_view harf_view">
-        <ul class="maT30">
-            <li>
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>YAML</p>
-                    </div>
-                    <div class="paA30">
-                        <div class="yaml">
-                                    <pre class="brush: cpp">
-apiVersion: extensions/v1beta1
-kind: DaemonSet
-metadata:
-    annotations:
-    kubectl.kubernetes.io/last-applied-Config: |
-        {"apiVersion":"extensions/v1beta1","kind":"DaemonSet","metadata":{"annotations":{},"labels":{"addonmanCreated onr.kubernetes.io/mode":"Reconcile","k8s-app":"fluentd-gcp","kubernetes.io/cluster-service":"true","version":"v2.0.17"},"name":"fluentd-gcp-v2.0.17","namespace":"kube-system"},"spec":{"template":{"metadata":{"annotations":{"scheduler.alpha.kubernetes.io/critical-pod":""},"labels":{"k8s-app":"fluentd-gcp","kubernetes.io/cluster-service":"true","version":"v2.0.17"}},"spec":{"containers":[{"env":[{"name":"FLUENTD_ARGS","value":"--no-supervisor -q"}],"Images":"gcr.io/google-containers/fluentd-gcp:2.0.17","livenessProbe":{"exec":{"command":["/bin/sh","-c","LIVENESS_THRESHOLD_SECONDS=\${LIVENESS_THRESHOLD_SECONDS:-300}; STUCK_THRESHOLD_SECONDS=\${LIVENESS_THRESHOLD_SECONDS:-900}; if [ ! -e /var/log/fluentd-buffers ]; then\n  exit 1;\nfi; LAST_MODIFIED_DATE=`stat /var/log/fluentd-buffers | grep Modify | sed -r \"s/Modify: (.*)/\\1/\"`; LAST_MODIFIED_TIMESTAMP=`date -d \"$LAST_MODIFIED_DATE\" +%s`; if [ `date +%s` -gt `expr $LAST_MODIFIED_TIMESTAMP + $STUCK_THRESHOLD_SECONDS` ]; then\n  rm -rf /var/log/fluentd-buffers;\n  exit 1;\nfi; if [ `date +%s` -gt `expr $LAST_MODIFIED_TIMESTAMP + $LIVENESS_THRESHOLD_SECONDS` ]; then\n  exit 1;\nfi;\n"]},"initialDelaySeconds":600,"periodSeconds":60},"name":"fluentd-gcp","resources":{"limits":{"memory":"300Mi"},"requests":{"cpu":"100m","memory":"200Mi"}},"volumeMounts":[{"mountPath":"/var/log","name":"varlog"},{"mountPath":"/var/lib/docker/containers","name":"varlibdockercontainers","readOnly":true},{"mountPath":"/host/lib","name":"libsystemddir","readOnly":true},{"mountPath":"/etc/fluent/config.d","name":"config-volume"}]},{"command":["/monitor","--stackdriver-prefix=container.googleapis.com/internal/addons","--api-override=https://monitoring.googleapis.com/","--source=fluentd:http://_NAMESPACE","valueFrom":{"fieldRef":{"fieldPath":"metadata.namespace"}}}],"Images":"gcr.io/google-containers/prometheus-to-sd:v0.2.2","name":"prometheus-to-sd-exporter"}],"dnsPolicy":"Default","nodeSelector":{"beta.kubernetes.io/fluentd-ds-ready":"true"},"serviceAccountName":"fluentd-gcp","terminationGracePeriodSeconds":30,"tolerations":[{"effect":"NoSchedule","key":"node.alpha.kubernetes.io/ismaster"},{"effect":"NoExecute","operator":"Exists"},{"effect":"NoSchedule","operator":"Exists"}],"volumes":[{"hostPath":{"path":"/var/log"},"name":"varlog"},{"hostPath":{"path":"/var/lib/docker/containers"},"name":"varlibdockercontainers"},{"hostPath":{"path":"/usr/lib64"},"name":"libsystemddir"},{"configMap":{"name":"fluentd-gcp-config-v1.2.3"},"name":"config-volume"}]}},"updateStrategy":{"type":"RollingUpdate"}}}
-    creationTimestamp: 2018-07-03T04:43:57Z
-    generation: 1
-    labels:
-    addonmanCreated onr.kubernetes.io/mode: Reconcile
-    k8s-app: fluentd-gcp
-    kubernetes.io/cluster-service: "true"
-    version: v2.0.17
-    name: fluentd-gcp-v2.0.17
-    namespace: kube-system
-                                    </pre>
-                        </div>
-                        <!--button class="btns colors4">Save</button>
-                        <button class="btns colors5">Cancel</button>
-                        <button class="btns colors9 pull-right maL05">copy</button>
-                        <button class="btns colors9 pull-right">Download</button>
-                        <div class="yamlArea">
-                            <div class="number">1<br/>2<br/>3<br/>4<br/>5</div>
-                            <div class="text">fff<br/>ddd<br/>dfff<br/>dddd<br/>ddd<br/>dfff<br/>dddd</div>
-                            <div style="clear:both;"></div>
-                        </div>
-                        <button class="btns colors4">Save</button>
-                        <button class="btns colors5">Cancel</button-->
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <!-- Services YAML 끝 -->
 </div>
 <%--TODO--%>
 <!-- modal -->
@@ -407,25 +299,26 @@ metadata:
 
 <input type="hidden" id="requestServiceName" name="requestServiceName" value="<c:out value='${serviceName}' default='' />" />
 
-<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>
+<%--TODO : REMOVE--%>
+<%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>--%>
+<%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
 
 <!-- SyntexHighlighter -->
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCpp.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCSharp.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushPython.js"/>"></script>
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">
+<%--<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>--%>
+<%--<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCpp.js"/>"></script>--%>
+<%--<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCSharp.js"/>"></script>--%>
+<%--<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushPython.js"/>"></script>--%>
+<%--<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">--%>
+<%--<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">--%>
 
-<script type="text/javascript">
-    // SyntaxHighlighter.defaults['quick-code'] = false;
-    // SyntaxHighlighter.all();
-</script>
+<%--<script type="text/javascript">--%>
+    <%--// SyntaxHighlighter.defaults['quick-code'] = false;--%>
+    <%--// SyntaxHighlighter.all();--%>
+<%--</script>--%>
 
-<style>
-    .syntaxhighlighter .gutter .line{border-right-color:#ddd !important;}
-</style>
+<%--<style>--%>
+    <%--.syntaxhighlighter .gutter .line{border-right-color:#ddd !important;}--%>
+<%--</style>--%>
 <!-- SyntexHighlighter -->
 
 <script type="text/javascript">
@@ -534,7 +427,7 @@ metadata:
                 htmlString.push(
                     "<tr>"
                     + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"/services/" + document.getElementById('requestServiceName').value + "\");'>" + items[i].metadata.name + "</a>"
+                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/" + document.getElementById('requestServiceName').value + "\");'>" + items[i].metadata.name + "</a>"
                     + "</td>"
                     + "<td>" + itemsMetadata.namespace + "</td>"
                     + "<td>" + items[i].spec.nodeName + "</td>"
@@ -648,6 +541,18 @@ metadata:
                 $('.' + data.metadata.name).text(items[i].status);
             }
         }
+    };
+
+
+    // MOVE PAGE
+    var movePage = function(requestPage) {
+        var reqUrl = '<%= Constants.CAAS_BASE_URL %>/services/' + document.getElementById('requestServiceName').value;
+
+        if (requestPage.indexOf('detail') < 0) {
+            reqUrl += '/' + requestPage;
+        }
+
+        procMovePage(reqUrl);
     };
 
 

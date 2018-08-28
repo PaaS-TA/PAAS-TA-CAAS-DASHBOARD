@@ -1,3 +1,4 @@
+
 <%--
   Admin Left Menu
 
@@ -6,11 +7,12 @@
   since: 2018.08.23
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <nav>
     <div class="scroll_style">
         <ul class="nav_1d caas_nav">
             <%--<li onclick="location.href='admin_access.html'">--%>
-            <li id="left-menu-accessInfo" onclick="procMovePage('/accessInfo');">
+            <li id="left-menu-accessInfo" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/accessInfo');">
                 <dl>
                     <dt>
                         <div id="lnbimg9" class="">
@@ -24,7 +26,7 @@
                 </dl>
             </li>
             <%--<li class="cur">--%>
-            <li id="left-menu-users" onclick="procMovePage('/caas/users');">
+            <li id="left-menu-users" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/users');">
                 <dl>
                     <dt>
                         <div id="lnbimg10" class="lefticos">
@@ -39,7 +41,7 @@
                 </dl>
             </li>
             <%--<li onclick="location.href='admin_role.html'">--%>
-            <li id="left-menu-roles" onclick="procMovePage('/roles');">
+            <li id="left-menu-roles" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/roles');">
                 <dl>
                     <dt>
                         <div id="lnbimg11" class="">

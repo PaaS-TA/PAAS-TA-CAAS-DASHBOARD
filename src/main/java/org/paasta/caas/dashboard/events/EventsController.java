@@ -1,5 +1,6 @@
 package org.paasta.caas.dashboard.events;
 
+import org.paasta.caas.dashboard.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @since 2018.08.13
  */
 @Controller
-@RequestMapping("/namespaces/{namespace:.+}/events")
 public class EventsController {
 
+    private static final String API_URL = Constants.API_URL;
     private final EventsService eventsService;
 
     /**
@@ -36,7 +37,7 @@ public class EventsController {
      * @param resourceName the resourceName
      * @return the event list
      */
-    @GetMapping(value = "/resource/{resourceName:.+}")
+    @GetMapping(value = API_URL + "/namespaces/{namespace:.+}/events/resource/{resourceName:.+}")
     @ResponseBody
     public EventsList getEventList(@PathVariable("namespace") String namespace
             , @PathVariable("resourceName") String resourceName) {

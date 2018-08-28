@@ -19,7 +19,7 @@ public class Constants {
     public static final String API_NAMESPACES = "/namespaces/";
 
     // TODO :: After applying SSO, it will change to "/caas".
-    public static final String CAAS_BASE_URL = "";
+    public static final String CAAS_BASE_URL = "/caas";
 
     // TODO :: REMOVE AFTER TESTING
     public static final String NAMESPACE_NAME = "kube-system";
