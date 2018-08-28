@@ -6,7 +6,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
     <div class="cluster_tabs clearfix"></div>
@@ -19,15 +18,15 @@
                     </div>
                     <div class="view_table_wrap">
                         <div class="table-search-wrap">
-                            <input type="text" id="table-search-01" name="" class="table-search user" placeholder="User ID" />
-                            <button name="button" class="btn" type="button">
+                            <input type="text" id="table-search-01" name="" class="table-search user" placeholder="User ID" onkeypress="if(event.keyCode===13) {setUsersList(this.value);}" />
+                            <button name="button" class="btn" id="userSearchBtn" type="button">
                                 <i class="fas fa-search"></i>
                             </button>
-                            <select class="user-filter">
+                            <select class="user-filter" onchange="changeRoleSearch()">
                                 <option selected>Total</option>
-                                <option>Administrator</option>
-                                <option>Regular User</option>
-                                <option>Init User</option>
+                                <option value="Administrator">Administrator</option>
+                                <option value="Regular User">Regular User</option>
+                                <option value="Init User">Init User</option>
                             </select>
                         </div>
                         <table class="table_event condition alignL user">
@@ -38,70 +37,15 @@
                                 <col style='width:30%;'>
                             </colgroup>
                             <thead>
-                            <tr>
+                            <tr id="noResultArea" style="display: none;"><td colspan='4'><p class='user_p'>사용자가 존재하지 않습니다.</p></td></tr>
+                            <tr id="resultHeaderArea">
                                 <td>User ID</td>
                                 <td>생성일</td>
                                 <td>수정일</td>
                                 <td>Role</td>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>hong@test.com</td>
-                                <td>2018-06-08</td>
-                                <td>2018-08-08</td>
-                                <td>
-                                    <select>
-                                        <option selected>Administrator</option>
-                                        <option>Regular User</option>
-                                        <option>Init User</option>
-                                    </select>
-                                    <span data-target="#layerpop1" data-toggle="modal"><i class="fas fa-save"></i></span>
-                                    <span data-target="#layerpop2" data-toggle="modal"><i class="fas fa-trash-alt"></i></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>shim@test.com</td>
-                                <td>2018-06-08</td>
-                                <td>2018-08-08</td>
-                                <td>
-                                    <select>
-                                        <option>Administrator</option>
-                                        <option selected>Regular User</option>
-                                        <option>Init User</option>
-                                    </select>
-                                    <span data-target="#layerpop1" data-toggle="modal"><i class="fas fa-save"></i></span>
-                                    <span data-target="#layerpop2" data-toggle="modal"><i class="fas fa-trash-alt"></i></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>chang@test.com</td>
-                                <td>2018-06-08</td>
-                                <td>2018-08-08</td>
-                                <td>
-                                    <select>
-                                        <option>Administrator</option>
-                                        <option selected>Regular User</option>
-                                        <option>Init User</option>
-                                    </select>
-                                    <span data-target="#layerpop1" data-toggle="modal"><i class="fas fa-save"></i></span>
-                                    <span data-target="#layerpop2" data-toggle="modal"><i class="fas fa-trash-alt"></i></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>gogo@test.com</td>
-                                <td>2018-06-08</td>
-                                <td>2018-08-08</td>
-                                <td>
-                                    <select>
-                                        <option>Administrator</option>
-                                        <option>Regular User</option>
-                                        <option selected>Init User</option>
-                                    </select>
-                                    <span data-target="#layerpop1" data-toggle="modal"><i class="fas fa-save"></i></span>
-                                    <span data-target="#layerpop2" data-toggle="modal"><i class="fas fa-trash-alt"></i></span>
-                                </td>
-                            </tr>
+                            <tbody id="resultArea">
                             </tbody>
                             <!--tfoot>
                                 <tr>
@@ -174,71 +118,139 @@
     </div>
 </div>
 
-
-<%--TODO :: REMOVE--%>
-<div style="padding: 10px;">
-    USERS 대시보드 :: USERS DASHBOARD
-    <div style="padding: 10px;">
-        <button type="button" id="btnSearch"> [ 조회 ] </button>
-        <button type="button" id="btnReset"> [ 목록 초기화 ] </button>
-    </div>
-    <h1>RESULT</h1>
-    <div id="resultArea" style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted green 4px;">
-    </div>
-</div>
 <script type="text/javascript">
 
+    var BASE_URL = "/caas";
+    var usersList;
+    var roleSearchName;
+
+    var changeRoleSearch = function () {
+        roleSearchName = $(".user-filter option:checked").text();
+        console.log("뇨뇨뇨뇨뇨뇨 :::", roleSearchName);
+        setUsersList("");
+    };
+
     // GET LIST
-    var getList = function() {
-        procCallAjax("/users/getList.do", "GET", null, null, callbackGetList);
+    var getUsersList = function() {
+        procCallAjax(BASE_URL + "/users/getList.do?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, "GET", null, null, callbackGetUsersList);
     };
 
 
     // CALLBACK
-    var callbackGetList = function(data) {
+    var callbackGetUsersList = function(data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
-        var listLength = data.length;
-        var htmlString = [];
-        htmlString.push("USERS LIST :: <br><br>");
-
-        for (var i = 0; i < listLength; i++) {
-            htmlString.push(
-                "id :: " + data[i].id + " || "
-                + "userId :: " + data[i].userId + " || "
-                + "serviceInstanceId :: " + data[i].serviceInstanceId + " || "
-                + "caasAccountAccessToken :: " + data[i].caasAccountAccessToken + " || "
-                + "caasAccountName :: " + data[i].caasAccountName + " || "
-                + "namespace :: " + data[i].namespace + " || "
-                + "organizationGuid :: " + data[i].organizationGuid + " || "
-                + "spaceGuid :: " + data[i].spaceGuid + " || "
-                + "roleName :: " + data[i].roleName + " || "
-                + "roleSetCode :: " + data[i].roleSetCode + " || "
-                + "description :: " + data[i].description + " || "
-                + "created :: " + data[i].created + " || "
-                + "lastModified :: " + data[i].lastModified
-                + "<br><br>");
-        }
-
-        $('#resultArea').html(htmlString);
+        usersList = data;
+        setUsersList("");
     };
 
+    // SET LIST
+    var setUsersList = function(searchKeyword) {
+        var userId;
 
-    // BIND
-    $("#btnSearch").on("click", function() {
-        getList();
+        var resultArea = $('#resultArea');
+        var resultHeaderArea = $('#resultHeaderArea');
+        var noResultArea = $('#noResultArea');
+
+        var items = new Array;
+
+        for(var k = 0; k < usersList.length; k++){
+            console.log("비 억수로 온다 :: ", usersList[k].roleSetCode);
+            if(usersList[k].roleSetCode == "RS0001"){
+                usersList[k].roleSetCode = "Administrator";
+            }else if(usersList[k].roleSetCode == "RS0002"){
+                usersList[k].roleSetCode = "Regular User";
+            }else if(usersList[k].roleSetCode == "RS0003"){
+                usersList[k].roleSetCode = "Init User";
+            }
+
+
+            //items = [];
+
+            var selectRoleCount = 0;
+            var defaultSelectRole = $(".user-filter option:selected").val();
+
+            if(defaultSelectRole == "Total" || roleSearchName == "Total"){
+                items = usersList;
+                break;
+            }else if(roleSearchName == usersList[k].roleSetCode){
+                console.log("퇴근 각이오", k);
+                console.log("움하하하하", JSON.stringify(usersList[k]));
+                items.push(usersList[k]);
+                console.log("아이템에 뭐가 들어갔니?", JSON.stringify(items));
+            }
+        }
+
+        console.log("뭘뭐뭠");
+        console.log("아이템에 뭐가 들어갔니?ㅈㅈㅈㅈ", JSON.stringify(items));
+        var listLength = items.length;
+
+        var checkListCount = 0;
+        var htmlString = [];
+
+        var roles = ['Administrator', 'Regular User', 'Init User'];
+
+        console.log("설마!!!!!!!!", listLength);
+        for (var i = 0; i < listLength; i++) {
+            var option = '';
+            userId = items[i].userId;
+
+            if ((nvl(searchKeyword) === "") || userId.indexOf(searchKeyword) > -1) {
+
+                console.log("일기예보 :: ", items[i].roleSetCode);
+                if(items[i].roleSetCode == "RS0001"){
+                    items[i].roleSetCode = "Administrator";
+                }else if(items[i].roleSetCode == "RS0002"){
+                    items[i].roleSetCode = "Regular User";
+                }else if(items[i].roleSetCode == "RS0003"){
+                    items[i].roleSetCode = "Init User";
+                }
+
+                for (var r = 0; r < roles.length; r++) {
+                    if (items[i].roleSetCode == roles[r]) {
+                        option += '<option value="' + roles[r] + '" selected>' + roles[r] + '</option>';
+                    } else {
+                        option += '<option value="' + roles[r] + '">' + roles[r] + '</option>';
+                    }
+                }
+
+                    htmlString.push(
+                        "<tr>"
+                        + "<td>" + items[i].userId + "</td>"
+                        + "<td>" + items[i].created + "</td>"
+                        + "<td>" + items[i].lastModified + "</td>"
+                        + "<td>" + "<select>" + option + "</select>"
+                        + "<span data-target='#layerpop1' data-toggle='modal'><i class='fas fa-save'></i></span>"
+                        + "<span data-target='#layerpop2'data-toggle='modal'><i class='fas fa-trash-alt'></i></span>"
+                        + "</td>"
+                        + "</tr>");
+
+                    checkListCount++;
+            }
+        }
+
+        if (listLength < 1 || checkListCount < 1) {
+            resultHeaderArea.hide();
+            resultArea.hide();
+            noResultArea.show();
+        } else {
+            noResultArea.hide();
+            resultHeaderArea.show();
+            resultArea.show();
+            resultArea.html(htmlString);
+        }
+
+    };
+
+    // bind
+    $("#userSearchBtn").on("click", function () {
+        var keyword = $("#table-search-01").val();
+        setUsersList(keyword);
     });
-
-
-    // BIND
-    $("#btnReset").on("click", function() {
-        $('#resultArea').html("");
-    });
-
 
     // ON LOAD
     $(document.body).ready(function () {
-        // getList();
+        getUsersList();
     });
 
 </script>

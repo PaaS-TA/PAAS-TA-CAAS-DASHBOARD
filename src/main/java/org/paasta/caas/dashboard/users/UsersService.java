@@ -34,8 +34,8 @@ public class UsersService {
      *
      * @return the user list
      */
-    List getUserList() {
-        return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL, HttpMethod.GET, null, List.class);
+    public List<Users> getUsesListByServiceInstanceId(String serviceInstanceId, String organizationGuid) {
+        return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL+"/serviceInstanceId/" + serviceInstanceId + "/organizationGuid/" + organizationGuid, HttpMethod.GET, null, List.class);
     }
 
 }

@@ -15,3 +15,7 @@
 .right_nav > li .dropdown-toggle {
     margin-top: 0;
 }
+
+.custom_display_block {
+    display: block;
+}
