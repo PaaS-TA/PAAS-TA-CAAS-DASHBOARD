@@ -46,12 +46,6 @@ public class DeploymentsController {
 //        }};
     }
 
-    // TODO :: REMOVE
-//    @GetMapping( BASE_URL )
-//    public ModelAndView getUserMain( HttpServletRequest httpServletRequest) {
-//        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
-//    }
-
     /**
      * 모든 네임스페이스에 있는 deployment의 목록을 서비스를 통해 호출하여 받은 결과값을 반환한다.
      *
@@ -61,6 +55,21 @@ public class DeploymentsController {
     @GetMapping( "/workloads/deployments/getList.do" )
     public DeploymentsList getDeploymentListByAllNamespaces(@RequestHeader HttpHeaders headers) {
         return deploymentsService.getDeploymentListByAllNamespaces();
+    }
+
+    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}")
+    public ModelAndView getDashboardDetail(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/details", new ModelAndView());
+    }
+
+    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/events")
+    public ModelAndView getDashboardEvent(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/event", new ModelAndView());
+    }
+
+    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/yaml")
+    public ModelAndView getDashboardYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/yaml", new ModelAndView());
     }
 
     /**
