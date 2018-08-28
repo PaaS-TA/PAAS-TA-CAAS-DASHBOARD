@@ -85,7 +85,7 @@ public class CustomServicesController {
      * @param serviceName the service name
      * @return the custom service
      */
-    @GetMapping(value = API_URL + BASE_URL + "/namespaces/{namespace:.+}" + BASE_URL + "/{serviceName:.+}")
+    @GetMapping(value = API_URL + "/namespaces/{namespace:.+}" + BASE_URL + "/{serviceName:.+}")
     @ResponseBody
     public CustomServices getCustomServices(@PathVariable(value = "namespace") String namespace, @PathVariable("serviceName") String serviceName) {
         return customServicesService.getCustomServices(namespace, serviceName);

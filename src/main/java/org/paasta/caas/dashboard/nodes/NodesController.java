@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Nodes Controller 클래스
@@ -36,15 +38,29 @@ public class NodesController {
         this.nodesService = nodesService;
     }
 
-    // TODO :: MODIFY
     /**
-     * Gets user main.
+     * send redirect to /caas/clusters/overview
+     *
+     * @param httpServletResponse the http servlet request
+     * @return the user main
+     */
+    @GetMapping(value = "/caas/clusters" + BASE_URL)
+    public void sendRedirectClusterOverview(HttpServletResponse httpServletResponse) {
+        try {
+            httpServletResponse.sendRedirect( "/caas/clusters/overview" );
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
+    }
+
+    /**
+     * Gets node detail main.
      *
      * @param httpServletRequest the http servlet request
      * @return the user main
      */
-    @GetMapping(value = "/clusters" + BASE_URL)
-    public ModelAndView getUserMain( HttpServletRequest httpServletRequest) {
+    @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}")
+    public ModelAndView getNodeDetailMain( HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
 

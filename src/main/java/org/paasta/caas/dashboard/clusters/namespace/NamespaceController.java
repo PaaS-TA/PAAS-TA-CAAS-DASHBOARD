@@ -25,29 +25,29 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018.08.06 최초작성
  */
 @RestController
-@RequestMapping("/clusters")
+@RequestMapping("/caas/clusters")
 public class NamespaceController {
 
-    private static final String BASE_URL = "/namespaces";
-
-    private final CommonService commonService;
-    private final NamespaceService namespaceService;
-
-    @Autowired
-    public NamespaceController(CommonService commonService, NamespaceService namespaceService) {
-        this.commonService = commonService;
-        this.namespaceService = namespaceService;
-    }
-
-    @GetMapping(value = {"/namespaces"})
-    public ModelAndView getUserMain(HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
-    }
-
-
-    @GetMapping(value = "/namespaces/getList.do")
-    @ResponseBody
-    public Namespace getServiceInstanceList() {
-        return namespaceService.getNamespaceList();
-    }
+//    private static final String BASE_URL = "/namespaces";
+//
+//    private final CommonService commonService;
+//    private final NamespaceService namespaceService;
+//
+//    @Autowired
+//    public NamespaceController(CommonService commonService, NamespaceService namespaceService) {
+//        this.commonService = commonService;
+//        this.namespaceService = namespaceService;
+//    }
+//
+//    @GetMapping(value = {"/namespaces"})
+//    public ModelAndView getUserMain(HttpServletRequest httpServletRequest) {
+//        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
+//    }
+//
+//
+//    @GetMapping(value = "/namespaces/getList.do")
+//    @ResponseBody
+//    public Namespace getServiceInstanceList() {
+//        return namespaceService.getNamespaceList();
+//    }
 }

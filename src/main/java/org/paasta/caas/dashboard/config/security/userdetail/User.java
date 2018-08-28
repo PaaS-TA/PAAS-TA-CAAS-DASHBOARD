@@ -48,6 +48,8 @@ public class User implements UserDetails, CredentialsContainer {
     private Long expireDate;
     private String imgPath;
     private String serviceInstanceId;
+    private String organizationGuid;
+    private String spaceGuid;
     private final String username;
     private final Set<GrantedAuthority> authorities;
     private final boolean accountNonExpired;
@@ -243,6 +245,22 @@ public class User implements UserDetails, CredentialsContainer {
 
     public void setServiceInstanceId(String serviceInstanceId) {
         this.serviceInstanceId = serviceInstanceId;
+    }
+
+    public String getOrganizationGuid() {
+        return organizationGuid;
+    }
+
+    public void setOrganizationGuid(String organizationGuid) {
+        this.organizationGuid = organizationGuid;
+    }
+
+    public String getSpaceGuid() {
+        return spaceGuid;
+    }
+
+    public void setSpaceGuid(String spaceGuid) {
+        this.spaceGuid = spaceGuid;
     }
 
     private static class AuthorityComparator implements Comparator<GrantedAuthority>, Serializable {

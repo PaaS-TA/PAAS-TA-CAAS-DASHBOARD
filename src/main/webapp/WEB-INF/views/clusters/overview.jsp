@@ -29,15 +29,15 @@
 <div class="content">
     <div class="cluster_tabs clearfix">
         <ul>
-            <li name="tab01" class="cluster_tabs_on" onclick="procMovePage('/clusters/overview');">Overview</li>
-            <li name="tab02" class="cluster_tabs_right">Namespaces</li>
+            <li name="tab01" class="cluster_tabs_on" onclick="procMovePage('/caas/clusters/overview');">Overview</li>
+            <li name="tab02" class="cluster_tabs_right" onclick="procMovePage('/caas/clusters/namespaces');">Namespaces</li>
             <li name="tab03" class="cluster_tabs_right">Nodes</li>
             <li name="tab04" class="cluster_tabs_right">Persistent Volumes</li>
 
             <%--TODO :: REMOVE--%>
-            <li name="tab05" class="cluster_tabs_right" onclick="procMovePage('/clusters/namespaces');">Namespaces VIEW</li>
-            <li name="tab06" class="cluster_tabs_right" onclick="procMovePage('/clusters/nodes');">Nodes VIEW</li>
-            <li name="tab07" class="cluster_tabs_right" onclick="procMovePage('/clusters/persistentVolumes');">Persistent Volumes VIEW</li>
+            <li name="tab05" class="cluster_tabs_right" onclick="procMovePage('/caas/clusters/namespaces');">Namespaces VIEW</li>
+            <li name="tab06" class="cluster_tabs_right" onclick="procMovePage('/caas/clusters/nodes');">Nodes VIEW</li>
+            <li name="tab07" class="cluster_tabs_right" onclick="procMovePage('/caas/clusters/persistentVolumes');">Persistent Volumes VIEW</li>
         </ul>
         <div class="cluster_tabs_line"></div>
     </div>
@@ -319,85 +319,7 @@
     </div>
     <!-- Namespaces 끝 -->
     <!-- Nodes 시작-->
-    <div class="cluster_content03 row two_line two_view">
-        <ul class="maT30">
-            <li>
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Nodes</p>
-                        <ul class="colright_btn">
-                            <li>
-                                <input type="text" id="table-search-01" name="" class="table-search" placeholder="search" />
-                                <button name="button" class="btn table-search-on" type="button">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
-                            <colgroup>
-                                <col style='width:auto;'>
-                                <col style='width:5%;'>
-                                <col style='width:10%;'>
-                                <col style='width:10%;'>
-                                <col style='width:12%;'>
-                                <col style='width:12%;'>
-                                <col style='width:20%;'>
-                            </colgroup>
-                            <thead>
-                            <tr>
-                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Ready</td>
-                                <td>CPU requests</td>
-                                <td>CPU limits</td>
-                                <td>Memory requests</td>
-                                <td>Memory limits</td>
-                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_nodes_view.html">ip-172-31-20-237</a></td>
-                                <td>True</td>
-                                <td>831 mCPU</td>
-                                <td>940 mCPU</td>
-                                <td>931.95 MB</td>
-                                <td>2.77 GB</td>
-                                <td>2018-07-09 18:31:01</td>
-                            </tr>
-                            <tr>
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_nodes_view.html">ip-172-31-20-237</a></td>
-                                <td>True</td>
-                                <td>831 mCPU</td>
-                                <td>940 mCPU</td>
-                                <td>931.95 MB</td>
-                                <td>2.77 GB</td>
-                                <td>2018-07-09 18:31:01</td>
-                            </tr>
-                            <tr>
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_nodes_view.html">ip-172-31-20-237</a></td>
-                                <td>True</td>
-                                <td>831 mCPU</td>
-                                <td>940 mCPU</td>
-                                <td>931.95 MB</td>
-                                <td>2.77 GB</td>
-                                <td>2018-07-09 18:31:01</td>
-                            </tr>
-                            </tbody>
-                            <!--tfoot>
-                                <tr>
-                                    <td colspan="6">
-                                        <button class="btns2 btns2_1 colors4 event_btns">더보기</button>
-                                    </td>
-                                </tr>
-                            </tfoot-->
-                        </table>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
+    <%@include file="nodes.jsp" %>
     <!-- Nodes 끝 -->
     <!-- Persistent Volumes 시작-->
     <div class="cluster_content04 row two_line two_view harf_view">
