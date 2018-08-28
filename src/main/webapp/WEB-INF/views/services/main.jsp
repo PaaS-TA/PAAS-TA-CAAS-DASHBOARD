@@ -19,7 +19,7 @@
                         <p>Services</p>
                         <ul class="colright_btn">
                             <li>
-                                <input type="text" id="table-search-01" name="" class="table-search" placeholder="search" onkeypress="if(event.keyCode===13) {setList(this.value); }" />
+                                <input type="text" id="table-search-01" name="" class="table-search" placeholder="search" onkeypress="if(event.keyCode===13) {setList(this.value);}" />
                                 <button name="button" class="btn table-search-on" type="button">
                                     <i class="fas fa-search"></i>
                                 </button>
@@ -122,7 +122,8 @@
                 specPortsListLength = specPortsList.length;
 
                 for (var j = 0; j < specPortsListLength; j++) {
-                    endpoints += '<p>' + endpointsPreString + specPortsList[j].port + " " + specPortsList[j].protocol + '</p>';
+                    endpoints += '<p>' + endpointsPreString + specPortsList[j].port + " " + specPortsList[j].protocol + '</p>'
+                            + '<p>' + endpointsPreString + nodePort + " " + specPortsList[j].protocol + '</p>';
                 }
 
                 htmlString.push(

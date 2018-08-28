@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomServicesService {
 
-    private static final String PATH_SEPARATOR = Constants.PATH_SEPARATOR_STRING;
     private static final String TARGET_CAAS_API = Constants.TARGET_CAAS_API;
+    private static final String API_NAMESPACES = Constants.API_NAMESPACES;
     private static final String REQ_URL = "/services";
     private final RestTemplateService restTemplateService;
 
@@ -37,7 +37,7 @@ public class CustomServicesService {
      * @return the custom services list
      */
     CustomServicesList getCustomServicesList(String namespace) {
-        return restTemplateService.send(TARGET_CAAS_API, PATH_SEPARATOR + namespace + REQ_URL,
+        return restTemplateService.send(TARGET_CAAS_API, API_NAMESPACES + namespace + REQ_URL,
                 HttpMethod.GET, null, CustomServicesList.class);
     }
 
@@ -50,7 +50,7 @@ public class CustomServicesService {
      * @return the custom services
      */
     CustomServices getCustomServices(String namespace, String serviceName) {
-        return restTemplateService.send(TARGET_CAAS_API, PATH_SEPARATOR + namespace + REQ_URL + PATH_SEPARATOR + serviceName,
+        return restTemplateService.send(TARGET_CAAS_API, API_NAMESPACES + namespace + REQ_URL + "/" + serviceName,
                 HttpMethod.GET, null, CustomServices.class);
     }
 

@@ -28,8 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 public class PodsController {
     // URL Rule : Constants.API_URL + /workload/namespaces/{namespace}/pods[/.+]
     private static final String BASE_URL = "/workloads/namespaces/{namespace}/pods";
-    private static final String POD_PAGE_URL = "/workloads/pods";
-    private static final String VIEW_BASE_URL = "/pods/main";
     private final CommonService commonService;
     private final PodsService podsService;
 
@@ -44,9 +42,9 @@ public class PodsController {
         this.podsService = podsService;
     }
 
-    @GetMapping(value = POD_PAGE_URL)
+    @GetMapping(value = "/caas/workloads/pods")
     public ModelAndView getUserMain( HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, VIEW_BASE_URL, new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, "/pods/main", new ModelAndView());
     }
 
     @GetMapping(value = Constants.API_URL + "/workloads/pods")
