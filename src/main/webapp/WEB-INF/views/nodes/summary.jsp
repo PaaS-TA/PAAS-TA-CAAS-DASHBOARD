@@ -81,7 +81,7 @@
                     </ul>
                 </div>
                 <div class="view_table_wrap">
-                    <table class="table_event condition alignL">
+                    <table id="pods_table_in_node" class="table_event condition alignL">
                         <colgroup>
                             <col style='width:auto;'>
                             <col style='width:15%;'>
@@ -93,113 +93,19 @@
                         <thead>
                         <tr>
                             <td>Name
-                                <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                <button sort-key="pod-name" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
                             </td>
                             <td>Namespace</td>
                             <td>Node</td>
                             <td>Status</td>
                             <td>Restarts</td>
                             <td>Created on
-                                <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                <button sort-key="created-on" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
                             </td>
                         </tr>
                         </thead>
                         <tbody id="tbody_node_pods">
-                        <!-- TODO :: REMOVE UNDER EXAMPLE -->
-                        <!-- block example start -->
-                        <!--
-                        <tr>
-                            <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-                                    href="caas_pods_view.html">portal-api-deployment</a></td>
-                            <td>Namespace_sample_1</td>
-                            <td>Node_sample_1</td>
-                            <td>Running</td>
-                            <td>0</td>
-                            <td>2018-07-04 20:15:30</td>
-                        </tr>
-                        <tr>
-                            <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-                                    href="caas_pods_view.html">spring-cloud-web-user</a></td>
-                            <td>Namespace_sample_2</td>
-                            <td>Node_sample_2</td>
-                            <td>Running</td>
-                            <td>1</td>
-                            <td>2018-07-04 20:15:30</td>
-                        </tr>
-                        <tr>
-                            <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-                                    href="caas_pods_view.html">spring-cloud-web-user</a></td>
-                            <td>Namespace_sample_3</td>
-                            <td>Node_sample_3</td>
-                            <td>Running</td>
-                            <td>1</td>
-                            <td>2018-07-04 20:15:30</td>
-                        </tr>
-                        <tr>
-                            <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-                                    href="caas_pods_view.html">portal-api-deployment</a></td>
-                            <td>Namespace_sample_4</td>
-                            <td>Node_sample_4</td>
-                            <td>Running</td>
-                            <td>0</td>
-                            <td>2018-07-04 20:15:30</td>
-                        </tr>
-                        <tr>
-                            <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-                                    href="caas_pods_view.html">spring-cloud-web-user</a></td>
-                            <td>Namespace_sample_5</td>
-                            <td>Node_sample_5</td>
-                            <td>Running</td>
-                            <td>1</td>
-                            <td>2018-07-04 20:15:30</td>
-                        </tr>
-                        <tr>
-                            <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-                                    href="caas_pods_view.html">spring-cloud-web-user</a></td>
-                            <td>Namespace_sample_6</td>
-                            <td>Node_sample_6</td>
-                            <td>Running</td>
-                            <td>1</td>
-                            <td>2018-07-04 20:15:30</td>
-                        </tr>
-                        <tr>
-                            <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-                                    href="caas_pods_view.html">portal-api-deployment</a></td>
-                            <td>Namespace_sample_7</td>
-                            <td>Node_sample_7</td>
-                            <td>Running</td>
-                            <td>0</td>
-                            <td>2018-07-04 20:15:30</td>
-                        </tr>
-                        <tr>
-                            <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-                                    href="caas_pods_view.html">spring-cloud-web-user</a></td>
-                            <td>Namespace_sample_8</td>
-                            <td>Node_sample_8</td>
-                            <td>Running</td>
-                            <td>1</td>
-                            <td>2018-07-04 20:15:30</td>
-                        </tr>
-                        <tr>
-                            <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-                                    href="caas_pods_view.html">spring-cloud-web-user</a></td>
-                            <td>Namespace_sample_9</td>
-                            <td>Node_sample_9</td>
-                            <td>Running</td>
-                            <td>1</td>
-                            <td>2018-07-04 20:15:30</td>
-                        </tr>
-                        <tr>
-                            <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-                                    href="caas_pods_view.html">spring-cloud-web-user</a></td>
-                            <td>Namespace_sample_10</td>
-                            <td>Node_sample_10</td>
-                            <td>Running</td>
-                            <td>1</td>
-                            <td>2018-07-04 20:15:30</td>
-                        </tr>
-                        -->
-                        <!-- block example end -->
+                        <tr><td colspan="6" style="text-align: center;">LOADING PODS IN NODE</td></tr>
                         </tbody>
                         <tfoot class="caas-pagenation-wrap">
                         <tr>
@@ -252,48 +158,7 @@
                         </tr>
                         </thead>
                         <tbody id="tbody_node_conditions">
-                        <!-- TODO :: REMOVE EXAMPLE
-                        <tr>
-                            <td>OutOfDisk</td>
-                            <td>False</td>
-                            <td>2018-07-04 20:15:30</td>
-                            <td>2018-07-04 20:15:30</td>
-                            <td>KubeletHasSufficientDisk</td>
-                            <td>kubelet has sufficient disk space available</td>
-                        </tr>
-                        <tr>
-                            <td>MemoryPressure</td>
-                            <td>False</td>
-                            <td>2018-07-04 20:15:30</td>
-                            <td>2018-07-04 20:15:30</td>
-                            <td>KubeletHasSufficientMemory</td>
-                            <td>kubelet has sufficient memory available</td>
-                        </tr>
-                        <tr>
-                            <td>DiskPressure</td>
-                            <td>False</td>
-                            <td>2018-07-04 20:15:30</td>
-                            <td>2018-07-04 20:15:30</td>
-                            <td>KubeletHasNoDiskPressure</td>
-                            <td>kubelet has no disk pressure</td>
-                        </tr>
-                        <tr>
-                            <td>PIDPressure</td>
-                            <td>False</td>
-                            <td>2018-07-04 20:15:30</td>
-                            <td>2018-07-04 20:15:30</td>
-                            <td>KubeletHasSufficientPID</td>
-                            <td>kubelet has sufficient PID available</td>
-                        </tr>
-                        <tr>
-                            <td>Ready</td>
-                            <td>True</td>
-                            <td>2018-07-04 20:15:30</td>
-                            <td>2018-07-04 20:15:30</td>
-                            <td>KubeletReady</td>
-                            <td>kubelet is posting ready status. AppArmor enabled</td>
-                        </tr>
-                        -->
+                        <tr><td colspan="6" style="text-align: center;">LOADING CONDITIONS</td></tr>
                         </tbody>
                         <!-- TODO :: REMOVE TFOOT ELEMENT IN NODE CONDITIONS -->
                         <!--tfoot>
@@ -309,4 +174,99 @@
         </li>
     </ul>
 </div>
+
+<script>
+    var callbackGetNodeSummary = function (nodeName, conditions) {
+        // get pods, conditions
+        var podsReqUrl = "<%= Constants.API_URL %>/workloads/pods/node/" + nodeName;
+
+        // pod info : Name, Namespace, Node, Status, Restarts, Created on
+        procCallAjax(podsReqUrl, "GET", null, null, callbackGetPods);
+
+        // set conditions
+        var contents = [];
+        $.each(conditions, function (index, condition) {
+            contents.push('<tr>'
+                + '<td>' + condition.type + '</td>'
+                + '<td>' + condition.status + '</td>'
+                + '<td>' + condition.lastHeartbeatTime + '</td>'
+                + '<td>' + condition.lastTransitionTime + '</td>'
+                + '<td>' + condition.reason + '</td>'
+                + '<td>' + condition.message + '</td></tr>');
+        });
+
+        // append conditions tbody
+        $('#tbody_node_conditions').html(contents);
+    }
+
+    var callbackGetPods = function (data) {
+        if (false == checkInvalidData(data)) {
+            alert("Cannot load pods data");
+            return;
+        }
+
+        var contents = [];
+        $.each(data.items, function (index, podItem) {
+            let pod = getPod(podItem);
+
+            let nameClassSet;
+            switch (pod.podStatus) {
+                case "Pending":
+                    nameClassSet = {span: "pending2", i: "fas fa-exclamation-circle"}; break;
+                case "Running":
+                    nameClassSet = {span: "running2", i: "fas fa-check-circle"}; break;
+                case "Succeeded":
+                    nameClassSet = {span: "succeeded2", i: "fas fa-check-circle"}; break;
+                case "Failed":
+                    nameClassSet = {span: "failed2", i: "fas fa-exclamation-circle"}; break;
+                case "Unknown":
+                default:
+                    nameClassSet = {span: "unknown2", i: "fas fa-exclamation-circle"}; break;
+            }
+
+            let nameHtml =
+                '<span class="' + nameClassSet.span + '"><i class="' + nameClassSet.i + '" style="padding-right: 5px;"></i></span>'
+                + '<a href="/workload/pods/' + pod.name + '">' + pod.name + '</a>';
+
+            let podRowHtml = '<tr pod-name="' + pod.name + '" created-on="' + pod.creationTimestamp + '">'
+                + '<td name="name" value>' + nameHtml + '</td>'
+                + '<td>' + pod.namespace + '</td>'
+                + '<td>' + pod.nodeName + '</td>'
+                + '<td>' + pod.podStatus + '</td>'
+                + '<td>' + pod.restartCount + '</td>'
+                + '<td>' + pod.creationTimestamp + '</td></tr>'
+            contents.push(podRowHtml);
+        });
+
+        // append pod tbody
+        $('#pods_table_in_node > tbody').html(contents);
+
+        // default sort : pod's name
+        sortTable("pods_table_in_node", "pod-name", true);
+    }
+
+    var getPod = function (podItem) {
+        // required : name, namespace, node, status, restart(count), created on
+        var _metadata = podItem.metadata;
+        var _spec = podItem.spec;
+        var _status = podItem.status;
+
+        // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
+        var pod = {
+            name: _metadata.name,
+            namespace: _metadata.namespace,
+            nodeName: _spec.nodeName,
+            podStatus: _status.phase,
+            restartCount: processIfDataIsNull(
+                _status.containerStatuses, function (data) {
+                    return data.reduce(function (a, b) {
+                        return {restartCount: a.restartCount + b.restartCount};
+                    }, {restartCount: 0}).restartCount;
+                }, 0),
+            creationTimestamp: _metadata.creationTimestamp
+        };
+
+        return pod;
+    }
+</script>
 <!-- Nodes Summary 끝 -->

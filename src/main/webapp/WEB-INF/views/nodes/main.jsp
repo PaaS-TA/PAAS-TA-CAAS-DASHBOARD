@@ -91,83 +91,27 @@
         //callbackGetNodeEvent(data);
     }
 
-    var callbackGetNodeSummary = function (nodeName, conditions) {
-        // get pods, conditions
-        var podsReqUrl = "<%= Constants.API_URL %>/workloads/pods/node/" + nodeName;
-
-        // pod info : Name, Namespace, Node, Status, Restarts, Created on
-        procCallAjax(podsReqUrl, "GET", null, null, callbackGetPods);
-
-        // set conditions
-        var contents = [];
-        $.each(conditions, function (index, condition) {
-            contents.push('<tr>'
-                + '<td>' + condition.type + '</td>'
-                + '<td>' + condition.status + '</td>'
-                + '<td>' + condition.lastHeartbeatTime + '</td>'
-                + '<td>' + condition.lastTransitionTime + '</td>'
-                + '<td>' + condition.reason + '</td>'
-                + '<td>' + condition.message + '</td></tr>');
+    var sortTable = function (tableId, sortKey, isAscending=true) {
+        let tbody = $('#' + tableId + ' > tbody');
+        let rows = tbody.children('tr');
+        rows.sort(function (rowA, rowB) {
+            let reverseNumber = (isAscending)? 1 : -1;
+            let compareA = $(rowA).attr(sortKey);
+            let compareB = $(rowB).attr(sortKey);
+            if (compareA == compareB)
+                return 0;
+            else {
+            if (compareA == null)
+                return -1 * reverseNumber;
+            else if (compareB == null)
+                return 1 * reverseNumber;
+            else if (compareA > compareB)
+                return 1 * reverseNumber;
+            else
+                return -1 * reverseNumber;
+            }
         });
-
-        // append conditions tbody
-        $('#tbody_node_conditions').html(contents);
-    }
-
-
-    var callbackGetNodeDetail = function (data) {
-        // TODO :: write logic
-    }
-
-    var callbackGetNodeEvent = function (data) {
-        // TODO :: write logic
-    }
-
-    var callbackGetPods = function (data) {
-        if (false == checkInvalidData(data)) {
-            alert("Cannot load pods data");
-            return;
-        }
-
-        var contents = [];
-        $.each(data.items, function (index, podItem) {
-            var pod = getPod(podItem);
-            var nameHtml = '<span class="green2"><i class="fas fa-check-circle"></i></span><a href="/workload/pods/' + pod.name + '">' + pod.name + '</a>';
-            contents.push('<tr>'
-                + '<td>' + nameHtml + '</td>'
-                + '<td>' + pod.namespace + '</td>'
-                + '<td>' + pod.nodeName + '</td>'
-                + '<td>' + pod.podStatus + '</td>'
-                + '<td>' + pod.restartCount + '</td>'
-                + '<td>' + pod.creationTimestamp + '</td></tr>');
-        });
-
-        // append pod tbody
-        $('#tbody_node_pods').html(contents);
-    }
-
-    var getPod = function (podItem) {
-        // required : name, namespace, node, status, restart(count), created on
-        var _metadata = podItem.metadata;
-        var _spec = podItem.spec;
-        var _status = podItem.status;
-
-        // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
-        var pod = {
-            name: _metadata.name,
-            namespace: _metadata.namespace,
-            nodeName: _spec.nodeName,
-            podStatus: _status.phase,
-            restartCount: processIfDataIsNull(
-                _status.containerStatuses, function (data) {
-                    return data.reduce(function (a, b) {
-                        return {restartCount: a.restartCount + b.restartCount};
-                    }, {restartCount: 0}).restartCount;
-                }, 0),
-            creationTimestamp: _metadata.creationTimestamp
-        };
-
-        return pod;
+        tbody.html(rows);
     }
 
     var checkInvalidData = function (data) {
@@ -206,6 +150,14 @@
         createChart("current", "disk");
 
         loadLayerpop();
+
+        // add sort-arrow click event in pods table
+        $(".sort-arrow").on("click", function(event) {
+            let tableId = "pods_table_in_node";
+            let sortKey = $(event.currentTarget).attr('sort-key');
+            let isAscending = $(event.currentTarget).hasClass('sort')? true : false;
+            sortTable(tableId, sortKey, isAscending);
+        });
 
         getNode();
     });
