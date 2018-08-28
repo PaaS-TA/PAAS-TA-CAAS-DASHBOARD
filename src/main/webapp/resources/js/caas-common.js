@@ -114,7 +114,7 @@ var procSetMenuCursor = function () {
     $("#left-menu-" + calledMenu).addClass('cur');
 };
 
-var checkInvalidData = function (data) {
+var checkValidData = function (data) {
     if (RESULT_STATUS_FAIL === data.resultCode) {
         console.log("ResultStatus :: " + data.resultCode + " / " + "ResultMessage :: " + data.resultMessage);
         return false;
@@ -156,3 +156,37 @@ var sortTable = function (tableId, sortKey, isAscending=true) {
     });
     tbody.html(rows);
 }
+
+var convertByte = function(capacity) {
+    var multipleSize;
+    if (capacity.match("Ki").index != -1) {
+        multipleSize = 1024;
+    } else if (capacity.match("Mi").index != -1) {
+        multipleSize = 1024 * 1024;
+    } else if (capacity.match("Gi").index != -1) {
+        multipleSize = 1024 * 1024 * 1024;
+    } else {
+        multipleSize = 1;
+    }
+
+    return capacity.substring(0, capacity.length - 2) * multipleSize;
+}
+
+var formatCapacity = function(capacity, unit) {
+    var unitSize;
+    if (unit == null || "" == unit)
+        unitSize = 1;
+    else {
+        if (unit === "Ki")    unitSize = 1024
+        if (unit === "Mi")    unitSize = Math.pow(1024, 2);
+        if (unit === "Gi")    unitSize = Math.pow(1024, 3);
+    }
+
+    return ((capacity / unitSize).toFixed(2) + ' ' + unit);
+}
+
+/*
+var stringifyJSON = function (obj) {
+    return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
+}
+*/
