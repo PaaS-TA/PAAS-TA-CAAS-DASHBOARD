@@ -673,6 +673,7 @@ $(document).ready(function() {
             $(this).siblings('.table-search').css('display', 'block');
             $(this).toggleClass('on');
             $(this).find('i').removeClass('fa-search').addClass('fa-times');
+            $(this).siblings('.table-search').focus();
         }
         else{
             $(this).siblings('.table-search').css('display', 'none');
