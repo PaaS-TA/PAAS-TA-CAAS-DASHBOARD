@@ -1,4 +1,4 @@
-<%--
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %><%--
   Created by IntelliJ IDEA.
   User: hgcho
   Date: 2018-08-27
@@ -37,7 +37,7 @@
                         <thead>
                         <tr>
                             <td>Name
-                                <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                <button class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
                             </td>
                             <td>Ready</td>
                             <td>CPU requests</td>
@@ -45,7 +45,7 @@
                             <td>Memory requests</td>
                             <td>Memory limits</td>
                             <td>Created on
-                                <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                <button class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
                         </tr>
                         </thead>
                         <tbody>
@@ -93,4 +93,58 @@
         </li>
     </ul>
 </div>
+<script type="text/javascript">
+    function getNodes() {
+        var reqUrl = "<%= Constants.API_URL %>/nodes"
+        procCallAjax(reqUrl, "GET", null, null, callbackGetListNodes);
+    }
+
+    // CALLBACK
+    var callbackGetListNodes = function(data) {
+        console.log("CONSOLE DEBUG PRINT :: " + data);
+
+        var htmlString = [];
+        htmlString.push("NODES LIST :: <br><br>");
+        htmlString.push( "ResultCode :: " + data.resultCode + " || "
+            + "Message :: " + data.resultMessage + " <br><br>");
+
+        if (RESULT_STATUS_FAIL === data.resultCode) {
+            $('#resultArea').html(htmlString);
+            return false;
+        }
+
+        // get data
+        $.each(data.items, function(index, itemList) {
+            var _metadata = itemList.metadata;
+            var _status = itemList.status;
+
+            var name = _metadata.name;
+            var ready = _status.conditions.filter(function(condition) {
+                return condition.type === "Ready";
+            })[0].status;
+            var limitCPU = _status.capacity.cpu;
+            var requestCPU = limitCPU - _status.allocatable.cpu;
+            var limitMemory = convertByte(_status.capacity.memory);
+
+            var requestMemory = limitMemory - convertByte(_status.allocatable.memory);
+            var creationTimestamp = _metadata.creationTimestamp;
+
+            // htmlString push
+            htmlString.push("Name :: " + name + " || "
+                + "Ready :: " + ready + " || "
+                + "Request CPU :: " + requestCPU + " || "
+                + "Limit CPU :: " + limitCPU + " || "
+                + "Request Memory :: " + formatCapacity(requestMemory, "Mi") + " || "
+                + "Limit Memory :: " + formatCapacity(limitMemory, "Mi") + " || "
+                + "CreationTimestamp :: " + creationTimestamp + "<br><br>" );
+        });
+
+        // finally
+        $('#resultArea').html(htmlString);
+    }
+
+    $(document.body).ready(function(){
+
+    });
+</script>
 <!-- Nodes 끝 -->
