@@ -64,7 +64,7 @@ public class DeploymentsController {
 
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/events")
     public ModelAndView getDashboardEvent(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/event", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());
     }
 
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/yaml")
