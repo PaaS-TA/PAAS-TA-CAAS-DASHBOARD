@@ -3,6 +3,7 @@ package org.paasta.caas.dashboard.workloads.replicaSets;
 //import org.springframework.http.HttpMethod;
 
 import org.paasta.caas.dashboard.common.CommonService;
+import org.paasta.caas.dashboard.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018.08.06 최초작성
  */
 @RestController
-@RequestMapping("/workloads")
+@RequestMapping
 public class ReplicaSetsController {
 
     private static final String BASE_URL = "/replicasets";
@@ -47,7 +48,7 @@ public class ReplicaSetsController {
      * @param httpServletRequest the http servlet request
      * @return the custom service main
      */
-    @GetMapping(value = BASE_URL)
+    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads" + BASE_URL)
     public ModelAndView getReplicaSetListMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
@@ -59,7 +60,7 @@ public class ReplicaSetsController {
      * @return ReplicaSetList
      * @see ReplicaSetsService#getReplicasetList
      */
-    @GetMapping(value = "/namespaces/{namespace}/replicasets")
+    @GetMapping(value = "/workloads/namespaces/{namespace}/replicasets")
     @ResponseBody
     public ReplicaSetsList getReplicaSetList(@PathVariable("namespace") String namespace ){
         return replicaSetService.getReplicasetList(namespace);
@@ -72,7 +73,7 @@ public class ReplicaSetsController {
      * @return ReplicaSetList
      * @see ReplicaSetsService#getReplicasetList
      */
-    @GetMapping(value = "/namespaces/{namespace}/replicasets/{replicasetName}")
+    @GetMapping(value = "/workloads/namespaces/{namespace}/replicasets/{replicasetName}")
     @ResponseBody
     public ReplicaSets getReplicaSet(@PathVariable("namespace") String namespace, @PathVariable("replicasetName") String replicasetName ){
         return replicaSetService.getReplicaset(namespace, replicasetName);
@@ -86,7 +87,7 @@ public class ReplicaSetsController {
      * @return ReplicaSetList
      * @see ReplicaSetsService#getReplicasetList
      */
-    @GetMapping(value = "/namespaces/{namespace}/replicasets/resource/{selector}")
+    @GetMapping(value = "/workloads/namespaces/{namespace}/replicasets/resource/{selector}")
     @ResponseBody
     public ReplicaSetsList getReplicaSetLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selectors ){
         return replicaSetService.getReplicasetListLabelSelector(namespace, selectors);
