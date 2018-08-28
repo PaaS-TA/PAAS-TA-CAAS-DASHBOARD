@@ -316,7 +316,7 @@
 
     // GET LIST
     var getList = function() {
-        procCallAjax("/clusters/namespaces/getList.do", "GET", null, null, callbackGetList);
+        procCallAjax("/caas/clusters/namespaces/getList.do", "GET", null, null, callbackGetList);
     };
 
 
