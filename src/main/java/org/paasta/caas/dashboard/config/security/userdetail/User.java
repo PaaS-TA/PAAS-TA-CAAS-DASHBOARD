@@ -50,6 +50,7 @@ public class User implements UserDetails, CredentialsContainer {
     private String serviceInstanceId;
     private String organizationGuid;
     private String spaceGuid;
+    private String nameSpace;
     private final String username;
     private final Set<GrantedAuthority> authorities;
     private final boolean accountNonExpired;
@@ -261,6 +262,14 @@ public class User implements UserDetails, CredentialsContainer {
 
     public void setSpaceGuid(String spaceGuid) {
         this.spaceGuid = spaceGuid;
+    }
+
+    public String getNameSpace() {
+        return nameSpace;
+    }
+
+    public void setNameSpace(String nameSpace) {
+        this.nameSpace = nameSpace;
     }
 
     private static class AuthorityComparator implements Comparator<GrantedAuthority>, Serializable {
