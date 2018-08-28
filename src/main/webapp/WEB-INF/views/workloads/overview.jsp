@@ -33,7 +33,7 @@
                         <div class="sortable_right label">
                             <span class="running2 maR10"><i class="fas fa-circle"></i></span>Running
                             <span class="failed2 maL25 maR10"><i class="fas fa-circle"></i></span>Failed
-                            <span class="pendding2 maL25 maR10"><i class="fas fa-circle"></i></span>Pendding
+                            <span class="pending2 maL25 maR10"><i class="fas fa-circle"></i></span>Pending
                             <span class="succeeded2 maL25 maR10"><i class="fas fa-circle"></i></span>Succeeded
                         </div>
                     </div>
