@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 /**
  * Namespace Service 클래스
  *
- * @author 김도현
+ * @author indra
  * @version 1.0
  * @since 2018.08.28
  */
