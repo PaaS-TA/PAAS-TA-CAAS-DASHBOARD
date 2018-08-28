@@ -234,7 +234,7 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                            <tr id="noResultAreaForPods" style="display: none;"><td colspan='6'><p class='service_p'>검색 된 Pod가 없습니다.</p></td></tr>
+                            <tr id="noResultAreaForPods" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Pod가 없습니다.</p></td></tr>
                             <tr id="resultHeaderAreaForPods">
                                 <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
@@ -299,27 +299,10 @@
 
 <input type="hidden" id="requestServiceName" name="requestServiceName" value="<c:out value='${serviceName}' default='' />" />
 
+
 <%--TODO : REMOVE--%>
 <%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>--%>
 <%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
-
-<!-- SyntexHighlighter -->
-<%--<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>--%>
-<%--<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCpp.js"/>"></script>--%>
-<%--<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCSharp.js"/>"></script>--%>
-<%--<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushPython.js"/>"></script>--%>
-<%--<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">--%>
-<%--<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">--%>
-
-<%--<script type="text/javascript">--%>
-    <%--// SyntaxHighlighter.defaults['quick-code'] = false;--%>
-    <%--// SyntaxHighlighter.all();--%>
-<%--</script>--%>
-
-<%--<style>--%>
-    <%--.syntaxhighlighter .gutter .line{border-right-color:#ddd !important;}--%>
-<%--</style>--%>
-<!-- SyntexHighlighter -->
 
 <script type="text/javascript">
     // ON LOAD
