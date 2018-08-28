@@ -113,3 +113,46 @@ var procSetMenuCursor = function () {
 
     $("#left-menu-" + calledMenu).addClass('cur');
 };
+
+var checkInvalidData = function (data) {
+    if (RESULT_STATUS_FAIL === data.resultCode) {
+        console.log("ResultStatus :: " + data.resultCode + " / " + "ResultMessage :: " + data.resultMessage);
+        return false;
+    } else {
+        return true;
+    }
+}
+
+var processIfDataIsNull = function (data, procCallback, defaultValue) {
+    if (data == null)
+        return defaultValue;
+    else {
+        if (procCallback == null)
+            return defaultValue;
+        else
+            return procCallback(data);
+    }
+}
+
+var sortTable = function (tableId, sortKey, isAscending=true) {
+    let tbody = $('#' + tableId + ' > tbody');
+    let rows = tbody.children('tr');
+    rows.sort(function (rowA, rowB) {
+        let reverseNumber = (isAscending)? 1 : -1;
+        let compareA = $(rowA).attr(sortKey);
+        let compareB = $(rowB).attr(sortKey);
+        if (compareA == compareB)
+            return 0;
+        else {
+            if (compareA == null)
+                return -1 * reverseNumber;
+            else if (compareB == null)
+                return 1 * reverseNumber;
+            else if (compareA > compareB)
+                return 1 * reverseNumber;
+            else
+                return -1 * reverseNumber;
+        }
+    });
+    tbody.html(rows);
+}
