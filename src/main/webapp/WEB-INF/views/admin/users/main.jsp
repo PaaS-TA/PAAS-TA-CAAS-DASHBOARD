@@ -126,7 +126,6 @@
 
     var changeRoleSearch = function () {
         roleSearchName = $(".user-filter option:checked").text();
-        console.log("뇨뇨뇨뇨뇨뇨 :::", roleSearchName);
         setUsersList("");
     };
 
@@ -155,7 +154,6 @@
         var items = new Array;
 
         for(var k = 0; k < usersList.length; k++){
-            console.log("비 억수로 온다 :: ", usersList[k].roleSetCode);
             if(usersList[k].roleSetCode == "RS0001"){
                 usersList[k].roleSetCode = "Administrator";
             }else if(usersList[k].roleSetCode == "RS0002"){
@@ -165,24 +163,16 @@
             }
 
 
-            //items = [];
-
-            var selectRoleCount = 0;
             var defaultSelectRole = $(".user-filter option:selected").val();
 
             if(defaultSelectRole == "Total" || roleSearchName == "Total"){
                 items = usersList;
                 break;
             }else if(roleSearchName == usersList[k].roleSetCode){
-                console.log("퇴근 각이오", k);
-                console.log("움하하하하", JSON.stringify(usersList[k]));
                 items.push(usersList[k]);
-                console.log("아이템에 뭐가 들어갔니?", JSON.stringify(items));
             }
         }
 
-        console.log("뭘뭐뭠");
-        console.log("아이템에 뭐가 들어갔니?ㅈㅈㅈㅈ", JSON.stringify(items));
         var listLength = items.length;
 
         var checkListCount = 0;
@@ -190,14 +180,12 @@
 
         var roles = ['Administrator', 'Regular User', 'Init User'];
 
-        console.log("설마!!!!!!!!", listLength);
         for (var i = 0; i < listLength; i++) {
             var option = '';
             userId = items[i].userId;
 
             if ((nvl(searchKeyword) === "") || userId.indexOf(searchKeyword) > -1) {
 
-                console.log("일기예보 :: ", items[i].roleSetCode);
                 if(items[i].roleSetCode == "RS0001"){
                     items[i].roleSetCode = "Administrator";
                 }else if(items[i].roleSetCode == "RS0002"){
