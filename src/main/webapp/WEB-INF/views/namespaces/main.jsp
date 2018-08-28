@@ -9,7 +9,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> default (namespaces name)</h1>
+    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span id="title"></span></h1>
     <div class="cluster_tabs clearfix">
         <ul>
             <li name="tab01" class="cluster_tabs_on">Details</li>
@@ -34,19 +34,15 @@
                             <tbody>
                             <tr>
                                 <th><i class="cWrapDot"></i> Name</th>
-                                <td>default</td>
-                            </tr>
-                            <tr>
-                                <th><i class="cWrapDot"></i> Labels</th>
-                                <td><span class="bg_gray">app : nginx-2</span> <span class="bg_gray">tier.node</span></td>
+                                <td id="nameSpaceName"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Creation Time</th>
-                                <td>2018-07-04 20:15:30</td>
+                                <td id="nameSpaceCreationTime"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Status</th>
-                                <td>Active</td>
+                                <td id="nameSpaceStatus"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -65,7 +61,7 @@
                         <p>Events</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
+                        <table id="eventList" class="table_event condition alignL">
                             <colgroup>
                                 <col style=".">
                                 <col style=".">
@@ -75,81 +71,21 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr>
-                                <td>Message</td>
-                                <td>Source</td>
-                                <td>Sub-object</td>
-                                <td>Count</td>
-                                <td>First seen</td>
-                                <td>Last seen</td>
-                            </tr>
+                                <tr>
+                                    <td>Message</td>
+                                    <td>Source</td>
+                                    <td>Sub-object</td>
+                                    <td>Count</td>
+                                    <td>First seen</td>
+                                    <td>Last seen</td>
+                                </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                     Back-off pulling Images "aa"
-                                </td>
-                                <td>
-                                    kubelet ip-172-31-27-131
-                                </td>
-                                <td>spec.containers{aa}
-                                </td>
-                                <td>41192
-                                </td>
-                                <td>2018-07-08 18:31:01
-                                </td>
-                                <td>2018-07-09 18:31:01
-                                </td>
-                            </tr>
-                            <td>
-                                <span class="red2"><i class="fas fa-exclamation-circle"></i> Error: ImagesPullBackOff</span>
-                            </td>
-                            <td>
-                                kubelet ip-172-31-27-131
-                            </td>
-                            <td>spec.containers{aa}
-                            </td>
-                            <td>41278
-                            </td>
-                            <td>2018-07-08 18:31:01
-                            </td>
-                            <td>2018-07-09 18:31:01
-                            </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                     Back-off pulling Images "aa"
-                                </td>
-                                <td>
-                                    kubelet ip-172-31-27-131
-                                </td>
-                                <td>spec.containers{aa}
-                                </td>
-                                <td>129005
-                                </td>
-                                <td>2018-07-08 18:31:01
-                                </td>
-                                <td>2018-07-09 18:31:01
-                                </td>
-                            </tr>
-                            <td>
-                                <span class="red2"><i class="fas fa-exclamation-circle"></i> Error: ImagesPullBackOff</span>
-                            </td>
-                            <td>
-                                kubelet ip-172-31-27-131
-                            </td>
-                            <td>spec.containers{aa}
-                            </td>
-                            <td>129005
-                            </td>
-                            <td>2018-07-08 18:31:01
-                            </td>
-                            <td>2018-07-09 18:31:01
-                            </td>
-                            </tr>
+                            <tbody id="resultAreaForNameSpaceEventList">
                             </tbody>
                         </table>
+                        <p id="emptyEventList" class="service_p" style="display:none;">이벤트가 없습니다.</p>
                     </div>
+                </div>
             </li>
         </ul>
     </div>
@@ -300,61 +236,75 @@
     </div>
 </div>
 
-
-<%--TODO :: REMOVE--%>
-<div style="padding: 10px;">
-    NAMESPACES 대시보드 :: NAMESPACES DASHBOARD
-    <div style="padding: 10px;">
-        <button type="button" id="btnSearch"> [ 조회 ] </button>
-        <button type="button" id="btnReset"> [ 목록 초기화 ] </button>
-    </div>
-    <h1>RESULT</h1>
-    <div id="resultArea" style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted deepskyblue 4px;">
-    </div>
-</div>
 <script type="text/javascript">
 
-    // GET LIST
-    var getList = function() {
-        procCallAjax("/caas/clusters/namespaces/getList.do", "GET", null, null, callbackGetList);
+    var getDetail = function() {
+        procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail.do", "GET", null, null, callbackGetDetail);
+
+        getEventList(NAME_SPACE, NAME_SPACE);
+        // getEventList("hyerin-test-case", "kubernetes-ciss-test-d5f846fd7");
     };
 
+    var callbackGetDetail = function(data) {
+        if (RESULT_STATUS_FAIL === data.resultCode) return false;
 
-    // CALLBACK
-    var callbackGetList = function(data) {
+        $("#title").html(data.metadata.name);
+        $("#nameSpaceName").html(data.metadata.name);
+        $("#nameSpaceCreationTime").html(data.metadata.creationTimestamp);
+        $("#nameSpaceStatus").html(data.status.phase);
+    };
+
+    var getEventList = function(namespace, replicasetName) {
+        procCallAjax("/namespaces/"+namespace+"/events/resource/"+replicasetName, "GET", null, null, callbackGetEventList);
+    };
+
+    var callbackGetEventList = function(data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
-        var items = data.items;
-        var listLength = items.length;
         var htmlString = [];
-        htmlString.push("NAMESPACES LIST :: <br><br>");
 
-        for (var i = 0; i < listLength; i++) {
+        $.each(data.items, function (index, itemList) {
+            var eventMessage = itemList.message;
+            var sourceComponent  = itemList.source.component;
+            var sourceHost   = nvl(itemList.source.host);
+            var subObject    = nvl2(itemList.involvedObject.fieldPath,"-");
+            var eventCount   = itemList.count;
+            var firstSeen    = itemList.firstTimestamp;
+            var lastSeen     = itemList.lastTimestamp;
+            var eventType    = itemList.type;
+
+            if (eventMessage.indexOf("Error creating:") != -1)
+                eventMessage = "<span class=\"red2\"><i class=\"fas fa-exclamation-circle\"></i> " + eventMessage + "</span>"
+
             htmlString.push(
-                "name :: " + items[i].metadata.name + " || "
-                + "uid :: " + items[i].metadata.uid
-                + "<br><br>");
-        }
+                "<tr>"
+                + "<td>" + eventMessage +"</td>"
+                + "<td>" + sourceComponent  +" "+sourceHost + "</td>"
+                + "<td>" + subObject + "</td>"
+                + "<td>" + eventCount + "</td>"
+                + "<td>" + firstSeen + "</td>"
+                + "<td>" + lastSeen + "</td>"
+                + "</tr>");
+        });
 
-        $('#resultArea').html(htmlString);
+        var resultArea = $("#resultAreaForNameSpaceEventList");
+        var eventList = $("#eventList");
+        var emptyEventList = $("#emptyEventList");
+
+        resultArea.html("");
+
+        if(data.items.length > 1) {
+            resultArea.html(htmlString);
+            emptyEventList.hide();
+            eventList.show();
+        } else {
+            eventList.hide();
+            emptyEventList.show();
+        }
     };
 
-
-    // BIND
-    $("#btnSearch").on("click", function() {
-        getList();
-    });
-
-
-    // BIND
-    $("#btnReset").on("click", function() {
-        $('#resultArea').html("");
-    });
-
-
-    // ON LOAD
     $(document.body).ready(function () {
-        // getList();
+        getDetail();
     });
 
 </script>

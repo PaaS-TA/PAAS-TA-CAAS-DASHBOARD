@@ -60,6 +60,7 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
             ssoAuthenticationDetails.setServiceInstanceId(user.getServiceInstanceId());
             ssoAuthenticationDetails.setOrganizationGuid(user.getOrganizationGuid());
             ssoAuthenticationDetails.setSpaceGuid(user.getSpaceGuid());
+            ssoAuthenticationDetails.setNameSpace(user.getNameSpace());
             authentication = new OAuth2Authentication(((OAuth2Authentication) authentication).getOAuth2Request(), new UsernamePasswordAuthenticationToken(ssoAuthenticationDetails.getUserid(), "N/A", role));
             ((OAuth2Authentication) authentication).setDetails(ssoAuthenticationDetails);
 
