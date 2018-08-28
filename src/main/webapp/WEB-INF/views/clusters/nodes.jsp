@@ -8,7 +8,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Nodes 시작-->
-<script>var nodeScriptTest = 1234;</script>
 <div class="cluster_content03 row two_line two_view">
     <ul class="maT30">
         <li>
@@ -94,5 +93,4 @@
         </li>
     </ul>
 </div>
-<script>var nodeScriptTest2 = 5678;</script>
 <!-- Nodes 끝 -->
