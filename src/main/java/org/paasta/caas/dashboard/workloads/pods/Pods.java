@@ -1,21 +1,19 @@
-package org.paasta.caas.dashboard.workload.replicaSets;
+package org.paasta.caas.dashboard.workloads.pods;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;
 import org.paasta.caas.dashboard.common.model.CommonSpec;
 import org.paasta.caas.dashboard.common.model.CommonStatus;
 
-import java.util.Map;
-
 /**
- * ReplicaSets Model 클래스
+ * Pods Model 클래스
  *
- * @author 최윤석
+ * @author REX
  * @version 1.0
- * @since 2018.08.07
+ * @since 2018.08.13
  */
 @Data
-public class ReplicaSets {
+class Pods {
 
     private String resultCode;
     private String resultMessage;
@@ -24,12 +22,8 @@ public class ReplicaSets {
     private CommonSpec spec;
     private CommonStatus status;
 
-    private Map<String, Object> originResult;
-
-//    @SerializedName("apiVersion")
-//    private String apiVersion = null;
-
-//    @SerializedName("kind")
-//    private String kind = null;
+    // FOR DASHBOARD
+    private String selector;
+    private String serviceName;
 
 }

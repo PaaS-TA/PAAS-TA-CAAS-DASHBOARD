@@ -98,6 +98,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         boolean certificationFlag = false;
         String space_guid = "";
         String organization_guid = "";
+        //TODO namespace가 아닌가??
+        String spaceName = "";
 
         Map adminToken = restTemplateService.send(Constants.TARGET_COMMON_API, "/adminToken/"+caasAdminToken, HttpMethod.GET, null, Map.class);
 
@@ -132,14 +134,15 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOGGER.info("flag in!");
             List commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+serviceInstanceId+"/organizationGuid/"+organization_guid, HttpMethod.GET, null, List.class);
 
+            spaceName = "paas-"+serviceInstanceId+"-caas";
+            LOGGER.info("spaceName : "+spaceName);
+
 //            List commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/79018229-f37a-44ff-864b-c486eabb3306/organizationGuid/6cb8be0d-67c6-4326-a78d-9a323a13ad19", HttpMethod.GET, null, List.class);
             if(commonGetUsers != null && commonGetUsers.size() > 0) {
                 if(commonGetUsers.toString().contains("userId="+username+",")) {
                     role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 } else {
                     LOGGER.info("start~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                    String spaceName = "paas-"+serviceInstanceId+"-caas";
-                    LOGGER.info("spaceName : "+spaceName);
                     String userName = (organization_guid + "-" + username.replaceAll("([:.#$&!_\\(\\)`*%^~,\\<\\>\\[\\];+|-])+", "")).toLowerCase() + "-user";
                     LOGGER.info("userName : "+userName);
                     createUser(spaceName, userName);
@@ -182,6 +185,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         user.setServiceInstanceId(ssoAuthenticationDetails.getManagingServiceInstance());
         user.setOrganizationGuid(organization_guid);
         user.setSpaceGuid(space_guid);
+        user.setNameSpace(spaceName);
         return user;
     }
 

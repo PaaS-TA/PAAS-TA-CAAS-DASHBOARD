@@ -23,7 +23,7 @@
                 </dl>
             </li>
             <%--<li onclick="location.href='caas_workloads.html'">--%>
-            <li id="left-menu-workloads" onclick="procMovePage('/workloads/overview');">
+            <li id="left-menu-workloads" onclick="procMovePage('/caas/workloads/overview');">
                 <dl>
                     <dt>
                         <div id="lnbimg17" class="">
@@ -38,7 +38,7 @@
                 </dl>
             </li>
             <%--<li onclick="location.href='caas_services.html'">--%>
-            <li id="left-menu-services" onclick="procMovePage('/services');">
+            <li id="left-menu-services" onclick="procMovePage('/caas/services');">
                 <dl>
                     <dt>
                         <div id="lnbimg18" class="">

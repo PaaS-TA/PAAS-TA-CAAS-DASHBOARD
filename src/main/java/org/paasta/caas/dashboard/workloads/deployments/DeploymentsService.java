@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.workload.deployments;
+package org.paasta.caas.dashboard.workloads.deployments;
 
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;

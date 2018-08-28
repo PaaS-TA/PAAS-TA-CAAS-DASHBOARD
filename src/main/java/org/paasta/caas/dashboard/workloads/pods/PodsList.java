@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.workload.pods;
+package org.paasta.caas.dashboard.workloads.pods;
 
 import lombok.Data;
 

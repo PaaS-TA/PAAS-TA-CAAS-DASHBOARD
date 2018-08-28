@@ -1,9 +1,9 @@
-package org.paasta.caas.dashboard.workload.deployments;
+package org.paasta.caas.dashboard.workloads.deployments;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;
-import org.paasta.caas.dashboard.workload.deployments.support.DeploymentsSpec;
-import org.paasta.caas.dashboard.workload.deployments.support.DeploymentsStatus;
+import org.paasta.caas.dashboard.workloads.deployments.support.DeploymentsSpec;
+import org.paasta.caas.dashboard.workloads.deployments.support.DeploymentsStatus;
 
 /**
  * Deployments Model 클래스

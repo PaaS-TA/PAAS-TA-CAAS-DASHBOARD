@@ -534,7 +534,7 @@ metadata:
                 htmlString.push(
                     "<tr>"
                     + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"/services/" + document.getElementById('requestServiceName').value + "\");'>" + items[i].metadata.name + "</a>"
+                    + "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/services/" + document.getElementById('requestServiceName').value + "\");'>" + items[i].metadata.name + "</a>"
                     + "</td>"
                     + "<td>" + itemsMetadata.namespace + "</td>"
                     + "<td>" + items[i].spec.nodeName + "</td>"

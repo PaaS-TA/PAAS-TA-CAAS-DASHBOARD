@@ -1,6 +1,7 @@
 package org.paasta.caas.dashboard.accessInfo;
 
 import org.paasta.caas.dashboard.common.CommonService;
+import org.paasta.caas.dashboard.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018.08.23
  */
 @Controller
-@RequestMapping(value = "/accessInfo")
+@RequestMapping
 public class AccessInfoController {
     private static final String BASE_URL = "/admin/accessInfo";
     private final CommonService commonService;
@@ -37,7 +38,7 @@ public class AccessInfoController {
      * @param httpServletRequest the http servlet request
      * @return the custom service main
      */
-    @GetMapping
+    @GetMapping(value = Constants.CAAS_BASE_URL + "/accessInfo")
     public ModelAndView getCustomServiceMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }

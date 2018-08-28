@@ -8,6 +8,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<sec:authorize access="isAuthenticated()">
+    <sec:authentication property="details.userid" var="userid"/>
+    <sec:authentication property="details.username" var="username"/>
+    <sec:authentication property="details.serviceInstanceId" var="serviceInstanceId"/>
+    <sec:authentication property="details.organizationGuid" var="organizationGuid"/>
+    <sec:authentication property="details.spaceGuid" var="spaceGuid"/>
+    <sec:authentication property="details.nameSpace" var="nameSpace"/>
+</sec:authorize>
+<sec:authorize access="!isAuthenticated()">
+    <script>
+        location.href='/common/error/unauthorized';
+    </script>
+</sec:authorize>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -51,4 +66,9 @@
     var RESULT_STATUS_SUCCESS = "<%= Constants.RESULT_STATUS_SUCCESS %>";
     var RESULT_STATUS_FAIL = "<%= Constants.RESULT_STATUS_FAIL %>";
 
+    var USER_NAME = "${username}";
+    var SERVICE_INSTANCE_ID = "${serviceInstanceId}";
+    var ORGANIZATION_GUID = "${organizationGuid}";
+    var SPACE_GUID = "${spaceGuid}";
+    var NAME_SPACE = "${nameSpace}";
 </script>
