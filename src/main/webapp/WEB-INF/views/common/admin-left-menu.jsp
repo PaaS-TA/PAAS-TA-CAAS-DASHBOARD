@@ -24,7 +24,7 @@
                 </dl>
             </li>
             <%--<li class="cur">--%>
-            <li id="left-menu-users" onclick="procMovePage('/users');">
+            <li id="left-menu-users" onclick="procMovePage('/caas/users');">
                 <dl>
                     <dt>
                         <div id="lnbimg10" class="lefticos">

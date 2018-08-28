@@ -62,7 +62,7 @@
                 <div id="r_user" class="dropdown-menu">
                     <ul class="caas-user">
                         <li id="header-menu-accessInfo"><a href="javascript:void(0);" onclick="procMovePage('/accessInfo');">Access</a></li>
-                        <li id="header-menu-users"><a href="javascript:void(0);" onclick="procMovePage('/users');">User</a></li>
+                        <li id="header-menu-users"><a href="javascript:void(0);" onclick="procMovePage('/caas/users');">User</a></li>
                         <li id="header-menu-roles"><a href="javascript:void(0);" onclick="procMovePage('/roles');">Role</a></li>
                         <%--<li class="cur"><a href="#">Access</a></li>
                         <li><a href="#">User</a></li>
