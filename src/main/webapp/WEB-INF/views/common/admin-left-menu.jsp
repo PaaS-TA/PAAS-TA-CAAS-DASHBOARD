@@ -10,7 +10,7 @@
     <div class="scroll_style">
         <ul class="nav_1d caas_nav">
             <%--<li onclick="location.href='admin_access.html'">--%>
-            <li id="left-menu-accessInfo" onclick="procMovePage('/accessInfo');">
+            <li id="left-menu-accessInfo" onclick="procMovePage('/caas/accessInfo');">
                 <dl>
                     <dt>
                         <div id="lnbimg9" class="">
@@ -24,7 +24,7 @@
                 </dl>
             </li>
             <%--<li class="cur">--%>
-            <li id="left-menu-users" onclick="procMovePage('/users');">
+            <li id="left-menu-users" onclick="procMovePage('/caas/users');">
                 <dl>
                     <dt>
                         <div id="lnbimg10" class="lefticos">
@@ -39,7 +39,7 @@
                 </dl>
             </li>
             <%--<li onclick="location.href='admin_role.html'">--%>
-            <li id="left-menu-roles" onclick="procMovePage('/roles');">
+            <li id="left-menu-roles" onclick="procMovePage('/caas/roles');">
                 <dl>
                     <dt>
                         <div id="lnbimg11" class="">

@@ -129,7 +129,7 @@
                 htmlString.push(
                     "<tr>"
                         + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                        + "<a href='javascript:void(0);' onclick='procMovePage(\"/services/" + serviceName + "\");'>" + serviceName + "</a>"
+                        + "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/services/" + serviceName + "\");'>" + serviceName + "</a>"
                         + "</td>"
                         + "<td>" + items[i].spec.type + "</td>"
                         + "<td>" + items[i].spec.clusterIP + "</td>"

@@ -1,6 +1,7 @@
 package org.paasta.caas.dashboard.roles;
 
 import org.paasta.caas.dashboard.common.CommonService;
+import org.paasta.caas.dashboard.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +20,10 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018-08-16
  */
 @Controller
-@RequestMapping(value = "/roles")
+@RequestMapping
 public class RolesController {
 
+    private static final String CAAS_BASE_URL = Constants.CAAS_BASE_URL;
     private static final String BASE_URL = "/admin/roles";
     private final CommonService commonService;
     private final RolesService roleService;
@@ -42,7 +44,7 @@ public class RolesController {
      * @param httpServletRequest the http servlet request
      * @return the role main
      */
-    @GetMapping
+    @GetMapping(value = CAAS_BASE_URL + "/roles")
     public ModelAndView getRoleMain(HttpServletRequest httpServletRequest){
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
@@ -54,7 +56,7 @@ public class RolesController {
      * @param roleName the role name
      * @return the role detail
      */
-    @GetMapping(value = "/{roleName:.+}")
+    @GetMapping(value = CAAS_BASE_URL + "/roles/{roleName:.+}")
     public ModelAndView getRoleDetail(HttpServletRequest httpServletRequest, @PathVariable("roleName") String roleName){
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/detail", new ModelAndView());
     }
@@ -64,7 +66,7 @@ public class RolesController {
      *
      * @return RoleList
      */
-    @GetMapping(value = "/getListByAllNamespaces.do")
+    @GetMapping(value = "/roles/getListByAllNamespaces.do")
     @ResponseBody
     public RolesList getRoleListByAllNamespaces(){
         return roleService.getRoleListByAllNamespaces();
@@ -75,7 +77,7 @@ public class RolesController {
      *
      * @return RoleList
      */
-    @GetMapping(value = "/getList.do")
+    @GetMapping(value = "/roles/getList.do")
     @ResponseBody
     public RolesList getRoleList(){
         return roleService.getRoleList();
@@ -87,7 +89,7 @@ public class RolesController {
      * @param role the role
      * @return the role
      */
-    @GetMapping(value = "/get.do")
+    @GetMapping(value = "/roles/get.do")
     @ResponseBody
     public Roles getRole(Roles role){
         return roleService.getRole(role.getRoleName());
