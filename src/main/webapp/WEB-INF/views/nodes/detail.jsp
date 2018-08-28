@@ -118,5 +118,9 @@
         </li>
     </ul>
 </div>
-
+<script>
+    var callbackGetNodeDetail = function (data) {
+        // TODO :: write logic
+    }
+</script>
 <!-- Nodes Details 끝 -->

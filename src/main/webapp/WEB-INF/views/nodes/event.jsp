@@ -85,4 +85,9 @@
         </li>
     </ul>
 </div>
+<script>
+    var callbackGetNodeEvent = function (data) {
+        // TODO :: write logic
+    }
+</script>
 <!-- NodeEvents 끝 -->
