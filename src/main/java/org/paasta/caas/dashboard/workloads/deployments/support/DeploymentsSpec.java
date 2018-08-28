@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.workload.deployments.support;
+package org.paasta.caas.dashboard.workloads.deployments.support;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonLabelSelector;
