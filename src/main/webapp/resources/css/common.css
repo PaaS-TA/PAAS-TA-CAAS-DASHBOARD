@@ -522,7 +522,6 @@ nav .tit{ height: 61px; line-height: 61px; text-align: center; color:#454545; fo
 .table_wrap tfoot {height:103px; font-size: 16px;}
 
 .view_table_wrap table{ width:calc(100% - 60px); margin:0 auto; margin-bottom:5px; text-align: center;}
-.view_table_wrap p{margin: 30px 0 -30px 30px}
 .view_table_wrap table.condition{margin-top:30px!important;}
 .view_table_wrap thead{ font-weight: 600; color:#505254; border-bottom: solid 1px #e7eaec; line-height: 45px; font-family:'Nanum Gothic';}
 .view_table_wrap tbody{ font-weight: 400; color:#8a8c99; position: relative;}

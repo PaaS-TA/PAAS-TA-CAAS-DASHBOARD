@@ -19,3 +19,7 @@
 .custom_display_block {
     display: block;
 }
+
+.view_table_wrap p{
+    margin: 30px 0 -30px 30px
+}
