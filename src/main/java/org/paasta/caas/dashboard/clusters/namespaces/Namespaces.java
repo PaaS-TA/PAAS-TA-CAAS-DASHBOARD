@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.clusters.namespace;
+package org.paasta.caas.dashboard.clusters.namespaces;
 
 import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonMetaData;
