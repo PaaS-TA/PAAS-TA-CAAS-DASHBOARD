@@ -27,7 +27,7 @@
                         </ul>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL service-lh">
+                        <table class="table_event condition alignL service-lh" id="resultTable">
                             <colgroup>
                                 <col style='width:auto;'>
                                 <col style='width:10%;'>
@@ -39,12 +39,12 @@
                             <thead>
                             <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
                             <tr id="resultHeaderArea">
-                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Service Type</td>
                                 <td>Cluster IP</td>
                                 <td>Endpoints</td>
                                 <td>Pods</td>
-                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '5')"><i class="fas fa-caret-down"></i></button></td>
                             </tr>
                             </thead>
                             <tbody id="resultArea">
@@ -94,6 +94,7 @@
         var resultArea = $('#resultArea');
         var resultHeaderArea = $('#resultHeaderArea');
         var noResultArea = $('#noResultArea');
+        var resultTable = $('#resultTable');
 
         var items = gList.items;
         var listLength = items.length;
@@ -153,6 +154,8 @@
             resultHeaderArea.show();
             resultArea.show();
             resultArea.html(htmlString);
+            resultTable.tablesorter();
+            resultTable.trigger("update");
         }
 
         getDetailForPods(selectorList);

@@ -13,7 +13,7 @@
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span class="resultServiceName"> - </span></h1>
     <div class="cluster_tabs clearfix">
         <ul>
-            <li name="tab01" class="cluster_tabs_on" style="cursor: default;">Details</li>
+            <li name="tab01" class="cluster_tabs_on custom_cursor_default">Details</li>
             <li name="tab02" class="cluster_tabs_right" onclick='movePage("events");'>Events</li>
             <li name="tab03" class="cluster_tabs_right" onclick='movePage("yaml");'>YAML</li>
         </ul>
@@ -224,7 +224,7 @@
                         </ul>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL service-lh">
+                        <table class="table_event condition alignL service-lh" id="resultTable">
                             <colgroup>
                                 <col style='width:auto;'>
                                 <col style='width:15%;'>
@@ -236,12 +236,12 @@
                             <thead>
                             <tr id="noResultAreaForPods" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Pod가 없습니다.</p></td></tr>
                             <tr id="resultHeaderAreaForPods">
-                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
                                 <td>Node</td>
                                 <td>Status</td>
                                 <td>Restarts</td>
-                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                             </tr>
                             </thead>
                             <tbody id="resultAreaForPods">
@@ -398,6 +398,7 @@
         var resultArea = $('#resultAreaForPods');
         var resultHeaderArea = $('#resultHeaderAreaForPods');
         var noResultArea = $('#noResultAreaForPods');
+        var resultTable = $('#resultTable');
 
         for (var i = 0; i < listLength; i++) {
             podName = items[i].metadata.name;
@@ -432,6 +433,8 @@
             resultHeaderArea.show();
             resultArea.show();
             resultArea.html(htmlString);
+            resultTable.tablesorter();
+            resultTable.trigger("update");
         }
 
         getDetailForEndpoints();

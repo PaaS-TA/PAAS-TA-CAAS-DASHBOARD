@@ -114,6 +114,19 @@ var procSetMenuCursor = function () {
     $("#left-menu-" + calledMenu).addClass('cur');
 };
 
+
+// SET SORT LIST
+var procSetSortList = function(resultTableString, buttonObject, key) {
+    var resultTable = $('#' + resultTableString);
+    var orderDigit = ($(buttonObject).hasClass('sort')) ? 0 : 1; // 0 = ASC, 1 = DESC
+    var sorting = [[key, orderDigit]];
+
+    resultTable.tablesorter();
+    resultTable.trigger("update");
+    resultTable.trigger("sorton", [sorting]);
+};
+
+
 var checkValidData = function (data) {
     if (RESULT_STATUS_FAIL === data.resultCode) {
         console.log("ResultStatus :: " + data.resultCode + " / " + "ResultMessage :: " + data.resultMessage);
@@ -134,6 +147,8 @@ var processIfDataIsNull = function (data, procCallback, defaultValue) {
     }
 }
 
+
+// TODO :: MODIFY SCRIPTS :: DO NOT USE :: let >> ONLY ECMAScript 5, NOT ECMAScript 6
 var sortTable = function (tableId, sortKey, isAscending=true) {
     let tbody = $('#' + tableId + ' > tbody');
     let rows = tbody.children('tr');

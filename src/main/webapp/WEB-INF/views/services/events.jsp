@@ -14,7 +14,7 @@
     <div class="cluster_tabs clearfix">
         <ul>
             <li name="tab01" class="cluster_tabs_left" onclick='movePage("detail");'>Details</li>
-            <li name="tab02" class="cluster_tabs_on" style="cursor: default;">Events</li>
+            <li name="tab02" class="cluster_tabs_on custom_cursor_default">Events</li>
             <li name="tab03" class="cluster_tabs_right" onclick='movePage("yaml");'>YAML</li>
         </ul>
         <div class="cluster_tabs_line"></div>
