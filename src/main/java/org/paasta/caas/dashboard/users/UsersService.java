@@ -38,4 +38,7 @@ public class UsersService {
         return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL+"/serviceInstanceId/" + serviceInstanceId + "/organizationGuid/" + organizationGuid, HttpMethod.GET, null, List.class);
     }
 
+    public Users getUserByServiceInstanceId(String serviceInstanceId, String organizationGuid, String userId) {
+        return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL+"/serviceInstanceId/" + serviceInstanceId + "/organizationGuid/" + organizationGuid + "/userId/" + userId, HttpMethod.GET, null, Users.class);
+    }
 }
