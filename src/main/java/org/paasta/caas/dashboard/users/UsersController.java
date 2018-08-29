@@ -57,4 +57,10 @@ public class UsersController {
     public List<Users> getUsesListByServiceInstanceId(@RequestParam("serviceInstanceId") String serviceInstanceId, @RequestParam("organizationGuid") String organizationGuid) {
         return userService.getUsesListByServiceInstanceId(serviceInstanceId, organizationGuid);
     }
+
+    @GetMapping(value = "/getUser.do")
+    @ResponseBody
+    public Users getUserByServiceInstanceId(@RequestParam("serviceInstanceId") String serviceInstanceId, @RequestParam("organizationGuid") String organizationGuid, @RequestParam("userId") String userId) {
+        return userService.getUserByServiceInstanceId(serviceInstanceId, organizationGuid, userId);
+    }
 }

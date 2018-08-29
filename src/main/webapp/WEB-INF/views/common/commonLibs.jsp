@@ -66,6 +66,7 @@
     var RESULT_STATUS_SUCCESS = "<%= Constants.RESULT_STATUS_SUCCESS %>";
     var RESULT_STATUS_FAIL = "<%= Constants.RESULT_STATUS_FAIL %>";
 
+    var USER_ID = "${userid}";
     var USER_NAME = "${username}";
     var SERVICE_INSTANCE_ID = "${serviceInstanceId}";
     var ORGANIZATION_GUID = "${organizationGuid}";
