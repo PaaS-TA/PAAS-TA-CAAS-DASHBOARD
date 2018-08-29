@@ -52,47 +52,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <!-- nodes contents start -->
-                            <!-- TODO :: REMOVE EXAMPLE -->
-                            <tr node-name="ip-172-31-20-237" created-on="2018-07-09 18:31:01">
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-                                        href="caas_nodes_view.html">ip-172-31-20-237</a></td>
-                                <td>True</td>
-                                <td>831 mCPU</td>
-                                <td>940 mCPU</td>
-                                <td>931.95 MB</td>
-                                <td>2.77 GB</td>
-                                <td>2018-07-09 18:31:01</td>
-                            </tr>
-                            <tr node-name="ip-172-31-21-17" created-on="2018-07-10 05:31:01">
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-                                        href="caas_nodes_view.html">ip-172-31-21-17</a></td>
-                                <td>True</td>
-                                <td>831 mCPU</td>
-                                <td>940 mCPU</td>
-                                <td>931.95 MB</td>
-                                <td>2.77 GB</td>
-                                <td>2018-07-10 05:31:01</td>
-                            </tr>
-                            <tr node-name="ip-172-31-11-184" created-on="2018-07-10 05:31:17">
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-                                        href="caas_nodes_view.html">ip-172-31-11-184</a></td>
-                                <td>True</td>
-                                <td>831 mCPU</td>
-                                <td>940 mCPU</td>
-                                <td>931.95 MB</td>
-                                <td>2.77 GB</td>
-                                <td>2018-07-10 05:31:17</td>
-                            </tr>
-                            <!-- nodes contents end -->
+                                <tr><td colspan="7">노드의 정보를 가져올 수 없습니다.</td></tr>
                             </tbody>
                             <!--tfoot>
-                            <tr>
-                            <td colspan="6">
-                                    <button class="btns2 btns2_1 colors4 event_btns">더보기</button>
-                                    </td>
-                                    </tr>
-                                    </tfoot-->
+                                <tr>
+                                    <td colspan="7"><button class="btns2 btns2_1 colors4 event_btns">더보기</button></td>
+                                </tr>
+                            </tfoot-->
                         </table>
                     </div>
                 </div>
@@ -114,27 +80,15 @@
             return;
         }
 
-        /*
-<tr>
-    <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a
-            href="caas_nodes_view.html">ip-172-31-20-237</a></td>
-    <td>True</td>
-    <td>831 mCPU</td>
-    <td>940 mCPU</td>
-    <td>931.95 MB</td>
-    <td>2.77 GB</td>
-    <td>2018-07-09 18:31:01</td>
-</tr>
-     */
         var contents = [];
         $.each(data.items, function (index, nodeItem) {
-            let _metadata = itemList.metadata;
-            let _status = itemList.status;
+            let _metadata = nodeItem.metadata;
+            let _status = nodeItem.status;
 
             let name = _metadata.name;
             let ready = _status.conditions.filter(function(condition) {
-                return condition.type === "Ready";
-            })[0].status;
+                    return condition.type === "Ready";
+                })[0].status;
             let limitCPU = _status.capacity.cpu;
             let requestCPU = limitCPU - _status.allocatable.cpu;
             let limitMemory = convertByte(_status.capacity.memory);
@@ -142,30 +96,38 @@
             let creationTimestamp = _metadata.creationTimestamp;
 
             // TODO
-            let nameHtml = '<span class=';
+            let nameHtml = '<a href="./nodes/' + name + '/summary"> ' + name + '</a>';
+            if (ready == "True")
+                nameHtml = '<span class="green2"><i class="fas fa-check-circle"></i></span>' + nameHtml;
+            else
+                nameHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span>' + nameHtml;
+
+            contents.push('<tr node-name="' + name + '" created-on="' + creationTimestamp + '">'
+                + '<td>' + nameHtml + '</td>'
+                + '<td>' + ready + '</td>'
+                + '<td>' + requestCPU + '</td>'
+                + '<td>' + limitCPU + '</td>'
+                + '<td>' + formatCapacity(requestMemory, "Mi") + '</td>'
+                + '<td>' + formatCapacity(limitMemory, "Mi") + '</td>'
+                + '<td>' + creationTimestamp + '</td></tr>'
+            );
         });
 
-        // get data
-        $.each(data.items, function(index, itemList) {
+        $('#clusters_nodes_table > tbody').html(contents);
 
-
-            // htmlString push
-            htmlString.push("Name :: " + name + " || "
-                + "Ready :: " + ready + " || "
-                + "Request CPU :: " + requestCPU + " || "
-                + "Limit CPU :: " + limitCPU + " || "
-                + "Request Memory :: " + formatCapacity(requestMemory, "Mi") + " || "
-                + "Limit Memory :: " + formatCapacity(limitMemory, "Mi") + " || "
-                + "CreationTimestamp :: " + creationTimestamp + "<br><br>" );
-        });
-
-        // finally
-        $('#resultArea').html(htmlString);
+        sortTable("clusters_nodes_table", "node-name");
     }
 
     $(document.body).ready(function(){
-        // default sort : node name
-        sortTable("clusters_nodes_table", "node-name", true);
+        // add sort-arrow click event in pods table
+        $(".sort-arrow").on("click", function(event) {
+            let tableId = "clusters_nodes_table";
+            let sortKey = $(event.currentTarget).attr('sort-key');
+            let isAscending = $(event.currentTarget).hasClass('sort')? true : false;
+            sortTable(tableId, sortKey, isAscending);
+        });
+
+        getNodes();
     });
 </script>
 <!-- Nodes 끝 -->
