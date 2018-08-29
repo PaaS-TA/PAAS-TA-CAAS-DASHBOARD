@@ -1,6 +1,7 @@
 package org.paasta.caas.dashboard.workloads.deployments;
 
 import org.paasta.caas.dashboard.common.CommonService;
+import org.paasta.caas.dashboard.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ import java.util.Map;
  * @since 2018.08.14
  */
 @RestController
-@RequestMapping( "/workloads" )
+@RequestMapping
 public class DeploymentsController {
     private final CommonService commonService;
     private final DeploymentsService deploymentsService;
@@ -35,8 +36,8 @@ public class DeploymentsController {
      *
      * @return ModelAndView(Spring 클래스)
      */
-    // TODO :: REMOVE
-    @GetMapping(value = {"/deployments"})
+    // TODO :: MODIFY
+    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments")
     public ModelAndView getDashboardMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
 //        return new ModelAndView() {{
@@ -45,21 +46,30 @@ public class DeploymentsController {
 //        }};
     }
 
-    // TODO :: REMOVE
-//    @GetMapping( BASE_URL )
-//    public ModelAndView getUserMain( HttpServletRequest httpServletRequest) {
-//        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
-//    }
-
     /**
      * 모든 네임스페이스에 있는 deployment의 목록을 서비스를 통해 호출하여 받은 결과값을 반환한다.
      *
      * @param headers request headers
      * @return List of deployment (All namespaces)
      */
-    @GetMapping( "/deployments/getList.do" )
+    @GetMapping( "/workloads/deployments/getList.do" )
     public DeploymentsList getDeploymentListByAllNamespaces(@RequestHeader HttpHeaders headers) {
         return deploymentsService.getDeploymentListByAllNamespaces();
+    }
+
+    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}")
+    public ModelAndView getDashboardDetail(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/details", new ModelAndView());
+    }
+
+    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/events")
+    public ModelAndView getDashboardEvent(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());
+    }
+
+    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/yaml")
+    public ModelAndView getDashboardYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/yaml", new ModelAndView());
     }
 
     /**
@@ -68,7 +78,7 @@ public class DeploymentsController {
      * @param namespace namespace
      * @return List of deployment (specific namespace)
      */
-    @GetMapping( "/deployments/{namespace}/getList.do" )
+    @GetMapping( "/workloads/deployments/{namespace}/getList.do" )
     public DeploymentsList getDeploymentList(@PathVariable String namespace) {
         return deploymentsService.getDeploymentList(namespace);
     }
@@ -80,7 +90,7 @@ public class DeploymentsController {
      * @param params request parameters
      * @return Deployments's detail content (specific namespace and deployment)
      */
-    @GetMapping( "/deployments/{namespace}/getDeployment.do")
+    @GetMapping( "/workloads/deployments/{namespace}/getDeployment.do")
     public Deployments getDeployment(@PathVariable String namespace, @RequestParam Map<String, Object> params) {
         String deploymentName = params.get("name").toString();
         return deploymentsService.getDeployment(namespace, deploymentName);

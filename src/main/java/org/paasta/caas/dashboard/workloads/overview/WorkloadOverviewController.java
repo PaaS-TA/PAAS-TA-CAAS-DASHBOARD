@@ -1,6 +1,7 @@
 package org.paasta.caas.dashboard.workloads.overview;
 
 import org.paasta.caas.dashboard.common.CommonService;
+import org.paasta.caas.dashboard.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +37,7 @@ public class WorkloadOverviewController {
      * @param httpServletRequest the http servlet request
      * @return the workload overview
      */
-    @GetMapping(value = BASE_URL + "/overview")
+    @GetMapping(value = Constants.CAAS_BASE_URL + BASE_URL + "/overview")
     public ModelAndView getWorkloadOverview(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/overview", new ModelAndView());
     }

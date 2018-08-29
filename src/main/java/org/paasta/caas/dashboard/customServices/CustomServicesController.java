@@ -66,6 +66,32 @@ public class CustomServicesController {
 
 
     /**
+     * Gets custom services detail events.
+     *
+     * @param httpServletRequest the http servlet request
+     * @param serviceName        the service name
+     * @return the custom services detail events
+     */
+    @GetMapping(value = CAAS_BASE_URL + BASE_URL + "/{serviceName:.+}/events")
+    public ModelAndView getCustomServicesDetailEvents(HttpServletRequest httpServletRequest, @PathVariable(value = "serviceName") String serviceName) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());
+    }
+
+
+    /**
+     * Gets custom services detail yaml.
+     *
+     * @param httpServletRequest the http servlet request
+     * @param serviceName        the service name
+     * @return the custom services detail yaml
+     */
+    @GetMapping(value = CAAS_BASE_URL + BASE_URL + "/{serviceName:.+}/yaml")
+    public ModelAndView getCustomServicesDetailYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "serviceName") String serviceName) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/yaml", new ModelAndView());
+    }
+
+
+    /**
      * Gets custom services list.
      *
      * @param namespace the namespace

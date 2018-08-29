@@ -143,11 +143,13 @@ public class CustomUserDetailsService implements UserDetailsService {
                     role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 } else {
                     LOGGER.info("start~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                    String userName = (organization_guid + "-" + username.replaceAll("([:.#$&!_\\(\\)`*%^~,\\<\\>\\[\\];+|-])+", "")).toLowerCase() + "-user";
+                    String tmpString[] = username.split("@");
+                    String userName = (organization_guid + "-" + tmpString[0].replaceAll("([:.#$&!_\\(\\)`*%^~,\\<\\>\\[\\];+|-])+", "")).toLowerCase() + "-user";
+                    String roleName = (tmpString[0].replaceAll("([:.#$&!_\\(\\)`*%^~,\\<\\>\\[\\];+|-])+", "")).toLowerCase();
                     LOGGER.info("userName : "+userName);
                     createUser(spaceName, userName);
-                    createRole(spaceName, userName);
-                    createRoleBinding(spaceName, userName);
+                    createRole(spaceName, userName, roleName);
+                    createRoleBinding(spaceName, userName, roleName);
 
                     String cubeToken = getToken(spaceName, userName);
                     LOGGER.info("cubeToken : "+cubeToken);
@@ -218,14 +220,15 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @author Hyerin
      * @since 2018.07.30
      */
-    public void createRole(String spaceName, String userName) {
+    public void createRole(String spaceName, String userName, String roleName) {
         LOGGER.info("createRole spaceName~~ {}", spaceName);
         LOGGER.info("createRole userName~~ {}", userName);
+        LOGGER.info("createRole roleName~~ {}", roleName);
 
         Map<String, Object> model = new HashMap<>();
         model.put("spaceName", spaceName);
         model.put("userName", userName);
-        model.put("roleName", spaceName + "-user-role");
+        model.put("roleName", spaceName + "-" + roleName + "-role");
         String yml = null;
         yml = templateService.convert("instance/create_role.ftl", model);
 
@@ -244,14 +247,15 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @author Hyerin
      * @since 2018.07.30
      */
-    public void createRoleBinding(String spaceName, String userName) {
+    public void createRoleBinding(String spaceName, String userName, String roleName) {
         LOGGER.info("createRoleBinding spaceName~~ {}", spaceName);
         LOGGER.info("createRoleBinding userName~~ {}", userName);
+        LOGGER.info("createRoleBinding roleName~~ {}", roleName);
 
         Map<String, Object> model = new HashMap<>();
         model.put("spaceName", spaceName);
         model.put("userName", userName);
-        model.put("roleName", spaceName + "-user-role");
+        model.put("roleName", spaceName + "-" + roleName + "-role");
         String yml = null;
         yml = templateService.convert("instance/create_roleBinding.ftl", model);
 
