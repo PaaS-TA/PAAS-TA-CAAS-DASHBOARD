@@ -440,7 +440,7 @@
 <script type="text/javascript">
     var deployName = '<c:out value="${deploymentsName}"/>';
     console.log(deployName);
-    $(document).ready(function() {
+    $(document.body).ready(function () {
         var URL = "/workloads/deployments/" + NAME_SPACE + "/getDeployment.do";
         console.log("window.location.href ", window.location.href);
         var param = {

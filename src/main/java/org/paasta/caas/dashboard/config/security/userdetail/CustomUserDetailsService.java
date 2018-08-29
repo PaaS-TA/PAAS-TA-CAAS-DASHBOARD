@@ -143,6 +143,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 } else {
                     LOGGER.info("start~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    LOGGER.warn("222======");
                     String tmpString[] = username.split("@");
                     String userName = (organization_guid + "-" + tmpString[0].replaceAll("([:.#$&!_\\(\\)`*%^~,\\<\\>\\[\\];+|-])+", "")).toLowerCase() + "-user";
                     String roleName = (tmpString[0].replaceAll("([:.#$&!_\\(\\)`*%^~,\\<\\>\\[\\];+|-])+", "")).toLowerCase();
