@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.cluster.overview;
+package org.paasta.caas.dashboard.clusters.overview;
 
 import org.paasta.caas.dashboard.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;

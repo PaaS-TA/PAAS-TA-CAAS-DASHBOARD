@@ -7,7 +7,6 @@
 
         <%--TODO :: REMOVE--%>
         <%--<li name="tab05" class="cluster_tabs_right" onclick="procMovePage('/caas/clusters/namespaces');">Namespaces VIEW</li>--%>
-        <li name="tab06" class="cluster_tabs_right" onclick="procMovePage('/caas/clusters/nodes');">Nodes VIEW</li>
         <li name="tab07" class="cluster_tabs_right" onclick="procMovePage('/caas/clusters/persistentVolumes');">Persistent Volumes VIEW</li>
     </ul>
     <div class="cluster_tabs_line"></div>

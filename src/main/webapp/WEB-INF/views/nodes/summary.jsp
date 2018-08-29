@@ -239,7 +239,7 @@
             let nameClassSet;
             switch (pod.podStatus) {
                 case "Pending":
-                    nameClassSet = {span: "pending2", i: "fas fa-exclamation-circle"}; break;
+                    nameClassSet = {span: "pending2", i: "fas fa-exclamation-triangle"}; break;
                 case "Running":
                     nameClassSet = {span: "running2", i: "fas fa-check-circle"}; break;
                 case "Succeeded":
@@ -248,7 +248,7 @@
                     nameClassSet = {span: "failed2", i: "fas fa-exclamation-circle"}; break;
                 case "Unknown":
                 default:
-                    nameClassSet = {span: "unknown2", i: "fas fa-exclamation-circle"}; break;
+                    nameClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"}; break;
             }
 
             let nameHtml =

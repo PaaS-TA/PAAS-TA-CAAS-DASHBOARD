@@ -1,13 +1,10 @@
-package org.paasta.caas.dashboard.clusters.namespace;
+package org.paasta.caas.dashboard.clusters.namespaces;
 
-import org.paasta.caas.dashboard.clusters.persistentVolumes.PersistentVolumes;
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 
 /**
  * Namespace Service 클래스

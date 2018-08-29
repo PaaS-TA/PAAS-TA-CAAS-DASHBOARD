@@ -33,11 +33,6 @@
                                 </tr>
                             </thead>
                             <tbody id="resultAreaForNameSpace">
-                                <tr>
-                                    <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_namespaces.html"><span id="nameSpaceName"></span></a></td>
-                                    <td id="nameSpaceStatus"></td>
-                                    <td id="nameSpaceCreationTime"></td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
