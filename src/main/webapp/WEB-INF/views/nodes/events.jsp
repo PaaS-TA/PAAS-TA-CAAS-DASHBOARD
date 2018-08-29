@@ -10,7 +10,7 @@
 
 <div class="content">
     <%-- NODES HEADER INCLUDE --%>
-    <%@ include file="node-header.jsp" %>
+    <%@ include file="tab.jsp" %>
 
     <!-- NodeEvents 시작-->
     <div class="cluster_content03 row two_line two_view harf_view">
@@ -94,5 +94,9 @@
     var callbackGetNodeEvent = function (data) {
         // TODO :: write logic
     }
+
+    $(document.body).ready(function () {
+        // empty
+    });
 </script>
 <!-- NodeEvents 끝 -->

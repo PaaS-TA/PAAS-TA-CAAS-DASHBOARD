@@ -14,19 +14,38 @@
 <div class="cluster_tabs clearfix">
     <ul>
         <!-- cluster_tabs_on or cluster_tabs_right -->
-        <li name="tab01" tab-type="summary">Summary</li>
-        <li name="tab02" tab-type="details">Details</li>
-        <li name="tab03" tab-type="events">Events</li>
+        <li name="tab01" class="cluster_tabs_right" id="clusters_nodes_summary" onclick="procMovePage('./summary')">Summary</li>
+        <li name="tab02" class="cluster_tabs_right" id="clusters_nodes_details" onclick="procMovePage('./details')">Details</li>
+        <li name="tab03" class="cluster_tabs_right" id="clusters_nodes_events" onclick="procMovePage('./events')">Events</li>
     </ul>
     <div class="cluster_tabs_line"></div>
 </div>
 <script>
     var nodeName;
     var currentTab;
-    $(document.body).ready(function () {
+
+    var getURLInfo = function() {
         let urlSplits = window.location.href.replace(/\?.*/, '').split('/');
-        nodeName = urlSplits[urlSplits.length - 2];
-        currentTab = urlSplits[urlSplits.length - 1];
+        let slices = urlSplits.splice(urlSplits.indexOf("caas") + 1, urlSplits.length - urlSplits.indexOf("caas"));
+
+        let valueFrame = {
+            category: slices[0],
+            page: slices[1]
+        };
+
+        if (slices.length > 2)
+            valueFrame['selector'] = slices[2];
+
+        if (slices.length > 3)
+            valueFrame['tab'] = slices[3];
+
+        return valueFrame;
+    };
+
+    $(document.body).ready(function () {
+        let urlInfo = getURLInfo();
+        nodeName = urlInfo.selector;
+        currentTab = urlInfo.tab;
 
         if (nodeName == null) {
             alert("Cannot get node name.");
@@ -38,6 +57,10 @@
         let nodeNameSubject = $("#cluster_node_name");
         nodeNameSubject.html( nodeNameSubject.html().replace("NODE_NAME", (" " + nodeName)) );
 
+        // change style class to current page's tab
+        $('#clusters_nodes_' + currentTab).attr("class", "cluster_tabs_on");
+
+        /*
         $.each($('.cluster_tabs.clearfix > ul > li'), function (index, tab) {
             let tabElement = $(tab);
             let tabType = tabElement.attr("tab-type");
@@ -54,6 +77,7 @@
                 });
             }
         });
+        */
 
         /*
         $('.cluster_tabs.clearfix > ul > li').on("click", function(event) {

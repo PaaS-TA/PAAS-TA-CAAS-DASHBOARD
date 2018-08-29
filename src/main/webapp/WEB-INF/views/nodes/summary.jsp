@@ -12,7 +12,7 @@
 <!-- Nodes Summary 시작 -->
 <div class="content">
     <%-- NODES HEADER INCLUDE --%>
-    <%@ include file="node-header.jsp" %>
+    <%@ include file="tab.jsp" %>
 
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
@@ -309,6 +309,7 @@
         let nodeNameSubject = $("#cluster_node_name");
         nodeNameSubject.html( nodeNameSubject.html().replace("NODE_NAME", (" " + nodeName)) );
 
+        // TODO :: Change chart functions.
         //createChart("current", "cpu");
         //createChart("current", "mem");
         //createChart("current", "disk");

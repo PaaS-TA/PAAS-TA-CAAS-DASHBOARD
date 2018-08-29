@@ -10,7 +10,7 @@
 
 <div class="content">
     <%-- NODES HEADER INCLUDE --%>
-    <%@ include file="node-header.jsp" %>
+    <%@ include file="tab.jsp" %>
 
     <!-- Nodes Details 시작-->
     <div class="cluster_content02 row two_line two_view harf_view">
@@ -147,6 +147,7 @@
             </div>
         </div>
     </div>
+</div>
 <script>
     var callbackGetNodeDetail = function (data) {
         // TODO :: write logic
