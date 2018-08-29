@@ -38,6 +38,8 @@
 
         if (slices.length > 3)
             valueFrame['tab'] = slices[3];
+        else
+            valueFrame['tab'] = '_default';
 
         return valueFrame;
     };
@@ -45,7 +47,8 @@
     $(document.body).ready(function () {
         let urlInfo = getURLInfo();
         nodeName = urlInfo.selector;
-        currentTab = urlInfo.tab;
+        currentTab = urlInfo.tab == "_default"? "details" : urlInfo.tab;
+
 
         if (nodeName == null) {
             alert("Cannot get node name.");
@@ -57,37 +60,10 @@
         let nodeNameSubject = $("#cluster_node_name");
         nodeNameSubject.html( nodeNameSubject.html().replace("NODE_NAME", (" " + nodeName)) );
 
-        // change style class to current page's tab
-        $('#clusters_nodes_' + currentTab).attr("class", "cluster_tabs_on");
-
-        /*
-        $.each($('.cluster_tabs.clearfix > ul > li'), function (index, tab) {
-            let tabElement = $(tab);
-            let tabType = tabElement.attr("tab-type");
-            if (tabType == currentTab)
-                tabElement.attr("class", "cluster_tabs_on");
-            else {
-                tabElement.attr("class", "cluster_tabs_right");
-                tabElement.on("click", function(event) {
-                    if (currentTab != $(event.currentTarget).attr("tab-type")) {
-                        let redirectURL = window.location.href.replace(
-                            "/" + currentTab, ("/" + $(event.currentTarget).attr("tab-type")));
-                        window.location.replace(redirectURL);
-                    }
-                });
-            }
-        });
-        */
-
-        /*
-        $('.cluster_tabs.clearfix > ul > li').on("click", function(event) {
-            var tabLi = $(event.currentTarget);
-            var tabType = tabLi.attr("tab-type");
-            tabLi.attr
-
-            var redirectURL = window.location.href.replace("/summary", ("/" + $(event.currentTarget).attr("tab-type")));
-            window.location.replace(redirectURL);
-        });
-        */
+        // change style class to current page's tab and remove onclick event
+        let currentTabElement = $('#clusters_nodes_' + currentTab);
+        currentTabElement.removeAttr("onclick");
+        currentTabElement.attr("class", "cluster_tabs_on");
+        currentTabElement.attr("style", "cursor: default");
     });
 </script>
