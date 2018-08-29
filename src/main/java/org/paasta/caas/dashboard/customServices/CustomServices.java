@@ -5,6 +5,8 @@ import org.paasta.caas.dashboard.common.model.CommonMetaData;
 import org.paasta.caas.dashboard.common.model.CommonSpec;
 import org.paasta.caas.dashboard.common.model.CommonStatus;
 
+import java.util.Map;
+
 /**
  * Custom Services Model 클래스
  *
@@ -21,6 +23,7 @@ public class CustomServices {
     private CommonMetaData metadata;
     private CommonSpec spec;
     private CommonStatus status;
+    private Map<String, Object> source;
 
     // FOR DASHBOARD
     private String serviceName;
