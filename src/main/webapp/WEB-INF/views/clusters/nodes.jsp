@@ -107,6 +107,7 @@
         procCallAjax(reqUrl, "GET", null, null, callbackGetListNodes);
     }
 
+    // TODO :: MODIFY SCRIPTS :: DO NOT USE :: let >> ONLY ECMAScript 5, NOT ECMAScript 6
     // CALLBACK
     var callbackGetListNodes = function(data) {
         if (false == checkValidData(data)) {

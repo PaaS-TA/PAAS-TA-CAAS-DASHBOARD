@@ -225,6 +225,7 @@
         $('#tbody_node_conditions').html(contents);
     }
 
+    // TODO :: MODIFY SCRIPTS :: DO NOT USE :: let >> ONLY ECMAScript 5, NOT ECMAScript 6
     var callbackGetPods = function (data) {
         if (false == checkValidData(data)) {
             alert("Cannot load pods data");

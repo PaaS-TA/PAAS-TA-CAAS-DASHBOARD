@@ -24,6 +24,7 @@
     var nodeName;
     var currentTab;
 
+    // TODO :: MODIFY SCRIPTS :: DO NOT USE :: let >> ONLY ECMAScript 5, NOT ECMAScript 6
     var getURLInfo = function() {
         let urlSplits = window.location.href.replace(/\?.*/, '').split('/');
         let slices = urlSplits.splice(urlSplits.indexOf("caas") + 1, urlSplits.length - urlSplits.indexOf("caas"));
