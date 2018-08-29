@@ -39,9 +39,20 @@ public class NodesController {
     }
 
     /**
+     * Gets node list
+     *
+     * @param httpServletRequest the http servlet request
+     * @return the user main
+     */
+    @GetMapping(value = "/caas/clusters" + BASE_URL)
+    public ModelAndView getNodeList( HttpServletRequest httpServletRequest) {
+        return commonService.setPathVariables(httpServletRequest, "/clusters" + BASE_URL, new ModelAndView());
+    }
+
+    /**
      * send redirect to /caas/clusters/nodes/{nodeName} to /caas/clusters/nodes/{nodeName}/summary
      *
-     * @param httpServletResponse the http servlet request
+     * @param httpServletResponse the http servlet response
      * @return the user main
      */
     @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}")
@@ -65,24 +76,24 @@ public class NodesController {
     }
 
     /**
-     * Gets node summary
+     * Gets node detail
      *
      * @param httpServletRequest the http servlet request
      * @return the user main
      */
     @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}/details")
-    public ModelAndView getNodeDetail( HttpServletRequest httpServletRequest) {
+    public ModelAndView getNodeDetails( HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/details", new ModelAndView());
     }
 
     /**
-     * Gets node summary
+     * Gets node event
      *
      * @param httpServletRequest the http servlet request
      * @return the user main
      */
     @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}/events")
-    public ModelAndView getNodeEvent( HttpServletRequest httpServletRequest) {
+    public ModelAndView getNodeEvents( HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());
     }
 
@@ -106,5 +117,4 @@ public class NodesController {
     public Nodes getNode (@PathVariable("nodeName") String nodeName) {
         return nodesService.getNode(nodeName);
     }
-
 }
