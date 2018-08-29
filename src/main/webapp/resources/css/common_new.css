@@ -142,11 +142,14 @@ a:hover{border-bottom:1px solid #154c94;color:#154c94;font-weight:bold;}
 .bg_blue a{color:#fff;}
 .red2 {color:#ff0000;}
 .green2 {color:#85c014;}
-.red2 i, .green2 i {vertical-align: middle;}
-.running2  {color:#3076b2;}
-.failed2   {color:#4b4f53;}
-.pendding2 {color:#fe8d14;}
-.succeeded2{color:#07ceb0;}
+.orange2 {color:#fe8d14;}
+.yellow2 {color:#f7f700;}
+.red2 i, .green2 i, .orange2 i, .yellow2 i {vertical-align: middle;}
+.running2  {color:#85c014;}
+.failed2   {color:#f00808;}
+.pending2 {color:#fe8d14;}
+.succeeded2{color:#3076b2;}
+.unknown2 {color:#4b4f53;}
 .sortable_right.label {font-size: 12px; font-weight: bold; color: #333440; margin-top:17px;}
 
 
