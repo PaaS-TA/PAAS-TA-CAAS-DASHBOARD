@@ -18,7 +18,7 @@
                 <tr>
                     <td>
                         <label for="access-user-name">User name *</label>
-                        <input id="access-user-name" type="text" value="hong" placeholder="User name">
+                        <input id="access-user-name" type="text" placeholder="User name" disabled>
                     </td>
                 </tr>
                 <tr>
@@ -43,7 +43,7 @@
                 <tr>
                     <td>
                         <label for="access-user-role">Role</label>
-                        <input id="access-user-role" type="text" value="administrator" disabled>
+                        <input id="access-user-role" type="text" disabled>
                     </td>
                 </tr>
                 </tbody>
@@ -51,3 +51,37 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+
+    var BASE_URL = "/caas";
+    var roleName;
+
+    // GET User
+    var getUser = function() {
+        procCallAjax(BASE_URL + "/users/getUser.do?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID + "&userId=" + USER_ID, "GET", null, null, callbackGetUser);
+    };
+
+    // CALLBACK
+    var callbackGetUser = function(data) {
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        //console.log("value", JSON.stringify(data));
+        $("#access-user-token").val(data.caasAccountTokenName);
+
+        if(data.roleSetCode == "RS0001"){
+            roleName = "Administrator";
+        }else if(data.roleSetCode == "RS0002"){
+            roleName = "Regular User";
+        }else if(data.roleSetCode == "RS0003"){
+            roleName = "Init User";
+        }
+
+        $("#access-user-role").val(roleName);
+    };
+
+    // ON LOAD
+    $(document.body).ready(function () {
+        $("#access-user-name").val(USER_ID);
+        getUser();
+    });
+</script>
