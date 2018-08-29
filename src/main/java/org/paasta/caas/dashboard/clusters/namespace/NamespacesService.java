@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 /**
  * Namespace Service 클래스
  *
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Service;
  * @since 2018.08.28
  */
 @Service
-public class NamespaceService {
+public class NamespacesService {
 
     private final RestTemplateService restTemplateService;
 
@@ -25,9 +27,13 @@ public class NamespaceService {
      * @param restTemplateService the rest template service
      */
     @Autowired
-    public NamespaceService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
+    public NamespacesService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
 
-    Namespace getNamespaces(String namespace) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, "/cluster/namespaces/"+namespace, HttpMethod.GET, null, Namespace.class);
+    Namespaces getNamespaces(String namespace) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, "/cluster/namespaces/"+namespace, HttpMethod.GET, null, Namespaces.class);
+    }
+
+    ResourceQuotaList getResourceQuotaList(String namespace) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, "/cluster/namespaces/"+namespace+"/getResourceQuotaList", HttpMethod.GET, null, ResourceQuotaList.class);
     }
 }

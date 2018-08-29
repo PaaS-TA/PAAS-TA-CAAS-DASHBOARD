@@ -14,19 +14,19 @@
 package org.paasta.caas.dashboard.clusters.namespace;
 
 import lombok.Data;
-import org.paasta.caas.dashboard.common.model.CommonMetaData;
+
+import java.util.List;
+import java.util.Map;
 
 /**
- * ResourceQuota sets aggregate quota restrictions enforced per namespace
+ * ResourceQuotaSpec defines the desired hard limits to enforce for Quota.
  */
 @Data
-public class ResourceQuota {
+public class ResourceQuotaSpec {
 
-  private String apiVersion;
-  private String kind;
-  private CommonMetaData metadata;
-  private ResourceQuotaSpec spec;
-  private ResourceQuotaStatus status;
+  private Map<String, String> hard = null;
+//  private V1ScopeSelector scopeSelector = null;
+  private List<String> scopes = null;
 
 }
 

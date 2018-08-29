@@ -11,7 +11,7 @@
 <div class="content">
     <%@include file="../clusters/tab.jsp" %>
 
-    <div class="cluster_content01 row two_line two_view harf_view">
+    <div class="cluster_content02 row two_line two_view harf_view custom_display_block">
         <ul class="maT30">
             <li class="cluster_first_box">
                 <div class="sortable_wrap">

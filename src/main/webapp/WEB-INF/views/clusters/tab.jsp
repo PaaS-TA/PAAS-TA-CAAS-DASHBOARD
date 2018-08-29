@@ -25,4 +25,7 @@
     $("li[id^='clustersTab_']").addClass("cluster_tabs_right");
     $("#clustersTab_"+method).attr("class", "");
     $("#clustersTab_"+method).addClass("cluster_tabs_on");
+
+    $("#clustersTab_"+method).removeAttr("onclick");
+    $("#clustersTab_"+method).attr("style", "cursor: default;");
 </script>

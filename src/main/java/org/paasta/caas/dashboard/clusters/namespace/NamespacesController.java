@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 
 /**
@@ -17,17 +18,17 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/caas/clusters")
-public class NamespaceController {
+public class NamespacesController {
 
     private static final String BASE_URL = "/namespaces";
 
     private final CommonService commonService;
-    private final NamespaceService namespaceService;
+    private final NamespacesService namespacesService;
 
     @Autowired
-    public NamespaceController(CommonService commonService, NamespaceService namespaceService) {
+    public NamespacesController(CommonService commonService, NamespacesService namespacesService) {
         this.commonService = commonService;
-        this.namespaceService = namespaceService;
+        this.namespacesService = namespacesService;
     }
 
     @GetMapping(value = {"/namespaces"})
@@ -41,12 +42,17 @@ public class NamespaceController {
     }
 
     @GetMapping(value = "/namespaces/{namespace}/getDetail.do")
-    public Namespace getNamespaces(@PathVariable String namespace) {
-        return namespaceService.getNamespaces(namespace);
+    public Namespaces getNamespaces(@PathVariable String namespace) {
+        return namespacesService.getNamespaces(namespace);
     }
 
     @GetMapping(value = "/namespaces/{namespace}/getResourceQuotaList.do")
-    public ResourceQuota getResourceQuotaList(@PathVariable String namespace) {
-        return null;
+    public ResourceQuotaList getResourceQuotaList(@PathVariable String namespace) {
+        return namespacesService.getResourceQuotaList(namespace);
+    }
+
+    @GetMapping(value = {"/namespaces/{namespace}/events"})
+    public ModelAndView getNamespaceEvents(HttpServletRequest httpServletRequest) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());
     }
 }

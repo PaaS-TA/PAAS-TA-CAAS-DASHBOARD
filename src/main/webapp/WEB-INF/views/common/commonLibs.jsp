@@ -49,6 +49,7 @@
 <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/jquery.jscrollpane.min.js"/>"></script>
 <script type="text/javascript" src='<c:url value="/resources/js/clipboard.min.js"/>'></script>
+<script type="text/javascript" src='<c:url value="/resources/js/handlebars-v4.0.11.js"/>'></script>
 
 <%--JS :: USE ONLY ON REQUIRED PAGES--%>
 <%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>

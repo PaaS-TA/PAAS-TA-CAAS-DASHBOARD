@@ -13,7 +13,7 @@ import org.paasta.caas.dashboard.common.model.CommonStatus;
  * @since 2018.08.28
  */
 @Data
-public class Namespace {
+public class Namespaces {
 
     private String resultCode;
 
