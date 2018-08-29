@@ -50,15 +50,26 @@ public class NodesController {
     }
 
     /**
-     * send redirect to /caas/clusters/nodes/{nodeName} to /caas/clusters/nodes/{nodeName}/summary
+     * Gets node detail
+     *
+     * @param httpServletRequest the http servlet request
+     * @return the user main
+     */
+    @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}")
+    public ModelAndView getNodeDetails( HttpServletRequest httpServletRequest) {
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/details", new ModelAndView());
+    }
+
+    /**
+     * send redirect to /caas/clusters/nodes/{nodeName}/detail to /caas/clusters/nodes/{nodeName}
      *
      * @param httpServletResponse the http servlet response
      * @return the user main
      */
-    @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}")
+    @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}/details")
     public void sendRedirectClusterOverview(HttpServletResponse httpServletResponse, @PathVariable String nodeName) {
         try {
-            httpServletResponse.sendRedirect( "/caas/clusters/nodes/" + nodeName + "/summary" );
+            httpServletResponse.sendRedirect( "/caas/clusters/nodes/" + nodeName );
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
@@ -73,17 +84,6 @@ public class NodesController {
     @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}/summary")
     public ModelAndView getNodeSummary( HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/summary", new ModelAndView());
-    }
-
-    /**
-     * Gets node detail
-     *
-     * @param httpServletRequest the http servlet request
-     * @return the user main
-     */
-    @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}/details")
-    public ModelAndView getNodeDetails( HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/details", new ModelAndView());
     }
 
     /**
