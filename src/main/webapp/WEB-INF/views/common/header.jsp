@@ -10,7 +10,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <header class="header">
     <div class="logo">
-        <a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/clusters/overview');"><h1><img src="<c:url value="/resources/images/main/logo.png"/>" alt=""/></h1></a>
+        <a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/clusters/overview');" class="custom_border_none"><h1><img src="<c:url value="/resources/images/main/logo.png"/>" alt=""/></h1></a>
         <%--<a href="#"><h1><img src="../resources/images/main/logo.png" alt=""/></h1></a>--%>
     </div>
 
