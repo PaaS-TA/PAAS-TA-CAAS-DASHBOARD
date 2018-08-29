@@ -24,7 +24,7 @@
     cursor: default !important;
 }
 
-.custom_border_none a:hover {
+.custom_border_none:hover {
     border: 0;
 }
 
