@@ -113,3 +113,80 @@ var procSetMenuCursor = function () {
 
     $("#left-menu-" + calledMenu).addClass('cur');
 };
+
+var checkValidData = function (data) {
+    if (RESULT_STATUS_FAIL === data.resultCode) {
+        console.log("ResultStatus :: " + data.resultCode + " / " + "ResultMessage :: " + data.resultMessage);
+        return false;
+    } else {
+        return true;
+    }
+}
+
+var processIfDataIsNull = function (data, procCallback, defaultValue) {
+    if (data == null)
+        return defaultValue;
+    else {
+        if (procCallback == null)
+            return defaultValue;
+        else
+            return procCallback(data);
+    }
+}
+
+var sortTable = function (tableId, sortKey, isAscending=true) {
+    let tbody = $('#' + tableId + ' > tbody');
+    let rows = tbody.children('tr');
+    rows.sort(function (rowA, rowB) {
+        let reverseNumber = (isAscending)? 1 : -1;
+        let compareA = $(rowA).attr(sortKey);
+        let compareB = $(rowB).attr(sortKey);
+        if (compareA == compareB)
+            return 0;
+        else {
+            if (compareA == null)
+                return -1 * reverseNumber;
+            else if (compareB == null)
+                return 1 * reverseNumber;
+            else if (compareA > compareB)
+                return 1 * reverseNumber;
+            else
+                return -1 * reverseNumber;
+        }
+    });
+    tbody.html(rows);
+}
+
+var convertByte = function(capacity) {
+    var multipleSize;
+    if (capacity.match("Ki").index != -1) {
+        multipleSize = 1024;
+    } else if (capacity.match("Mi").index != -1) {
+        multipleSize = 1024 * 1024;
+    } else if (capacity.match("Gi").index != -1) {
+        multipleSize = 1024 * 1024 * 1024;
+    } else {
+        multipleSize = 1;
+    }
+
+    return capacity.substring(0, capacity.length - 2) * multipleSize;
+}
+
+var formatCapacity = function(capacity, unit) {
+    var unitSize;
+    if (unit == null || "" == unit)
+        unitSize = 1;
+    else {
+        if (unit === "Ki")    unitSize = 1024
+        if (unit === "Mi")    unitSize = Math.pow(1024, 2);
+        if (unit === "Gi")    unitSize = Math.pow(1024, 3);
+    }
+
+    return ((capacity / unitSize).toFixed(2) + ' ' + unit);
+}
+
+/*
+var stringifyJSON = function (obj) {
+    return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
+}
+*/
