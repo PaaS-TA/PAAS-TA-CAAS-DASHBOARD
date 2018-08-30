@@ -163,7 +163,7 @@
                             <li name="tab01" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_WORKLOAD_OVERVIEW%>');">Overview</li>
                             <li name="tab02" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_WORKLOAD_DEPLOYMENTS%>');">Deployments</li>
                             <li name="tab03" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_WORKLOAD_PODS%>');">Pods</li>
-                            <li name="tab04" class="cluster_tabs_on>"   onclick="procMovePage('<%=Constants.URI_WORKLOAD_REPLICASETS%>');">Replica Sets</li>
+                            <li name="tab04" class="cluster_tabs_on"    onclick="procMovePage('<%=Constants.URI_WORKLOAD_REPLICASETS%>');">Replica Sets</li>
                         </c:when>
                         <c:otherwise>
                             <li name="tab01" class="<c:if test="${empty pathLevel5}">cluster_tabs_on</c:if>
@@ -211,4 +211,7 @@
         // TODO: 1안 : 아래 스크립트 유지  2안: common.js 의 li Click 이벤트 정의 부분제거(소스 관리차 퍼블에게 수정 요청) 3안 : cluster_tabs 대신 다른 클래스 선언 및 cluster_tabs 클래스 css 분리
         $('.cluster_tabs li').off('click');
         });
+
+        $(".cluster_tabs_on").css({ "cursor": "default"}); // current tab : default cursor
+
         </script>
