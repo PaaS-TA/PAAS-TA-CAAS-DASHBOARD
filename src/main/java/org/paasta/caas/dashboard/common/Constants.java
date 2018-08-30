@@ -29,7 +29,7 @@ public class Constants {
     public static final String STRING_TIME_ZONE_ID = "Asia/Seoul";
 
     // TODO :: REMOVE AFTER CHECKING
-    public static final String API_WORKLOAD = "/workload";
+    public static final String API_WORKLOAD = "/workloads";
 
 
     private Constants() {
