@@ -43,7 +43,7 @@
                             <tbody id="resultAreaForNameSpaceEventList">
                             </tbody>
                         </table>
-                        <p id="emptyEventList" class="service_p" style="display:none;">이벤트가 없습니다.</p>
+                        <p id="emptyEventList" class="service_p" style="display:none;">조회 된 Events가 없습니다.</p>
                     </div>
                 </div>
             </li>
