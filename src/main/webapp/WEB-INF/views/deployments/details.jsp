@@ -24,7 +24,7 @@
         <ul class="maT30">
             <!-- TODO : 그래프 구현필요 -->
             <!-- 그래프 시작 -->
-            <li class="cluster_first_box">
+            <%--<li class="cluster_first_box">
                 <div class="graph-legend-wrap clearfix">
                     <ul class="graph-legend">
                         <li rel="current" class="on">현재</li>
@@ -77,7 +77,7 @@
                         <div id="areachartdisk" style="min-width: 250px; height: 170px; margin: 0 auto"></div>
                     </div>
                 </div>
-            </li>
+            </li>--%>
             <!-- 그래프 끝 -->
             <!-- Details 시작 -->
             <li class="cluster_second_box">
@@ -151,7 +151,7 @@
                         <p>Replica Set</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
+                        <table class="table_event condition alignL" id="replicasetsResultTable">
                             <colgroup>
                                 <col style='width:auto;'>
                                 <col style='width:10%;'>
@@ -163,14 +163,14 @@
                             <thead>
                             <tr>
                                 <td>Name
-                                    <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                    <button sort-key="replicasets-name" class="sort-arrow sort" onclick="procSetSortList('replicasetsResultTable', this, '0')"><i class="fas fa-caret-down"></i></button>
                                 </td>
                                 <td>Namespace</td>
                                 <td>Labels</td>
                                 <td id="replicaPods">Pods</td>
                                 <td id="replicaImages">Images</td>
                                 <td id="replicaCreationTime">Created on
-                                    <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                    <button sort-key="replica-created-on" class="sort-arrow sort" onclick="procSetSortList('replicasetsResultTable', this, '6')"><i class="fas fa-caret-down"></i></button>
                                 </td>
                             </tr>
                             </thead>
@@ -187,7 +187,7 @@
                         <p>Pods</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
+                        <table class="table_event condition alignL" id="podsResultTable">
                             <colgroup>
                                 <col style='width:auto;'>
                                 <col style='width:15%;'>
@@ -200,14 +200,14 @@
                             <tr id="noPodsResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Pods가 없습니다.</p></td></tr>
                             <tr id="podsResultHeaderArea">
                                 <td>Name
-                                    <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                    <button class="sort-arrow"><i class="fas fa-caret-down" onclick="procSetSortList('replicasetsResultTable', this, '0')"></i></button>
                                 </td>
                                 <td>Namespace</td>
                                 <td>Node</td>
                                 <td>Status</td>
                                 <td>Restarts</td>
                                 <td>Created on
-                                    <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                    <button class="sort-arrow"><i class="fas fa-caret-down" onclick="procSetSortList('replicasetsResultTable', this, '5')"></i></button>
                                 </td>
                             </tr>
                             </thead>
@@ -367,8 +367,8 @@
     </div>
 </div>
 
-<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>
+<%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
+<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
 
 <input type="hidden" id="requestDeploymentsName" name="requestDeploymentsName" value="<c:out value='${deploymentsName}' default='' />" />
 
@@ -395,9 +395,9 @@
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function () {
-        createChart("current", "cpu");
+/*        createChart("current", "cpu");
         createChart("current", "mem");
-        createChart("current", "disk");
+        createChart("current", "disk");*/
     });
 </script>
 
@@ -536,6 +536,7 @@
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
         var $resultArea = $('#replicaSetTable');
+        var resultTable = $('#replicasetsResultTable');
 
         //-- Replica Set List
         //items
@@ -561,21 +562,23 @@
             }
 
             $resultArea.append('<tr>' +
-                '<td>' +
-                '<a href="#"><span class="green2"><i class="fas fa-check-circle"></i></span>' + replicasetName + '</a>' +
-                '</td>' +
-                '<td>' + namespace + '</td>' +
-                '<td>' + createSpans(labels, "true") + '</td>' +
-                '<td>' + replicas + '</td>' +
-                '<td>' + images + '</td>' +
-                '<td>' + creationTimestamp + '</td>' +
-                '</td>');
+                                    '<td>' +
+                                        '<a href="#"><span class="green2"><i class="fas fa-check-circle"></i></span>' + replicasetName + '</a>' +
+                                    '</td>' +
+                                    '<td>' + namespace + '</td>' +
+                                    '<td>' + createSpans(labels, "true") + '</td>' +
+                                    '<td>' + replicas + '</td>' +
+                                    '<td>' + images + '</td>' +
+                                    '<td>' + creationTimestamp + '</td>' +
+                                    '</td>');
 
 
-            $(document).on("click", "#resultArea a:eq(" + index + ")", function (e) {
+/*            $(document).on("click", "#resultArea a:eq(" + index + ")", function (e) {
                 getDetail(replicasetName);
-            });
+            });*/
 
+            resultTable.tablesorter();
+            resultTable.trigger("update");
         });
 
     };
@@ -599,6 +602,7 @@
         var resultArea = $('#podsListTable');
         var resultHeaderArea = $('#podsResultHeaderArea');
         var noResultArea = $('#noPodsResultArea');
+        var resultTable = $('#podsResultTable');
         var listLength = data.items.length;
 
         $.each(data.items, function (index, itemList) {
@@ -639,16 +643,16 @@
         });
 
         if (listLength < 1) {
-            console.log("여기 오니?  " + listLength);
             resultHeaderArea.hide();
             resultArea.hide();
             noResultArea.show();
         } else {
-            console.log("여기는 오겠니? ?  " + listLength);
             noResultArea.hide();
             resultHeaderArea.show();
             resultArea.show();
             resultArea.html(htmlString);
+            resultTable.tablesorter();
+            resultTable.trigger("update");
         }
 
     };
