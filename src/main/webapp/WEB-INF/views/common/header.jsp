@@ -104,10 +104,7 @@
                         <button class="btns colors4" onclick="window.open('https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl')">Kubectl download</button>
                     </c:when>
                     <c:when test="${path eq 'workloads'}">
-                        <!--
                         <button class="btns colors4" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/accessInfo');">Access</button>
-                        -->
-                        <button class="btns colors4" onclick="alert('준비 중입니다.');">Access</button>
                     </c:when>
                     <c:otherwise>
                     </c:otherwise>

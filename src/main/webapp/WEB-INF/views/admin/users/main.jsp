@@ -124,7 +124,7 @@
 
     var changeRoleSearch = function () {
         roleSearchName = $(".user-filter option:checked").text();
-        setUsersList("");
+        setUsersList(document.getElementById("table-search-01").value);
     };
 
     // GET LIST
@@ -200,18 +200,18 @@
                     }
                 }
 
-                    htmlString.push(
-                        "<tr>"
-                        + "<td>" + items[i].userId + "</td>"
-                        + "<td>" + items[i].created + "</td>"
-                        + "<td>" + items[i].lastModified + "</td>"
-                        + "<td>" + "<select>" + option + "</select>"
-                        + "<span data-target='#layerpop1' data-toggle='modal'><i class='fas fa-save'></i></span>"
-                        + "<span data-target='#layerpop2'data-toggle='modal'><i class='fas fa-trash-alt'></i></span>"
-                        + "</td>"
-                        + "</tr>");
+                htmlString.push(
+                    "<tr>"
+                    + "<td>" + items[i].userId + "</td>"
+                    + "<td>" + items[i].created + "</td>"
+                    + "<td>" + items[i].lastModified + "</td>"
+                    + "<td>" + "<select>" + option + "</select>"
+                    + "<span data-target='#layerpop1' data-toggle='modal'><i class='fas fa-save'></i></span>"
+                    + "<span data-target='#layerpop2'data-toggle='modal'><i class='fas fa-trash-alt'></i></span>"
+                    + "</td>"
+                    + "</tr>");
 
-                    checkListCount++;
+                checkListCount++;
             }
         }
 
