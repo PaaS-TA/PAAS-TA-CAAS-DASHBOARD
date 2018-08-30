@@ -200,7 +200,6 @@ var formatCapacity = function(capacity, unit) {
 }
 
 var getURLInfo = function () {
-    // THIS FUNCTION IS FOR tab.jsp
     // ex) slices = [ "workloads", "pods", "<pod-name>", "events"]
     // ex) slices = [ "clusters", "nodes", "<node-name>", "summary"]
     var _urlSplits = window.location.href.replace(/\?.*/, '').split('/');

@@ -80,23 +80,29 @@
         <span class="nav_toggle"><!-- 180724 수정 -->
                 <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
                 <label for="checkbox-1"></label>
-            </span>
+        </span>
+        <c:set var="servletPath" value="${requestScope['javax.servlet.forward.servlet_path']}" />
+        <c:set var="pathArray" value="${fn:split(servletPath,'/')}" />
         <ul class="content_dev">
-            <li>Clusters</li>
+            <c:forEach var="path" items="${pathArray}" varStatus="g">
+                <c:choose>
+                    <c:when test="${g.index eq 1}">
+                        <li>${path}</li>
+                    </c:when>
+                    <c:when test="${g.index eq 2}">
+                        <li>${path}</li>
+                    </c:when>
+                </c:choose>
+            </c:forEach>
         </ul>
         <div class="btn-kuber">
-            <c:set var="servletPath" value="${requestScope['javax.servlet.forward.servlet_path']}" />
-            <c:set var="pathArray" value="${fn:split(servletPath,'/')}" />
             <c:forEach var="path" items="${pathArray}" varStatus="g">
                 <c:choose>
                     <c:when test="${path eq 'clusters' || path eq 'accessInfo'}">
                         <button class="btns colors4" onclick="window.open('https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl')">Kubectl download</button>
                     </c:when>
                     <c:when test="${path eq 'workloads'}">
-                        <!--
                         <button class="btns colors4" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/accessInfo');">Access</button>
-                        -->
-                        <button class="btns colors4" onclick="alert('준비 중입니다.');">Access</button>
                     </c:when>
                     <c:otherwise>
                     </c:otherwise>
