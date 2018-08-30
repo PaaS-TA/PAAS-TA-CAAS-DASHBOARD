@@ -43,7 +43,12 @@ public class PodsController {
     }
 
     @GetMapping(value = "/caas/workloads/pods")
-    public ModelAndView getUserMain( HttpServletRequest httpServletRequest) {
+    public ModelAndView getPodList( HttpServletRequest httpServletRequest) {
+        return commonService.setPathVariables(httpServletRequest, "/workloads/pods", new ModelAndView());
+    }
+
+    @GetMapping(value = "/caas/workloads/pods/{podName}")
+    public ModelAndView getPodDetails( HttpServletRequest httpServletRequest, @PathVariable String podName) {
         return commonService.setPathVariables(httpServletRequest, "/pods/main", new ModelAndView());
     }
 
