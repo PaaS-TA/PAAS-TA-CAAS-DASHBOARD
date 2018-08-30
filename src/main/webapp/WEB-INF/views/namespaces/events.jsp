@@ -21,7 +21,8 @@
                         <p>Events</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table id="eventList" class="table_event condition alignL">
+                        <%--<table id="eventList" class="table_event condition alignL">--%>
+                        <table class="table_event condition alignL">
                             <colgroup>
                                 <col style=".">
                                 <col style=".">
@@ -31,7 +32,9 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr>
+                            <%--<tr>--%>
+                            <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td></tr>
+                            <tr id="resultHeaderArea">
                                 <td>Message</td>
                                 <td>Source</td>
                                 <td>Sub-object</td>
@@ -40,10 +43,10 @@
                                 <td>Last seen</td>
                             </tr>
                             </thead>
-                            <tbody id="resultAreaForNameSpaceEventList">
+                            <tbody id="resultArea">
                             </tbody>
                         </table>
-                        <p id="emptyEventList" class="service_p" style="display:none;">조회 된 Events가 없습니다.</p>
+                        <%--<p id="emptyEventList" class="service_p" style="display:none;">조회 된 Events가 없습니다.</p>--%>
                     </div>
                 </div>
             </li>
@@ -88,19 +91,28 @@
             );
         });
 
-        var resultArea = $("#resultAreaForNameSpaceEventList");
-        var eventList = $("#eventList");
-        var emptyEventList = $("#emptyEventList");
+        // var eventList = $("#eventList");
+        // var emptyEventList = $("#emptyEventList");
+        var resultArea = $("#resultArea");
+        var resultHeaderArea = $('#resultHeaderArea');
+        var noResultArea = $('#noResultArea');
 
         resultArea.html("");
 
         if(data.items.length > 1) {
+            // resultArea.html(htmlString);
+            // emptyEventList.hide();
+            // eventList.show();
             resultArea.html(htmlString);
-            emptyEventList.hide();
-            eventList.show();
+            noResultArea.hide();
+            resultHeaderArea.show();
+            resultArea.show();
         } else {
-            eventList.hide();
-            emptyEventList.show();
+            // eventList.hide();
+            // emptyEventList.show();
+            resultHeaderArea.hide();
+            resultArea.hide();
+            noResultArea.show();
         }
     };
 
