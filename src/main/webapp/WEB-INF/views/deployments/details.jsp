@@ -7,14 +7,15 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 
 <div class="content">
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <c:out value="${deploymentsName}"/></h1>
     <div class="cluster_tabs clearfix">
         <ul>
             <li name="tab01" class="cluster_tabs_on">Details</li>
-            <li name="tab02" class="cluster_tabs_right">Events</li>
-            <li name="tab03" class="cluster_tabs_right yamlTab">YAML</li>
+            <li name="tab02" class="cluster_tabs_right" onclick='movePage("events");'>Events</li>
+            <li name="tab03" class="cluster_tabs_right yamlTab" onclick='movePage("yaml");'>YAML</li>
         </ul>
         <div class="cluster_tabs_line"></div>
     </div>
@@ -179,46 +180,6 @@
                     </div>
                 </div>
             </li>
-            <!-- Replica Set 끝 -->
-            <!-- Horizontal Pod Autoscaler 시작 -->
-            <!--li class="cluster_fifth_box">
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Horizontal Pod Autoscaler</p>
-                    </div>
-                    <div class="account_table view">
-                        <table>
-                            <colgroup>
-                                <col style="width:20%">
-                                <col style="*">
-                            </colgroup>
-                            <tbody>
-                                <tr>
-                                    <th><i class="cWrapDot"></i> Name</th>
-                                    <td>nginx-2-hpa</td>
-                                </tr>
-                                <tr>
-                                    <th><i class="cWrapDot"></i> Min replicas</th>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <th><i class="cWrapDot"></i> Max replicas</th>
-                                    <td>3</td>
-                                </tr>
-                                <tr>
-                                    <th><i class="cWrapDot"></i> Metric</th>
-                                    <td>CPU Utilization</td>
-                                </tr>
-                                <tr>
-                                    <th><i class="cWrapDot"></i> Current/Target value</th>
-                                    <td>0%/80%</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </li-->
-            <!-- Horizontal Pod Autoscaler 끝 -->
             <!-- Pods 시작 -->
             <li class="cluster_sixth_box maB50">
                 <div class="sortable_wrap">
@@ -236,7 +197,8 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                            <tr>
+                            <tr id="noPodsResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Pods가 없습니다.</p></td></tr>
+                            <tr id="podsResultHeaderArea">
                                 <td>Name
                                     <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
                                 </td>
@@ -408,6 +370,8 @@
 <script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>
 
+<input type="hidden" id="requestDeploymentsName" name="requestDeploymentsName" value="<c:out value='${deploymentsName}' default='' />" />
+
 <!-- SyntexHighlighter -->
 <script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCpp.js"/>"></script>
@@ -510,21 +474,6 @@
             + availableReplicas + " available, "
             + unavailableReplicas + " unavailable.";
 
-        // htmlString push
-        htmlString.push(
-            "Deploy name :: " + deployName + " <br><br>"
-            + "Namespace :: " + namespace + " <br><br>"
-            + "Labels :: " + labels + " <br><br>"
-            + "Annotations :: " + annotations + " <br><br>"
-            + "Creation Time :: " + creationTimestamp + " <br><br>"
-            + "Selector :: " + selector + " <br><br>"
-            + "Images :: " + images + " <br><br>"
-            + "Strategy :: " + strategy + " <br><br>"
-            + "Min ready seconds :: " + minReadySeconds + " <br><br>"
-            + "Revision history limit :: " + revisionHistoryLimit + " <br><br>"
-            + "Rolling update strategy :: " + rollingUpdateStrategy + " <br><br>"
-            + "Status(Replica) :: " + replicaStatus + "<br><br>");
-
         document.getElementById("name").textContent = deployName;
         document.getElementById("namespaceID").textContent = namespace;
         document.getElementById("labels").innerHTML = createSpans(labels, "false");
@@ -536,10 +485,6 @@
         document.getElementById("revisionHistoryLimit").textContent = revisionHistoryLimit;
         document.getElementById("rollingUpdateStrategy").textContent = rollingUpdateStrategy;
         document.getElementById("status").textContent = replicaStatus;
-
-
-        //var $resultArea = $('#resultArea');
-        $('#resultArea').html(htmlString);
 
         procCallAjax("/workloads/namespaces/" + NAME_SPACE + "/replicasets/resource/" + replaceLabels(labels), "GET", null, null, callbackGetReplicasetList);
         procCallAjax("/api/workloads/namespaces/" + NAME_SPACE + "/pods/resource/" + replaceLabels(labels), "GET", null, null, callbackGetPodsList);
@@ -651,7 +596,10 @@
         htmlString.push("ResultCode :: " + data.resultCode + " || "
             + "Message :: " + data.resultMessage + " <br><br>");
 
-        var $resultArea = $('#podsListTable');
+        var resultArea = $('#podsListTable');
+        var resultHeaderArea = $('#podsResultHeaderArea');
+        var noResultArea = $('#noPodsResultArea');
+        var listLength = data.items.length;
 
         $.each(data.items, function (index, itemList) {
             // get data
@@ -679,7 +627,7 @@
             //var errorMessage = _status.error.message;
             var errorMessage = "";
 
-            $resultArea.append('<tr>' +
+            resultArea.append('<tr>' +
                 '<td>' + podName + '</td>' +
                 '<td>' + namespace + '</td>' +
                 '<td>' + nodeName + '</td>' +
@@ -687,7 +635,21 @@
                 '<td>' + restartCount + '</td>' +
                 '<td>' + creationTimestamp + '</td>' +
                 '</tr>');
+
         });
+
+        if (listLength < 1) {
+            console.log("여기 오니?  " + listLength);
+            resultHeaderArea.hide();
+            resultArea.hide();
+            noResultArea.show();
+        } else {
+            console.log("여기는 오겠니? ?  " + listLength);
+            noResultArea.hide();
+            resultHeaderArea.show();
+            resultArea.show();
+            resultArea.html(htmlString);
+        }
 
     };
 
@@ -708,4 +670,14 @@
     $(document.body).ready(function () {
         // getAllDeployments();
     });
+
+    // MOVE PAGE
+    var movePage = function(requestPage) {
+        var reqUrl = '<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/deployments/' + document.getElementById('requestDeploymentsName').value;
+        if (requestPage.indexOf('detail') < 0) {
+            reqUrl += '/' + requestPage;
+        }
+
+        procMovePage(reqUrl);
+    };
 </script>
