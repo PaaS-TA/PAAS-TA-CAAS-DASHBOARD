@@ -28,8 +28,7 @@
     border: 0;
 }
 
-/*TODO MODIFY*/
-/*.view_table_wrap p{margin: 30px 0 -30px 30px}*/
+.view_table_wrap .p30{margin: 30px 0 -30px 30px}
 
 .caas-header-order {
     /*EMPTY STYLE FOR jquery.tablesorter.min.js*/

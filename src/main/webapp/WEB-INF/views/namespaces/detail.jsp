@@ -50,7 +50,7 @@
         </div>
         <div class="view_table_wrap">
             <table class="table_event condition alignL">
-                <p>- <strong>Name</strong> : {{metadata.name}} / - <strong>Scopes</strong> : {{spec.scopes}}</p>
+                <p class="p30">- <strong>Name</strong> : {{metadata.name}} / - <strong>Scopes</strong> : {{spec.scopes}}</p>
                 <colgroup>
                     <col style='width:auto;'>
                     <col style='width:20%;'>
