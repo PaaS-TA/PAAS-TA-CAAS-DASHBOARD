@@ -456,7 +456,7 @@
         var annotations = stringifyJSON(_metadata.annotations);
         var creationTimestamp = _metadata.creationTimestamp;
 
-        var selector = stringifyJSON(_spec.selector);
+        var selector = stringifyJSON(_spec.selector).replace(/matchLabels=/g, '');;
         var strategy = _spec.strategy.type;
         var minReadySeconds = _spec.minReadySeconds;
         var revisionHistoryLimit = _spec.revisionHistoryLimit;
@@ -634,13 +634,13 @@
             var errorMessage = "";
 
             resultArea.append('<tr>' +
-                '<td>' + podName + '</td>' +
-                '<td>' + namespace + '</td>' +
-                '<td>' + nodeName + '</td>' +
-                '<td>' + podStatus + '</td>' +
-                '<td>' + restartCount + '</td>' +
-                '<td>' + creationTimestamp + '</td>' +
-                '</tr>');
+                                '<td>' + podName + '</td>' +
+                                '<td>' + namespace + '</td>' +
+                                '<td>' + nodeName + '</td>' +
+                                '<td>' + podStatus + '</td>' +
+                                '<td>' + restartCount + '</td>' +
+                                '<td>' + creationTimestamp + '</td>' +
+                            '</tr>');
 
         });
 
