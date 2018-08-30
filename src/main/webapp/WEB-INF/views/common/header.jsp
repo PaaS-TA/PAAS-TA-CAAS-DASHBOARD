@@ -87,10 +87,10 @@
             <c:forEach var="path" items="${pathArray}" varStatus="g">
                 <c:choose>
                     <c:when test="${g.index eq 1}">
-                        <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${path}</li>
+                        <li>${path}</li>
                     </c:when>
                     <c:when test="${g.index eq 2}">
-                        <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${path}</li>
+                        <li>${path}</li>
                     </c:when>
                 </c:choose>
             </c:forEach>
