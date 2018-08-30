@@ -42,7 +42,7 @@ public class DeploymentsService {
      *
      * @return List of deployment (All namespaces)
      */
-    public DeploymentsList getDeploymentListByAllNamespaces ( ) {
+    public DeploymentsList getDeploymentsListByAllNamespaces ( ) {
         return restTemplateService.send(
             Constants.TARGET_CAAS_API, TARGET_DEPLOYMENT_LIST, HttpMethod.GET, null, DeploymentsList.class);
     }
@@ -53,7 +53,8 @@ public class DeploymentsService {
      * @param namespace namespace
      * @return List of deployment (specific namespace)
      */
-    public DeploymentsList getDeploymentList (String namespace ) {
+    public DeploymentsList getDeploymentsList (String namespace ) {
+
         String urlWithNamespace = TARGET_DEPLOYMENT_LIST_IN_NAMESPACE.replace( "{namespace}", namespace );
         return restTemplateService.send(
             Constants.TARGET_CAAS_API, urlWithNamespace, HttpMethod.GET, null, DeploymentsList.class);
@@ -66,12 +67,12 @@ public class DeploymentsService {
      * @param deploymentName request deployment's name
      * @return Deployments's detail content (specific namespace and deployment)
      */
-    public Deployments getDeployment (String namespace, String deploymentName ) {
+    public Deployments getDeployments (String namespace, String deploymentName ) {
         String urlWithDeploymentName =
             TARGET_DEPLOYMENT_IN_NAMESPACE.replace( "{namespace}", namespace )
             .replace( "{deploymentName}", deploymentName );
 
         return restTemplateService.send(
-            Constants.TARGET_CAAS_API, urlWithDeploymentName, HttpMethod.GET, null, Deployments.class);
+                Constants.TARGET_CAAS_API, urlWithDeploymentName, HttpMethod.GET, null, Deployments.class);
     }
 }

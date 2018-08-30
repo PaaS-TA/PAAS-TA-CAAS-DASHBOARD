@@ -49,6 +49,8 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
             }
         }
 
+//        response.setHeader("Cache-Control", "no-transform, public, max-age=86400");
+
         LOGGER.info("### Intercepter end ###");
         return super.preHandle(request, response, handler);
     }
