@@ -252,7 +252,7 @@
 
             var nameHtml =
                 '<span class="' + nameClassSet.span + '"><i class="' + nameClassSet.i + '"></i></span>'
-                + '<a href="/workload/pods/' + pod.name + '"> ' + pod.name + '</a>';
+                + '<a href="/caas/workloads/pods/' + pod.name + '"> ' + pod.name + '</a>';
 
             var podRowHtml = '<tr pod-name="' + pod.name + '" created-on="' + pod.creationTimestamp + '">'
                 + '<td name="name" value>' + nameHtml + '</td>'
