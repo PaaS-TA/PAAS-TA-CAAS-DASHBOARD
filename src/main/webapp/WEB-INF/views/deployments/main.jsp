@@ -22,7 +22,7 @@
                         <p>Deployments</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="account_table view" id="resultTable">
+                        <table class="table_event condition alignL" id="resultTable">
                             <colgroup>
                                 <col style="width:auto;">
                                 <col style="width:20%;">
