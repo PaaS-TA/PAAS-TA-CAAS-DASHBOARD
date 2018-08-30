@@ -199,6 +199,30 @@ var formatCapacity = function(capacity, unit) {
     return ((capacity / _unitSize).toFixed(2) + ' ' + unit);
 }
 
+var getURLInfo = function () {
+    // THIS FUNCTION IS FOR tab.jsp
+    // ex) slices = [ "workloads", "pods", "<pod-name>", "events"]
+    // ex) slices = [ "clusters", "nodes", "<node-name>", "summary"]
+    var _urlSplits = window.location.href.replace(/\?.*/, '').split('/');
+    var _slices = _urlSplits.splice(_urlSplits.indexOf("caas") + 1, _urlSplits.length - _urlSplits.indexOf("caas"));
+
+    var _valueFrame = {
+        category: _slices[0],
+        page: _slices[1]
+    };
+
+    // resource is resource name (ex: node name, pod name, deployment name, et al.)
+    if (_slices.length > 2)
+        _valueFrame['resource'] = _slices[2];
+
+    if (_slices.length > 3)
+        _valueFrame['tab'] = _slices[3];
+    else
+        _valueFrame['tab'] = '_default';
+
+    return _valueFrame;
+};
+
 /*
 var stringifyJSON = function (obj) {
     return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
