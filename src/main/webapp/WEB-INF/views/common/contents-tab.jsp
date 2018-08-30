@@ -212,6 +212,6 @@
         $('.cluster_tabs li').off('click');
         });
 
-        $(".cluster_tabs_on").css({ "cursor": "default"}); // current tab : default cursor
-
+        $(".cluster_tabs_on").css({ "cursor": "default"});
+        // current tab : default cursor
         </script>
