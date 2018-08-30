@@ -86,6 +86,7 @@
         // copy function
         $(".btn-copy").on("click", function(){
             var inA = $("#access-user-token").val();
+            inA.replace("\"/g", "");
             $("#out_a").val(inA);
             $("#out_a").select();
             var successful = document.execCommand('copy');
