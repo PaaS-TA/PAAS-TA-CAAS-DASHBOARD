@@ -151,7 +151,7 @@
                                 '</td>');
         });
 
-        if (listLength < 1 || checkListCount < 1) {
+        if (listLength < 1) {
             resultHeaderArea.hide();
             resultArea.hide();
             noResultArea.show();
