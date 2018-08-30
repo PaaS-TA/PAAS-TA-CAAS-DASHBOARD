@@ -86,23 +86,32 @@
             var pod = getPod(podItem);
 
             var nameClassSet;
+            var errorMsg = null;
             switch (pod.podStatus) {
                 case "Pending":
-                    nameClassSet = {span: "pending2", i: "fas fa-exclamation-triangle"}; break;
+                    nameClassSet = {span: "pending2", i: "fas fa-exclamation-triangle"};
+                    errorMsg = pod.podErrorMsg;
+                    break;
                 case "Running":
                     nameClassSet = {span: "running2", i: "fas fa-check-circle"}; break;
                 case "Succeeded":
                     nameClassSet = {span: "succeeded2", i: "fas fa-check-circle"}; break;
                 case "Failed":
-                    nameClassSet = {span: "failed2", i: "fas fa-exclamation-circle"}; break;
+                    nameClassSet = {span: "failed2", i: "fas fa-exclamation-circle"};
+                    errorMsg = pod.podErrorMsg;
+                    break;
                 case "Unknown":
                 default:
-                    nameClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"}; break;
+                    nameClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"};
+                    errorMsg = pod.podErrorMsg;
+                    break;
             }
 
             var nameHtml =
                 '<span class="' + nameClassSet.span + '"><i class="' + nameClassSet.i + '"></i></span>'
                 + '<a href="/caas/workloads/pods/' + pod.name + '"> ' + pod.name + '</a>';
+            if (errorMsg != null && errorMsg != "")
+                nameHtml += '<br><span class="' + nameClassSet.span + '">' + errorMsg + '</span>';
 
             var podRowHtml = '<tr pod-name="' + pod.name + '" created-on="' + pod.creationTimestamp + '">'
                 + '<td name="name" value>' + nameHtml + '</td>'
@@ -126,13 +135,29 @@
         var _metadata = podItem.metadata;
         var _spec = podItem.spec;
         var _status = podItem.status;
+        var _podErrorMsg = null;
+
+        switch (_status.phase) {
+            case "Pending":
+            case "Failed":
+            case "Unknown":
+                var findConditions = _status.conditions.filter(function (item) { return item.reason != null && item.message != null});
+                if (findConditions.length > 0)
+                    _podErrorMsg = findConditions[0].reason + " (" + findConditions[0].message + ")";
+                else
+                    _podErrorMsg = null;
+                break;
+            default:
+                break;
+        }
 
         // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
         return {
             name: _metadata.name,
             namespace: _metadata.namespace,
-            nodeName: _spec.nodeName,
+            nodeName: (_spec.nodeName != null? _spec.nodeName : "-"),
             podStatus: _status.phase,
+            podErrorMsg: _podErrorMsg,
             restartCount: processIfDataIsNull(
                 _status.containerStatuses, function (data) {
                     return data.reduce(function (a, b) {
