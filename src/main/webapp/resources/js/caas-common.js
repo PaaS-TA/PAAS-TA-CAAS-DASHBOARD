@@ -148,56 +148,55 @@ var processIfDataIsNull = function (data, procCallback, defaultValue) {
 }
 
 
-// TODO :: MODIFY SCRIPTS :: DO NOT USE :: let >> ONLY ECMAScript 5, NOT ECMAScript 6
 var sortTable = function (tableId, sortKey, isAscending=true) {
-    let tbody = $('#' + tableId + ' > tbody');
-    let rows = tbody.children('tr');
-    rows.sort(function (rowA, rowB) {
-        let reverseNumber = (isAscending)? 1 : -1;
-        let compareA = $(rowA).attr(sortKey);
-        let compareB = $(rowB).attr(sortKey);
-        if (compareA == compareB)
+    var _tbody = $('#' + tableId + ' > tbody');
+    var _rows = _tbody.children('tr');
+    _rows.sort(function (rowA, rowB) {
+        var _reverseNumber = (isAscending)? 1 : -1;
+        var _compareA = $(rowA).attr(sortKey);
+        var _compareB = $(rowB).attr(sortKey);
+        if (_compareA == _compareB)
             return 0;
         else {
-            if (compareA == null)
-                return -1 * reverseNumber;
-            else if (compareB == null)
-                return 1 * reverseNumber;
-            else if (compareA > compareB)
-                return 1 * reverseNumber;
+            if (_compareA == null)
+                return -1 * _reverseNumber;
+            else if (_compareB == null)
+                return 1 * _reverseNumber;
+            else if (_compareA > _compareB)
+                return 1 * _reverseNumber;
             else
-                return -1 * reverseNumber;
+                return -1 * _reverseNumber;
         }
     });
-    tbody.html(rows);
+    _tbody.html(_rows);
 }
 
 var convertByte = function(capacity) {
-    var multipleSize;
+    var _multipleSize;
     if (capacity.match("Ki").index != -1) {
-        multipleSize = 1024;
+        _multipleSize = 1024;
     } else if (capacity.match("Mi").index != -1) {
-        multipleSize = 1024 * 1024;
+        _multipleSize = 1024 * 1024;
     } else if (capacity.match("Gi").index != -1) {
-        multipleSize = 1024 * 1024 * 1024;
+        _multipleSize = 1024 * 1024 * 1024;
     } else {
-        multipleSize = 1;
+        _multipleSize = 1;
     }
 
-    return capacity.substring(0, capacity.length - 2) * multipleSize;
+    return capacity.substring(0, capacity.length - 2) * _multipleSize;
 }
 
 var formatCapacity = function(capacity, unit) {
-    var unitSize;
+    var _unitSize;
     if (unit == null || "" == unit)
-        unitSize = 1;
+        _unitSize = 1;
     else {
-        if (unit === "Ki")    unitSize = 1024
-        if (unit === "Mi")    unitSize = Math.pow(1024, 2);
-        if (unit === "Gi")    unitSize = Math.pow(1024, 3);
+        if (unit === "Ki")    _unitSize = 1024
+        if (unit === "Mi")    _unitSize = Math.pow(1024, 2);
+        if (unit === "Gi")    _unitSize = Math.pow(1024, 3);
     }
 
-    return ((capacity / unitSize).toFixed(2) + ' ' + unit);
+    return ((capacity / _unitSize).toFixed(2) + ' ' + unit);
 }
 
 /*

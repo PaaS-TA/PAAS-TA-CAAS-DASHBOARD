@@ -24,12 +24,11 @@
     var nodeName;
     var currentTab;
 
-    // TODO :: MODIFY SCRIPTS :: DO NOT USE :: let >> ONLY ECMAScript 5, NOT ECMAScript 6
     var getURLInfo = function() {
-        let urlSplits = window.location.href.replace(/\?.*/, '').split('/');
-        let slices = urlSplits.splice(urlSplits.indexOf("caas") + 1, urlSplits.length - urlSplits.indexOf("caas"));
+        var urlSplits = window.location.href.replace(/\?.*/, '').split('/');
+        var slices = urlSplits.splice(urlSplits.indexOf("caas") + 1, urlSplits.length - urlSplits.indexOf("caas"));
 
-        let valueFrame = {
+        var valueFrame = {
             category: slices[0],
             page: slices[1]
         };
@@ -46,7 +45,7 @@
     };
 
     $(document.body).ready(function () {
-        let urlInfo = getURLInfo();
+        var urlInfo = getURLInfo();
         nodeName = urlInfo.selector;
         currentTab = urlInfo.tab == "_default"? "details" : urlInfo.tab;
 
@@ -58,11 +57,11 @@
         }
 
         // set subject of page
-        let nodeNameSubject = $("#cluster_node_name");
+        var nodeNameSubject = $("#cluster_node_name");
         nodeNameSubject.html( nodeNameSubject.html().replace("NODE_NAME", (" " + nodeName)) );
 
         // change style class to current page's tab and remove onclick event
-        let currentTabElement = $('#clusters_nodes_' + currentTab);
+        var currentTabElement = $('#clusters_nodes_' + currentTab);
         currentTabElement.removeAttr("onclick");
         currentTabElement.attr("class", "cluster_tabs_on");
         currentTabElement.attr("style", "cursor: default");

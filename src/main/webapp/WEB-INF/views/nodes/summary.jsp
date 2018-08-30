@@ -225,7 +225,6 @@
         $('#tbody_node_conditions').html(contents);
     }
 
-    // TODO :: MODIFY SCRIPTS :: DO NOT USE :: let >> ONLY ECMAScript 5, NOT ECMAScript 6
     var callbackGetPods = function (data) {
         if (false == checkValidData(data)) {
             alert("Cannot load pods data");
@@ -234,9 +233,9 @@
 
         var contents = [];
         $.each(data.items, function (index, podItem) {
-            let pod = getPod(podItem);
+            var pod = getPod(podItem);
 
-            let nameClassSet;
+            var nameClassSet;
             switch (pod.podStatus) {
                 case "Pending":
                     nameClassSet = {span: "pending2", i: "fas fa-exclamation-triangle"}; break;
@@ -251,11 +250,11 @@
                     nameClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"}; break;
             }
 
-            let nameHtml =
+            var nameHtml =
                 '<span class="' + nameClassSet.span + '"><i class="' + nameClassSet.i + '"></i></span>'
                 + '<a href="/workload/pods/' + pod.name + '"> ' + pod.name + '</a>';
 
-            let podRowHtml = '<tr pod-name="' + pod.name + '" created-on="' + pod.creationTimestamp + '">'
+            var podRowHtml = '<tr pod-name="' + pod.name + '" created-on="' + pod.creationTimestamp + '">'
                 + '<td name="name" value>' + nameHtml + '</td>'
                 + '<td>' + pod.namespace + '</td>'
                 + '<td>' + pod.nodeName + '</td>'
@@ -296,7 +295,7 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        let urlSplits = window.location.href.replace(/\?.*/, '').split('/');
+        var urlSplits = window.location.href.replace(/\?.*/, '').split('/');
         // ex) http://<server-domain>:8091/caas/clusters/nodes/<node-name>/summary
         var nodeName = urlSplits[urlSplits.length - 2];
 
@@ -307,7 +306,7 @@
         }
 
         // set subject of page
-        let nodeNameSubject = $("#cluster_node_name");
+        var nodeNameSubject = $("#cluster_node_name");
         nodeNameSubject.html( nodeNameSubject.html().replace("NODE_NAME", (" " + nodeName)) );
 
         // TODO :: Change chart functions.
@@ -317,9 +316,9 @@
 
         // add sort-arrow click event in pods table
         $(".sort-arrow").on("click", function(event) {
-            let tableId = "pods_table_in_node";
-            let sortKey = $(event.currentTarget).attr('sort-key');
-            let isAscending = $(event.currentTarget).hasClass('sort')? true : false;
+            var tableId = "pods_table_in_node";
+            var sortKey = $(event.currentTarget).attr('sort-key');
+            var isAscending = $(event.currentTarget).hasClass('sort')? true : false;
             sortTable(tableId, sortKey, isAscending);
         });
 

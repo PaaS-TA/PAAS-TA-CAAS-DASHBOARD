@@ -73,7 +73,6 @@
         procCallAjax(reqUrl, "GET", null, null, callbackGetListNodes);
     }
 
-    // TODO :: MODIFY SCRIPTS :: DO NOT USE :: let >> ONLY ECMAScript 5, NOT ECMAScript 6
     // CALLBACK
     var callbackGetListNodes = function(data) {
         if (false == checkValidData(data)) {
@@ -83,21 +82,21 @@
 
         var contents = [];
         $.each(data.items, function (index, nodeItem) {
-            let _metadata = nodeItem.metadata;
-            let _status = nodeItem.status;
+            var _metadata = nodeItem.metadata;
+            var _status = nodeItem.status;
 
-            let name = _metadata.name;
-            let ready = _status.conditions.filter(function(condition) {
+            var name = _metadata.name;
+            var ready = _status.conditions.filter(function(condition) {
                     return condition.type === "Ready";
                 })[0].status;
-            let limitCPU = _status.capacity.cpu;
-            let requestCPU = limitCPU - _status.allocatable.cpu;
-            let limitMemory = convertByte(_status.capacity.memory);
-            let requestMemory = limitMemory - convertByte(_status.allocatable.memory);
-            let creationTimestamp = _metadata.creationTimestamp;
+            var limitCPU = _status.capacity.cpu;
+            var requestCPU = limitCPU - _status.allocatable.cpu;
+            var limitMemory = convertByte(_status.capacity.memory);
+            var requestMemory = limitMemory - convertByte(_status.allocatable.memory);
+            var creationTimestamp = _metadata.creationTimestamp;
 
             // TODO
-            let nameHtml = '<a href="./nodes/' + name + '/summary"> ' + name + '</a>';
+            var nameHtml = '<a href="./nodes/' + name + '/summary"> ' + name + '</a>';
             if (ready == "True")
                 nameHtml = '<span class="green2"><i class="fas fa-check-circle"></i></span>' + nameHtml;
             else
@@ -122,9 +121,9 @@
     $(document.body).ready(function(){
         // add sort-arrow click event in pods table
         $(".sort-arrow").on("click", function(event) {
-            let tableId = "clusters_nodes_table";
-            let sortKey = $(event.currentTarget).attr('sort-key');
-            let isAscending = $(event.currentTarget).hasClass('sort')? true : false;
+            var tableId = "clusters_nodes_table";
+            var sortKey = $(event.currentTarget).attr('sort-key');
+            var isAscending = $(event.currentTarget).hasClass('sort')? true : false;
             sortTable(tableId, sortKey, isAscending);
         });
 
