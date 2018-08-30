@@ -13,8 +13,8 @@
 <h1 id="cluster_node_name" class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span>NODE_NAME</h1>
 <div class="cluster_tabs clearfix">
     <ul>
-        <!-- cluster_tabs_on or cluster_tabs_right -->
-        <li name="tab01" class="cluster_tabs_right" id="clusters_nodes_summary">Summary</li>
+        <!-- cluster_tabs_left or cluster_tabs_on or cluster_tabs_right -->
+        <li name="tab01" class="cluster_tabs_left" id="clusters_nodes_summary">Summary</li>
         <li name="tab02" class="cluster_tabs_right" id="clusters_nodes_details">Details</li>
         <li name="tab03" class="cluster_tabs_right" id="clusters_nodes_events">Events</li>
     </ul>
@@ -48,15 +48,13 @@
                 $(item).removeAttr('onclick');
                 $(item).attr('class', 'cluster_tabs_on');
                 $(item).attr('style', 'cursor: default');
+                if (index > 1)
+                    $(tabElements[index - 1]).attr('class', 'cluster_tabs_left');
+                if (index < (tabElements.length - 1))
+                    $(tabElements[index + 1]).attr('class', 'cluster_tabs_right');
             } else {
                 $(item).attr('onclick', 'procMovePage("/caas/clusters/nodes/' + nodeName + '/' + _tabName + '")');
             }
         });
-        /*
-        var currentTabElement = $('#clusters_nodes_' + currentTab);
-        currentTabElement.removeAttr("onclick");
-        currentTabElement.attr("class", "cluster_tabs_on");
-        currentTabElement.attr("style", "cursor: default");
-        */
     });
 </script>
