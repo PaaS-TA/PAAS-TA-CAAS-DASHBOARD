@@ -563,14 +563,16 @@
 
             $resultArea.append('<tr>' +
                                     '<td>' +
-                                        '<a href="#"><span class="green2"><i class="fas fa-check-circle"></i></span>' + replicasetName + '</a>' +
+                                        "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicasets/" + replicasetName + "\");'>"+
+                                            '<span class="green2"><i class="fas fa-check-circle"></i></span>' + replicasetName +
+                                        '</a>' +
                                     '</td>' +
                                     '<td>' + namespace + '</td>' +
                                     '<td>' + createSpans(labels, "true") + '</td>' +
                                     '<td>' + replicas + '</td>' +
                                     '<td>' + images + '</td>' +
                                     '<td>' + creationTimestamp + '</td>' +
-                                    '</td>');
+                                '</tr>');
 
 
 /*            $(document).on("click", "#resultArea a:eq(" + index + ")", function (e) {
