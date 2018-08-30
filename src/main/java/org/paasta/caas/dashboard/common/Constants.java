@@ -31,6 +31,20 @@ public class Constants {
     // TODO :: REMOVE AFTER CHECKING
     public static final String API_WORKLOAD = "/workload";
 
+    // TAB URI - Clusters
+    public static final String URI_CLUSTER_OVERVIEW     = "/caas/clusters/overview";
+    public static final String URI_CLUSTER_NODES        = "/caas/clusters/nodes";
+    public static final String URI_CLUSTER_NAMESPACES   = "/caas/clusters/namespaces";
+    public static final String URI_CLUSTER_PV           = "/caas/clusters/persistentVolumes";
+
+    // TAB URI - workloads
+    public static final String URI_WORKLOAD_OVERVIEW     = "/caas/workloads/overview";
+    public static final String URI_WORKLOAD_DEPLOYMENTS  = "/caas/workloads/deployments";
+    public static final String URI_WORKLOAD_PODS         = "/caas/workloads/pods";
+    public static final String URI_WORKLOAD_REPLICASETS  = "/caas/workloads/replicasets";
+
+    // TAB URI - services
+    public static final String URI_SERVICES              = "/caas/services";
 
     private Constants() {
         throw new IllegalStateException();
