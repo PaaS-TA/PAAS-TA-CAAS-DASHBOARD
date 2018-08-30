@@ -108,6 +108,8 @@
 
         console.log("CONSOLE DEBUG PRINT :: " + data);
 
+        var listLength = data.items.length;
+
         var resultArea = $('#deploymentsListArea');
         var resultHeaderArea = $('#resultHeaderArea');
         var noResultArea = $('#noResultArea');
@@ -200,14 +202,6 @@
         }
 
         return spanTemplate;
-    }
-
-    var createStatus = function (data, type) {
-
-        if(data) {
-
-        }
-        //<span class="green2"><i class="fas fa-check-circle"></i></span>
     }
 
     // BIND
