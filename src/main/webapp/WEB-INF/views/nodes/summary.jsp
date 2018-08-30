@@ -4,15 +4,17 @@
   @version 1.0
   @since 2018.08.14
 --%>
-<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!-- Nodes Summary 시작 -->
 <div class="content">
+    <jsp:include page="common-nodes.jsp"/>
+
     <%-- NODES HEADER INCLUDE --%>
-    <%@ include file="tab.jsp" %>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
 
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
@@ -188,11 +190,6 @@
 <script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>
 
 <script>
-    var getNode = function (nodeName) {
-        var reqUrl = "<%= Constants.API_URL %>/nodes/" + nodeName;
-        procCallAjax(reqUrl, "GET", null, null, callbackGetNodeSummary);
-    }
-
     var callbackGetNodeSummary = function (data) {
         // check data validation
         if (false == checkValidData(data)) {
@@ -308,7 +305,7 @@
             sortTable(tableId, sortKey, isAscending);
         });
 
-        getNode(nodeName);
+        getNode(nodeName, callbackGetNodeSummary);
     });
 </script>
 <!-- Nodes Summary 끝 -->

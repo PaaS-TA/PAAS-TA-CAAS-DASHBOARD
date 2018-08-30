@@ -10,7 +10,8 @@
 
 <div class="content">
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span id="title"></span></h1>
-    <%@include file="./tab.jsp" %>
+    <%--<%@include file="./tab.jsp" %>--%>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Events 시작-->
     <div class="cluster_content02 row two_line two_view harf_view custom_display_block">
         <ul class="maT30">
@@ -42,7 +43,7 @@
                             <tbody id="resultAreaForNameSpaceEventList">
                             </tbody>
                         </table>
-                        <p id="emptyEventList" class="service_p" style="display:none;">이벤트가 없습니다.</p>
+                        <p id="emptyEventList" class="service_p" style="display:none;">조회 된 Events가 없습니다.</p>
                     </div>
                 </div>
             </li>
@@ -106,6 +107,12 @@
     $(document.body).ready(function () {
         getEventList(NAME_SPACE, NAME_SPACE);
         // getEventList("hyerin-test-case", "kubernetes-ciss-test-d5f846fd7");
+
+        var urlPath = window.location.href;
+        var urlPathSplit = urlPath.split("/");
+        var namespaceId = urlPathSplit[6];
+
+        $("#title").html(namespaceId);
     });
 
 </script>
