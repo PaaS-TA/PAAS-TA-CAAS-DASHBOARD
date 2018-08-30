@@ -86,11 +86,9 @@
         <ul class="content_dev">
             <c:forEach var="path" items="${pathArray}" varStatus="g">
                 <c:choose>
-                    <!-- 1단계 메뉴 클릭시 : 해당 메뉴의 대표 페이지로 이동 (overview) services 예외 -->
                     <c:when test="${g.index eq 1}">
                         <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${path}</li>
                     </c:when>
-                    <!-- 2단계 메뉴 클릭시 : 탭의 대표(main) 페이지로 이동(ex 상세,이벤트 페이지에서 ) -->
                     <c:when test="${g.index eq 2}">
                         <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${path}</li>
                     </c:when>
