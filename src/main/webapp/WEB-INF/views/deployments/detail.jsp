@@ -161,7 +161,8 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                            <tr>
+                            <tr id="noReplicasetsResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 ReplicaSets가 없습니다.</p></td></tr>
+                            <tr id="replicasetsResultHeaderArea">
                                 <td>Name
                                     <button sort-key="replicasets-name" class="sort-arrow sort" onclick="procSetSortList('replicasetsResultTable', this, '0')"><i class="fas fa-caret-down"></i></button>
                                 </td>
@@ -509,14 +510,11 @@
     var createSpans = function (data, type) {
         var datas = data.replace(/=/g, ':').split(',');
         var spanTemplate = "";
-        console.log("타입이 뭐임?", type)
 
         if (type === "true") {
             $.each(datas, function (index, data) {
                 spanTemplate += '<span class="bg_gray">' + data + '</span>';
-                console.log('인덱스? ', index);
                 if (datas.length > 1) {
-                    console.log('여기 몇번옴??', index);
                     spanTemplate += '<br>';
                 }
             });
@@ -535,8 +533,12 @@
 
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
-        var $resultArea = $('#replicaSetTable');
+        var resultArea = $('#replicaSetTable');
+        var resultHeaderArea = $('#replicasetsResultHeaderArea');
+        var noResultArea = $('#noReplicasetsResultArea');
         var resultTable = $('#replicasetsResultTable');
+
+        var listLength = data.items.length;
 
         //-- Replica Set List
         //items
@@ -561,7 +563,7 @@
                 images.push(containers[i].image);
             }
 
-            $resultArea.append('<tr>' +
+            resultArea.append('<tr>' +
                                     '<td>' +
                                         "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicasets/" + replicasetName + "\");'>"+
                                             '<span class="green2"><i class="fas fa-check-circle"></i></span>' + replicasetName +
@@ -572,16 +574,23 @@
                                     '<td>' + replicas + '</td>' +
                                     '<td>' + images + '</td>' +
                                     '<td>' + creationTimestamp + '</td>' +
-                                '</tr>');
+                                '</tr>' );
 
 
-/*            $(document).on("click", "#resultArea a:eq(" + index + ")", function (e) {
-                getDetail(replicasetName);
-            });*/
 
+        });
+
+        if (listLength < 1) {
+            resultHeaderArea.hide();
+            resultArea.hide();
+            noResultArea.show();
+        } else {
+            noResultArea.hide();
+            resultHeaderArea.show();
+            resultArea.show();
             resultTable.tablesorter();
             resultTable.trigger("update");
-        });
+        }
 
     };
 

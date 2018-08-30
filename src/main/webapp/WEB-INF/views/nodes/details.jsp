@@ -35,7 +35,7 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td id="node_labels"></td>
+                                <td id="node_labels"><span class="bg_gray">app : nginx-2</span> <span class="bg_gray">tier : node</span></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Annotations</th>
@@ -157,12 +157,13 @@
 
         // name, labels, annotations, created-at, addresses, pod-cidr, unschedulable
         var name = _metadata.name;
-        var labels = _metadata.labels;
-        var annotations = _metadata.annotations;
+        var labels = stringifyJSON(_metadata.labels);
+        var annotations = stringifyJSON(_metadata.annotations);
         var createdAt = _metadata.creationTimestamp;
         var addresses = _status.addresses;
         var podCIDR = _spec.podCIDR;
-        var unschedulable = _spec.taints.filter(function(item) { return item.key == 'node-role.kubernetes.io/master' && item.effect == 'NoSchedule'; }).length;
+        var unschedulable = _spec.taints.filter(
+            function(item) { return item.key == 'node-role.kubernetes.io/master' && item.effect == 'NoSchedule'; }).length;
 
         // get datum : system info
         var nodeInfo = _status.nodeInfo;
@@ -176,6 +177,32 @@
         var kubeProxyVersion = nodeInfo.kubeProxyVersion;
         var operatingSystem = nodeInfo.operatingSystem;
         var architecture = nodeInfo.architecture;
+
+        $('#node_name').html(name);
+        $('#node_labels').html(labels);
+        $('#node_annotations').html(annotations);
+        $('#node_created_at').html(createdAt);
+        $('#node_addresses').html(addresses);
+        $('#node_pod_cidr').html(podCIDR);
+        $('#node_unschedulable').html(unschedulable);
+
+        $('#node_machine_id').html(machineId);
+        $('#node_system_uuid').html(systemUUID);
+        $('#node_boot_id').html(bootID);
+        $('#node_kernel_version').html(kernalVersion);
+        $('#node_images').html(osImages);
+        $('#node_container_version').html(containerRuntimeVersion);
+        $('#node_kubenet_version').html(kubeletVersion);
+        $('#node_kubeproxy_version').html(kubeProxyVersion);
+        $('#node_os_name').html(operatingSystem);
+        $('#node_architecture').html(architecture);
+
+        // annotations event
+        /*
+        $('#node_annotations').on("click", function() {
+
+        })
+        */
     }
 
     var loadLayerpop = function () {

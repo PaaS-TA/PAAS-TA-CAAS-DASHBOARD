@@ -222,8 +222,8 @@ var getURLInfo = function () {
     return _valueFrame;
 };
 
-/*
+
 var stringifyJSON = function (obj) {
     return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
 }
-*/
+
