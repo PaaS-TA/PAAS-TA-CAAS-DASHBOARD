@@ -295,20 +295,6 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        var urlSplits = window.location.href.replace(/\?.*/, '').split('/');
-        // ex) http://<server-domain>:8091/caas/clusters/nodes/<node-name>/summary
-        var nodeName = urlSplits[urlSplits.length - 2];
-
-        if (nodeName == null) {
-            alert("Cannot get node name.");
-            //nodeName = "CANNOT_GET_NODE_NAME";
-            return;
-        }
-
-        // set subject of page
-        var nodeNameSubject = $("#cluster_node_name");
-        nodeNameSubject.html( nodeNameSubject.html().replace("NODE_NAME", (" " + nodeName)) );
-
         // TODO :: Change chart functions.
         //createChart("current", "cpu");
         //createChart("current", "mem");

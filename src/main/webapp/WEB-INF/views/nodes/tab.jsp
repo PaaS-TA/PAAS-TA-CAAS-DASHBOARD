@@ -13,10 +13,10 @@
 <h1 id="cluster_node_name" class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span>NODE_NAME</h1>
 <div class="cluster_tabs clearfix">
     <ul>
-        <!-- cluster_tabs_on or cluster_tabs_right -->
-        <li name="tab01" class="cluster_tabs_right" id="clusters_nodes_summary" onclick="procMovePage('./summary')">Summary</li>
-        <li name="tab02" class="cluster_tabs_right" id="clusters_nodes_details" onclick="procMovePage('./details')">Details</li>
-        <li name="tab03" class="cluster_tabs_right" id="clusters_nodes_events" onclick="procMovePage('./events')">Events</li>
+        <!-- cluster_tabs_left or cluster_tabs_on or cluster_tabs_right -->
+        <li name="tab01" class="cluster_tabs_left" id="clusters_nodes_summary">Summary</li>
+        <li name="tab02" class="cluster_tabs_right" id="clusters_nodes_details">Details</li>
+        <li name="tab03" class="cluster_tabs_right" id="clusters_nodes_events">Events</li>
     </ul>
     <div class="cluster_tabs_line"></div>
 </div>
@@ -24,29 +24,9 @@
     var nodeName;
     var currentTab;
 
-    var getURLInfo = function() {
-        var urlSplits = window.location.href.replace(/\?.*/, '').split('/');
-        var slices = urlSplits.splice(urlSplits.indexOf("caas") + 1, urlSplits.length - urlSplits.indexOf("caas"));
-
-        var valueFrame = {
-            category: slices[0],
-            page: slices[1]
-        };
-
-        if (slices.length > 2)
-            valueFrame['selector'] = slices[2];
-
-        if (slices.length > 3)
-            valueFrame['tab'] = slices[3];
-        else
-            valueFrame['tab'] = '_default';
-
-        return valueFrame;
-    };
-
     $(document.body).ready(function () {
         var urlInfo = getURLInfo();
-        nodeName = urlInfo.selector;
+        nodeName = urlInfo.resource;
         currentTab = urlInfo.tab == "_default"? "details" : urlInfo.tab;
 
 
@@ -61,9 +41,20 @@
         nodeNameSubject.html( nodeNameSubject.html().replace("NODE_NAME", (" " + nodeName)) );
 
         // change style class to current page's tab and remove onclick event
-        var currentTabElement = $('#clusters_nodes_' + currentTab);
-        currentTabElement.removeAttr("onclick");
-        currentTabElement.attr("class", "cluster_tabs_on");
-        currentTabElement.attr("style", "cursor: default");
+        var tabElements = $('div.cluster_tabs > ul > li');
+        $.each(tabElements, function (index, item) {
+            var _tabName = $(item).attr('id').replace('clusters_nodes_', '');
+            if (_tabName == currentTab) {
+                $(item).removeAttr('onclick');
+                $(item).attr('class', 'cluster_tabs_on');
+                $(item).attr('style', 'cursor: default');
+                if (index > 1)
+                    $(tabElements[index - 1]).attr('class', 'cluster_tabs_left');
+                if (index < (tabElements.length - 1))
+                    $(tabElements[index + 1]).attr('class', 'cluster_tabs_right');
+            } else {
+                $(item).attr('onclick', 'procMovePage("/caas/clusters/nodes/' + nodeName + '/' + _tabName + '")');
+            }
+        });
     });
 </script>
