@@ -92,7 +92,6 @@
 
     // CALLBACK
     var callbackGetList = function (data) {
-        console.log("fade away111122222333333444444555555555555");
         if (RESULT_STATUS_FAIL === data.resultCode) {
             $('#resultArea').html(
                 "ResultStatus :: " + data.resultCode + " <br><br>"
@@ -102,7 +101,6 @@
 
         console.log("CONSOLE DEBUG PRINT :: " + data);
 
-        var htmlString = [];
         var listLength = data.items.length;
 
         var resultArea = $('#resultArea');
@@ -110,14 +108,12 @@
         var noResultArea = $('#noResultArea');
 
         $.each(data.items, function (index, itemList) {
-            console.log("fade away1111");
             var message = itemList.message;
             var source = itemList.source.component;
             var subObject = itemList.involvedObject.fieldPath;
             var count = itemList.count;
             var fristTimestamp = itemList.firstTimestamp;
             var lastTimestamp = itemList.lastTimestamp;
-            console.log("fade away111122222");
             resultArea.append("<tr>"
                                 + "<td>" + message + "</td>"
                                 + "<td>" + source + "</td>"
@@ -129,16 +125,13 @@
         });
 
         if (listLength < 1) {
-            console.log("fade away111122222333333");
             resultHeaderArea.hide();
             resultArea.hide();
             noResultArea.show();
         } else {
-            console.log("fade away111122222333333444444");
             noResultArea.hide();
             resultHeaderArea.show();
             resultArea.show();
-            resultArea.html(htmlString);
         }
     };
 
