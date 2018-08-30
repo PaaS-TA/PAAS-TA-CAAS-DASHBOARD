@@ -115,6 +115,14 @@ public class CommonSpec {
     private List<CommonContainer> containers;
     // FOR TEMPLATE SPEC :: END
 
+    // FOR NODES SPEC :: START
+    @SerializedName( "podCIDR" )
+    private String podCIDR;
+
+    @SerializedName( "taints" )
+    private List<Map<String, Object>> taints;
+    // FOR NODES SPEC :: END
+
 //
 //    @SerializedName("dnsConfig")
 //    private PodDNSConfig dnsConfig;
