@@ -34,8 +34,14 @@
     /*EMPTY STYLE FOR jquery.tablesorter.min.js*/
 }
 
-.cluster_content02 { }
+.cluster_content02 {
+    display: block;
+}
 
-.cluster_content03 { }
+.cluster_content03 {
+    display: block;
+}
 
-.cluster_content04 { }
+.cluster_content04 {
+    display: block;
+}
