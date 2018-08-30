@@ -99,7 +99,7 @@
                                 onclick="procMovePage('<%=Constants.URI_CLUSTER_PV%>'+'/${pathLevel4}');">Details</li>
                             <li name="tab02" class="<c:if test="${pathLevel5 eq 'yaml'}">cluster_tabs_on</c:if>
                                                     <c:if test="${pathLevel5 ne 'yaml'}">cluster_tabs_right</c:if>"
-                                onclick="procMovePage('<%=Constants.URI_CLUSTER_PV%>'+'/${pathLevel4}/events');">Events</li>
+                                onclick="procMovePage('<%=Constants.URI_CLUSTER_PV%>'+'/${pathLevel4}/yaml');">Events</li>
                         </c:otherwise>
                     </c:choose>
                 </c:when>

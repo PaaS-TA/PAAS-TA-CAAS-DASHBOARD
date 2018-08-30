@@ -26,28 +26,28 @@
     <!-- Overview 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
-            <!-- 그래프 시작 -->
-            <li class="cluster_first_box">
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Overview</p>
-                        <div class="sortable_right label">
-                            <span class="running2 maR10"><i class="fas fa-circle"></i></span>Running
-                            <span class="failed2 maL25 maR10"><i class="fas fa-circle"></i></span>Failed
-                            <span class="pending2 maL25 maR10"><i class="fas fa-circle"></i></span>Pending
-                            <span class="succeeded2 maL25 maR10"><i class="fas fa-circle"></i></span>Succeeded
-                        </div>
-                    </div>
-                    <div class="graphArea"><div id="piechart01" style="height: 260px"></div></div>
-                    <div class="graphArea"><div id="piechart02" style="height: 260px"></div></div>
-                    <div class="graphArea"><div id="piechart03" style="height: 260px"></div></div>
-                    <!--<div class="graphArea"><img src="../resources/images/cluster/chart01.png"/></div>
-                    <div class="graphArea"><img src="../resources/images/cluster/chart02.png"/></div>
-                    <div class="graphArea"><img src="../resources/images/cluster/chart03.png"/></div>-->
-                    <div style="clear:both;"></div>
-                </div>
-            </li>
-            <!-- 그래프 끝 -->
+            <%--<!-- 그래프 시작 -->--%>
+            <%--<li class="cluster_first_box">--%>
+                <%--<div class="sortable_wrap">--%>
+                    <%--<div class="sortable_top">--%>
+                        <%--<p>Overview</p>--%>
+                        <%--<div class="sortable_right label">--%>
+                            <%--<span class="running2 maR10"><i class="fas fa-circle"></i></span>Running--%>
+                            <%--<span class="failed2 maL25 maR10"><i class="fas fa-circle"></i></span>Failed--%>
+                            <%--<span class="pending2 maL25 maR10"><i class="fas fa-circle"></i></span>Pending--%>
+                            <%--<span class="succeeded2 maL25 maR10"><i class="fas fa-circle"></i></span>Succeeded--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="graphArea"><div id="piechart01" style="height: 260px"></div></div>--%>
+                    <%--<div class="graphArea"><div id="piechart02" style="height: 260px"></div></div>--%>
+                    <%--<div class="graphArea"><div id="piechart03" style="height: 260px"></div></div>--%>
+                    <%--<!--<div class="graphArea"><img src="../resources/images/cluster/chart01.png"/></div>--%>
+                    <%--<div class="graphArea"><img src="../resources/images/cluster/chart02.png"/></div>--%>
+                    <%--<div class="graphArea"><img src="../resources/images/cluster/chart03.png"/></div>-->--%>
+                    <%--<div style="clear:both;"></div>--%>
+                <%--</div>--%>
+            <%--</li>--%>
+            <%--<!-- 그래프 끝 -->--%>
             <!-- Deployments 시작 -->
             <li class="cluster_second_box">
                 <div class="sortable_wrap">
