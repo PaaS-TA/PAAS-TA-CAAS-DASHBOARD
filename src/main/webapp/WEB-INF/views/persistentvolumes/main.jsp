@@ -52,7 +52,7 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="/caas/clusters/persistentVolumes/aaa">oracle-test-pv</a></td>
+                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="/caas/clusters/persistentVolumes/kube-flannel-ds-2">kube-flannel-ds-2</a></td>
                                 <td>100Mi</td>
                                 <td>ReadWriteOnce</td>
                                 <td>Recycle</td>
@@ -62,7 +62,7 @@
                                 <td>2015-07-04 20:15:30</td>
                             </tr>
                             <tr>
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="/caas/clusters/persistentVolumes/aaa">oracle-test-pv</a></td>
+                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="/caas/clusters/persistentVolumes/kube-flannel-ds-2">kube-flannel-ds-2</a></td>
                                 <td>100Mi</td>
                                 <td>ReadOnlyMany</td>
                                 <td>Recycle</td>
@@ -72,7 +72,7 @@
                                 <td>2015-07-04 20:15:30</td>
                             </tr>
                             <tr>
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="/caas/clusters/persistentVolumes/aaa">oracle-test-pv</a></td>
+                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="/caas/clusters/persistentVolumes/kube-flannel-ds-1">kube-flannel-ds-1</a></td>
                                 <td>100Mi</td>
                                 <td>ReadWriteMany</td>
                                 <td>Recycle</td>
