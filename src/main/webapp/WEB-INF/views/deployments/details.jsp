@@ -7,14 +7,15 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 
 <div class="content">
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <c:out value="${deploymentsName}"/></h1>
     <div class="cluster_tabs clearfix">
         <ul>
             <li name="tab01" class="cluster_tabs_on">Details</li>
-            <li name="tab02" class="cluster_tabs_right">Events</li>
-            <li name="tab03" class="cluster_tabs_right yamlTab">YAML</li>
+            <li name="tab02" class="cluster_tabs_right" onclick='movePage("events");'>Events</li>
+            <li name="tab03" class="cluster_tabs_right yamlTab" onclick='movePage("yaml");'>YAML</li>
         </ul>
         <div class="cluster_tabs_line"></div>
     </div>
@@ -23,7 +24,7 @@
         <ul class="maT30">
             <!-- TODO : 그래프 구현필요 -->
             <!-- 그래프 시작 -->
-            <li class="cluster_first_box">
+            <%--<li class="cluster_first_box">
                 <div class="graph-legend-wrap clearfix">
                     <ul class="graph-legend">
                         <li rel="current" class="on">현재</li>
@@ -76,7 +77,7 @@
                         <div id="areachartdisk" style="min-width: 250px; height: 170px; margin: 0 auto"></div>
                     </div>
                 </div>
-            </li>
+            </li>--%>
             <!-- 그래프 끝 -->
             <!-- Details 시작 -->
             <li class="cluster_second_box">
@@ -150,7 +151,7 @@
                         <p>Replica Set</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
+                        <table class="table_event condition alignL" id="replicasetsResultTable">
                             <colgroup>
                                 <col style='width:auto;'>
                                 <col style='width:10%;'>
@@ -162,14 +163,14 @@
                             <thead>
                             <tr>
                                 <td>Name
-                                    <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                    <button sort-key="replicasets-name" class="sort-arrow sort" onclick="procSetSortList('replicasetsResultTable', this, '0')"><i class="fas fa-caret-down"></i></button>
                                 </td>
                                 <td>Namespace</td>
                                 <td>Labels</td>
                                 <td id="replicaPods">Pods</td>
                                 <td id="replicaImages">Images</td>
                                 <td id="replicaCreationTime">Created on
-                                    <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                    <button sort-key="replica-created-on" class="sort-arrow sort" onclick="procSetSortList('replicasetsResultTable', this, '6')"><i class="fas fa-caret-down"></i></button>
                                 </td>
                             </tr>
                             </thead>
@@ -179,46 +180,6 @@
                     </div>
                 </div>
             </li>
-            <!-- Replica Set 끝 -->
-            <!-- Horizontal Pod Autoscaler 시작 -->
-            <!--li class="cluster_fifth_box">
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Horizontal Pod Autoscaler</p>
-                    </div>
-                    <div class="account_table view">
-                        <table>
-                            <colgroup>
-                                <col style="width:20%">
-                                <col style="*">
-                            </colgroup>
-                            <tbody>
-                                <tr>
-                                    <th><i class="cWrapDot"></i> Name</th>
-                                    <td>nginx-2-hpa</td>
-                                </tr>
-                                <tr>
-                                    <th><i class="cWrapDot"></i> Min replicas</th>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <th><i class="cWrapDot"></i> Max replicas</th>
-                                    <td>3</td>
-                                </tr>
-                                <tr>
-                                    <th><i class="cWrapDot"></i> Metric</th>
-                                    <td>CPU Utilization</td>
-                                </tr>
-                                <tr>
-                                    <th><i class="cWrapDot"></i> Current/Target value</th>
-                                    <td>0%/80%</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </li-->
-            <!-- Horizontal Pod Autoscaler 끝 -->
             <!-- Pods 시작 -->
             <li class="cluster_sixth_box maB50">
                 <div class="sortable_wrap">
@@ -226,7 +187,7 @@
                         <p>Pods</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
+                        <table class="table_event condition alignL" id="podsResultTable">
                             <colgroup>
                                 <col style='width:auto;'>
                                 <col style='width:15%;'>
@@ -236,16 +197,17 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                            <tr>
+                            <tr id="noPodsResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Pods가 없습니다.</p></td></tr>
+                            <tr id="podsResultHeaderArea">
                                 <td>Name
-                                    <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                    <button class="sort-arrow"><i class="fas fa-caret-down" onclick="procSetSortList('replicasetsResultTable', this, '0')"></i></button>
                                 </td>
                                 <td>Namespace</td>
                                 <td>Node</td>
                                 <td>Status</td>
                                 <td>Restarts</td>
                                 <td>Created on
-                                    <button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
+                                    <button class="sort-arrow"><i class="fas fa-caret-down" onclick="procSetSortList('replicasetsResultTable', this, '5')"></i></button>
                                 </td>
                             </tr>
                             </thead>
@@ -405,8 +367,10 @@
     </div>
 </div>
 
-<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>
+<%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
+<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
+
+<input type="hidden" id="requestDeploymentsName" name="requestDeploymentsName" value="<c:out value='${deploymentsName}' default='' />" />
 
 <!-- SyntexHighlighter -->
 <script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
@@ -431,9 +395,9 @@
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function () {
-        createChart("current", "cpu");
+/*        createChart("current", "cpu");
         createChart("current", "mem");
-        createChart("current", "disk");
+        createChart("current", "disk");*/
     });
 </script>
 
@@ -492,7 +456,7 @@
         var annotations = stringifyJSON(_metadata.annotations);
         var creationTimestamp = _metadata.creationTimestamp;
 
-        var selector = stringifyJSON(_spec.selector);
+        var selector = stringifyJSON(_spec.selector).replace(/matchLabels=/g, '');;
         var strategy = _spec.strategy.type;
         var minReadySeconds = _spec.minReadySeconds;
         var revisionHistoryLimit = _spec.revisionHistoryLimit;
@@ -510,21 +474,6 @@
             + availableReplicas + " available, "
             + unavailableReplicas + " unavailable.";
 
-        // htmlString push
-        htmlString.push(
-            "Deploy name :: " + deployName + " <br><br>"
-            + "Namespace :: " + namespace + " <br><br>"
-            + "Labels :: " + labels + " <br><br>"
-            + "Annotations :: " + annotations + " <br><br>"
-            + "Creation Time :: " + creationTimestamp + " <br><br>"
-            + "Selector :: " + selector + " <br><br>"
-            + "Images :: " + images + " <br><br>"
-            + "Strategy :: " + strategy + " <br><br>"
-            + "Min ready seconds :: " + minReadySeconds + " <br><br>"
-            + "Revision history limit :: " + revisionHistoryLimit + " <br><br>"
-            + "Rolling update strategy :: " + rollingUpdateStrategy + " <br><br>"
-            + "Status(Replica) :: " + replicaStatus + "<br><br>");
-
         document.getElementById("name").textContent = deployName;
         document.getElementById("namespaceID").textContent = namespace;
         document.getElementById("labels").innerHTML = createSpans(labels, "false");
@@ -537,11 +486,7 @@
         document.getElementById("rollingUpdateStrategy").textContent = rollingUpdateStrategy;
         document.getElementById("status").textContent = replicaStatus;
 
-
-        //var $resultArea = $('#resultArea');
-        $('#resultArea').html(htmlString);
-
-        procCallAjax("/workloads/namespaces/" + NAME_SPACE + "/replicasets/resource/" + replaceLabels(labels), "GET", null, null, callbackGetReplicasetList);
+        procCallAjax("/api/namespaces/" + NAME_SPACE + "/replicasets/resource/" + replaceLabels(labels), "GET", null, null, callbackGetReplicasetList);
         procCallAjax("/api/workloads/namespaces/" + NAME_SPACE + "/pods/resource/" + replaceLabels(labels), "GET", null, null, callbackGetPodsList);
     }
 
@@ -591,6 +536,7 @@
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
         var $resultArea = $('#replicaSetTable');
+        var resultTable = $('#replicasetsResultTable');
 
         //-- Replica Set List
         //items
@@ -616,21 +562,25 @@
             }
 
             $resultArea.append('<tr>' +
-                '<td>' +
-                '<a href="#"><span class="green2"><i class="fas fa-check-circle"></i></span>' + replicasetName + '</a>' +
-                '</td>' +
-                '<td>' + namespace + '</td>' +
-                '<td>' + createSpans(labels, "true") + '</td>' +
-                '<td>' + replicas + '</td>' +
-                '<td>' + images + '</td>' +
-                '<td>' + creationTimestamp + '</td>' +
-                '</td>');
+                                    '<td>' +
+                                        "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicasets/" + replicasetName + "\");'>"+
+                                            '<span class="green2"><i class="fas fa-check-circle"></i></span>' + replicasetName +
+                                        '</a>' +
+                                    '</td>' +
+                                    '<td>' + namespace + '</td>' +
+                                    '<td>' + createSpans(labels, "true") + '</td>' +
+                                    '<td>' + replicas + '</td>' +
+                                    '<td>' + images + '</td>' +
+                                    '<td>' + creationTimestamp + '</td>' +
+                                '</tr>');
 
 
-            $(document).on("click", "#resultArea a:eq(" + index + ")", function (e) {
+/*            $(document).on("click", "#resultArea a:eq(" + index + ")", function (e) {
                 getDetail(replicasetName);
-            });
+            });*/
 
+            resultTable.tablesorter();
+            resultTable.trigger("update");
         });
 
     };
@@ -638,7 +588,7 @@
 
     var callbackGetPodsList = function (data) {
         if (RESULT_STATUS_FAIL === data.resultCode) {
-            $('#podArea').html(
+            $('#podsListTable').html(
                 "ResultStatus :: " + data.resultCode + " <br><br>"
                 + "ResultMessage :: " + data.resultMessage + " <br><br>");
             return false;
@@ -646,12 +596,11 @@
 
         console.log("CONSOLE DEBUG PRINT :: " + data);
 
-        var htmlString = [];
-        htmlString.push("PODS LIST :: <br><br>");
-        htmlString.push("ResultCode :: " + data.resultCode + " || "
-            + "Message :: " + data.resultMessage + " <br><br>");
-
-        var $resultArea = $('#podsListTable');
+        var resultArea = $('#podsListTable');
+        var resultHeaderArea = $('#podsResultHeaderArea');
+        var noResultArea = $('#noPodsResultArea');
+        var resultTable = $('#podsResultTable');
+        var listLength = data.items.length;
 
         $.each(data.items, function (index, itemList) {
             // get data
@@ -679,15 +628,28 @@
             //var errorMessage = _status.error.message;
             var errorMessage = "";
 
-            $resultArea.append('<tr>' +
-                '<td>' + podName + '</td>' +
-                '<td>' + namespace + '</td>' +
-                '<td>' + nodeName + '</td>' +
-                '<td>' + podStatus + '</td>' +
-                '<td>' + restartCount + '</td>' +
-                '<td>' + creationTimestamp + '</td>' +
-                '</tr>');
+            resultArea.append('<tr>' +
+                                '<td>' + podName + '</td>' +
+                                '<td>' + namespace + '</td>' +
+                                '<td>' + nodeName + '</td>' +
+                                '<td>' + podStatus + '</td>' +
+                                '<td>' + restartCount + '</td>' +
+                                '<td>' + creationTimestamp + '</td>' +
+                            '</tr>');
+
         });
+
+        if (listLength < 1) {
+            resultHeaderArea.hide();
+            resultArea.hide();
+            noResultArea.show();
+        } else {
+            noResultArea.hide();
+            resultHeaderArea.show();
+            resultArea.show();
+            resultTable.tablesorter();
+            resultTable.trigger("update");
+        }
 
     };
 
@@ -708,4 +670,14 @@
     $(document.body).ready(function () {
         // getAllDeployments();
     });
+
+    // MOVE PAGE
+    var movePage = function(requestPage) {
+        var reqUrl = '<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/deployments/' + document.getElementById('requestDeploymentsName').value;
+        if (requestPage.indexOf('detail') < 0) {
+            reqUrl += '/' + requestPage;
+        }
+
+        procMovePage(reqUrl);
+    };
 </script>

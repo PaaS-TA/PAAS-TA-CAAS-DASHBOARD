@@ -9,7 +9,8 @@
 <%--<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>--%>
 
 <div class="content">
-    <%@include file="../clusters/tab.jsp" %>
+    <%--<%@include file="../clusters/tab.jsp" %>--%>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
 
     <div class="cluster_content02 row two_line two_view harf_view custom_display_block">
         <ul class="maT30">
