@@ -30,7 +30,7 @@
                         <p>Deployments</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="account_table view">
+                        <table class="account_table view" id="resultTable">
                             <colgroup>
                                 <col style="width:auto;">
                                 <col style="width:20%;">
@@ -40,16 +40,17 @@
                                 <col style="width:25%;">
                             </colgroup>
                             <thead>
-                            <tr>
-                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                            <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Deployments가 없습니다.</p></td></tr>
+                            <tr id="resultHeaderArea">
+                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
                                 <td>Labels</td>
                                 <td>Pods</td>
-                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '4')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Images</td>
                             </tr>
                             </thead>
-                            <tbody id="deploymentsListTable">
+                            <tbody id="deploymentsListArea">
                             </tbody>
                         </table>
                     </div>
@@ -99,21 +100,20 @@
     var callbackGetList = function (data) {
         console.log("여기 오느뇨?");
         if (RESULT_STATUS_FAIL === data.resultCode) {
-            $('#resultArea').html(
+            $('#deploymentsListArea').html(
                 "ResultStatus :: " + data.resultCode + " <br><br>"
                 + "ResultMessage :: " + data.resultMessage + " <br><br>");
             return false;
         }
 
         console.log("CONSOLE DEBUG PRINT :: " + data);
-        var $resultArea = $('#deploymentsListTable');
 
-        var htmlString = [];
-        htmlString.push("DEPLOYMENTS LIST :: <br><br>");
-        htmlString.push("ResultCode :: " + data.resultCode + " || "
-            + "Message :: " + data.resultMessage + " <br><br>");
+        var resultArea = $('#deploymentsListArea');
+        var resultHeaderArea = $('#resultHeaderArea');
+        var noResultArea = $('#noResultArea');
+        var resultTable = $('#resultTable');
 
-        //
+
         $.each(data.items, function (index, itemList) {
             // get data
             var _metadata = itemList.metadata;
@@ -135,7 +135,7 @@
             // var failPods = _status.unavailableReplicas;
             var images = _spec.images;
             console.log("야야야 ", _status);
-            $resultArea.append('<tr>' +
+            resultArea.append('<tr>' +
                                     '<td>' +
                                         "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/deployments/" + deployName + "\");'>"+
                                            '<span class="green2"><i class="fas fa-check-circle"></i></span>' + deployName +
@@ -148,6 +148,19 @@
                                     '<td>' + images + '</td>' +
                                 '</td>');
         });
+
+        if (listLength < 1 || checkListCount < 1) {
+            resultHeaderArea.hide();
+            resultArea.hide();
+            noResultArea.show();
+        } else {
+            noResultArea.hide();
+            resultHeaderArea.show();
+            resultArea.show();
+            resultTable.tablesorter();
+            resultTable.trigger("update");
+        }
+
 
     };
 
@@ -187,6 +200,14 @@
         }
 
         return spanTemplate;
+    }
+
+    var createStatus = function (data, type) {
+
+        if(data) {
+
+        }
+        //<span class="green2"><i class="fas fa-check-circle"></i></span>
     }
 
     // BIND
