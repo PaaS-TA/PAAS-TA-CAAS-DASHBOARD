@@ -54,7 +54,7 @@ public class DeploymentsController {
      */
     @GetMapping( "/workloads/deployments/getList.do" )
     public DeploymentsList getDeploymentListByAllNamespaces(@RequestHeader HttpHeaders headers) {
-        return deploymentsService.getDeploymentListByAllNamespaces();
+        return deploymentsService.getDeploymentsListByAllNamespaces();
     }
 
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}")
@@ -79,8 +79,8 @@ public class DeploymentsController {
      * @return List of deployment (specific namespace)
      */
     @GetMapping( "/workloads/deployments/{namespace}/getList.do" )
-    public DeploymentsList getDeploymentList(@PathVariable String namespace) {
-        return deploymentsService.getDeploymentList(namespace);
+    public DeploymentsList getDeploymentsList(@PathVariable String namespace) {
+        return deploymentsService.getDeploymentsList(namespace);
     }
 
     /**
@@ -91,8 +91,8 @@ public class DeploymentsController {
      * @return Deployments's detail content (specific namespace and deployment)
      */
     @GetMapping( "/workloads/deployments/{namespace}/getDeployment.do")
-    public Deployments getDeployment(@PathVariable String namespace, @RequestParam Map<String, Object> params) {
+    public Deployments getDeployments(@PathVariable String namespace, @RequestParam Map<String, Object> params) {
         String deploymentName = params.get("name").toString();
-        return deploymentsService.getDeployment(namespace, deploymentName);
+        return deploymentsService.getDeployments(namespace, deploymentName);
     }
 }
