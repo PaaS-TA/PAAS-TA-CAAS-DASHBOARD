@@ -627,9 +627,10 @@ metadata:
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function () {
-        createChart("current", "cpu");
-        createChart("current", "mem");
-        createChart("current", "disk");
+        // TODO :: CHANGE CHART
+        //createChart("current", "cpu");
+        //createChart("current", "mem");
+        //createChart("current", "disk");
     });
 </script>
 
