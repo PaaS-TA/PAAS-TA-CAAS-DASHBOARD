@@ -12,15 +12,7 @@
 
 
 <div class="content">
-    <div class="cluster_tabs clearfix">
-        <ul>
-            <li name="tab01" class="cluster_tabs_left" onclick="procMovePage('/caas/workloads/overview');">Overview</li>
-            <li name="tab02" class="cluster_tabs_on">Deployments</li>
-            <li name="tab03" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/pods');">Pods</li>
-            <li name="tab04" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/replicasets');">Replica Sets</li>
-        </ul>
-        <div class="cluster_tabs_line"></div>
-    </div>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Deployments 시작 -->
     <div class="cluster_content02 row two_line two_view harf_view" style="display: block;">
         <ul class="maT30">
