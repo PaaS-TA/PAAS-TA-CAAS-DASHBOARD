@@ -28,8 +28,8 @@
                         <p>YAML</p>
                     </div>
                     <div class="paA30">
-                        <div class="yaml" id="resultArea">
-                                    <%--<pre class="brush: cpp" id="resultArea">--%>
+                        <div class="yaml" id="resultArea2">
+                                    <pre class="brush: cpp" id="resultArea">
 <%--apiVersion: extensions/v1beta1--%>
 <%--kind: DaemonSet--%>
 <%--metadata:--%>
@@ -45,7 +45,7 @@
     <%--version: v2.0.17--%>
     <%--name: fluentd-gcp-v2.0.17--%>
     <%--namespace: kube-system--%>
-                                    <%--</pre>--%>
+                                    </pre>
                         </div>
                         <!--button class="btns colors4">Save</button>
                         <button class="btns colors5">Cancel</button>
@@ -68,6 +68,7 @@
 <%--TODO--%>
 <!-- modal -->
 
+<div id="hiddenResultArea" style="display: none;"></div>
 
 <input type="hidden" id="requestServiceName" name="requestServiceName" value="<c:out value='${serviceName}' default='' />" />
 
@@ -77,21 +78,21 @@
 <%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
 
 <!-- SyntexHighlighter -->
-<%--<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>--%>
-<%--<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCpp.js"/>"></script>--%>
-<%--<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCSharp.js"/>"></script>--%>
-<%--<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushPython.js"/>"></script>--%>
-<%--<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">--%>
-<%--<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">--%>
+<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCpp.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCSharp.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushPython.js"/>"></script>
+<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">
+<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">
 
-<%--<script type="text/javascript">--%>
-    <%--SyntaxHighlighter.defaults['quick-code'] = false;--%>
-    <%--SyntaxHighlighter.all();--%>
-<%--</script>--%>
+<script type="text/javascript">
+    SyntaxHighlighter.defaults['quick-code'] = false;
+    SyntaxHighlighter.all();
+</script>
 
-<%--<style>--%>
-    <%--.syntaxhighlighter .gutter .line{border-right-color:#ddd !important;}--%>
-<%--</style>--%>
+<style>
+    .syntaxhighlighter .gutter .line{border-right-color:#ddd !important;}
+</style>
 <!-- SyntexHighlighter -->
 
 <script type="text/javascript">
@@ -120,7 +121,7 @@
     var callbackGetDetail = function(data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
-        $('#resultArea').JSONView(data.source);
+        $('#resultArea').html('---\n' + json2yaml(data.source));
     };
 
 

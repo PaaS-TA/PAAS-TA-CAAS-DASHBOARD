@@ -8,27 +8,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="content">
-    <%-- TODO :: REMOVE --%>
-    <!--
-    <div class="cluster_tabs clearfix">
-        <ul>
-            <li name="tab01" class="cluster_tabs_on" onclick="procMovePage('/caas/workloads/overview');">Overview</li>
-            <li name="tab02" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/deployments');">Deployments</li>
-            <li name="tab03" class="cluster_tabs_right">Pods</li>
-            <li name="tab04" class="cluster_tabs_right">Replica Sets</li>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <%--<div class="cluster_tabs clearfix">--%>
+        <%--<ul>--%>
+            <%--<li name="tab01" class="cluster_tabs_on" onclick="procMovePage('/caas/workloads/overview');">Overview</li>--%>
+            <%--<li name="tab02" class="cluster_tabs_right">Deployments</li>--%>
+            <%--<li name="tab03" class="cluster_tabs_right">Pods</li>--%>
+            <%--<li name="tab04" class="cluster_tabs_right">Replica Sets</li>--%>
 
-            <%--TODO :: REMOVE--%>
-            <li name="tab05" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/deployments');">Deployments VIEW</li>
-            <li name="tab06" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/pods');">Pods VIEW</li>
-            <li name="tab07" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/replicasets');">Replica Sets VIEW</li>
-        </ul>
-        <div class="cluster_tabs_line"></div>
-    </div>
-    -->
-
-    <%-- WORKLOADS HEADER INCLUDE --%>
-    <%@ include file="tab.jsp" %>
-
+            <%--&lt;%&ndash;TODO :: REMOVE&ndash;%&gt;--%>
+            <%--<li name="tab05" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/deployments');">Deployments VIEW</li>--%>
+            <%--<li name="tab06" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/pods');">Pods VIEW</li>--%>
+            <%--<li name="tab07" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/replicasets');">Replica Sets VIEW</li>--%>
+        <%--</ul>--%>
+        <%--<div class="cluster_tabs_line"></div>--%>
+    <%--</div>--%>
     <!-- Overview 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
@@ -507,7 +501,189 @@
         </ul>
     </div>
     <!-- Deployments 끝 -->
-
+    <!-- Pods 시작 -->
+    <div class="cluster_content03 row two_line two_view">
+        <ul class="maT30">
+            <li>
+                <div class="sortable_wrap">
+                    <div class="sortable_top">
+                        <p>Pods</p>
+                    </div>
+                    <div class="view_table_wrap">
+                        <table class="table_event condition alignL">
+                            <colgroup>
+                                <col style='width:auto;'>
+                                <col style='width:15%;'>
+                                <col style='width:15%;'>
+                                <col style='width:8%;'>
+                                <col style='width:8%;'>
+                                <col style='width:20%;'>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Namespace</td>
+                                <td>Node</td>
+                                <td>Status</td>
+                                <td>Restarts</td>
+                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <span class="red2"><i class="fas fa-exclamation-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment<br/></a>
+                                    <span class="red2">Back-off restarting failed container</span>
+                                </td>
+                                <td>
+                                    aaa
+                                </td>
+                                <td>created node name
+                                </td>
+                                <td>waiting
+                                </td>
+                                <td>0
+                                </td>
+                                <td>2018-07-04 20:15:30
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
+                                </td>
+                                <td>
+                                    kube-system
+                                </td>
+                                <td>created node name
+                                </td>
+                                <td>waiting
+                                </td>
+                                <td>0
+                                </td>
+                                <td>2018-07-04 20:15:30
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">spring-cloud-web-user</a>
+                                </td>
+                                <td>
+                                    kube-system
+                                </td>
+                                <td>created node name<br/>
+                                </td>
+                                <td>Terminated
+                                </td>
+                                <td>1
+                                </td>
+                                <td>2018-07-04 20:15:30
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
+                                </td>
+                                <td>
+                                    kube-system
+                                </td>
+                                <td>created node name
+                                </td>
+                                <td>running
+                                </td>
+                                <td>2
+                                </td>
+                                <td>2018-07-04 20:15:30
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
+                                </td>
+                                <td>
+                                    kube-system
+                                </td>
+                                <td>created node name
+                                </td>
+                                <td>running
+                                </td>
+                                <td>2
+                                </td>
+                                <td>2018-07-04 20:15:30
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
+                                </td>
+                                <td>
+                                    kube-system
+                                </td>
+                                <td>created node name
+                                </td>
+                                <td>running
+                                </td>
+                                <td>2
+                                </td>
+                                <td>2018-07-04 20:15:30
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
+                                </td>
+                                <td>
+                                    kube-system
+                                </td>
+                                <td>created node name
+                                </td>
+                                <td>running
+                                </td>
+                                <td>2
+                                </td>
+                                <td>2018-07-04 20:15:30
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
+                                </td>
+                                <td>
+                                    kube-system
+                                </td>
+                                <td>created node name
+                                </td>
+                                <td>running
+                                </td>
+                                <td>2
+                                </td>
+                                <td>2018-07-04 20:15:30
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="red2"><i class="fas fa-exclamation-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment<br/></a>
+                                    <span class="red2">Back-off restarting failed container</span>
+                                </td>
+                                <td>
+                                    kube-system
+                                </td>
+                                <td>created node name
+                                </td>
+                                <td>waiting
+                                </td>
+                                <td>0
+                                </td>
+                                <td>2018-07-04 20:15:30
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- Pods 끝 -->
     <!-- Replica Sets 시작 -->
     <div class="cluster_content04 row two_line two_view harf_view">
         <ul class="maT30">
@@ -742,4 +918,5 @@
             enabled: false
         }
     });
+
 </script>

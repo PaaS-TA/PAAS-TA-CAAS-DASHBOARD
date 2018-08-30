@@ -11,14 +11,8 @@
 
 <div class="content">
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> nginx-2-6bd764c757-jhgnd (Pods 명)</h1>
-    <div class="cluster_tabs clearfix">
-        <ul>
-            <li name="tab01" class="cluster_tabs_on">Details</li>
-            <li name="tab02" class="cluster_tabs_right">Events</li>
-            <li name="tab03" class="cluster_tabs_right yamlTab">YAML</li>
-        </ul>
-        <div class="cluster_tabs_line"></div>
-    </div>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">

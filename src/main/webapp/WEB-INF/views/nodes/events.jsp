@@ -9,8 +9,10 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
+    <jsp:include page="common-nodes.jsp"/>
+
     <%-- NODES HEADER INCLUDE --%>
-    <%@ include file="tab.jsp" %>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
 
     <!-- NodeEvents 시작-->
     <div class="cluster_content03 row two_line two_view harf_view">

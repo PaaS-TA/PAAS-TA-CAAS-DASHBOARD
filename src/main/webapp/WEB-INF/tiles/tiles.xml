@@ -34,6 +34,11 @@
         <put-attribute name="body" value="/WEB-INF/views/admin/{1}/{2}.jsp"/>
     </definition>
 
+    <!-- Service 메뉴 이외 3 depth menu -->
+    <definition name="/*/*/*" extends="layout.default">
+        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp"/>
+    </definition>
+
     <definition name="layout.empty" template="/WEB-INF/views/common/empty-layout.jsp">
         <put-attribute name="body" value=""/>
     </definition>

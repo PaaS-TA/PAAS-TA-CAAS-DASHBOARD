@@ -40,6 +40,8 @@
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/common.css"/>'>
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/common_new.css"/>'>
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/caas-common.css"/>'>
+
+<%--TODO :: REMOVE--%>
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/jquery.jsonview.min.css"/>'>
 
 <%--JS--%>
@@ -52,6 +54,9 @@
 <script type="text/javascript" src='<c:url value="/resources/js/clipboard.min.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/handlebars-v4.0.11.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.tablesorter.min.js"/>'></script>
+<script type="text/javascript" src='<c:url value="/resources/js/json2yaml.js"/>'></script>
+
+<%--TODO :: REMOVE--%>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.jsonview.min.js"/>'></script>
 
 <%--JS :: USE ONLY ON REQUIRED PAGES--%>
