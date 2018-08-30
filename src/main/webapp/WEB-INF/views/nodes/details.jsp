@@ -35,7 +35,7 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td id="node_labels"></td>
+                                <td id="node_labels"><span class="bg_gray">app : nginx-2</span> <span class="bg_gray">tier : node</span></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Annotations</th>
