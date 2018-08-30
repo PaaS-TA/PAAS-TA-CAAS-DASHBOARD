@@ -781,142 +781,142 @@
 
 <script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
 <script>
-    // 도넛차트
-    var pieColors = ['#07ceb0', '#3076b2', '#4b4f53' , '#fe8d14'];
-    Highcharts.chart('piechart01', {
-        chart: {
-            type: 'pie',
-            marginTop: 0,
-        },
-        title: {
-            text: 'Deployments',
-            y : 120, // y position
-            style: {
-                fontSize: '15px',
-                fontWeight: 'bold'
-            }
-        },
-        plotOptions: {
-            pie: {
-                innerSize: 110,
-                colors : pieColors,
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.percentage:.0f} %',
-                    distance: -25,
-                    style: {
-                        fontSize: '14px',
-                        fontWeight: 'bold'
-                    }
-                }
-            }
-        },
-        tooltip: {
-            headerFormat: '',
-            pointFormat: '{point.name}: <b>{point.y:.2f}%</b><br/>',
-            footerFormat:''
-        },
-        series: [{
-            data: [
-                ['Succeeded', 46],
-                ['Running', 18],
-                ['Failed', 18],
-                ['Pendding', 18]
-            ]
-        }],
-        credits: { // logo hide
-            enabled: false
-        }
-    });
-    Highcharts.chart('piechart02', {
-        chart: {
-            type: 'pie',
-            marginTop: 0,
-        },
-        title: {
-            text: 'Pods',
-            y : 120, // y position
-            style: {
-                fontSize: '15px',
-                fontWeight: 'bold'
-            }
-        },
-        plotOptions: {
-            pie: {
-                innerSize: 110,
-                colors : pieColors,
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.percentage:.0f} %',
-                    distance: -25,
-                    style: {
-                        fontSize: '14px',
-                        fontWeight: 'bold'
-                    }
-                }
-            }
-        },
-        tooltip: {
-            headerFormat: '',
-            pointFormat: '{point.name}: <b>{point.y:.2f}%</b><br/>',
-            footerFormat:''
-        },
-        series: [{
-            data: [
-                ['Succeeded', 46],
-                ['Running', 18],
-                ['Failed', 18],
-                ['Pendding', 18]
-            ]
-        }],
-        credits: { // logo hide
-            enabled: false
-        }
-    });
-    Highcharts.chart('piechart03', {
-        chart: {
-            type: 'pie',
-            marginTop: 0,
-        },
-        title: {
-            text: 'Replica Sets',
-            y : 120, // y position
-            style: {
-                fontSize: '15px',
-                fontWeight: 'bold'
-            }
-        },
-        plotOptions: {
-            pie: {
-                innerSize: 110,
-                colors : pieColors,
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.percentage:.0f} %',
-                    distance: -25,
-                    style: {
-                        fontSize: '14px',
-                        fontWeight: 'bold'
-                    }
-                }
-            }
-        },
-        tooltip: {
-            headerFormat: '',
-            pointFormat: '{point.name}: <b>{point.y:.2f}%</b><br/>',
-            footerFormat:''
-        },
-        series: [{
-            data: [
-                ['Succeeded', 46],
-                ['Running', 18],
-                ['Failed', 18],
-                ['Pendding', 18]
-            ]
-        }],
-        credits: { // logo hide
-            enabled: false
-        }
-    });
+//    // 도넛차트
+//    var pieColors = ['#07ceb0', '#3076b2', '#4b4f53' , '#fe8d14'];
+//    Highcharts.chart('piechart01', {
+//        chart: {
+//            type: 'pie',
+//            marginTop: 0,
+//        },
+//        title: {
+//            text: 'Deployments',
+//            y : 120, // y position
+//            style: {
+//                fontSize: '15px',
+//                fontWeight: 'bold'
+//            }
+//        },
+//        plotOptions: {
+//            pie: {
+//                innerSize: 110,
+//                colors : pieColors,
+//                dataLabels: {
+//                    enabled: true,
+//                    format: '{point.percentage:.0f} %',
+//                    distance: -25,
+//                    style: {
+//                        fontSize: '14px',
+//                        fontWeight: 'bold'
+//                    }
+//                }
+//            }
+//        },
+//        tooltip: {
+//            headerFormat: '',
+//            pointFormat: '{point.name}: <b>{point.y:.2f}%</b><br/>',
+//            footerFormat:''
+//        },
+//        series: [{
+//            data: [
+//                ['Succeeded', 46],
+//                ['Running', 18],
+//                ['Failed', 18],
+//                ['Pendding', 18]
+//            ]
+//        }],
+//        credits: { // logo hide
+//            enabled: false
+//        }
+//    });
+//    Highcharts.chart('piechart02', {
+//        chart: {
+//            type: 'pie',
+//            marginTop: 0,
+//        },
+//        title: {
+//            text: 'Pods',
+//            y : 120, // y position
+//            style: {
+//                fontSize: '15px',
+//                fontWeight: 'bold'
+//            }
+//        },
+//        plotOptions: {
+//            pie: {
+//                innerSize: 110,
+//                colors : pieColors,
+//                dataLabels: {
+//                    enabled: true,
+//                    format: '{point.percentage:.0f} %',
+//                    distance: -25,
+//                    style: {
+//                        fontSize: '14px',
+//                        fontWeight: 'bold'
+//                    }
+//                }
+//            }
+//        },
+//        tooltip: {
+//            headerFormat: '',
+//            pointFormat: '{point.name}: <b>{point.y:.2f}%</b><br/>',
+//            footerFormat:''
+//        },
+//        series: [{
+//            data: [
+//                ['Succeeded', 46],
+//                ['Running', 18],
+//                ['Failed', 18],
+//                ['Pendding', 18]
+//            ]
+//        }],
+//        credits: { // logo hide
+//            enabled: false
+//        }
+//    });
+//    Highcharts.chart('piechart03', {
+//        chart: {
+//            type: 'pie',
+//            marginTop: 0,
+//        },
+//        title: {
+//            text: 'Replica Sets',
+//            y : 120, // y position
+//            style: {
+//                fontSize: '15px',
+//                fontWeight: 'bold'
+//            }
+//        },
+//        plotOptions: {
+//            pie: {
+//                innerSize: 110,
+//                colors : pieColors,
+//                dataLabels: {
+//                    enabled: true,
+//                    format: '{point.percentage:.0f} %',
+//                    distance: -25,
+//                    style: {
+//                        fontSize: '14px',
+//                        fontWeight: 'bold'
+//                    }
+//                }
+//            }
+//        },
+//        tooltip: {
+//            headerFormat: '',
+//            pointFormat: '{point.name}: <b>{point.y:.2f}%</b><br/>',
+//            footerFormat:''
+//        },
+//        series: [{
+//            data: [
+//                ['Succeeded', 46],
+//                ['Running', 18],
+//                ['Failed', 18],
+//                ['Pendding', 18]
+//            ]
+//        }],
+//        credits: { // logo hide
+//            enabled: false
+//        }
+//    });
 
 </script>
