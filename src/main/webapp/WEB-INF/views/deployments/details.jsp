@@ -486,8 +486,8 @@
         document.getElementById("rollingUpdateStrategy").textContent = rollingUpdateStrategy;
         document.getElementById("status").textContent = replicaStatus;
 
-        procCallAjax("/workloads/namespaces/" + NAME_SPACE + "/replicasets/resource/" + replaceLabels(labels), "GET", null, null, callbackGetReplicasetList);
-        procCallAjax("/api/namespaces/" + NAME_SPACE + "/pods/resource/" + replaceLabels(labels), "GET", null, null, callbackGetPodsList);
+        procCallAjax("/api/namespaces/" + NAME_SPACE + "/replicasets/resource/" + replaceLabels(labels), "GET", null, null, callbackGetReplicasetList);
+        procCallAjax("/api/workloads/namespaces/" + NAME_SPACE + "/pods/resource/" + replaceLabels(labels), "GET", null, null, callbackGetPodsList);
     }
 
 
