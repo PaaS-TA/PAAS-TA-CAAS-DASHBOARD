@@ -4,7 +4,8 @@
 
 <div class="content">
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span id="title"></span></h1>
-    <%@include file="./tab.jsp" %>
+    <%--<%@include file="./tab.jsp" %>--%>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view">
         <ul id="detailTab" class="maT30">
