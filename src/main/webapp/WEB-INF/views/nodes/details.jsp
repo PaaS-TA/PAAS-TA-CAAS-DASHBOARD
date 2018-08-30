@@ -160,10 +160,11 @@
         var labels = stringifyJSON(_metadata.labels);
         var annotations = stringifyJSON(_metadata.annotations);
         var createdAt = _metadata.creationTimestamp;
-        var addresses = _status.addresses;
+        var addresses = stringifyJSON(_status.addresses);
         var podCIDR = _spec.podCIDR;
-        var unschedulable = _spec.taints.filter(
-            function(item) { return item.key == 'node-role.kubernetes.io/master' && item.effect == 'NoSchedule'; }).length;
+        var unschedulable = _spec.taints != null?
+            _spec.taints.filter(
+                function(item) { return item.key == 'node-role.kubernetes.io/master' && item.effect != 'NoSchedule'; }).length > 0 : false;
 
         // get datum : system info
         var nodeInfo = _status.nodeInfo;
@@ -184,7 +185,7 @@
         $('#node_created_at').html(createdAt);
         $('#node_addresses').html(addresses);
         $('#node_pod_cidr').html(podCIDR);
-        $('#node_unschedulable').html(unschedulable);
+        $('#node_unschedulable').html(unschedulable.toString());
 
         $('#node_machine_id').html(machineId);
         $('#node_system_uuid').html(systemUUID);
