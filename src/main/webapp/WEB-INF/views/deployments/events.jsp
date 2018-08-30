@@ -84,7 +84,7 @@
 <!-- SyntexHighlighter -->
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document.body).ready(function () {
         var URL = "/api/namespaces/" + NAME_SPACE + "/events/resource/" + document.getElementById('requestDeploymentsName').value;
         console.log("window.location.href ", window.location.href);
         procCallAjax(URL, "GET", null, null, callbackGetList);
