@@ -11,7 +11,7 @@
     <div class="cluster_tabs clearfix">
         <ul>
             <li name="tab01" class="cluster_tabs_on" onclick="procMovePage('/caas/workloads/overview');">Overview</li>
-            <li name="tab02" class="cluster_tabs_right">Deployments</li>
+            <li name="tab02" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/deployments');">Deployments</li>
             <li name="tab03" class="cluster_tabs_right">Pods</li>
             <li name="tab04" class="cluster_tabs_right">Replica Sets</li>
 

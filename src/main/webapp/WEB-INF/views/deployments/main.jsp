@@ -8,40 +8,56 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<div class="cluster_content02 row two_line two_view harf_view" style="display: block;">
-    <ul class="maT30">
-        <li>
-            <div class="sortable_wrap">
-                <div class="sortable_top">
-                    <p>Deployments</p>
+
+
+
+<div class="content">
+    <div class="cluster_tabs clearfix">
+        <ul>
+            <li name="tab01" class="cluster_tabs_left" onclick="procMovePage('/caas/workloads/overview');">Overview</li>
+            <li name="tab02" class="cluster_tabs_on">Deployments</li>
+            <li name="tab03" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/pods');">Pods</li>
+            <li name="tab04" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/replicasets');">Replica Sets</li>
+        </ul>
+        <div class="cluster_tabs_line"></div>
+    </div>
+    <!-- Deployments 시작 -->
+    <div class="cluster_content02 row two_line two_view harf_view" style="display: block;">
+        <ul class="maT30">
+            <li>
+                <div class="sortable_wrap">
+                    <div class="sortable_top">
+                        <p>Deployments</p>
+                    </div>
+                    <div class="view_table_wrap">
+                        <table class="account_table view">
+                            <colgroup>
+                                <col style="width:auto;">
+                                <col style="width:20%;">
+                                <col style="width:15%;">
+                                <col style="width:5%;">
+                                <col style="width:15%;">
+                                <col style="width:25%;">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Namespace</td>
+                                <td>Labels</td>
+                                <td>Pods</td>
+                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Images</td>
+                            </tr>
+                            </thead>
+                            <tbody id="deploymentsListTable">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="view_table_wrap">
-                    <table class="table_event condition alignL">
-                        <colgroup>
-                            <col style="width:auto;">
-                            <col style="width:20%;">
-                            <col style="width:15%;">
-                            <col style="width:5%;">
-                            <col style="width:15%;">
-                            <col style="width:25%;">
-                        </colgroup>
-                        <thead>
-                        <tr>
-                            <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
-                            <td>Namespace</td>
-                            <td>Labels</td>
-                            <td>Pods</td>
-                            <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
-                            <td>Images</td>
-                        </tr>
-                        </thead>
-                        <tbody id="deploymentsListTable">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </li>
-    </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- Deployments 끝 -->
 </div>
 <!-- modal -->
 <div class="modal fade dashboard" id="layerpop">
