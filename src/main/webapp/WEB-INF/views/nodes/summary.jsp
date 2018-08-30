@@ -20,7 +20,9 @@
         <ul class="maT30">
             <!-- 그래프 시작 -->
             <li class="cluster_first_box">
+            <%-- TODO :: ADD GRAPH
                 <div>추이 그래프 대신 포탈의 일반 그래프 넣기</div>
+            --%>
             <!--
                 <div class="graph-legend-wrap clearfix">
                     <ul class="graph-legend">
@@ -117,27 +119,7 @@
                             <tbody id="tbody_node_pods">
                             <tr><td colspan="6" style="text-align: center;">LOADING PODS IN NODE</td></tr>
                             </tbody>
-                            <tfoot class="caas-pagenation-wrap">
-                            <tr>
-                                <!-- TODO :: REMOVE PAGINATION -->
-                                <!--
-                                <td colspan="6" class="caas-pagenation">
-                                    <ul class="caas-pagenation-angle">
-                                        <li><i class="fas fa-angle-double-left"></i></li>
-                                        <li><i class="fas fa-angle-left"></i></li>
-                                        <li><i class="fas fa-angle-right"></i></li>
-                                        <li><i class="fas fa-angle-double-right"></i></li>
-                                    </ul>
-                                    <div class="caas-pagenation-pages">
-                                        <span>1</span> - <span>10</span> of <span>58</span>
-                                    </div>
-                                </td>
-                                -->
-                                <td colspan="6" class="caas-pagenation">
-                                    <a id="pod_more_link" href="#">더 보기</a>
-                                </td>
-                            </tr>
-                            </tfoot>
+                            <tfoot class="caas-pagenation-wrap"></tfoot>
                         </table>
                     </div>
                 </div>
@@ -233,6 +215,7 @@
             var pod = getPod(podItem);
 
             var nameClassSet;
+            var errorMsg = null;
             switch (pod.podStatus) {
                 case "Pending":
                     nameClassSet = {span: "pending2", i: "fas fa-exclamation-triangle"};
