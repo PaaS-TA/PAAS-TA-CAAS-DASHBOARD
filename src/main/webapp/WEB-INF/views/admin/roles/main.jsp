@@ -147,17 +147,6 @@
 </div>
 
 
-<%--TODO :: REMOVE--%>
-<div style="padding: 10px;">
-    ROLE 대시보드 :: ROLE DASHBOARD
-    <div style="padding: 10px;">
-        <button type="button" id="btnSearch"> [ 조회 ] </button>
-        <button type="button" id="btnReset"> [ 초기화 ] </button>
-    </div>
-    <h1>RESULT</h1>
-    <div id="resultArea" style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted green 4px;">
-    </div>
-</div>
 <script type="text/javascript">
 
     // GET LIST
