@@ -588,18 +588,13 @@
 
     var callbackGetPodsList = function (data) {
         if (RESULT_STATUS_FAIL === data.resultCode) {
-            $('#podArea').html(
+            $('#podsListTable').html(
                 "ResultStatus :: " + data.resultCode + " <br><br>"
                 + "ResultMessage :: " + data.resultMessage + " <br><br>");
             return false;
         }
 
         console.log("CONSOLE DEBUG PRINT :: " + data);
-
-        var htmlString = [];
-        htmlString.push("PODS LIST :: <br><br>");
-        htmlString.push("ResultCode :: " + data.resultCode + " || "
-            + "Message :: " + data.resultMessage + " <br><br>");
 
         var resultArea = $('#podsListTable');
         var resultHeaderArea = $('#podsResultHeaderArea');
@@ -652,7 +647,6 @@
             noResultArea.hide();
             resultHeaderArea.show();
             resultArea.show();
-            resultArea.html(htmlString);
             resultTable.tablesorter();
             resultTable.trigger("update");
         }
