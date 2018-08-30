@@ -627,6 +627,7 @@ metadata:
 
 
 <%--TODO :: REMOVE--%>
+<%--
 <div style="padding: 10px;">
     POD 대시보드 :: PODS DASHBOARD
     <div style="padding: 10px;">
@@ -647,6 +648,7 @@ metadata:
          style="width: 98%; height: auto; min-height: 100px; padding: 10px; margin: 1%; border: dotted deepskyblue 4px;">
     </div>
 </div>
+--%>
 <script type="text/javascript">
     var apiURL = "<%= Constants.API_URL %>";
 
