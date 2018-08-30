@@ -22,7 +22,7 @@
                         <p>Deployments</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="account_table view" id="resultTable">
+                        <table class="table_event condition alignL" id="resultTable">
                             <colgroup>
                                 <col style="width:auto;">
                                 <col style="width:20%;">
@@ -90,7 +90,6 @@
 
     // CALLBACK
     var callbackGetList = function (data) {
-        console.log("여기 오느뇨?");
         if (RESULT_STATUS_FAIL === data.resultCode) {
             $('#deploymentsListArea').html(
                 "ResultStatus :: " + data.resultCode + " <br><br>"
@@ -128,7 +127,7 @@
             var runningPods = totalPods - _status.unavailableReplicas;
             // var failPods = _status.unavailableReplicas;
             var images = _spec.images;
-            console.log("야야야 ", _status);
+            // console.log("야야야 ", _status);
             resultArea.append('<tr>' +
                                     '<td>' +
                                         "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/deployments/" + deployName + "\");'>"+
@@ -176,14 +175,11 @@
     var createSpans = function (data, type) {
         var datas = data.replace(/=/g, ':').split(',');
         var spanTemplate = "";
-        console.log("타입이 뭐임?", type)
 
         if (type === "true") {
             $.each(datas, function (index, data) {
                 spanTemplate += '<span class="bg_gray">' + data + '</span>';
-                console.log('인덱스? ', index);
                 if (datas.length > 1) {
-                    console.log('여기 몇번옴??', index);
                     spanTemplate += '<br>';
                 }
             });
