@@ -57,10 +57,10 @@
                         <c:otherwise>
                             <li name="tab01" class="<c:if test="${empty pathLevel5}">cluster_tabs_on</c:if>
                                                     <c:if test="${!empty pathLevel5}">cluster_tabs_right</c:if>"
-                                onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>'+'/${pathLevel4}');">Details</li>
+                                onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>'+'/${pathLevel4}');">Details</li>
                             <li name="tab02" class="<c:if test="${pathLevel5 eq 'events'}">cluster_tabs_on</c:if>
                                                     <c:if test="${pathLevel5 ne 'events'}">cluster_tabs_right</c:if>"
-                                onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>'+'/${pathLevel4}/events');">Events</li>
+                                onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>'+'/${pathLevel4}/events');">Events</li>
                         </c:otherwise>
                     </c:choose>
                 </c:when>
