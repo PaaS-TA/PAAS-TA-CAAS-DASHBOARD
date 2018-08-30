@@ -9,8 +9,10 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
+    <jsp:include page="common-nodes.jsp"/>
+
     <%-- NODES HEADER INCLUDE --%>
-    <%@ include file="tab.jsp" %>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
 
     <!-- Nodes Details 시작-->
     <div class="cluster_content02 row two_line two_view harf_view">
@@ -150,7 +152,8 @@
 </div>
 <script>
     var callbackGetNodeDetail = function (data) {
-        // TODO :: write logic
+        var _metadata = data.metadata;
+        var _
     }
 
     var loadLayerpop = function () {
@@ -162,6 +165,8 @@
 
     $(document.body).ready(function () {
        loadLayerpop();
+
+        getNode(nodeName, callbackGetNodeDetail);
     });
 </script>
 <!-- Nodes Details 끝 -->

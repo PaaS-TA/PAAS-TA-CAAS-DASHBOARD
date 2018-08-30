@@ -4,9 +4,10 @@
   Date: 2018-08-30
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="content">
     <%-- WORKLOADS HEADER INCLUDE --%>
-    <%@ include file="tab.jsp" %>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
 
     <!-- Pods 시작 -->
     <div class="cluster_content03 row two_line two_view">

@@ -2,7 +2,8 @@
 <%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>--%>
 
 <div class="content">
-    <%@include file="tab.jsp" %>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+
     <!-- Overview 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
