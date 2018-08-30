@@ -80,13 +80,24 @@
         <span class="nav_toggle"><!-- 180724 수정 -->
                 <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
                 <label for="checkbox-1"></label>
-            </span>
+        </span>
+        <c:set var="servletPath" value="${requestScope['javax.servlet.forward.servlet_path']}" />
+        <c:set var="pathArray" value="${fn:split(servletPath,'/')}" />
         <ul class="content_dev">
-            <li>Clusters</li>
+            <c:forEach var="path" items="${pathArray}" varStatus="g">
+                <c:choose>
+                    <!-- 1단계 메뉴 클릭시 : 해당 메뉴의 대표 페이지로 이동 (overview) services 예외 -->
+                    <c:when test="${g.index eq 1}">
+                        <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${path}</li>
+                    </c:when>
+                    <!-- 2단계 메뉴 클릭시 : 탭의 대표(main) 페이지로 이동(ex 상세,이벤트 페이지에서 ) -->
+                    <c:when test="${g.index eq 2}">
+                        <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${path}</li>
+                    </c:when>
+                </c:choose>
+            </c:forEach>
         </ul>
         <div class="btn-kuber">
-            <c:set var="servletPath" value="${requestScope['javax.servlet.forward.servlet_path']}" />
-            <c:set var="pathArray" value="${fn:split(servletPath,'/')}" />
             <c:forEach var="path" items="${pathArray}" varStatus="g">
                 <c:choose>
                     <c:when test="${path eq 'clusters' || path eq 'accessInfo'}">
