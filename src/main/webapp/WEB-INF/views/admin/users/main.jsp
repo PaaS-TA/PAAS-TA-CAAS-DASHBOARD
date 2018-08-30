@@ -61,9 +61,7 @@
         </ul>
     </div>
 </div>
-<div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
-</div>
-</div>
+
 <!-- modal -->
 <div class="modal fade in" id="layerpop1">
     <div class="vertical-alignment-helper">
