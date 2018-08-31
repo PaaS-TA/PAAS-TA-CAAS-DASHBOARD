@@ -86,11 +86,14 @@
         <ul class="content_dev">
             <c:forEach var="path" items="${pathArray}" varStatus="g">
                 <c:choose>
-                    <c:when test="${g.index eq 1}">
-                        <li>${path}</li>
+                    <c:when test="${g.index eq 1}" >
+                        <%-- path값을 replace를 한다. replace의 첫번째 단어를 대문자로 바꿈. 예시 replicae('cluster', 'c', 'C' )--%>
+                        <c:set var="path" value = "${fn:replace(path, path.charAt(0), path.toUpperCase().charAt(0))}"/>
+                        <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${path}</li>
                     </c:when>
                     <c:when test="${g.index eq 2}">
-                        <li>${path}</li>
+                        <c:set var="path" value = "${fn:replace(path, path.charAt(0), path.toUpperCase().charAt(0))}"/>
+                        <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}')">${path}</li>
                     </c:when>
                 </c:choose>
             </c:forEach>
