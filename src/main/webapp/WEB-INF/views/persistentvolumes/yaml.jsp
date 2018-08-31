@@ -1,5 +1,5 @@
 <%--
-  Replicaset main
+  PersistentVloume main
   @author CISS
   @version 1.0
   @since 2018.08.14
@@ -9,10 +9,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> nginx-2-6bd764c757-jhgnd (Replica Sets 명)</h1>
-    <jsp:include page="../../common/contents-tab.jsp" flush="true"/>
+    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> oracle-test-pv (Volumes_sample)</h1>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- YAML 시작-->
-    <div class="cluster_content03 row two_line two_view">
+    <div class="cluster_content02 row two_line two_view">
         <ul class="maT30">
             <li>
                 <div class="sortable_wrap">
@@ -56,5 +56,4 @@ metadata:
         </ul>
     </div>
     <!-- YAML 끝 -->
-
 </div>

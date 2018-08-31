@@ -6,20 +6,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.ResponseBody;
-
-//import java.util.Map;
-
 /**
- * ReplicaSet 관련 Caas API 를 호출 하는 컨트롤러이다.
+ * PersistentVolumes 클래스
  *
  * @author 최윤석
  * @version 1.0
  * @since 2018.08.06 최초작성
  */
 @RestController
-@RequestMapping("/clusters")
 public class PersistentVolumesController {
 
     private final PersistentVolumesService persistentVolumesService;
@@ -38,41 +32,61 @@ public class PersistentVolumesController {
     }
 
     /**
-     * Gets persistentvolume main.
+     * Gets PersistentVolumes main.
      *
      * @param httpServletRequest the http servlet request
-     * @return the persistentvolume main
+     * @return the custom service main
      */
-    @GetMapping(value = "/persistentVolumes")
-    public ModelAndView getpersistentvolumesListMain(HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, "/persistentvolumes/persistentvolumes", new ModelAndView());
+    @GetMapping(value = "/caas/clusters/persistentVolumes")
+    public ModelAndView getPersistentVolumesMain(HttpServletRequest httpServletRequest) {
+        return commonService.setPathVariables(httpServletRequest, "/persistentvolumes/main", new ModelAndView());
     }
 
-    // TODO :: MODIFY
     /**
-     * ReplicaSet 객체의 리스트를 조회한다.
+     * Gets PersistentVolumes detail.
      *
-     * @return ReplicaSetList
-     * @see PersistentVolumesService#getPersistentvolumeList
+     * @param httpServletRequest the http servlet request
+     * @param pvName        the persistent Volumes name
+     * @return the custom services detail
      */
-    @GetMapping(value = "/api/persistentvolumes") // TEMP
+    @GetMapping(value = "/caas/clusters/persistentVolumes/{pvName:.+}")
+    public ModelAndView getPersistentVolumesDetail(HttpServletRequest httpServletRequest, @PathVariable(value = "pvName") String pvName) {
+        return commonService.setPathVariables(httpServletRequest, "/persistentvolumes/detail", new ModelAndView());
+    }
+
+    /**
+     * Gets PersistentVolumes detail yaml.
+     *
+     * @param httpServletRequest the http servlet request
+     * @param pvName        the persistent Volumes
+     * @return the custom services detail events
+     */
+    @GetMapping(value = "/caas/clusters/persistentVolumes/{pvName:.+}/yaml")
+    public ModelAndView getPersistentVolumesYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "pvName") String pvName) {
+        return commonService.setPathVariables(httpServletRequest, "/persistentvolumes/yaml", new ModelAndView());
+    }
+
+    /**
+     * Gets PersistentVolumes list.
+     *
+     * @return the replicaSet list
+     */
+    @GetMapping(value = "/api/persistentvolumes")
     @ResponseBody
-    public PersistentVolumesList getPersistentvolumeList(){
+    public PersistentVolumesList getPersistentVolumesList(){
         return persistentVolumesService.getPersistentvolumeList();
     }
 
     /**
-     * ReplicaSet 객체를 조회한다.
+     * Gets PersistentVolumes.
      *
-     * @param pvName 조회 대상 PersistentVolume
-     * @return ReplicaSetList
-     * @see PersistentVolumesService#getPersistentvolume
+     * @param pvName the replicaset name
+     * @return the replicaSet
      */
-    @GetMapping(value = "/persistentvolumes/{pvName}")
+    @GetMapping(value = "/api/persistentvolumes/{pvName}")
     @ResponseBody
-    public PersistentVolumes getReplicaSet(@PathVariable("pvName") String pvName ){
+    public PersistentVolumes getPersistentVolumes(@PathVariable("pvName") String pvName ){
         return persistentVolumesService.getPersistentvolume(pvName);
     }
 
-    // TOBE
 }

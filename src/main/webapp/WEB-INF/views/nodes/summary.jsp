@@ -20,7 +20,9 @@
         <ul class="maT30">
             <!-- 그래프 시작 -->
             <li class="cluster_first_box">
+            <%-- TODO :: ADD GRAPH
                 <div>추이 그래프 대신 포탈의 일반 그래프 넣기</div>
+            --%>
             <!--
                 <div class="graph-legend-wrap clearfix">
                     <ul class="graph-legend">
@@ -117,27 +119,7 @@
                             <tbody id="tbody_node_pods">
                             <tr><td colspan="6" style="text-align: center;">LOADING PODS IN NODE</td></tr>
                             </tbody>
-                            <tfoot class="caas-pagenation-wrap">
-                            <tr>
-                                <!-- TODO :: REMOVE PAGINATION -->
-                                <!--
-                                <td colspan="6" class="caas-pagenation">
-                                    <ul class="caas-pagenation-angle">
-                                        <li><i class="fas fa-angle-double-left"></i></li>
-                                        <li><i class="fas fa-angle-left"></i></li>
-                                        <li><i class="fas fa-angle-right"></i></li>
-                                        <li><i class="fas fa-angle-double-right"></i></li>
-                                    </ul>
-                                    <div class="caas-pagenation-pages">
-                                        <span>1</span> - <span>10</span> of <span>58</span>
-                                    </div>
-                                </td>
-                                -->
-                                <td colspan="6" class="caas-pagenation">
-                                    <a id="pod_more_link" href="#">더 보기</a>
-                                </td>
-                            </tr>
-                            </tfoot>
+                            <tfoot class="caas-pagenation-wrap"></tfoot>
                         </table>
                     </div>
                 </div>
@@ -233,23 +215,32 @@
             var pod = getPod(podItem);
 
             var nameClassSet;
+            var errorMsg = null;
             switch (pod.podStatus) {
                 case "Pending":
-                    nameClassSet = {span: "pending2", i: "fas fa-exclamation-triangle"}; break;
+                    nameClassSet = {span: "pending2", i: "fas fa-exclamation-triangle"};
+                    errorMsg = pod.podErrorMsg;
+                    break;
                 case "Running":
                     nameClassSet = {span: "running2", i: "fas fa-check-circle"}; break;
                 case "Succeeded":
                     nameClassSet = {span: "succeeded2", i: "fas fa-check-circle"}; break;
                 case "Failed":
-                    nameClassSet = {span: "failed2", i: "fas fa-exclamation-circle"}; break;
+                    nameClassSet = {span: "failed2", i: "fas fa-exclamation-circle"};
+                    errorMsg = pod.podErrorMsg;
+                    break;
                 case "Unknown":
                 default:
-                    nameClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"}; break;
+                    nameClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"};
+                    errorMsg = pod.podErrorMsg;
+                    break;
             }
 
             var nameHtml =
                 '<span class="' + nameClassSet.span + '"><i class="' + nameClassSet.i + '"></i></span>'
                 + '<a href="/caas/workloads/pods/' + pod.name + '"> ' + pod.name + '</a>';
+            if (errorMsg != null && errorMsg != "")
+                nameHtml += '<br><span class="' + nameClassSet.span + '">' + errorMsg + '</span>';
 
             var podRowHtml = '<tr pod-name="' + pod.name + '" created-on="' + pod.creationTimestamp + '">'
                 + '<td name="name" value>' + nameHtml + '</td>'
@@ -273,13 +264,29 @@
         var _metadata = podItem.metadata;
         var _spec = podItem.spec;
         var _status = podItem.status;
+        var _podErrorMsg = null;
+
+        switch (_status.phase) {
+            case "Pending":
+            case "Failed":
+            case "Unknown":
+                var findConditions = _status.conditions.filter(function (item) { return item.reason != null && item.message != null});
+                if (findConditions.length > 0)
+                    _podErrorMsg = findConditions[0].reason + " (" + findConditions[0].message + ")";
+                else
+                    _podErrorMsg = null;
+                break;
+            default:
+                break;
+        }
 
         // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
         return {
             name: _metadata.name,
             namespace: _metadata.namespace,
-            nodeName: _spec.nodeName,
+            nodeName: (_spec.nodeName != null? _spec.nodeName : "-"),
             podStatus: _status.phase,
+            podErrorMsg: _podErrorMsg,
             restartCount: processIfDataIsNull(
                 _status.containerStatuses, function (data) {
                     return data.reduce(function (a, b) {
