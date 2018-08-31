@@ -88,12 +88,30 @@
                 <c:choose>
                     <c:when test="${g.index eq 1}" >
                         <%-- path값을 replace를 한다. replace의 첫번째 단어를 대문자로 바꿈. 예시 replicae('cluster', 'c', 'C' )--%>
-                        <c:set var="path" value = "${fn:replace(path, path.charAt(0), path.toUpperCase().charAt(0))}"/>
-                        <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${path}</li>
+                        <button value="${path}"></button>
+                        <c:choose>
+                            <c:when test="${path eq 'services'}" >
+                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">Services</li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="path" value = "${fn:replace(path, path.charAt(0), path.toUpperCase().charAt(0))}"/>
+                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${path}</li>
+                             </c:otherwise>
+                        </c:choose>
                     </c:when>
                     <c:when test="${g.index eq 2}">
-                        <c:set var="path" value = "${fn:replace(path, path.charAt(0), path.toUpperCase().charAt(0))}"/>
-                        <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}')">${path}</li>
+                        <c:choose>
+                            <c:when test="${path eq 'replicasets'}">
+                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/replicasets');">Replica Sets</li>
+                            </c:when>
+                            <c:when test="${path eq 'persistentVolumes'}">
+                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/persistentVolumes');">Persistent Volumes</li>
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="path" value = "${fn:replace(path, path.charAt(0), path.toUpperCase().charAt(0))}"/>
+                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${path}</li>
+                            </c:otherwise>
+                        </c:choose>
                     </c:when>
                 </c:choose>
             </c:forEach>
