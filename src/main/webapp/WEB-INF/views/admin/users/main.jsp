@@ -75,13 +75,13 @@
                     <h4 class="modal-title">Role 변경</h4>
                 </div>
                 <!-- body -->
-                <div class="modal-body">
-                    <p class="account_modal_p"><span>hong@test.com</span> 님을 <span>Administrator</span>로 Role을 변경하시겠습니까?
-                    </p>
+                <div class="modal-body roleUpdate">
+                   <%-- <p class="account_modal_p"><span>hong@test.com</span> 님을 <span>Administrator</span>로 Role을 변경하시겠습니까?
+                    </p>--%>
                 </div>
                 <!-- Footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btns2 colors4" data-dismiss="modal">변경</button>
+                    <button type="button" class="btns2 colors4" data-dismiss="modal" id="roleUpdateBtn">변경</button>
                     <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
                 </div>
             </div>
@@ -205,9 +205,9 @@
                     + "<td>" + items[i].userId + "</td>"
                     + "<td>" + items[i].created + "</td>"
                     + "<td>" + items[i].lastModified + "</td>"
-                    + "<td>" + "<select>" + option + "</select>"
-                    + "<span data-target='#layerpop1' data-toggle='modal'><i class='fas fa-save'></i></span>"
-                    + "<span data-target='#layerpop2'data-toggle='modal'><i class='fas fa-trash-alt'></i></span>"
+                    + "<td>" + "<select name='role-filter' data-user-id='"+ items[i].userId +"'>" + option + "</select>"
+                    + "<span data-target='#layerpop1' data-toggle='modal' name='saveRole'><i class='fas fa-save'></i></span>"
+                    + "<span data-target='#layerpop2' data-toggle='modal'><i class='fas fa-trash-alt'></i></span>"
                     + "</td>"
                     + "</tr>");
 
@@ -233,6 +233,53 @@
         var keyword = $("#table-search-01").val();
         setUsersList(keyword);
     });
+
+    var userIdSelectRole;
+    var userPerRole;
+
+    $(document).on("click", "span[name=saveRole]", function(){
+        var index = $('span[name=saveRole]').index(this);
+        alert(index);
+        alert($('select[name=role-filter]').eq(index).data("userId"));
+        alert($('select[name=role-filter]').eq(index).find(':selected').val());
+
+        userIdSelectRole = $('select[name=role-filter]').eq(index).data("userId");
+        userPerRole = $('select[name=role-filter]').eq(index).find(':selected').val();
+
+        var code = "<p class='account_modal_p'><span>" + userIdSelectRole + "</span> 님을 <span>"+ userPerRole + "</span>로 Role 을 변경하시겠습니까?</p>";
+        $(".roleUpdate").html(code);
+    });
+
+    $("#roleUpdateBtn").on("click", function () {
+        updateRoleOfUser();
+    });
+
+    var updateRoleOfUser = function () {
+        if(userPerRole == "Administrator"){
+            userPerRole = "RS0001"
+        }else if (userPerRole == "Regular User"){
+            userPerRole = "RS0002"
+        }else if(userPerRole == "Init User"){
+            userPerRole = "RS0003"
+        }
+
+        var reqParam = {
+            userId: userIdSelectRole,
+            roleSetCode: userPerRole
+        };
+
+        //reqParam = JSON.stringify(reqParam);
+        console.log("파람파람 ::", reqParam);
+
+        postProcCallAjax(BASE_URL + "/users/updateUserRole.do?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackUpdateRoleOfUser);
+    };
+
+    var callbackUpdateRoleOfUser = function (data) {
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        console.log("고쳐졌니?" + JSON.stringify(data));
+        alert("권한이 수정되었습니다.");
+        getUsersList();
+    };
 
     // ON LOAD
     $(document.body).ready(function () {
