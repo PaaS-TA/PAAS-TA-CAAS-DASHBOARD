@@ -15,12 +15,11 @@ import java.util.List;
 @Data
 public class Roles {
 
+    private String roleSetCode;
+    private String resourceCode;
+    private String verbCode;
+    private String description;
+    private String created;
     private String resultCode;
-    private String resultMessage;
 
-    private CommonMetaData metadata;
-    private List<CommonRoleRule> rules = new ArrayList<>();
-
-    // FOR DASHBOARD
-    private String roleName;
 }
