@@ -48,19 +48,48 @@ public class UsersController {
     }
 
     /**
-     * Gets service instance list.
+     * Gets user list by serviceInstanceId
      *
-     * @return the service instance list
+     * @return the user list
      */
     @GetMapping(value = "/getList.do")
     @ResponseBody
-    public List<Users> getUsesListByServiceInstanceId(@RequestParam("serviceInstanceId") String serviceInstanceId, @RequestParam("organizationGuid") String organizationGuid) {
+    public List<Users> getUsesListByServiceInstanceId(@RequestParam("serviceInstanceId") String serviceInstanceId,
+                                                      @RequestParam("organizationGuid") String organizationGuid) {
         return userService.getUsesListByServiceInstanceId(serviceInstanceId, organizationGuid);
     }
 
+    /**
+     * Gets user by serviceInstanceId
+     *
+     * @param serviceInstanceId the serviceInstanceId
+     * @param organizationGuid the organizationGuid
+     * @param userId the userId
+     * @return the user
+     */
     @GetMapping(value = "/getUser.do")
     @ResponseBody
-    public Users getUserByServiceInstanceId(@RequestParam("serviceInstanceId") String serviceInstanceId, @RequestParam("organizationGuid") String organizationGuid, @RequestParam("userId") String userId) {
+    public Users getUserByServiceInstanceId(@RequestParam("serviceInstanceId") String serviceInstanceId,
+                                            @RequestParam("organizationGuid") String organizationGuid,
+                                            @RequestParam("userId") String userId) {
         return userService.getUserByServiceInstanceId(serviceInstanceId, organizationGuid, userId);
+    }
+
+    /**
+     * Update role of user
+     *
+     * @param serviceInstanceId the serviceInstanceId
+     * @param organizationGuid the organizationGuid
+     * @param users the user
+     * @return the user
+     */
+    @PostMapping(value = "/updateUserRole.do")
+    @ResponseBody
+    public Users updateUserRole(@RequestParam("serviceInstanceId") String serviceInstanceId,
+                                @RequestParam("organizationGuid") String organizationGuid,
+                                @RequestBody Users users){
+        Users user = userService.getUserByServiceInstanceId(serviceInstanceId, organizationGuid, users.getUserId());
+        user.setRoleSetCode(users.getRoleSetCode());
+        return userService.updateUserRole(serviceInstanceId, organizationGuid, user);
     }
 }
