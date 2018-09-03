@@ -14,7 +14,7 @@
         <div class="cluster_content01 row two_line two_view harf_view">
             <ul class="maT30">
                 <!-- Details 시작 -->
-                <li class="cluster_second_box">
+                <li class="cluster_first_box">
                     <div class="sortable_wrap">
                         <div class="sortable_top">
                             <p>Details</p>
