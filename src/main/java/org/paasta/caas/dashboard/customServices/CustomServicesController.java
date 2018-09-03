@@ -21,9 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class CustomServicesController {
 
-    private static final String CAAS_BASE_URL = Constants.CAAS_BASE_URL;
-    private static final String API_URL = Constants.API_URL;
     private static final String BASE_URL = "/services";
+    private final String CAAS_BASE_URL = Constants.CAAS_BASE_URL;
+    private final String API_URL = Constants.API_URL;
     private final CommonService commonService;
     private final CustomServicesService customServicesService;
 

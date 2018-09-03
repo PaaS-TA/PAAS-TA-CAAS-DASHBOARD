@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomServicesService {
 
-    private static final String TARGET_CAAS_API = Constants.TARGET_CAAS_API;
-    private static final String API_NAMESPACES = Constants.API_NAMESPACES;
     private static final String REQ_URL = "/services";
+    private final String TARGET_CAAS_API = Constants.TARGET_CAAS_API;
+    private final String API_NAMESPACES = Constants.API_NAMESPACES;
     private final RestTemplateService restTemplateService;
 
     /**

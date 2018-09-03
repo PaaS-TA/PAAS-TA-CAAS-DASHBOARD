@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class EndpointsService {
 
-    private static final String TARGET_CAAS_API = Constants.TARGET_CAAS_API;
     private static final String REQ_URL = "/endpoints";
+    private final String TARGET_CAAS_API = Constants.TARGET_CAAS_API;
     private final RestTemplateService restTemplateService;
 
     /**
