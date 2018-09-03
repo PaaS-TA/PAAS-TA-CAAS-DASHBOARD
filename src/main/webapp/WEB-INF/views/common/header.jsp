@@ -91,15 +91,24 @@
                         <button value="${path}"></button>
                         <c:choose>
                             <c:when test="${path eq 'services'}" >
-                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</li>
+                                <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</li>
+                            </c:when>
+                            <c:when test="${path eq 'accessInfo'}" >
+                                <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</li>
+                            </c:when>
+                            <c:when test="${path eq 'users'}" >
+                                <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</li>
+                            </c:when>
+                            <c:when test="${path eq 'roles'}" >
+                                <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser('role')}</li>
                             </c:when>
                             <c:otherwise>
-                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${cfn:camelCaseParser(path)}</li>
+                                <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${cfn:camelCaseParser(path)}</li>
                              </c:otherwise>
                         </c:choose>
                     </c:when>
                     <c:when test="${g.index eq 2}">
-                        <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${cfn:camelCaseParser(path)}</li>
+                        <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${cfn:camelCaseParser(path)}</li>
                     </c:when>
                 </c:choose>
             </c:forEach>
