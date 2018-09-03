@@ -49,8 +49,7 @@
 <script type="text/javascript">
 
     var getEventList = function(namespace, replicasetName) {
-        $('body').loadingModal();
-        $('body').loadingModal('animation', 'chasingDots').loadingModal('color', 'black').loadingModal('backgroundColor', 'white');
+        viewLoading('show');
 
         procCallAjax("/api/namespaces/"+namespace+"/events/resource/"+replicasetName, "GET", null, null, callbackGetEventList);
     };
@@ -109,7 +108,7 @@
             noResultArea.show();
         }
 
-        $('body').loadingModal('destroy') ;
+        viewLoading('hide');
     };
 
     $(document.body).ready(function () {

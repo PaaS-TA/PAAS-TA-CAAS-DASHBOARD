@@ -800,7 +800,9 @@
 
 .jquery-loading-modal--visible {
   -webkit-animation-duration: 1s;
-  animation-duration: 1s;
+    /*로딩바 나오는 속도*/
+  /*animation-duration: 1s;*/
+  animation-duration: 0s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
   -webkit-animation-name: fadeIn;
