@@ -8,6 +8,7 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="cfn" uri="common/customTag.tld" %>
 <header class="header">
     <div class="logo">
         <a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/clusters/overview');" class="custom_border_none"><h1><img src="<c:url value="/resources/images/main/logo.png"/>" alt=""/></h1></a>
@@ -87,31 +88,18 @@
             <c:forEach var="path" items="${pathArray}" varStatus="g">
                 <c:choose>
                     <c:when test="${g.index eq 1}" >
-                        <%-- path값을 replace를 한다. replace의 첫번째 단어를 대문자로 바꿈. 예시 replicae('cluster', 'c', 'C' )--%>
                         <button value="${path}"></button>
                         <c:choose>
                             <c:when test="${path eq 'services'}" >
-                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">Services</li>
+                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</li>
                             </c:when>
                             <c:otherwise>
-                                <c:set var="path" value = "${fn:replace(path, path.charAt(0), path.toUpperCase().charAt(0))}"/>
-                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${path}</li>
+                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${cfn:camelCaseParser(path)}</li>
                              </c:otherwise>
                         </c:choose>
                     </c:when>
                     <c:when test="${g.index eq 2}">
-                        <c:choose>
-                            <c:when test="${path eq 'replicasets'}">
-                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/replicasets');">Replica Sets</li>
-                            </c:when>
-                            <c:when test="${path eq 'persistentVolumes'}">
-                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/persistentVolumes');">Persistent Volumes</li>
-                            </c:when>
-                            <c:otherwise>
-                                <c:set var="path" value = "${fn:replace(path, path.charAt(0), path.toUpperCase().charAt(0))}"/>
-                                <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${path}</li>
-                            </c:otherwise>
-                        </c:choose>
+                        <li onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${cfn:camelCaseParser(path)}</li>
                     </c:when>
                 </c:choose>
             </c:forEach>

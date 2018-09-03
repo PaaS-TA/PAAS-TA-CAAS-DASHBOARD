@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <description>CommonUtil functions library</description>
+    <display-name>CommonUtil functions</display-name>
+    <tlib-version>1.1</tlib-version>
+    <!-- 함수 호출 하는 닉네임 -->
+    <short-name>cfn</short-name>
+    <!-- <%@ taglib prefix="cfn" uri="common/customTag.tld" %> 여기에 쓸 때 부르는 uri 값 -->
+    <uri>common/customTag.tld</uri>
+
+    <function>
+        <!-- 함수 설명 -->
+        <description>카멜케이스를 분리하기</description>
+        <!-- 함수 이름 이 이름으로 호출하게 됨 -->
+        <name>camelCaseParser</name>
+        <!-- java 파일이 있는 경로 -->
+        <function-class>org.paasta.caas.dashboard.common.CustomTag</function-class>
+        <!-- 함수 리턴값 / 함수명 / 파라미터  -->
+        <function-signature>java.lang.String camelCaseParser(java.lang.String)</function-signature>
+        <example>
+            ${cfn:camelCaseParser(str)}
+        </example>
+    </function>
+</taglib>
