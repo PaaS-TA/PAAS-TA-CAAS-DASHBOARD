@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 // TODO :: REMOVE
 //import org.springframework.web.bind.annotation.PathVariable;
@@ -47,10 +49,27 @@ public class PodsController {
         return commonService.setPathVariables(httpServletRequest, "/workloads/pods", new ModelAndView());
     }
 
-    @GetMapping(value = "/caas/workloads/pods/{podName}")
+    @GetMapping(value = "/caas/workloads/pods/{podName}/details")
     public ModelAndView getPodDetails( HttpServletRequest httpServletRequest, @PathVariable String podName) {
-        return commonService.setPathVariables(httpServletRequest, "/pods/main", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, "/pods/details", new ModelAndView());
     }
+
+    @GetMapping(value = "/caas/workloads/pods/{podName}/events")
+    public ModelAndView getPodEvents( HttpServletRequest httpServletRequest, @PathVariable String podName) {
+        return commonService.setPathVariables(httpServletRequest, "/pods/events", new ModelAndView());
+    }
+
+    @GetMapping(value = "/caas/workloads/pods/{podName}/yaml")
+    public ModelAndView getPodYaml( HttpServletRequest httpServletRequest, @PathVariable String podName) {
+        return commonService.setPathVariables(httpServletRequest, "/pods/yaml", new ModelAndView());
+    }
+
+    @GetMapping(value = "/caas/workloads/pods/{podName}")
+    public void getPodDetailsRedirect( HttpServletResponse httpServletResponse, @PathVariable String podName) throws IOException {
+        httpServletResponse.sendRedirect("/caas/workloads/pods/" + podName + "/details");
+    }
+
+
 
     @GetMapping(value = Constants.API_URL + "/workloads/pods")
     public PodsList getPodList() {
