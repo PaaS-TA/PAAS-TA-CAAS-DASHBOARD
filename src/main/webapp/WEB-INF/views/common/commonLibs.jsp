@@ -56,7 +56,7 @@
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.tablesorter.min.js"/>'></script>
 
 <%--TODO :: REMOVE--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/json2yaml.js"/>'></script>--%>
+<script type="text/javascript" src='<c:url value="/resources/js/json2yaml.js"/>'></script>
 
 <%--TODO :: REMOVE--%>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.jsonview.min.js"/>'></script>
