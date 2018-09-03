@@ -125,9 +125,13 @@
         };
     }
 
-    var getEventsListByNode = function(namespace, nodeName, callbackFunc = callbackGetNodeEvent) {
+    var getEventsListByNode = function(namespace, nodeName, callbackFunc) {
         var namespace = "_all";
         var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/events/node/" + nodeName;
+
+        if (null == callbackFunc)
+            callbackFunc = callbackGetNodeEvent;
+
         procCallAjax(reqUrl, "GET", null, null, callbackFunc);
     }
 
