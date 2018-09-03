@@ -31,5 +31,8 @@
         clipboard.on('error', function(e) {
             console.log(e);
         });
+
+        // REMOVE UNNECESSARY EVENTS
+        $(".sortable_wrap,.sortable_line > li").unbind();
     });
 </script>

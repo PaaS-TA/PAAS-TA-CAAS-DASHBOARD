@@ -13,6 +13,9 @@
     <meta charset="UTF-8">
     <meta content='IE=edge' http-equiv='X-UA-Compatible'/>
     <meta name='format-detection' content='telephone=no'/>
+    <meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
     <title><tiles:getAsString name="title"/></title>
 
     <%--COMMON LIBRARY :: BEGIN--%>

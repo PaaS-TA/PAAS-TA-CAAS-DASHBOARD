@@ -81,4 +81,7 @@
     var ORGANIZATION_GUID = "${organizationGuid}";
     var SPACE_GUID = "${spaceGuid}";
     var NAME_SPACE = "${nameSpace}";
+
+    var _csrf_token = document.getElementsByName("_csrf")[0].getAttribute("content");
+    var _csrf_header = document.getElementsByName("_csrf_header")[0].getAttribute("content");
 </script>
