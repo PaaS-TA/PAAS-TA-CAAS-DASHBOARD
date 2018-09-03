@@ -32,6 +32,9 @@
             <tiles:insertAttribute name="footer"/>
         </div>
     </div>
+    <div>
+        <tiles:insertAttribute name="modal"/>
+    </div>
     <textarea id="out_a" title="">
     </textarea>
 </body>
