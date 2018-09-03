@@ -24,4 +24,5 @@ public class Deployments {
     private DeploymentsStatus status;
 
     private Map<String, Object> source;
+    private String sourceTypeYaml;
 }
