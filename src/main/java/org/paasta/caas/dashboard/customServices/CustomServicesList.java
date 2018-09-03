@@ -12,7 +12,7 @@ import java.util.List;
  * @since 2018.8.09
  */
 @Data
-public class CustomServicesList {
+class CustomServicesList {
 
     private String resultCode;
     private String resultMessage;

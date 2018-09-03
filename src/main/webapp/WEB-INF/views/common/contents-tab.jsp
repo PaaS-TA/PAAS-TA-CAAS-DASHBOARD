@@ -157,7 +157,7 @@
                         </c:otherwise>
                     </c:choose>
                 </c:when>
-                <c:when test="${pathLevel3 eq 'replicasets'}">
+                <c:when test="${pathLevel3 eq 'replicaSets'}">
                     <c:choose>
                         <c:when test="${empty pathLevel4}">
                             <li name="tab01" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_WORKLOAD_OVERVIEW%>');">Overview</li>

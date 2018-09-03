@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class EndpointsController {
 
-    private static final String API_URL = Constants.API_URL;
     private static final String BASE_URL = "/endpoints";
+    private final String API_URL = Constants.API_URL;
     private final EndpointsService endpointsService;
 
     /**

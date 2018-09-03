@@ -15,7 +15,7 @@ import java.util.Map;
  * @since 2018.08.09
  */
 @Data
-public class CustomServices {
+class CustomServices {
 
     private String resultCode;
     private String resultMessage;
@@ -24,6 +24,7 @@ public class CustomServices {
     private CommonSpec spec;
     private CommonStatus status;
     private Map<String, Object> source;
+    private String sourceTypeYaml;
 
     // FOR DASHBOARD
     private String serviceName;
