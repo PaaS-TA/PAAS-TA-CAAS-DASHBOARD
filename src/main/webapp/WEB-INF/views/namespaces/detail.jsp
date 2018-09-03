@@ -77,8 +77,7 @@
 <script type="text/javascript">
 
     var getDetail = function() {
-        $('body').loadingModal();
-        $('body').loadingModal('animation', 'chasingDots').loadingModal('color', 'black').loadingModal('backgroundColor', 'white');
+        viewLoading('show');
 
         procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail.do", "GET", null, null, callbackGetDetail);
 
@@ -122,7 +121,7 @@
             $("#detailTab").append(html);
         }
 
-        $('body').loadingModal('destroy') ;
+        viewLoading('hide');
     }
 
     var callbackGetDetail = function(data) {
