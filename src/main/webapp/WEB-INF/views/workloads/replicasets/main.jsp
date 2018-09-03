@@ -30,7 +30,7 @@
                                 <col style='width:25%;'>
                             </colgroup>
                             <thead>
-                            <tr>
+                            <tr id="resultHeaderArea">
                                 <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
                                 <td>Labels</td>
@@ -85,6 +85,7 @@
 
         var items = gList.items;
 
+
         //var selector = procSetSelector(items[i].spec.selector);
 
         $.each(gList.items, function (index, itemList) {
@@ -104,7 +105,7 @@
             resultArea.append(
                     "<tr>"
                     + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/replicasets/" + replicasetName + "\");'>" + replicasetName + "</a>"
+                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/replicaSets/" + replicasetName + "\");'>" + replicasetName + "</a>"
                     + "</td>"
                     + "<td>" + namespace + "</td>"
                     + "<td>" + labels + "</td>"
@@ -116,7 +117,7 @@
         });
 
         resultTable.tablesorter();
-        resultTable.trigger("update");
+        //resultTable.trigger("update");
 
     };
 

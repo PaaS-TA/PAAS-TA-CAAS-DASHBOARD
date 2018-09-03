@@ -41,7 +41,7 @@ public class ReplicaSetsController {
      * @param httpServletRequest the http servlet request
      * @return the custom service main
      */
-    @GetMapping(value = "/caas/workloads/replicasets")
+    @GetMapping(value = "/caas/workloads/replicaSets")
     public ModelAndView getReplicaSetMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, "/workloads/replicasets/main", new ModelAndView());
     }
@@ -50,11 +50,11 @@ public class ReplicaSetsController {
      * Gets replicaSet detail.
      *
      * @param httpServletRequest the http servlet request
-     * @param replicasetName        the replicaset name
+     * @param replicaSetName        the replicaset name
      * @return the custom services detail
      */
-    @GetMapping(value = "/caas/workloads/replicasets/{replicasetName:.+}")
-    public ModelAndView getReplicaSetDetail(HttpServletRequest httpServletRequest, @PathVariable(value = "replicasetName") String replicasetName) {
+    @GetMapping(value = "/caas/workloads/replicaSets/{replicaSetName:.+}")
+    public ModelAndView getReplicaSetDetail(HttpServletRequest httpServletRequest, @PathVariable(value = "replicaSetName") String replicaSetName) {
         return commonService.setPathVariables(httpServletRequest, "/workloads/replicasets/detail", new ModelAndView());
     }
 
@@ -62,11 +62,11 @@ public class ReplicaSetsController {
      * Gets custom services detail events.
      *
      * @param httpServletRequest the http servlet request
-     * @param replicasetName        the replicaset name
+     * @param replicaSetName        the replicaSet name
      * @return the custom services detail events
      */
-    @GetMapping(value = "/caas/workloads/replicasets/{replicasetName:.+}/events")
-    public ModelAndView getReplicaSetDetailEvents(HttpServletRequest httpServletRequest, @PathVariable(value = "replicasetName") String replicasetName) {
+    @GetMapping(value = "/caas/workloads/replicaSets/{replicaSetName:.+}/events")
+    public ModelAndView getReplicaSetDetailEvents(HttpServletRequest httpServletRequest, @PathVariable(value = "replicaSetName") String replicaSetName) {
         return commonService.setPathVariables(httpServletRequest, "/workloads/replicasets/events", new ModelAndView());
     }
 
@@ -74,11 +74,11 @@ public class ReplicaSetsController {
      * Gets replicaSet detail yaml.
      *
      * @param httpServletRequest the http servlet request
-     * @param replicasetName        the replicaset name
+     * @param replicaSetName        the replicaSet name
      * @return the custom services detail events
      */
-    @GetMapping(value = "/caas/workloads/replicasets/{replicasetName:.+}/yaml")
-    public ModelAndView getReplicaSetDetailYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "replicasetName") String replicasetName) {
+    @GetMapping(value = "/caas/workloads/replicaSets/{replicaSetName:.+}/yaml")
+    public ModelAndView getReplicaSetDetailYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "replicaSetName") String replicaSetName) {
         return commonService.setPathVariables(httpServletRequest, "/workloads/replicasets/yaml", new ModelAndView());
     }
 

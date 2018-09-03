@@ -41,7 +41,7 @@ public class Constants {
     public static final String URI_WORKLOAD_OVERVIEW     = "/caas/workloads/overview";
     public static final String URI_WORKLOAD_DEPLOYMENTS  = "/caas/workloads/deployments";
     public static final String URI_WORKLOAD_PODS         = "/caas/workloads/pods";
-    public static final String URI_WORKLOAD_REPLICASETS  = "/caas/workloads/replicasets";
+    public static final String URI_WORKLOAD_REPLICASETS  = "/caas/workloads/replicaSets";
 
     // TAB URI - services
     public static final String URI_SERVICES              = "/caas/services";

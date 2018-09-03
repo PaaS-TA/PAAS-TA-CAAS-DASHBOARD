@@ -35,7 +35,7 @@ public class PersistentVolumesService {
      */
     PersistentVolumesList getPersistentvolumeList() {
         // TODO :: reqUrl 따로 관리 여부 결정
-        String reqUrl = "/cluster/persistentvolumes";
+        String reqUrl = "/clusters/persistentvolumes";
         return restTemplateService.send(Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, PersistentVolumesList.class);
     }
 
@@ -48,7 +48,7 @@ public class PersistentVolumesService {
      */
     PersistentVolumes getPersistentvolume(String pvName) {
         // TODO :: reqUrl 따로 관리 여부 결정
-        String reqUrl = "/cluster/persistentvolumes/{pvName}"
+        String reqUrl = "/clusters/persistentvolumes/{pvName}"
                 .replaceAll("\\{" + "pvName" + "\\}", pvName);
         return restTemplateService.send(Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, PersistentVolumes.class);
     }

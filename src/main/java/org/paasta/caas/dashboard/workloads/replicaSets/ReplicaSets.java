@@ -17,19 +17,11 @@ import java.util.Map;
 @Data
 public class ReplicaSets {
 
-    private String resultCode;
-    private String resultMessage;
-
     private CommonMetaData metadata;
     private CommonSpec spec;
     private CommonStatus status;
-
-    private Map<String, Object> originResult;
-
-//    @SerializedName("apiVersion")
-//    private String apiVersion = null;
-
-//    @SerializedName("kind")
-//    private String kind = null;
+    private Map<String, Object> source;
+    private String resultCode;
+    private String resultMessage;
 
 }
