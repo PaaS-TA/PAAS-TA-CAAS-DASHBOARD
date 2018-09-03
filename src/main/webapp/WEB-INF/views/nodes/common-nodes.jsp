@@ -1,5 +1,5 @@
 <%--
-  Deployments main
+  Common-nodes.jsp
   @author Hyungu Cho
   @version 1.0
   @since 2018.08.14
