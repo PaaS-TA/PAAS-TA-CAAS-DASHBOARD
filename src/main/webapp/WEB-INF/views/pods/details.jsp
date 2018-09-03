@@ -77,7 +77,7 @@
             <!-- 그래프 끝 -->
             --%>
             <!-- Details 시작 -->
-            <li class="cluster_second_box">
+            <li class="cluster_first_box">
                 <div class="sortable_wrap">
                     <div class="sortable_top">
                         <p>Details</p>
