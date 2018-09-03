@@ -1,10 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
-<%--<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>--%>
 
 <div class="content">
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span id="title"></span></h1>
-    <%--<%@include file="./tab.jsp" %>--%>
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view">
@@ -51,7 +48,13 @@
         </div>
         <div class="view_table_wrap">
             <table class="table_event condition alignL">
-                <p class="p30">- <strong>Name</strong> : {{metadata.name}} / - <strong>Scopes</strong> : {{spec.scopes}}</p>
+                <p class="p30">- <strong>Name</strong> : {{metadata.name}} / - <strong>Scopes</strong> :
+                    {{#if spec.scopes}}
+                        {{spec.scopes}}
+                    {{else}}
+                        -
+                    {{/if}}
+                </p>
                 <colgroup>
                     <col style='width:auto;'>
                     <col style='width:20%;'>
@@ -74,6 +77,9 @@
 <script type="text/javascript">
 
     var getDetail = function() {
+        $('body').loadingModal();
+        $('body').loadingModal('animation', 'chasingDots').loadingModal('color', 'black').loadingModal('backgroundColor', 'white');
+
         procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail.do", "GET", null, null, callbackGetDetail);
 
         getResourceQuotaList(NAME_SPACE);
@@ -115,6 +121,8 @@
 
             $("#detailTab").append(html);
         }
+
+        $('body').loadingModal('destroy') ;
     }
 
     var callbackGetDetail = function(data) {

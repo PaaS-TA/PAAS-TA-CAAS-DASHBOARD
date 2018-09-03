@@ -1,16 +1,7 @@
-<%--
-  Namespaces main
-  @author REX
-  @version 1.0
-  @since 2018.08.07
---%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
-<%--<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>--%>
 
 <div class="content">
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span id="title"></span></h1>
-    <%--<%@include file="./tab.jsp" %>--%>
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Events 시작-->
     <div class="cluster_content02 row two_line two_view harf_view custom_display_block">
@@ -58,6 +49,9 @@
 <script type="text/javascript">
 
     var getEventList = function(namespace, replicasetName) {
+        $('body').loadingModal();
+        $('body').loadingModal('animation', 'chasingDots').loadingModal('color', 'black').loadingModal('backgroundColor', 'white');
+
         procCallAjax("/api/namespaces/"+namespace+"/events/resource/"+replicasetName, "GET", null, null, callbackGetEventList);
     };
 
@@ -114,6 +108,8 @@
             resultArea.hide();
             noResultArea.show();
         }
+
+        $('body').loadingModal('destroy') ;
     };
 
     $(document.body).ready(function () {

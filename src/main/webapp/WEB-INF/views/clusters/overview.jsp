@@ -1,5 +1,5 @@
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>--%>
 
 <div class="content">
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
@@ -38,7 +38,7 @@
                         <p>Nodes</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
+                        <table id="clusters_nodes_table" class="table_event condition alignL">
                             <colgroup>
                                 <col style='width:auto;'>
                                 <col style='width:5%;'>
@@ -49,44 +49,18 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                            <tr>
-                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Ready</td>
-                                <td>CPU requests</td>
-                                <td>CPU limits</td>
-                                <td>Memory requests</td>
-                                <td>Memory limits</td>
-                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button>
-                            </tr>
+                                <tr>
+                                    <td>Name<button sort-key="node-name" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button></td>
+                                    <td>Ready</td>
+                                    <td>CPU requests</td>
+                                    <td>CPU limits</td>
+                                    <td>Memory requests</td>
+                                    <td>Memory limits</td>
+                                    <td>Created on<button sort-key="created-on" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_nodes_view.html">ip-172-31-20-237</a></td>
-                                <td>True</td>
-                                <td>831 mCPU</td>
-                                <td>940 mCPU</td>
-                                <td>931.95 MB</td>
-                                <td>2.77 GB</td>
-                                <td>2018-07-09 18:31:01</td>
-                            </tr>
-                            <tr>
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_nodes_view.html">ip-172-31-20-237</a></td>
-                                <td>True</td>
-                                <td>831 mCPU</td>
-                                <td>940 mCPU</td>
-                                <td>931.95 MB</td>
-                                <td>2.77 GB</td>
-                                <td>2018-07-09 18:31:01</td>
-                            </tr>
-                            <tr>
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_nodes_view.html">ip-172-31-20-237</a></td>
-                                <td>True</td>
-                                <td>831 mCPU</td>
-                                <td>940 mCPU</td>
-                                <td>931.95 MB</td>
-                                <td>2.77 GB</td>
-                                <td>2018-07-09 18:31:01</td>
-                            </tr>
+                                <tr><td colspan="7">노드의 정보를 가져올 수 없습니다.</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -122,36 +96,36 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_persistent_view.html">oracle-test-pv</a></td>
-                                <td>100Mi</td>
-                                <td>ReadWriteOnce</td>
-                                <td>Recycle</td>
-                                <td>Available</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>2015-07-04 20:15:30</td>
-                            </tr>
-                            <tr>
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_persistent_view.html">oracle-test-pv</a></td>
-                                <td>100Mi</td>
-                                <td>ReadOnlyMany</td>
-                                <td>Recycle</td>
-                                <td>Available</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>2015-07-04 20:15:30</td>
-                            </tr>
-                            <tr>
-                                <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_persistent_view.html">oracle-test-pv</a></td>
-                                <td>100Mi</td>
-                                <td>ReadWriteMany</td>
-                                <td>Recycle</td>
-                                <td>Available</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>2015-07-04 20:15:30</td>
-                            </tr>
+                                <tr>
+                                    <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_persistent_view.html">oracle-test-pv</a></td>
+                                    <td>100Mi</td>
+                                    <td>ReadWriteOnce</td>
+                                    <td>Recycle</td>
+                                    <td>Available</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2015-07-04 20:15:30</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_persistent_view.html">oracle-test-pv</a></td>
+                                    <td>100Mi</td>
+                                    <td>ReadOnlyMany</td>
+                                    <td>Recycle</td>
+                                    <td>Available</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2015-07-04 20:15:30</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_persistent_view.html">oracle-test-pv</a></td>
+                                    <td>100Mi</td>
+                                    <td>ReadWriteMany</td>
+                                    <td>Recycle</td>
+                                    <td>Available</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2015-07-04 20:15:30</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -184,8 +158,66 @@
         resultArea.html(htmlString);
     };
 
+    var getNodes = function() {
+        var reqUrl = "<%= Constants.API_URL %>/nodes"
+        procCallAjax(reqUrl, "GET", null, null, callbackGetListNodes);
+    }
+
+    var callbackGetListNodes = function(data) {
+        if (false == checkValidData(data)) {
+            alert("Cannot load nodes data");
+            return;
+        }
+
+        var contents = [];
+        $.each(data.items, function (index, nodeItem) {
+            var _metadata = nodeItem.metadata;
+            var _status = nodeItem.status;
+
+            var name = _metadata.name;
+            var ready = _status.conditions.filter(function(condition) {
+                return condition.type === "Ready";
+            })[0].status;
+            var limitCPU = _status.capacity.cpu;
+            var requestCPU = limitCPU - _status.allocatable.cpu;
+            var limitMemory = convertByte(_status.capacity.memory);
+            var requestMemory = limitMemory - convertByte(_status.allocatable.memory);
+            var creationTimestamp = _metadata.creationTimestamp;
+
+            // TODO
+            var nameHtml = '<a href="./nodes/' + name + '/summary"> ' + name + '</a>';
+            if (ready == "True")
+                nameHtml = '<span class="green2"><i class="fas fa-check-circle"></i></span>' + nameHtml;
+            else
+                nameHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span>' + nameHtml;
+
+            contents.push('<tr node-name="' + name + '" created-on="' + creationTimestamp + '">'
+                + '<td>' + nameHtml + '</td>'
+                + '<td>' + ready + '</td>'
+                + '<td>' + requestCPU + '</td>'
+                + '<td>' + limitCPU + '</td>'
+                + '<td>' + formatCapacity(requestMemory, "Mi") + '</td>'
+                + '<td>' + formatCapacity(limitMemory, "Mi") + '</td>'
+                + '<td>' + creationTimestamp + '</td></tr>'
+            );
+        });
+
+        $('#clusters_nodes_table > tbody').html(contents);
+
+        sortTable("clusters_nodes_table", "node-name");
+    }
+
     $(document.body).ready(function () {
         getNamespaces();
+
+        $(".sort-arrow").on("click", function(event) {
+            var tableId = "clusters_nodes_table";
+            var sortKey = $(event.currentTarget).attr('sort-key');
+            var isAscending = $(event.currentTarget).hasClass('sort')? true : false;
+            sortTable(tableId, sortKey, isAscending);
+        });
+
+        getNodes();
     });
 
 </script>

@@ -21,7 +21,6 @@
     <%--COMMON LIBRARY :: BEGIN--%>
     <%@include file="commonLibs.jsp" %>
     <%--COMMON LIBRARY :: END--%>
-
 </head>
 <body>
     <div class="wrap dashboard">
