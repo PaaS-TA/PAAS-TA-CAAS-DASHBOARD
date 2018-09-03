@@ -49,7 +49,7 @@ public class PodsController {
         return commonService.setPathVariables(httpServletRequest, "/workloads/pods", new ModelAndView());
     }
 
-    @GetMapping(value = "/caas/workloads/pods/{podName}/details")
+    @GetMapping(value = "/caas/workloads/pods/{podName}")
     public ModelAndView getPodDetails( HttpServletRequest httpServletRequest, @PathVariable String podName) {
         return commonService.setPathVariables(httpServletRequest, "/pods/details", new ModelAndView());
     }
@@ -64,9 +64,9 @@ public class PodsController {
         return commonService.setPathVariables(httpServletRequest, "/pods/yaml", new ModelAndView());
     }
 
-    @GetMapping(value = "/caas/workloads/pods/{podName}")
+    @GetMapping(value = "/caas/workloads/pods/{podName}/details")
     public void getPodDetailsRedirect( HttpServletResponse httpServletResponse, @PathVariable String podName) throws IOException {
-        httpServletResponse.sendRedirect("/caas/workloads/pods/" + podName + "/details");
+        httpServletResponse.sendRedirect("/caas/workloads/pods/" + podName);
     }
 
 

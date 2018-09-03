@@ -55,7 +55,7 @@ public class NodesController {
      * @param httpServletRequest the http servlet request
      * @return the user main
      */
-    @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}/details")
+    @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}")
     public ModelAndView getNodeDetails( HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/details", new ModelAndView());
     }
@@ -66,9 +66,9 @@ public class NodesController {
      * @param httpServletResponse the http servlet response
      * @return the user main
      */
-    @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}")
+    @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}/details")
     public void sendRedirectClusterOverview(HttpServletResponse httpServletResponse, @PathVariable String nodeName) throws IOException {
-        httpServletResponse.sendRedirect( "/caas/clusters/nodes/" + nodeName + "/summary");
+        httpServletResponse.sendRedirect( "/caas/clusters/nodes/" + nodeName);
     }
 
     /**
