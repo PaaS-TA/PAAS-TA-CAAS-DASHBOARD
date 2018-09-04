@@ -105,12 +105,12 @@ public class RestTemplateService {
         } catch (Exception e) {
             e.printStackTrace();
 
-            Map<String, Object> a = new HashMap();
-            a.put("resultCode" , "500");
+            Map<String, Object> resultMap = new HashMap();
+            resultMap.put("resultCode" , "500");
             ObjectMapper mapper = new ObjectMapper();
-            LOGGER.info(mapper.convertValue(a, responseType).toString());
+            LOGGER.info(mapper.convertValue(resultMap, responseType).toString());
 
-            return mapper.convertValue(a, responseType);
+            return mapper.convertValue(resultMap, responseType);
         }
     }
 

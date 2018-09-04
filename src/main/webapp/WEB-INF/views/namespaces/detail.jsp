@@ -17,7 +17,8 @@
                                 <col style='width:20%'>
                                 <col style=".">
                             </colgroup>
-                            <tbody>
+                            <tbody id="noResultAreaForNameSpaceDetails" style="display: none;"></tbody>
+                            <tbody id="resultAreaForNameSpaceDetails" style="display: none;">
                                 <tr>
                                     <th><i class="cWrapDot"></i> Name</th>
                                     <td id="nameSpaceName"></td>
@@ -80,21 +81,52 @@
         viewLoading('show');
 
         procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail.do", "GET", null, null, callbackGetDetail);
+    };
 
-        getResourceQuotaList(NAME_SPACE);
+    var callbackGetDetail = function(data) {
+        var noResultAreaForNameSpaceDetails = $("#noResultAreaForNameSpaceDetails");
+        var resultAreaForNameSpaceDetails = $("#resultAreaForNameSpaceDetails");
+
+        if (data.resultCode == "500") {
+            noResultAreaForNameSpaceDetails.show();
+            viewLoading('hide');
+            alertMessage('Get NameSpaces Fail~', false);
+
+            return false;
+        }
+
+        $("#title").html(data.metadata.name);
+        $("#nameSpaceName").html(data.metadata.name);
+        $("#nameSpaceCreationTime").html(data.metadata.creationTimestamp);
+        $("#nameSpaceStatus").html(data.status.phase);
+
+        resultAreaForNameSpaceDetails.show();
+
+        viewLoading('hide');
     };
 
     var getResourceQuotaList = function(namespace) {
+        viewLoading('show');
+
         procCallAjax("/caas/clusters/namespaces/"+namespace+"/getResourceQuotaList.do", "GET", null, null, callbackGetResourceQuotaList);
     };
 
     var callbackGetResourceQuotaList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultCode) return false;
-
         var source = $("#quota-template").html();
         var template = Handlebars.compile(source);
-        // var trHtml = [];
         var trHtml = "";
+
+        if (data.resultCode == "500") {
+            var html0 = template(null);
+            html0 = html0.replace("<tbody>", "<tbody><tr><p class=service_p'>조회 된 ResourceQuota가 없습니다.</p></tr>");
+
+            $("#detailTab").append(html0);
+
+            viewLoading('hide');
+            alertMessage('Get NameSpaces Fail~', false);
+
+            return false;
+        }
 
         for (var i = 0; i < data.items.length; i++) {
             var html = template(data.items[i]);
@@ -102,13 +134,6 @@
             var useds = data.items[i].status.used;
 
             for ( var key in hards ) {
-                // trHtml.push(
-                //     "<tr>"
-                //     + "<td>" + key + "</td>"
-                //     + "<td>" + hards[key] + "</td>"
-                //     + "<td>" + useds[key] + "</td>"
-                //     + "</tr>"
-                // );
                 trHtml +=
                     "<tr>"
                     + "<td>" + key + "</td>"
@@ -124,17 +149,10 @@
         viewLoading('hide');
     }
 
-    var callbackGetDetail = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultCode) return false;
-
-        $("#title").html(data.metadata.name);
-        $("#nameSpaceName").html(data.metadata.name);
-        $("#nameSpaceCreationTime").html(data.metadata.creationTimestamp);
-        $("#nameSpaceStatus").html(data.status.phase);
-    };
-
     $(document.body).ready(function () {
         getDetail();
+
+        getResourceQuotaList(NAME_SPACE);
     });
 
 </script>
