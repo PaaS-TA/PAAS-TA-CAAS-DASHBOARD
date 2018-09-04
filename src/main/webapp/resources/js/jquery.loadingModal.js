@@ -6,8 +6,8 @@
             position: 'auto',
             text: '',
             color: '#fff',
-            // opacity: '0.7',
-            opacity: '1',
+            opacity: '0.7',
+            // opacity: '1',
             backgroundColor: 'rgb(0,0,0)',
             // backgroundColor: 'white',
             animation: 'doubleBounce'

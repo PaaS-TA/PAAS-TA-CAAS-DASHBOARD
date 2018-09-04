@@ -46,7 +46,7 @@ public class PodsController {
 
     @GetMapping(value = "/caas/workloads/pods")
     public ModelAndView getPodList( HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, "/workloads/pods", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, "/pods/main", new ModelAndView());
     }
 
     @GetMapping(value = "/caas/workloads/pods/{podName}")

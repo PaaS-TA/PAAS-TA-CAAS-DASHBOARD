@@ -92,4 +92,13 @@ public class UsersController {
         user.setRoleSetCode(users.getRoleSetCode());
         return userService.updateUserRole(serviceInstanceId, organizationGuid, user);
     }
+
+    @PostMapping(value = "/deleteUser.do")
+    @ResponseBody
+    public Users deleteUser(@RequestParam("serviceInstanceId") String serviceInstanceId,
+                            @RequestParam("organizationGuid") String organizationGuid,
+                            @RequestBody Users users){
+        Users user = userService.getUserByServiceInstanceId(serviceInstanceId, organizationGuid, users.getUserId());
+        return userService.deleteUserByServiceInstanceId(user);
+    }
 }

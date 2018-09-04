@@ -61,4 +61,21 @@ public class UsersService {
     public Users updateUserRole(String serviceInstanceId, String organizationGuid, Users user) {
         return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL+"/serviceInstanceId/" + serviceInstanceId + "/organizationGuid/" + organizationGuid + "/userId/" + user.getUserId(), HttpMethod.POST, user, Users.class);
     }
+
+    public Users deleteUserByServiceInstanceId(Users user) {
+        // Todo.. 나중에 custom role 이 생기면 role 도 삭제해야함.
+
+        String userName = user.getUserId();
+        String userId[] = userName.split("@");
+        String roleName = (userId[0].replaceAll("([:.#$&!_\\(\\)`*%^~,\\<\\>\\[\\];+|-])+", "")).toLowerCase();
+
+        // role binding 삭제
+        String successRoleBinding = restTemplateService.send(Constants.TARGET_CAAS_API, "/roleBindings/namespaces/" + user.getCaasNamespace() + "/rolebindings/" + user.getCaasNamespace() + "-" + roleName + "-role-binding", HttpMethod.DELETE, null, String.class);
+        System.out.println("######################## 와댜댜댜댜댜1 : " + successRoleBinding);
+        // service account 삭제
+        String successServiceAccount = restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL +"/namespaces/" + user.getCaasNamespace() + "/serviceaccounts/" + user.getCaasAccountName(), HttpMethod.DELETE, null, String.class);
+        System.out.println("######################## 와댜댜댜댜댜2 : " + successServiceAccount);
+
+        return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL, HttpMethod.DELETE, user, Users.class);
+    }
 }
