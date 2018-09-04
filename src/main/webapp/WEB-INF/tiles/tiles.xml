@@ -12,6 +12,7 @@
         <put-attribute name="body" value=""/>
         <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
         <put-attribute name="modal" value="/WEB-INF/views/common/modal.jsp"/>
+        <put-attribute name="alert" value="/WEB-INF/views/common/alert.jsp"/>
     </definition>
 
     <definition name="layout.admin" template="/WEB-INF/views/common/default-layout.jsp">
@@ -21,6 +22,7 @@
         <put-attribute name="body" value=""/>
         <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
         <put-attribute name="modal" value="/WEB-INF/views/common/modal.jsp"/>
+        <put-attribute name="alert" value="/WEB-INF/views/common/alert.jsp"/>
     </definition>
 
     <!-- PAGES -->
@@ -48,14 +50,5 @@
     <definition name="/common/unauthorized" extends="layout.empty">
         <put-attribute name="body" value="/WEB-INF/views/common/unauthorized.jsp"/>
     </definition>
-
-    <!--TODO :: REMOVE-->
-    <!--<definition name="/namespaces/main" extends="layout.default">-->
-        <!--<put-attribute name="body" value="/WEB-INF/views/namespaces/main.jsp"/>-->
-    <!--</definition>-->
-
-    <!--<definition name="main/main" extends="layout.default">-->
-        <!--<put-attribute name="body" value="/WEB-INF/views/main/main.jsp"/>-->
-    <!--</definition>-->
 
 </tiles-definitions>
