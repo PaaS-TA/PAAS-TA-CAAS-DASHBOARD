@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class ReplicaSetsController {
 
-    //private static final String BASE_URL = "/replicasets";
+    private static final String BASE_URL = "/replicasets";
     private final ReplicaSetsService replicaSetService;
     private final CommonService commonService;
 
@@ -43,7 +43,7 @@ public class ReplicaSetsController {
      */
     @GetMapping(value = "/caas/workloads/replicaSets")
     public ModelAndView getReplicaSetMain(HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, "/workloads/replicasets/main", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
 
     /**
@@ -55,7 +55,7 @@ public class ReplicaSetsController {
      */
     @GetMapping(value = "/caas/workloads/replicaSets/{replicaSetName:.+}")
     public ModelAndView getReplicaSetDetail(HttpServletRequest httpServletRequest, @PathVariable(value = "replicaSetName") String replicaSetName) {
-        return commonService.setPathVariables(httpServletRequest, "/workloads/replicasets/detail", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/detail", new ModelAndView());
     }
 
     /**
@@ -67,7 +67,7 @@ public class ReplicaSetsController {
      */
     @GetMapping(value = "/caas/workloads/replicaSets/{replicaSetName:.+}/events")
     public ModelAndView getReplicaSetDetailEvents(HttpServletRequest httpServletRequest, @PathVariable(value = "replicaSetName") String replicaSetName) {
-        return commonService.setPathVariables(httpServletRequest, "/workloads/replicasets/events", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());
     }
 
     /**
@@ -79,7 +79,7 @@ public class ReplicaSetsController {
      */
     @GetMapping(value = "/caas/workloads/replicaSets/{replicaSetName:.+}/yaml")
     public ModelAndView getReplicaSetDetailYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "replicaSetName") String replicaSetName) {
-        return commonService.setPathVariables(httpServletRequest, "/workloads/replicasets/yaml", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/yaml", new ModelAndView());
     }
 
     /**
