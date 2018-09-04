@@ -243,9 +243,9 @@
 
     $(document).on("click", "span[name=saveRole]", function(){
         var index = $('span[name=saveRole]').index(this);
-        alert(index);
-        alert($('select[name=role-filter]').eq(index).data("userId"));
-        alert($('select[name=role-filter]').eq(index).find(':selected').val());
+        //alert(index);
+        //alert($('select[name=role-filter]').eq(index).data("userId"));
+        //alert($('select[name=role-filter]').eq(index).find(':selected').val());
 
         userIdSelectRole = $('select[name=role-filter]').eq(index).data("userId");
         userPerRole = $('select[name=role-filter]').eq(index).find(':selected').val();
@@ -322,6 +322,7 @@
     var callbackDeleteUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
         console.log("result message 는?" + JSON.stringify(data));
+        alert("사용자가 삭제되었습니다.");
         location.reload(true);
     };
 
