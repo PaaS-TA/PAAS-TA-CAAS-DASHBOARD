@@ -56,6 +56,7 @@
 
     var BASE_URL = "/caas";
     var roleName;
+    var userAccessToken;
 
     // GET User
     var getUser = function() {
@@ -65,7 +66,7 @@
     // CALLBACK
     var callbackGetUser = function(data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        //console.log("value", JSON.stringify(data));
+        console.log("value", JSON.stringify(data));
         $("#access-user-token").val(data.caasAccountTokenName);
 
         if(data.roleSetCode == "RS0001"){
@@ -77,7 +78,22 @@
         }
 
         $("#access-user-role").val(roleName);
+
+        userAccessToken = data.caasAccountTokenName;
+        getAccessToken();
     };
+
+
+    // user 의 token 값 가져오기
+    var getAccessToken = function () {
+        procCallAjax(BASE_URL + "/accessInfo/namespace/" + NAME_SPACE + "/accessTokenName/" + userAccessToken, "GET", null, null, callbackGetAccessToken);
+    };
+
+    var callbackGetAccessToken = function (data) {
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        $("#access-user-token").val(data.userAccessToken);
+    };
+
 
     // ON LOAD
     $(document.body).ready(function () {

@@ -275,9 +275,6 @@
             roleSetCode: userPerRole
         };
 
-        //reqParam = JSON.stringify(reqParam);
-        console.log("파람파람 ::", reqParam);
-
         postProcCallAjax(BASE_URL + "/users/updateUserRole.do?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackUpdateRoleOfUser);
     };
 
@@ -315,8 +312,6 @@
             userId: userId
         };
         postProcCallAjax(BASE_URL + "/users/deleteUser.do?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackDeleteUser);
-
-        // Todo 사용자 삭제 시 DB 에서도 지우고, kubectl delete service account, kubectl delete role binding 도 해야함.
     };
 
     var callbackDeleteUser = function (data) {
