@@ -293,9 +293,11 @@ var stringifyJSON = function (obj) {
 //     .then(function() { $('body').loadingModal('destroy') ;} );
 var viewLoading = function(type) {
     if (type == 'show') {
+        console.log(":: Show Loading..");
         $('body').loadingModal();
         $('body').loadingModal('animation', 'chasingDots').loadingModal('color', 'black').loadingModal('backgroundColor', 'white');
     } else if (type == 'hide') {
+        console.log(":: Hide Loading..");
         $('body').loadingModal('destroy') ;
     }
 }
@@ -304,8 +306,7 @@ var alertMessage = function(value, result) {
     $(".alertLayer .in").html(value);
     if (result) {
         $(".alertLayer").css('border-left', '4px solid #3d10ef');
-    }
-    else {
+    } else {
         $(".alertLayer").css('border-left', '4px solid #cb3d4a');
     }
     $(".alertLayer").addClass("moveAlert");

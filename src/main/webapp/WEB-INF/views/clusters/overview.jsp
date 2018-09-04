@@ -139,11 +139,19 @@
 <script type="text/javascript">
 
     var getNamespaces = function() {
+        viewLoading('show');
+
         procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail.do", "GET", null, null, callbackGetNamespaces);
     };
 
     var callbackGetNamespaces = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultCode) return false;
+        // if (RESULT_STATUS_FAIL === data.resultCode) return false;
+        if (data.resultCode == "500") {
+            viewLoading('hide');
+            alertMessage('Get NameSpaces Fail~', false);
+
+            return false;
+        }
 
         var htmlString = [];
 
@@ -156,9 +164,13 @@
 
         var resultArea = $("#resultAreaForNameSpace");
         resultArea.html(htmlString);
+
+        viewLoading('hide');
     };
 
     var getNodes = function() {
+        viewLoading('show');
+
         var reqUrl = "<%= Constants.API_URL %>/nodes"
         procCallAjax(reqUrl, "GET", null, null, callbackGetListNodes);
     }
@@ -205,6 +217,8 @@
         $('#clusters_nodes_table > tbody').html(contents);
 
         sortTable("clusters_nodes_table", "node-name");
+
+        viewLoading('hide');
     }
 
     $(document.body).ready(function () {
