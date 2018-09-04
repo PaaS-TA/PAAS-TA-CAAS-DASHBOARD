@@ -116,7 +116,7 @@
                                 </td>
                             </tr>
                             </thead>
-                            <tbody id="tbody_node_pods">
+                            <tbody>
                             <tr><td colspan="6" style="text-align: center;">LOADING PODS IN NODE</td></tr>
                             </tbody>
                             <tfoot class="caas-pagenation-wrap"></tfoot>
@@ -130,7 +130,7 @@
                         <p>Conditions</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
+                        <table id="conditions_in_node" class="table_event condition alignL">
                             <colgroup>
                                 <col style=".">
                                 <col style=".">
@@ -149,7 +149,7 @@
                                 <td>Message</td>
                             </tr>
                             </thead>
-                            <tbody id="tbody_node_conditions">
+                            <tbody>
                             <tr><td colspan="6" style="text-align: center;">LOADING CONDITIONS</td></tr>
                             </tbody>
                             <!-- TODO :: REMOVE TFOOT ELEMENT IN NODE CONDITIONS -->
@@ -201,7 +201,7 @@
         });
 
         // append conditions tbody
-        $('#tbody_node_conditions').html(contents);
+        $('#conditions_in_node > tbody').html(contents);
     }
 
     var callbackGetPods = function (data) {

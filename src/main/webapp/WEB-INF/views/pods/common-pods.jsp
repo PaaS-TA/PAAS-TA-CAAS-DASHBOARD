@@ -1,8 +1,8 @@
 <%--
-  Common-nodes.jsp
+  Common-pods.jsp
   @author Hyungu Cho
   @version 1.0
-  @since 2018.08.14
+  @since 2018.09.03
 --%>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -10,6 +10,8 @@
     <span class="green2"><i class="fas fa-check-circle"></i></span>
 </h1>
 <script>
+    var podName;
+    var podStatus;
     var nodeName;
     var currentTab;
 

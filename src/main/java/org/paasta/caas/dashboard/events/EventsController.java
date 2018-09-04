@@ -39,8 +39,20 @@ public class EventsController {
      */
     @GetMapping(value = API_URL + "/namespaces/{namespace:.+}/events/resource/{resourceName:.+}")
     @ResponseBody
-    public EventsList getEventList(@PathVariable("namespace") String namespace
+    EventsList getEventList(@PathVariable("namespace") String namespace
             , @PathVariable("resourceName") String resourceName) {
         return eventsService.getEventList( namespace, resourceName );
+    }
+
+    /**
+     * Get Event List with filtering node's name.
+     * @param namespace
+     * @param nodeName
+     * @return
+     */
+    @GetMapping(value = API_URL + "/namespaces/{namespace:.+}/events/node/{nodeName:.+}")
+    @ResponseBody
+    EventsList getEventListByNode(@PathVariable("namespace") String namespace, @PathVariable("nodeName") String nodeName) {
+        return eventsService.getEventListByNode(namespace, nodeName);
     }
 }

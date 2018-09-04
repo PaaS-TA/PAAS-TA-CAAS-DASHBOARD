@@ -186,9 +186,13 @@ var processIfDataIsNull = function (data, procCallback, defaultValue) {
 }
 
 
-var sortTable = function (tableId, sortKey, isAscending=true) {
+var sortTable = function (tableId, sortKey, isAscending) {
     var _tbody = $('#' + tableId + ' > tbody');
     var _rows = _tbody.children('tr');
+
+    if (null == isAscending)
+        isAscending = true;
+
     _rows.sort(function (rowA, rowB) {
         var _reverseNumber = (isAscending)? 1 : -1;
         var _compareA = $(rowA).attr(sortKey);

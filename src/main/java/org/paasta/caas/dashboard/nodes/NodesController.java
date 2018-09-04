@@ -67,12 +67,8 @@ public class NodesController {
      * @return the user main
      */
     @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName}/details")
-    public void sendRedirectClusterOverview(HttpServletResponse httpServletResponse, @PathVariable String nodeName) {
-        try {
-            httpServletResponse.sendRedirect( "/caas/clusters/nodes/" + nodeName );
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        }
+    public void sendRedirectClusterOverview(HttpServletResponse httpServletResponse, @PathVariable String nodeName) throws IOException {
+        httpServletResponse.sendRedirect( "/caas/clusters/nodes/" + nodeName);
     }
 
     /**

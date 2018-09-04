@@ -28,10 +28,11 @@
                         <p>YAML</p>
                     </div>
                     <div class="paA30">
-                        <div class="yaml" id="resultArea">
+                        <div class="yaml">
+                        <pre class="brush: yaml" id="resultArea">
                                     <%--<pre class="brush: cpp" id="resultArea">--%>
                                     <%--</pre>--%>
-                        </div>
+                        </pre>
                         <!--button class="btns colors4">Save</button>
                         <button class="btns colors5">Cancel</button>
                         <button class="btns colors9 pull-right maL05">copy</button>
@@ -63,9 +64,7 @@
 
 <!-- SyntexHighlighter -->
 <script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCpp.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCSharp.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushPython.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushYaml.js"/>"></script>
 <link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">
 <link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">
 
@@ -109,7 +108,8 @@
         var htmlString = [];
 
 
-        $('#resultArea').JSONView(data.source);
+        //$('#resultArea').JSONView(data.source);
+        $('#resultArea').html('---\n' + data.sourceTypeYaml);
     }
 
     var movePage = function(requestPage) {

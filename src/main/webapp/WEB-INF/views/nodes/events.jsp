@@ -1,4 +1,4 @@
-<%--
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %><%--
   Deployments main
   @author Hyungu Cho
   @version 1.0
@@ -23,7 +23,7 @@
                         <p>Events</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
+                        <table id="events_table_in_node" class="table_event condition alignL">
                             <colgroup>
                                 <col style=".">
                                 <col style=".">
@@ -44,47 +44,10 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td>Back-off pulling Images "aa"</td>
-                                <td>kubelet ip-172-31-27-131</td>
-                                <td>spec.containers{aa}</td>
-                                <td>41923</td>
-                                <td>2018-07-08 18:31:01</td>
-                                <td>2018-07-09 18:31:01</td>
-                            </tr>
-                            <tr>
-                                <td><span class="red2"><i
-                                        class="fas fa-exclamation-circle"></i> Error: ImagesPullBackOff</span></td>
-                                <td>kubelet ip-172-31-27-131</td>
-                                <td>spec.containers{aa}</td>
-                                <td>41278</td>
-                                <td>2018-07-08 18:31:01</td>
-                                <td>2018-07-09 18:31:01</td>
-                            </tr>
-                            <tr>
-                                <td>Back-off pulling Images "bb"</td>
-                                <td>kubelet ip-172-31-27-131</td>
-                                <td>spec.containers{bb}</td>
-                                <td>129005</td>
-                                <td>2018-07-08 18:31:01</td>
-                                <td>2018-07-09 18:31:01</td>
-                            </tr>
-                            <tr>
-                                <td><span class="red2"><i
-                                        class="fas fa-exclamation-circle"></i> Error: ImagesPullBackOff</span></td>
-                                <td>kubelet ip-172-31-27-131</td>
-                                <td>spec.containers{bb}</td>
-                                <td>129005</td>
-                                <td>2018-07-08 18:31:01</td>
-                                <td>2018-07-09 18:31:01</td>
+                                <td colspan="6">Cannot load events for node</td>
                             </tr>
                             </tbody>
-                            <!--tfoot>
-                            <tr>
-                            <td colspan="6">
-                                    <button class="btns2 btns2_1 colors4 event_btns">더보기</button>
-                                    </td>
-                                    </tr>
-                                    </tfoot-->
+                            <!--tfoot></tfoot-->
                         </table>
                     </div>
                 </div>
@@ -95,10 +58,91 @@
 <script>
     var callbackGetNodeEvent = function (data) {
         // TODO :: write logic
+        if (false == checkValidData(data)) {
+            alert("Cannot load pods data");
+            return;
+        }
+
+        // pre-sort : last seen (last timestamp)
+        data.items.sort(function(itemA, itemB) {
+            var _compareA = itemA.lastTimestamp;
+            var _compareB = itemB.lastTimestamp;
+            var _ascending = false;
+            var _reverseNumber = (_ascending)? 1 : -1;
+            if (_compareA == _compareB)
+                return 0;
+            else {
+                if (_compareA == null)
+                    return -1 * _reverseNumber;
+                else if (_compareB == null)
+                    return 1 * _reverseNumber;
+                else if (_compareA > _compareB)
+                    return 1 * _reverseNumber;
+                else
+                    return -1 * _reverseNumber;
+            }
+        });
+
+        var contents = [];
+        $.each(data.items, function (index, eventItem) {
+            // message, source, sub-object, count, first-seen, last-seen
+            // message is including error message
+            var _event = getEvent(eventItem);
+            var messageHtml;
+            if (0 == _event.message.indexOf("Error"))
+                messageHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i> ' + _event.message + '</span>';
+            else
+                messageHtml = '<span>' + _event.message + '</span>';
+
+            var eventRowHtml = '<tr>'
+                + '<td>' + messageHtml + '</td>'
+                + '<td>' + _event.source + '</td>'
+                + '<td>' + _event.subObject + '</td>'
+                + '<td>' + _event.count + '</td>'
+                + '<td>' + _event.firstSeen + '</td>'
+                + '<td>' + _event.lastSeen + '</td>'
+                + '</tr>';
+            contents.push(eventRowHtml);
+        });
+
+        // write event list into tbody
+        if (contents.length <= 0)
+            contents.push('<tr><td colspan="6">There is nothing to display here.</td></tr>');
+
+        $('#events_table_in_node > tbody').html(contents);
+    }
+
+    var getEvent = function(data) {
+        // message, source, sub-object, count, first-seen, last-seen
+        // message is including error message
+        return {
+            message: data.message,
+            source: data.source.host,
+            subObject: (data.involvedObject.kind + ": " + data.involvedObject.name),
+            count: data.count,
+            firstSeen: data.firstTimestamp,
+            lastSeen: data.lastTimestamp
+        };
+    }
+
+    var getEventsListByNode = function(namespace, nodeName, callbackFunc) {
+        var namespace = "_all";
+        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/events/node/" + nodeName;
+
+        if (null == callbackFunc)
+            callbackFunc = callbackGetNodeEvent;
+
+        procCallAjax(reqUrl, "GET", null, null, callbackFunc);
     }
 
     $(document.body).ready(function () {
-        // empty
+        var urlInfo = getURLInfo();
+        nodeName = urlInfo.resource;
+        currentTab = urlInfo.tab == "_default"? "details" : urlInfo.tab;
+
+        var namespace = "_all";
+
+        getEventsListByNode(namespace, nodeName, callbackGetNodeEvent);
     });
 </script>
 <!-- NodeEvents 끝 -->

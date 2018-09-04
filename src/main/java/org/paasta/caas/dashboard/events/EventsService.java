@@ -37,4 +37,7 @@ public class EventsService {
         return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/"+namespace+"/events/resource/"+resourceName, HttpMethod.GET, null, EventsList.class);
     }
 
+    public EventsList getEventListByNode(String namespace, String nodeName) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/" + namespace + "/events/node/" + nodeName, HttpMethod.GET, null, EventsList.class);
+    }
 }
