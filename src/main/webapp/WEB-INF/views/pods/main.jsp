@@ -90,11 +90,16 @@
 
         var items = gList.items;
         var listLength = items.length;
-        var selectorList = [];
         var htmlString = [];
 
         for (var i = 0; i < listLength; i++) {
             var podsName = items[i].metadata.name;
+            var containerStatuses;
+            if(items[i].status.containerStatuses == null) {
+                containerStatuses = "None";
+            } else {
+                containerStatuses = items[i].status.containerStatuses[0].restartCount;
+            }
 
            htmlString.push(
                 "<tr>"
@@ -102,9 +107,9 @@
                 + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/pods/" + podsName + "\");'>" + podsName + "</a>"
                 + "</td>"
                 + "<td>" + items[i].metadata.namespace + "</td>"
-                + "<td>" + items[i].spec.nodeName + "</td>"
+                + "<td>" + nvl2(items[i].spec.nodeName, "None") + "</td>"
                 + "<td>" + items[i].status.phase + "</td>"
-                + "<td>" + items[i].status.containerStatuses[0].restartCount + "</td>"
+                + "<td>" + containerStatuses + "</td>"
                 + "<td>" + items[i].metadata.creationTimestamp + "</td>"
                 + "</tr>");
 

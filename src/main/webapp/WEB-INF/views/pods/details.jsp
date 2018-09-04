@@ -91,52 +91,46 @@
                             <tbody>
                             <tr>
                                 <th><i class="cWrapDot"></i> Name</th>
-                                <td>default</td>
+                                <td id="name"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td><span class="bg_gray">app : nginx-2</span> <span class="bg_gray">tier: node</span></td>
+                                <td id="labels"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Creation Time</th>
-                                <td>2018-07-04 20:15:30</td>
+                                <td id="creationTime"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Status</th>
-                                <td>Running</td>
-                            </tr>
-                            <tr>
-                                <th><i class="cWrapDot"></i> Creation Time</th>
-                                <td>2018-07-04 20:15:30</td>
+                                <td id="status"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> QoS Class</th>
-                                <td>BestEffort</td>
+                                <td id="qosClass"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Node</th>
-                                <td>
-                                    <a href="http://172-31-20-237" target="_blank">ip-172-31-20-237</a>
-                                </td>
+                                <td id="node"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> IP</th>
-                                <td>
-                                    <a href="http://10.244.3.50">10.244.3.50</a>
-                                </td>
+                                <td id="ip"></td>
                             </tr>
 
                             <tr>
                                 <th><i class="cWrapDot"></i> Conditions</th>
-                                <td>Initialized: True,  Ready: True,  ContainersReady: True, PodScheduled: True</td>
+                                <td id="conditions"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Controllers</th>
-                                <td>Replica Set : <a href="http://caas_replica_view.html">spring-cloud-web-user-d7c647b44</a></td>
+                                <%--<td>Replica Set : <a href="http://caas_replica_view.html">spring-cloud-web-user-d7c647b44</a></td>--%>
+                                <td id="controllers"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Volumes</th>
-                                <td><a href="#">default-token-9vmgs</a></td>
+                                <td id="volumes"></td>
+                                <%--<td><a href="#">default-token-9vmgs</a></td>--%>
                             </tr>
                             </tbody>
                         </table>
@@ -158,7 +152,8 @@
                                 <col style='width:25%;'>
                                 <col style='width:15%;'>
                             </colgroup>
-                            <thead>
+                            <tr id="noContainersResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Pods가 없습니다.</p></td></tr>
+                            <thead id="containersResultHeaderArea">
                             <tr>
                                 <td>Name</td>
                                 <td>Status</td>
@@ -166,154 +161,7 @@
                                 <td>Restart count</td>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <a href="#">portal-api</a>
-                                </td>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> Running
-                                </td>
-                                <td>bluedigm/hyerin:portalapi
-                                </td>
-                                <td>1
-                                </td>
-                            </tr>
-                            <tr style="display:none;">
-                                <td colspan="5">
-                                    <table class="table_detail alignL">
-                                        <colgroup>
-                                            <col style=".">
-                                            <col style=".">
-                                        </colgroup>
-                                        <tbody>
-                                        <tr>
-                                            <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
-                                            <td>portal-api</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Image</td>
-                                            <td>bluedigm/hyerin:portalapi</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Environment variables</td>
-                                            <td>SPRING_PROFILES_ACTIVE: local<br/>
-                                                CONFIG_SERVER: 45.77.19.223<br/>
-                                                EUREKA_SERVER: registration-service.default.svc.cluster.local</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Commands</td>
-                                            <td>perl <br/>
-                                                -Mbignum=bpi<br/>
-                                                -wle <br/>
-                                                print bpi(2000) </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Args</td>
-                                            <td>-</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="#">portal-api</a>
-                                </td>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> Running
-                                </td>
-                                <td>bluedigm/hyerin:portalapi
-                                </td>
-                                <td>1
-                                </td>
-                            </tr>
-                            <tr style="display:none;">
-                                <td colspan="5">
-                                    <table class="table_detail alignL">
-                                        <colgroup>
-                                            <col style=".">
-                                            <col style=".">
-                                        </colgroup>
-                                        <tbody>
-                                        <tr>
-                                            <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
-                                            <td>portal-api</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Image</td>
-                                            <td>bluedigm/hyerin:portalapi</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Environment variables</td>
-                                            <td>SPRING_PROFILES_ACTIVE: local<br/>
-                                                CONFIG_SERVER: 45.77.19.223<br/>
-                                                EUREKA_SERVER: registration-service.default.svc.cluster.local</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Commands</td>
-                                            <td>perl <br/>
-                                                -Mbignum=bpi<br/>
-                                                -wle <br/>
-                                                print bpi(2000) </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Args</td>
-                                            <td>-</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="#">portal-api</a>
-                                </td>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> Running
-                                </td>
-                                <td>bluedigm/hyerin:portalapi
-                                </td>
-                                <td>1
-                                </td>
-                            </tr>
-                            <tr style="display:none;">
-                                <td colspan="5">
-                                    <table class="table_detail alignL">
-                                        <colgroup>
-                                            <col style=".">
-                                            <col style=".">
-                                        </colgroup>
-                                        <tbody>
-                                        <tr>
-                                            <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
-                                            <td>portal-api</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Image</td>
-                                            <td>bluedigm/hyerin:portalapi</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Environment variables</td>
-                                            <td>SPRING_PROFILES_ACTIVE: local<br/>
-                                                CONFIG_SERVER: 45.77.19.223<br/>
-                                                EUREKA_SERVER: registration-service.default.svc.cluster.local</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Commands</td>
-                                            <td>perl <br/>
-                                                -Mbignum=bpi<br/>
-                                                -wle <br/>
-                                                print bpi(2000) </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Args</td>
-                                            <td>-</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
+                            <tbody id="resultArea">
                             </tbody>
                         </table>
                     </div>
@@ -469,3 +317,232 @@
         </div>
     </div>
 </div>
+
+
+
+
+<input type="hidden" id="requestPodName" name="requestPodName" value="<c:out value='${podName}' default='' />" />
+
+
+<%--TODO : REMOVE--%>
+<%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>--%>
+<%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
+
+<script type="text/javascript">
+    // ON LOAD
+    $(document.body).ready(function () {
+        getDetail();
+    });
+</script>
+
+
+<script type="text/javascript">
+
+    // GET DETAIL
+    var getDetail = function() {
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.API_WORKLOAD %>/namespaces/" + NAME_SPACE + "/pods/" + document.getElementById('requestPodName').value;
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
+    };
+
+
+    // CALLBACK
+    var callbackGetDetail = function(data) {
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+
+        console.log("잘 대나 해보쟝 ", data);
+        var labels = stringifyJSON(data.metadata.labels).replace(/,/g, ', ');
+        // var selector = stringifyJSON(data.spec.selector).replace(/matchLabels=/g, '');
+
+        document.getElementById("name").textContent = data.metadata.name;
+        document.getElementById("labels").innerHTML = createSpans(labels, "false");
+        document.getElementById("creationTime").textContent = data.metadata.creationTimestamp;
+        document.getElementById("status").innerHTML = data.status.phase;
+        document.getElementById("qosClass").textContent = data.status.qosClass; //qosClass
+        document.getElementById("conditions").textContent = conditionParser(data.status.conditions);
+
+        if(data.spec.nodeName == null) {
+            document.getElementById("node").innerHTML =  "None";
+        }
+
+        if(data.spec.nodeName != null) {
+            document.getElementById("node").innerHTML =  "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/clusters/nodes/" + data.spec.nodeName + "/summary\");'>"+
+                data.spec.nodeName +
+                '</a>';
+        }
+
+        document.getElementById("ip").textContent = data.status.podIP;
+        document.getElementById("controllers").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>"+
+                                                                data.metadata.ownerReferences[0].name +
+                                                            '</a>';
+        document.getElementById("volumes").textContent = data.spec.volumes[0].name;
+
+        createContainerResultArea(data.status.containerStatuses, data.spec.containers);
+    };
+
+    var replaceLabels = function (data) {
+        return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D').replace(/, /g, '&');
+    }
+
+    var createSpans = function (data, type) {
+        var datas = data.replace(/=/g, ':').split(',');
+        var spanTemplate = "";
+
+        if (type === "true") {
+            $.each(datas, function (index, data) {
+                spanTemplate += '<span class="bg_gray">' + data + '</span>';
+                if (datas.length > 1) {
+                    spanTemplate += '<br>';
+                }
+            });
+        } else {
+            $.each(datas, function (index, data) {
+                spanTemplate += '<span class="bg_gray">' + data + '</span> ';
+            });
+        }
+
+        return spanTemplate;
+    }
+    
+    var conditionParser = function (data) {
+        var tempStr = "";
+        for ( var index in data) {
+            tempStr += data[index].type + ": " + data[index].status;
+            tempStr += ", ";
+        }
+        return tempStr;
+    }
+    
+    var createContainerResultArea = function (containerStatuses, containers) {
+        var resultArea = $('#resultArea');
+        var resultHeaderArea = $('#containersResultHeaderArea');
+        var noResultArea = $('#noContainersResultArea');
+
+        var listLength;
+        console.log("컨테이너들! " , containers);
+        console.log("컨테이너들! containerStatuses " , containerStatuses);
+        if(containerStatuses == null) {
+            containerStatuses = containers;
+            listLength = containers.length;
+            obj.key3 = "value3";
+        } else {
+            listLength = containerStatuses.length;
+        }
+
+        $.each(containerStatuses, function (index, itemList) {
+            console.log("뭐야 ", containers);
+            console.log("허허헣 ", itemList);
+            resultArea.append('<tr>' +
+                                '<td>' +
+                                    "<a href='#' onclick='event.preventDefault()'>"+
+                                        itemList.name +
+                                    '</a>' +
+                                '</td>' +
+                                '<td>' + '<span class="green2"><i class="fas fa-check-circle"></i></span>' + Object.keys(itemList.state) + '</td>' +
+                                '<td>' + itemList.image + '</td>' +
+                                '<td>' + itemList.restartCount + '</td>' +
+                              '</tr>' +
+                              '<tr style="display">' +
+                                '<td colspan="5">' +
+                                    '<table class="table_detail alignL">' +
+                                        '<colgroup>' +
+                                            '<col style="*">' +
+                                            '<col style="*">' +
+                                        '</colgroup>' +
+                                        '<tbody>' +
+                                            '<tr>' +
+                                                '<td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>' +
+                                                '<td>' + itemList.name + '</td>' +
+                                            '</tr>' +
+                                            '<tr>' +
+                                                '<td>Image</td>' +
+                                                '<td>' + itemList.image + '</td>' +
+                                            '</tr>' +
+                                            '<tr>' +
+                                                '<td>Environment variables</td>' +
+                                                '<td>' + envParser(getContainer(containers, itemList.name)) + '</td>' +
+                                            '</tr>' +
+                                            '<tr>' +
+                                                '<td>Commands</td>' +
+                                                '<td>' + nvl2(getContainer(containers, itemList.name).command, "None") + '</td>' +
+                                            '</tr>' +
+                                            '<tr>' +
+                                                '<td>Args</td>' +
+                                                '<td>' + nvl2(getContainer(containers, itemList.name).args, "None")  + '</td>' +
+                                            '</tr>' +
+                                            '</tbody>' +
+                                    '</table>' +
+                                '</td>' +
+                              '</tr>');
+
+        });
+
+        if (listLength < 1) {
+            resultHeaderArea.hide();
+            resultArea.hide();
+            noResultArea.show();
+        } else {
+            noResultArea.hide();
+            resultHeaderArea.show();
+            resultArea.show();
+            resultArea.tablesorter();
+            resultArea.trigger("update");
+        }
+
+    }
+
+    var getContainer = function (containerList, conatinerName) {
+
+        var containerObject;
+            //data.spec.containers
+        for(var index =0; index < containerList.length; index ++) {
+            if(containerList[index].name == conatinerName) {
+                containerObject = containerList[index];
+                return containerObject;
+            }
+        }
+
+    }
+
+    var envParser = function (container) {
+
+        var tempStr = "";
+        console.log("컨테이넛 ", container);
+        if(container.env == null) {
+            return tempStr = "None";
+        }
+        envs = container.env;
+        for( var key in envs ) {
+            console.log("키자식111 ", Object.keys(envs[key]));
+            console.log("키자식222 ", Object.values(envs[key]));//Object.keys(object);
+            if(key != 0 ) {
+                tempStr += '<br>';
+            }
+
+            console.log("이게 틀렸네 ? ", Object.keys(envs[key])[1]);
+            // if(Object.keys(container[key])[1] == 'valueFrom') {
+            //     console.log(" ㅎㅎㅎ " ,container[key].Object.keys(container[key])[1]);
+            //     // console.log("뭐하고 있냐 ㅠ ", Object.values(container[key])[1].valueFrom);
+            //     // console.log("그러게 슈벙 ", Object.values(container[key])[1].valueFrom);
+            //     tempStr +=  Object.values(container[key])[0]  + ":&nbsp;" + Object.keys(Object.values(container[key].valueFrom)[1]) + Object.values(Object.values(container[key].valueFrom)[1]);
+            // } else {
+                tempStr +=  Object.values(envs[key])[0]  + ":&nbsp;" + Object.values(envs[key])[1];
+            // }
+            console.log( "씨발 ! ", tempStr);
+        }
+
+        return tempStr;
+    }
+
+
+    // MOVE PAGE
+    var movePage = function(requestPage) {
+        var reqUrl = '<%= Constants.CAAS_BASE_URL %>/services/' + document.getElementById('requestServiceName').value;
+
+        if (requestPage.indexOf('detail') < 0) {
+            reqUrl += '/' + requestPage;
+        }
+
+        procMovePage(reqUrl);
+    };
+
+</script>
