@@ -45,3 +45,7 @@
 .cluster_content04 {
     display: block;
 }
+
+.alertLayer{position:fixed; z-index:10000; font-size:14px; font-weight:350; line-height:14px; color:#333; width:510px; padding:20px;border-radius:4px;-webkit-box-shadow: 2px 3px 8px 0px rgba(0,0,0,0.23); -moz-box-shadow: 2px 3px 8px 0px rgba(0,0,0,0.23); box-shadow: 2px 3px 8px 0px rgba(0,0,0,0.23);background:#fff;border-left:4px solid #cb3d4a;top:-150px;left:50%;margin-left:-255px;-webkit-transition:-webkit-transform .3s ease-in-out;transition:transform .3s ease-in-out;}
+.alertLayer span.alertClose{display:inline-block;position:absolute;top:15px;right:15px;width:10px;height:10px;color:#d7d7d7;cursor:pointer;}
+.alertLayer.moveAlert{-webkit-transform:translateY(180px);transform:translateY(180px);}

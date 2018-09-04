@@ -265,3 +265,50 @@ var stringifyJSON = function (obj) {
     return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
 }
 
+//TODO 이중에 골라서.
+//https://www.jqueryscript.net/demo/Fullscreen-Loading-Modal-Indicator-Plugin-For-jQuery-loadingModal/
+
+// $('body').loadingModal({text: 'Showing loader animations...'});
+//
+// var delay = function(ms){ return new Promise(function(r) { setTimeout(r, ms) }) };
+// var time = 2000;
+//
+// delay(time)
+//     .then(function() { $('body').loadingModal('animation', 'rotatingPlane').loadingModal('backgroundColor', 'red'); return delay(time);})
+//     .then(function() { $('body').loadingModal('animation', 'wave'); return delay(time);})
+//     .then(function() { $('body').loadingModal('animation', 'wanderingCubes').loadingModal('backgroundColor', 'green'); return delay(time);})
+//     .then(function() { $('body').loadingModal('animation', 'spinner'); return delay(time);})
+//     .then(function() { $('body').loadingModal('animation', 'chasingDots').loadingModal('backgroundColor', 'blue'); return delay(time);})
+//     .then(function() { $('body').loadingModal('animation', 'threeBounce'); return delay(time);})
+//     .then(function() { $('body').loadingModal('animation', 'circle').loadingModal('backgroundColor', 'black'); return delay(time);})
+//     .then(function() { $('body').loadingModal('animation', 'cubeGrid'); return delay(time);})
+//     .then(function() { $('body').loadingModal('animation', 'fadingCircle').loadingModal('backgroundColor', 'gray'); return delay(time);})
+//     .then(function() { $('body').loadingModal('animation', 'foldingCube'); return delay(time); } )
+//     .then(function() { $('body').loadingModal('color', 'black').loadingModal('text', 'Done :-)').loadingModal('backgroundColor', 'yellow');  return delay(time); } )
+//     .then(function() { $('body').loadingModal('hide'); return delay(time); } )
+//     .then(function() { $('body').loadingModal('destroy') ;} );
+var viewLoading = function(type) {
+    if (type == 'show') {
+        $('body').loadingModal();
+        $('body').loadingModal('animation', 'chasingDots').loadingModal('color', 'black').loadingModal('backgroundColor', 'white');
+    } else if (type == 'hide') {
+        $('body').loadingModal('destroy') ;
+    }
+}
+
+var alertMessage = function(value, result) {
+    $(".alertLayer .in").html(value);
+    if (result) {
+        $(".alertLayer").css('border-left', '4px solid #3d10ef');
+    }
+    else {
+        $(".alertLayer").css('border-left', '4px solid #cb3d4a');
+    }
+    $(".alertLayer").addClass("moveAlert");
+
+    setTimeout(function(){ $(".alertLayer").removeClass("moveAlert"); }, 3000);
+
+    // setInterval(function(){
+    //   $(".alertLayer").removeClass("moveAlert");
+    // }, 3000);
+}
