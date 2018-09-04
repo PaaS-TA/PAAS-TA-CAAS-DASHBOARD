@@ -29,7 +29,7 @@
                     </div>
                     <div class="paA30">
                         <div class="yaml">
-                                    <pre class="brush: yaml" id="resultArea">
+                                    <pre class="brush: yaml" id="resultArea"> -
 <%--apiVersion: extensions/v1beta1--%>
 <%--kind: DaemonSet--%>
 <%--metadata:--%>
@@ -110,6 +110,8 @@
 
     // GET DETAIL
     var getDetail = function() {
+        viewLoading('show');
+
         var reqUrl = "<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/services/" + document.getElementById('requestServiceName').value;
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
@@ -120,6 +122,8 @@
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
         $('#resultArea').html('---\n' + data.sourceTypeYaml);
+
+        viewLoading('hide');
     };
 
 

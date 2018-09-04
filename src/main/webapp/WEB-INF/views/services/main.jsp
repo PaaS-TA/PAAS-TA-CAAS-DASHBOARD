@@ -37,8 +37,8 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                            <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderArea">
+                            <tr id="noResultArea"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
+                            <tr id="resultHeaderArea" style="display: none;">
                                 <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Service Type</td>
                                 <td>Cluster IP</td>
@@ -48,6 +48,9 @@
                             </tr>
                             </thead>
                             <tbody id="resultArea">
+                            <tr>
+                                <td colspan="6"> - </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -69,13 +72,17 @@
 
     // GET LIST
     var getList = function() {
+        viewLoading('show');
         procCallAjax("<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/services", "GET", null, null, callbackGetList);
     };
 
 
     // CALLBACK
     var callbackGetList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (RESULT_STATUS_FAIL === data.resultStatus) {
+            viewLoading('hide');
+            return false;
+        }
 
         gList = data;
         setList("");
@@ -179,7 +186,10 @@
 
     // CALLBACK
     var callbackGetDetailForPods = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (RESULT_STATUS_FAIL === data.resultStatus) {
+            viewLoading('hide');
+            return false;
+        }
 
         var items = data.items;
         var listLength = items.length;
@@ -194,6 +204,8 @@
         }
 
         $('#' + data.serviceName).html(runningSum + "/" + totalSum);
+
+        viewLoading('hide');
     };
 
 
