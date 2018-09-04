@@ -45,14 +45,14 @@
                     <h4 class="modal-title">Member 삭제</h4>
                 </div>
                 <!-- body -->
-                <div class="modal-body">
-                    <p class="account_modal_p"><span>user</span> 님을 삭제하시겠습니까?<br>
+                <div class="modal-body deleteUser">
+                    <%--<p class="account_modal_p"><span>user</span> 님을 삭제하시겠습니까?<br>
                         사용자를 삭제하면 복구할 수 없습니다.
-                    </p>
+                    </p>--%>
                 </div>
                 <!-- Footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+                    <button type="button" class="btns2 colors4" data-dismiss="modal" id="userDeleteBtn">삭제</button>
                     <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
                 </div>
             </div>
