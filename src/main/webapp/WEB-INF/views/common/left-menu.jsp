@@ -6,7 +6,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
-<nav>
+<nav style="height: 90%;">
     <div class="scroll_style">
         <ul class="nav_1d caas_nav">
             <%--<li class="cur">--%>
