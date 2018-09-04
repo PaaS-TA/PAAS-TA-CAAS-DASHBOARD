@@ -40,7 +40,7 @@ public class PodsService {
      * @return
      */
     PodsList getPodListBySelector (String namespace, String selector ) {
-        String reqUrl = REQ_URL.replace( "{namespace}", namespace) + "/?selector=" + selector;
+        String reqUrl = REQ_URL.replace( "{namespace}", namespace) + "/resource/" + selector;
         return restTemplateService.send( Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, PodsList.class );
     }
 
