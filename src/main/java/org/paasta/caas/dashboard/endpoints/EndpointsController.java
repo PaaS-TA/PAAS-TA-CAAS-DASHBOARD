@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class EndpointsController {
 
-    private static final String BASE_URL = "/endpoints";
-    private final String API_URL = Constants.API_URL;
     private final EndpointsService endpointsService;
 
     /**
@@ -39,7 +37,7 @@ public class EndpointsController {
      * @param serviceName the service name
      * @return the endpoints
      */
-    @GetMapping(value = API_URL + "/namespaces/{namespace:.+}" + BASE_URL + "/{serviceName:.+}")
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_ENDPOINTS_DETAIL)
     @ResponseBody
     public Endpoints getEndpoints(@PathVariable(value = "namespace") String namespace, @PathVariable(value = "serviceName") String serviceName) {
         return endpointsService.getEndpoints(namespace, serviceName);

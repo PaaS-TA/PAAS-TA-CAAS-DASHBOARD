@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class EndpointsService {
 
-    private static final String REQ_URL = "/endpoints";
-    private final String TARGET_CAAS_API = Constants.TARGET_CAAS_API;
     private final RestTemplateService restTemplateService;
 
     /**
@@ -37,7 +35,10 @@ public class EndpointsService {
      * @return the endpoints
      */
     Endpoints getEndpoints(String namespace, String serviceName) {
-        return restTemplateService.send(TARGET_CAAS_API, Constants.API_NAMESPACES + namespace + REQ_URL + "/" + serviceName,
+        String TARGET_CAAS_API = Constants.TARGET_CAAS_API;
+        return restTemplateService.send(TARGET_CAAS_API, Constants.URI_API_ENDPOINTS_DETAIL
+                        .replace("{namespace:.+}", namespace)
+                        .replace("{serviceName:.+}", serviceName),
                 HttpMethod.GET, null, Endpoints.class);
     }
 
