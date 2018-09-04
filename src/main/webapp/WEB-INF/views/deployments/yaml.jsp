@@ -108,7 +108,6 @@
         var htmlString = [];
 
 
-        //$('#resultArea').JSONView(data.source);
         $('#resultArea').html('---\n' + data.sourceTypeYaml);
     }
 

@@ -63,7 +63,7 @@
 </div>
 
 <!-- modal -->
-<div class="modal fade in" id="layerpop1">
+<%--<div class="modal fade in" id="layerpop1">
     <div class="vertical-alignment-helper">
         <div class="modal-dialog vertical-align-center">
             <div class="modal-content">
@@ -76,8 +76,8 @@
                 </div>
                 <!-- body -->
                 <div class="modal-body roleUpdate">
-                   <%-- <p class="account_modal_p"><span>hong@test.com</span> 님을 <span>Administrator</span>로 Role을 변경하시겠습니까?
-                    </p>--%>
+                   &lt;%&ndash; <p class="account_modal_p"><span>hong@test.com</span> 님을 <span>Administrator</span>로 Role을 변경하시겠습니까?
+                    </p>&ndash;%&gt;
                 </div>
                 <!-- Footer -->
                 <div class="modal-footer">
@@ -108,13 +108,13 @@
                 </div>
                 <!-- Footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+                    <button type="button" class="btns2 colors4" data-dismiss="modal" id="userDeleteBtn">삭제</button>
                     <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</div>--%>
 
 <script type="text/javascript">
 
@@ -174,6 +174,7 @@
         var listLength = items.length;
 
         var checkListCount = 0;
+        var firstUserCount = 0;
         var htmlString = [];
 
         var roles = ['Administrator', 'Regular User', 'Init User'];
@@ -202,12 +203,12 @@
 
                 htmlString.push(
                     "<tr>"
-                    + "<td>" + items[i].userId + "</td>"
+                    + "<td class='userId'>" + items[i].userId + "</td>"
                     + "<td>" + items[i].created + "</td>"
                     + "<td>" + items[i].lastModified + "</td>"
                     + "<td>" + "<select name='role-filter' data-user-id='"+ items[i].userId +"'>" + option + "</select>"
                     + "<span data-target='#layerpop1' data-toggle='modal' name='saveRole'><i class='fas fa-save'></i></span>"
-                    + "<span data-target='#layerpop2' data-toggle='modal'><i class='fas fa-trash-alt'></i></span>"
+                    + "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser'><i class='fas fa-trash-alt'></i></span>"
                     + "</td>"
                     + "</tr>");
 
@@ -226,6 +227,9 @@
             resultArea.html(htmlString);
         }
 
+        // Todo => 첫번째로 들어온 사람 select box는 disabled  firstUserCount == 1 일 때
+
+
     };
 
     // bind
@@ -239,9 +243,9 @@
 
     $(document).on("click", "span[name=saveRole]", function(){
         var index = $('span[name=saveRole]').index(this);
-        alert(index);
-        alert($('select[name=role-filter]').eq(index).data("userId"));
-        alert($('select[name=role-filter]').eq(index).find(':selected').val());
+        //alert(index);
+        //alert($('select[name=role-filter]').eq(index).data("userId"));
+        //alert($('select[name=role-filter]').eq(index).find(':selected').val());
 
         userIdSelectRole = $('select[name=role-filter]').eq(index).data("userId");
         userPerRole = $('select[name=role-filter]').eq(index).find(':selected').val();
@@ -250,7 +254,10 @@
         $(".roleUpdate").html(code);
     });
 
-    $("#roleUpdateBtn").on("click", function () {
+
+    // 사용자의 권한 변경
+    $(document).on("click", "#roleUpdateBtn", function () {
+        console.log("여기 들어오니잉???");
         updateRoleOfUser();
     });
 
@@ -268,9 +275,6 @@
             roleSetCode: userPerRole
         };
 
-        //reqParam = JSON.stringify(reqParam);
-        console.log("파람파람 ::", reqParam);
-
         postProcCallAjax(BASE_URL + "/users/updateUserRole.do?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackUpdateRoleOfUser);
     };
 
@@ -279,6 +283,42 @@
         console.log("고쳐졌니?" + JSON.stringify(data));
         alert("권한이 수정되었습니다.");
         getUsersList();
+    };
+
+
+    var deleteUserId;
+
+    // 사용자 삭제
+    $(document).on("click", "span[name=deleteUser]", function () {
+        console.log("user delete");
+        var index = $('span[name=deleteUser]').index(this);
+        deleteUserId = $("#resultArea").find(".userId").eq(index).text();
+
+        console.log("index 는 ", index);
+        console.log("id 는 ", deleteUserId);
+
+        var code = "<p class='account_modal_p'><span>" + deleteUserId + "</span> 님을 삭제하시겠습니까?<br>사용자를 삭제하면 복구할 수 없습니다.</p>";
+        $(".deleteUser").html(code);
+    });
+
+
+    $(document).on("click", "#userDeleteBtn", function () {
+        console.log("여기 들어오니잉???");
+        deleteUser(deleteUserId);
+    });
+
+    var deleteUser = function (userId) {
+        var reqParam = {
+            userId: userId
+        };
+        postProcCallAjax(BASE_URL + "/users/deleteUser.do?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackDeleteUser);
+    };
+
+    var callbackDeleteUser = function (data) {
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        console.log("result message 는?" + JSON.stringify(data));
+        alert("사용자가 삭제되었습니다.");
+        location.reload(true);
     };
 
     // ON LOAD

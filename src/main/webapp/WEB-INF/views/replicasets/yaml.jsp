@@ -1,26 +1,19 @@
 <%--
-  Services yaml
-  @author REX
+  Replicaset main
+  @author CISS
   @version 1.0
-  @since 2018.08.28
+  @since 2018.08.14
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span class="resultServiceName"><c:out value='${serviceName}' default='' /></span></h1>
-    <div class="cluster_tabs clearfix">
-        <ul>
-            <li name="tab01" class="cluster_tabs_left" onclick='movePage("detail");'>Details</li>
-            <li name="tab02" class="cluster_tabs_left" onclick='movePage("events");'>Events</li>
-            <li name="tab03" class="cluster_tabs_on custom_cursor_default">YAML</li>
-        </ul>
-        <div class="cluster_tabs_line"></div>
-    </div>
-    <!-- Services YAML 시작-->
-    <div class="cluster_content03 row two_line two_view harf_view custom_display_block">
+    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <c:out value="${replicaSetName}"/></h1>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <!-- YAML 시작-->
+    <div class="cluster_content03 row two_line two_view">
         <ul class="maT30">
             <li>
                 <div class="sortable_wrap">
@@ -29,7 +22,7 @@
                     </div>
                     <div class="paA30">
                         <div class="yaml">
-                                    <pre class="brush: yaml" id="resultArea"> -
+                                    <pre class="brush: cpp" id="resultArea">
 <%--apiVersion: extensions/v1beta1--%>
 <%--kind: DaemonSet--%>
 <%--metadata:--%>
@@ -63,20 +56,9 @@
             </li>
         </ul>
     </div>
-    <!-- Services YAML 끝 -->
+    <!-- YAML 끝 -->
+
 </div>
-<%--TODO--%>
-<!-- modal -->
-
-<div id="hiddenResultArea" style="display: none;"></div>
-
-<input type="hidden" id="requestServiceName" name="requestServiceName" value="<c:out value='${serviceName}' default='' />" />
-
-
-<%--TODO : REMOVE--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
-
 <!-- SyntexHighlighter -->
 <script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushYaml.js"/>"></script>
@@ -105,14 +87,13 @@
 
 <script type="text/javascript">
 
-    // TODO :: REMOVE
-    var tempNamespace = "<%= Constants.NAMESPACE_NAME %>";
+    var namespace = NAME_SPACE;
+
+    var replicaSetName = '<c:out value="${replicaSetName}"/>';
 
     // GET DETAIL
     var getDetail = function() {
-        viewLoading('show');
-
-        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/services/" + document.getElementById('requestServiceName').value;
+        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/replicasets/"+replicaSetName;
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
 
@@ -122,22 +103,7 @@
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
         $('#resultArea').html('---\n' + data.sourceTypeYaml);
-
-        viewLoading('hide');
     };
-
-
-    // MOVE PAGE
-    var movePage = function(requestPage) {
-        var reqUrl = '<%= Constants.CAAS_BASE_URL %>/services/' + document.getElementById('requestServiceName').value;
-
-        if (requestPage.indexOf('detail') < 0) {
-            reqUrl += '/' + requestPage;
-        }
-
-        procMovePage(reqUrl);
-    };
-
 
     // ON LOAD
     $(document.body).ready(function () {
