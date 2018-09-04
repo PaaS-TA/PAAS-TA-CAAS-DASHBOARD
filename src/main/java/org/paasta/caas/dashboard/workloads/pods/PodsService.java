@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PodsService {
-    private static final String REQ_URL = "/{namespace}/workload/pods";
+    private static final String REQ_URL = "workloads/{namespace}/pods";
 
     private final RestTemplateService restTemplateService;
 
@@ -61,6 +61,7 @@ public class PodsService {
      */
     PodsList getPodList (String namespace ) {
         String reqURL = REQ_URL.replace( "{namespace}", namespace );
+        System.out.println("집에 가고 싶다 " + reqURL);
         return restTemplateService.send( Constants.TARGET_CAAS_API, reqURL, HttpMethod.GET, null, PodsList.class );
     }
 
