@@ -21,8 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class CustomServicesController {
 
-    private static final String BASE_URL = "/services";
-    private final String API_URL = Constants.API_URL;
+    private static final String VIEW_URL = "/services";
     private final CommonService commonService;
     private final CustomServicesService customServicesService;
 
@@ -47,7 +46,7 @@ public class CustomServicesController {
      */
     @GetMapping(value = Constants.URI_CONTROLLER_SERVICES)
     public ModelAndView getCustomServicesMain(HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/main", new ModelAndView());
     }
 
 
@@ -59,7 +58,7 @@ public class CustomServicesController {
      */
     @GetMapping(value = Constants.URI_CONTROLLER_SERVICES + "/{serviceName:.+}")
     public ModelAndView getCustomServicesDetail(HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/detail", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/detail", new ModelAndView());
     }
 
 
@@ -71,7 +70,7 @@ public class CustomServicesController {
      */
     @GetMapping(value = Constants.URI_CONTROLLER_SERVICES + "/{serviceName:.+}/events")
     public ModelAndView getCustomServicesDetailEvents(HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/events", new ModelAndView());
     }
 
 
@@ -83,7 +82,7 @@ public class CustomServicesController {
      */
     @GetMapping(value = Constants.URI_CONTROLLER_SERVICES + "/{serviceName:.+}/yaml")
     public ModelAndView getCustomServicesDetailYaml(HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/yaml", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/yaml", new ModelAndView());
     }
 
 
@@ -93,7 +92,7 @@ public class CustomServicesController {
      * @param namespace the namespace
      * @return the custom services list
      */
-    @GetMapping(value = API_URL + Constants.URI_API_SERVICES_LIST)
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_SERVICES_LIST)
     @ResponseBody
     public CustomServicesList getCustomServicesList(@PathVariable(value = "namespace") String namespace) {
         return customServicesService.getCustomServicesList(namespace);
@@ -107,7 +106,7 @@ public class CustomServicesController {
      * @param serviceName the service name
      * @return the custom service
      */
-    @GetMapping(value = API_URL + Constants.URI_API_SERVICES_DETAIL)
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_SERVICES_DETAIL)
     @ResponseBody
     public CustomServices getCustomServices(@PathVariable(value = "namespace") String namespace, @PathVariable("serviceName") String serviceName) {
         return customServicesService.getCustomServices(namespace, serviceName);
@@ -121,7 +120,7 @@ public class CustomServicesController {
      * @param selector  the selector for filter
      * @return ReplicaSetList
      */
-    @GetMapping(value = API_URL + Constants.URI_API_SERVICES_RESOURCES)
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_SERVICES_RESOURCES)
     @ResponseBody
     public CustomServicesList getCustomServicesListLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector) {
         return customServicesService.getCustomServicesListLabelSelector(namespace, selector);
