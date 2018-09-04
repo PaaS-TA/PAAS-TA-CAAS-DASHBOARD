@@ -61,7 +61,7 @@
 </div>
 <!-- SyntexHighlighter -->
 <script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCpp.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushYaml.js"/>"></script>
 <link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">
 <link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">
 
@@ -102,7 +102,7 @@
     var callbackGetDetail = function(data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
-        $('#resultArea').html('---\n' + json2yaml(data.source));
+        $('#resultArea').html('---\n' + data.sourceTypeYaml);
     };
 
     // ON LOAD
