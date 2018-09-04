@@ -38,8 +38,8 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderArea">
+                            <tr id="noResultArea"><td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td></tr>
+                            <tr id="resultHeaderArea" style="display: none;">
                                 <td>Message</td>
                                 <td>Source</td>
                                 <td>Sub-object</td>
@@ -49,6 +49,9 @@
                             </tr>
                             </thead>
                             <tbody id="resultArea">
+                            <tr>
+                                <td colspan="6"> - </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -87,6 +90,8 @@
 
     // GET LIST
     var getList = function() {
+        viewLoading('show');
+
         var reqUrl = "<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/events/resource/" + document.getElementById('requestServiceName').value;
         procCallAjax(reqUrl, "GET", null, null, callbackGetList);
     };
@@ -126,6 +131,8 @@
             resultArea.show();
             resultArea.html(htmlString);
         }
+
+        viewLoading('hide');
     };
 
 

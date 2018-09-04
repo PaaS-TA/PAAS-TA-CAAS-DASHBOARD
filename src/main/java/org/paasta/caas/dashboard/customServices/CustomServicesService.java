@@ -54,4 +54,16 @@ public class CustomServicesService {
                 HttpMethod.GET, null, CustomServices.class);
     }
 
+
+    /**
+     * Gets custom services list.
+     *
+     * @param namespace the namespace
+     * @return the custom services list
+     */
+    CustomServicesList getCustomServicesListLabelSelector(String namespace, String selectors) {
+        return restTemplateService.send(TARGET_CAAS_API, API_NAMESPACES + namespace + REQ_URL + "/resource/" + selectors,
+                HttpMethod.GET, null, CustomServicesList.class);
+    }
+
 }

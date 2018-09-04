@@ -1,5 +1,7 @@
 package org.paasta.caas.dashboard.common;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.paasta.caas.dashboard.clusters.namespaces.Namespaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +9,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Rest Template Service 클래스
@@ -48,7 +54,8 @@ public class RestTemplateService {
                                @Value("${commonApi.authorization.id}") String commonApiAuthorizationId,
                                @Value("${commonApi.authorization.password}") String commonApiAuthorizationPassword,
                                @Value("${caasApi.authorization.id}") String caasApiAuthorizationId,
-                               @Value("${caasApi.authorization.password}") String caasApiAuthorizationPassword, PropertyService propertyService) {
+                               @Value("${caasApi.authorization.password}") String caasApiAuthorizationPassword,
+                               PropertyService propertyService) {
         this.restTemplate = restTemplate;
 //        this.adminTokenRepository = adminTokenRepository;
         this.propertyService = propertyService;
@@ -84,16 +91,27 @@ public class RestTemplateService {
         HttpEntity<Object> reqEntity = new HttpEntity<>(bodyObject, reqHeaders);
 
         LOGGER.info("<T> T send :: Request : {} {baseUrl} : {}, Content-Type: {}", httpMethod, reqUrl, reqHeaders.get(CONTENT_TYPE));
-        ResponseEntity<T> resEntity = restTemplate.exchange(baseUrl + reqUrl, httpMethod, reqEntity, responseType);
-        if (resEntity.getBody() != null) {
-            LOGGER.info("Response Type: {}", resEntity.getBody().getClass());
-            LOGGER.info(resEntity.getBody().toString());
-        } else {
-            LOGGER.info("Response Type: {}", "response body is null");
+
+        try {
+            ResponseEntity<T> resEntity = restTemplate.exchange(baseUrl + reqUrl, httpMethod, reqEntity, responseType);
+            if (resEntity.getBody() != null) {
+                LOGGER.info("Response Type: {}", resEntity.getBody().getClass());
+                LOGGER.info(resEntity.getBody().toString());
+            } else {
+                LOGGER.info("Response Type: {}", "response body is null");
+            }
+
+            return resEntity.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            Map<String, Object> resultMap = new HashMap();
+            resultMap.put("resultCode" , "500");
+            ObjectMapper mapper = new ObjectMapper();
+            LOGGER.info(mapper.convertValue(resultMap, responseType).toString());
+
+            return mapper.convertValue(resultMap, responseType);
         }
-
-
-        return resEntity.getBody();
     }
 
     /**

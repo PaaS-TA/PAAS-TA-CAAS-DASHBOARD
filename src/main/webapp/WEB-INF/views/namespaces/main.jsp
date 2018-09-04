@@ -18,7 +18,8 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                                <tr>
+                                <tr id="noResultHeaderAreaForNameSpace" style="display: none;"><td colspan='3'><p class='service_p'>조회 된 NameSpace가 없습니다.</p></td></tr>
+                                <tr id="resultHeaderAreaForNameSpace" style="display: none;">
                                     <td>Name</td>
                                     <td>Status</td>
                                     <td>Created on</td>
@@ -43,7 +44,17 @@
     };
 
     var callbackGetDetail = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultCode) return false;
+        var resultAreaForNameSpace = $("#resultAreaForNameSpace");
+        var noResultHeaderAreaForNameSpace = $("#noResultHeaderAreaForNameSpace");
+        var resultHeaderAreaForNameSpace = $("#resultHeaderAreaForNameSpace");
+
+        if (data.resultCode == "500") {
+            noResultHeaderAreaForNameSpace.show();
+            viewLoading('hide');
+            alertMessage('Get NameSpaces Fail~', false);
+
+            return false;
+        }
 
         var htmlString = [];
 
@@ -54,8 +65,9 @@
             + "<td>" + data.metadata.creationTimestamp + "</td>"
             + "</tr>");
 
-        var resultArea = $("#resultAreaForNameSpace");
-        resultArea.html(htmlString);
+        resultAreaForNameSpace.html(htmlString);
+        noResultHeaderAreaForNameSpace.hide();
+        resultHeaderAreaForNameSpace.show();
 
         viewLoading('hide');
     };

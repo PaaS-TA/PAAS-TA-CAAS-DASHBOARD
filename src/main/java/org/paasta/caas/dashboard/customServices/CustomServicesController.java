@@ -117,4 +117,18 @@ public class CustomServicesController {
         return customServicesService.getCustomServices(namespace, serviceName);
     }
 
+
+    /**
+     * Gets replicaSet refer list filter selector.
+     *
+     * @param namespace the namespace
+     * @param selector the selector for filter
+     * @return ReplicaSetList
+     */
+    @GetMapping(value = API_URL + "/namespaces/{namespace:.+}/" + BASE_URL + "/resource/{selector}")
+    @ResponseBody
+    public CustomServicesList getCustomServicesListLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector ){
+        return customServicesService.getCustomServicesListLabelSelector(namespace, selector);
+    }
+
 }

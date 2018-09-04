@@ -20,7 +20,8 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                                <tr>
+                                <tr id="noResultHeaderAreaForNameSpace" style="display: none;"><td colspan='3'><p class='service_p'>조회 된 NameSpace가 없습니다.</p></td></tr>
+                                <tr id="resultHeaderAreaForNameSpace" style="display: none;">
                                     <td>Name</td>
                                     <td>Status</td>
                                     <td>Created on</td>
@@ -139,11 +140,24 @@
 <script type="text/javascript">
 
     var getNamespaces = function() {
+        viewLoading('show');
+
         procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail.do", "GET", null, null, callbackGetNamespaces);
     };
 
     var callbackGetNamespaces = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultCode) return false;
+        var resultAreaForNameSpace = $("#resultAreaForNameSpace");
+        var noResultHeaderAreaForNameSpace = $("#noResultHeaderAreaForNameSpace");
+        var resultHeaderAreaForNameSpace = $("#resultHeaderAreaForNameSpace");
+
+        // if (RESULT_STATUS_FAIL === data.resultCode) return false;
+        if (data.resultCode == "500") {
+            noResultHeaderAreaForNameSpace.show();
+            viewLoading('hide');
+            alertMessage('Get NameSpaces Fail~', false);
+
+            return false;
+        }
 
         var htmlString = [];
 
@@ -154,11 +168,16 @@
             + "<td>" + data.metadata.creationTimestamp + "</td>"
             + "</tr>");
 
-        var resultArea = $("#resultAreaForNameSpace");
-        resultArea.html(htmlString);
+        resultAreaForNameSpace.html(htmlString);
+        noResultHeaderAreaForNameSpace.hide();
+        resultHeaderAreaForNameSpace.show();
+
+        viewLoading('hide');
     };
 
     var getNodes = function() {
+        viewLoading('show');
+
         var reqUrl = "<%= Constants.API_URL %>/nodes"
         procCallAjax(reqUrl, "GET", null, null, callbackGetListNodes);
     }
@@ -205,6 +224,8 @@
         $('#clusters_nodes_table > tbody').html(contents);
 
         sortTable("clusters_nodes_table", "node-name");
+
+        viewLoading('hide');
     }
 
     $(document.body).ready(function () {
