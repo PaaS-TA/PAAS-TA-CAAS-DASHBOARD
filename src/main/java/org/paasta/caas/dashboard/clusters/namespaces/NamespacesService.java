@@ -27,10 +27,10 @@ public class NamespacesService {
     public NamespacesService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
 
     Namespaces getNamespaces(String namespace) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, "/cluster/namespaces/"+namespace, HttpMethod.GET, null, Namespaces.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, "/clusters/namespaces/"+namespace, HttpMethod.GET, null, Namespaces.class);
     }
 
     ResourceQuotaList getResourceQuotaList(String namespace) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, "/cluster/namespaces/"+namespace+"/getResourceQuotaList", HttpMethod.GET, null, ResourceQuotaList.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, "/clusters/namespaces/"+namespace+"/getResourceQuotaList", HttpMethod.GET, null, ResourceQuotaList.class);
     }
 }
