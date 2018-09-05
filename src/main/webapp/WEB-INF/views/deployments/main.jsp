@@ -131,7 +131,7 @@
             resultArea.append('<tr>' +
                                     '<td>' +
                                         "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/deployments/" + deployName + "\");'>"+
-                                           '<span class="green2"><i class="fas fa-check-circle"></i></span>' + deployName +
+                                           '<span class="green2"><i class="fas fa-check-circle"></i></span> ' + deployName +
                                         '</a>' +
                                     '</td>' +
                                     '<td>' + namespace + '</td>' +
