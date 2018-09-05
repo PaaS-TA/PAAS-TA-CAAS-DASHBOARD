@@ -39,6 +39,12 @@ public class CommonStatus {
     private List<CommonCondition> conditions;
     // FOR NODE :: BEGIN
 
+    @SerializedName("podIP")
+    private String podIP;
+
+    @SerializedName("qosClass")
+    private String qosClass;
+
     //@SerializedName("conditions")
     //private List<ReplicaSetCondition> conditions;
 

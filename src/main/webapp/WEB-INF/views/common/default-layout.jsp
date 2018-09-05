@@ -36,11 +36,8 @@
     </div>
     <textarea id="out_a" title="">
     </textarea>
-
-    <div class="alertLayer" role="alert">
-        <div class="in">
-            Alert! PaasTA Alert Example!<span class="alertClose">x</span>
-        </div>
+    <div>
+        <tiles:insertAttribute name="alert"/>
     </div>
 </body>
 </html>

@@ -106,8 +106,7 @@ public class PodsController {
      */
     @GetMapping(value = Constants.API_URL + BASE_URL + "/resource/{selector:.+}")
     @ResponseBody
-    public PodsList getPodListBySelector(@PathVariable("namespace") String namespace,
-                                         @PathVariable("selector") String selector) {
+    public PodsList getPodListBySelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector) {
         return podsService.getPodListBySelector(namespace, selector);
     }
 

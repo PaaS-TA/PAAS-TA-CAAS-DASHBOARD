@@ -234,8 +234,8 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                            <tr id="noResultAreaForPods" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Pod가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderAreaForPods">
+                            <tr id="noResultAreaForPods"><td colspan='6'><p class='service_p'>조회 된 Pod가 없습니다.</p></td></tr>
+                            <tr id="resultHeaderAreaForPods" style="display: none;">
                                 <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
                                 <td>Node</td>
@@ -245,6 +245,9 @@
                             </tr>
                             </thead>
                             <tbody id="resultAreaForPods">
+                            <tr>
+                                <td colspan="6"> - </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -273,16 +276,7 @@
                             </thead>
                             <tbody id="resultAreaForEndpoints">
                             <tr>
-                                <td>10.244.1.100</td>
-                                <td>web-user, 80, TCP</td>
-                                <td>ip-172-31-22-173</td>
-                                <td>True</td>
-                            </tr>
-                            <tr>
-                                <td>10.244.3.50</td>
-                                <td>web-user, 80, TCP</td>
-                                <td>ip-172-31-22-173</td>
-                                <td>True</td>
+                                <td colspan="4"> - </td>
                             </tr>
                             </tbody>
                         </table>
@@ -321,6 +315,8 @@
 
     // GET DETAIL
     var getDetail = function() {
+        viewLoading('show');
+
         var reqUrl = "<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/services/" + document.getElementById('requestServiceName').value;
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
@@ -377,7 +373,10 @@
 
     // CALLBACK
     var callbackGetDetailForPodsList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (RESULT_STATUS_FAIL === data.resultStatus) {
+            viewLoading('hide');
+            return false;
+        }
 
         gList = data;
         setPodsList("");
@@ -450,7 +449,10 @@
 
     // CALLBACK
     var callbackGetDetailForEndpoints = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (RESULT_STATUS_FAIL === data.resultStatus) {
+            viewLoading('hide');
+            return false;
+        }
 
         var addresses,
             ports,
@@ -517,7 +519,10 @@
 
     // CALLBACK
     var callbackGetDetailForNodes = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (RESULT_STATUS_FAIL === data.resultStatus) {
+            viewLoading('hide');
+            return false;
+        }
 
         var items = data.status.conditions;
         var conditionsListLength = items.length;
@@ -527,6 +532,8 @@
                 $('.' + data.metadata.name).text(items[i].status);
             }
         }
+
+        viewLoading('hide');
     };
 
 

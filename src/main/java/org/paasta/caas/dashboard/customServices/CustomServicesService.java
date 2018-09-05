@@ -16,9 +16,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomServicesService {
 
-    private static final String REQ_URL = "/services";
-    private final String TARGET_CAAS_API = Constants.TARGET_CAAS_API;
-    private final String API_NAMESPACES = Constants.API_NAMESPACES;
     private final RestTemplateService restTemplateService;
 
     /**
@@ -37,7 +34,8 @@ public class CustomServicesService {
      * @return the custom services list
      */
     CustomServicesList getCustomServicesList(String namespace) {
-        return restTemplateService.send(TARGET_CAAS_API, API_NAMESPACES + namespace + REQ_URL,
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_SERVICES_LIST
+                        .replace("{namespace:.+}", namespace),
                 HttpMethod.GET, null, CustomServicesList.class);
     }
 
@@ -50,7 +48,9 @@ public class CustomServicesService {
      * @return the custom services
      */
     CustomServices getCustomServices(String namespace, String serviceName) {
-        return restTemplateService.send(TARGET_CAAS_API, API_NAMESPACES + namespace + REQ_URL + "/" + serviceName,
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_SERVICES_DETAIL
+                        .replace("{namespace:.+}", namespace)
+                        .replace("{serviceName:.+}", serviceName),
                 HttpMethod.GET, null, CustomServices.class);
     }
 
@@ -62,7 +62,9 @@ public class CustomServicesService {
      * @return the custom services list
      */
     CustomServicesList getCustomServicesListLabelSelector(String namespace, String selectors) {
-        return restTemplateService.send(TARGET_CAAS_API, API_NAMESPACES + namespace + REQ_URL + "/resource/" + selectors,
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_SERVICES_RESOURCES
+                        .replace("{namespace:.+}", namespace)
+                        .replace("{selector:.+}", selectors),
                 HttpMethod.GET, null, CustomServicesList.class);
     }
 
