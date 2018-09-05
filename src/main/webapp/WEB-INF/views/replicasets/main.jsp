@@ -83,7 +83,6 @@
 
         var items = gList.items;
         var listLength = items.length;
-        var selectorList = [];
 
         $.each(items, function (index, itemList) {
 
@@ -111,10 +110,6 @@
                     + "<td>" + creationTimestamp+"</td>"
                     + "<td>" + images.join("</br>") + "</td>"
                     + "</tr>");
-
-            //selectorList.push(labels);
-            //getDetailForPods(selectorList);
-
         });
 
         if (listLength < 1) {
@@ -130,42 +125,8 @@
         }
 
     };
-/*
-    // GET DETAIL FOR PODS
-    var getDetailForPods = function(selectorList) {
-        var listLength = selectorList.length;
-        var tempSelectorList;
-        var reqUrl;
 
-        // TODO :: 수정 필요
-        for (var i = 0; i < listLength; i++) {
-            tempSelectorList = selectorList[i].split(",");
-            reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods/service/" + tempSelectorList[1] + "/" + tempSelectorList[0];
-
-            procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPods);
-        }
-    };
-
-    // CALLBACK
-    var callbackGetDetailForPods = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-
-        var items = data.items;
-        var listLength = items.length;
-        var runningSum = 0;
-        var totalSum = 0;
-
-        for (var i = 0; i < listLength; i++) {
-            if (items[i].status.phase.toLowerCase() === "running") {
-                runningSum++
-            }
-            totalSum++;
-        }
-
-        $('#' + data.serviceName).html(runningSum + "/" + totalSum);
-    };
-*/
-
+    // TODO :: 업데이트(복수값일시 레이어 링크 제공) 및 공통화 필요
     var createSpans = function (data, type) {
         var datas = data.replace(/=/g, ':').split(',');
         var spanTemplate = "";

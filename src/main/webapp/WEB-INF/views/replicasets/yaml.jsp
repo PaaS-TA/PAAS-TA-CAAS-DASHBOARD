@@ -22,7 +22,7 @@
                     </div>
                     <div class="paA30">
                         <div class="yaml">
-                                    <pre class="brush: cpp" id="resultArea">
+                                    <pre class="brush: yaml" id="resultArea">
 <%--apiVersion: extensions/v1beta1--%>
 <%--kind: DaemonSet--%>
 <%--metadata:--%>
