@@ -172,7 +172,7 @@ public class RestTemplateService {
             reqEntity = new HttpEntity<>(yml, headers);
         }
         ResponseEntity<T> resEntity = restTemplate.exchange(url, httpMethod, reqEntity, responseType);
-        if (reqEntity.getBody() != null) {
+        if (resEntity.getBody() != null) {
             LOGGER.info("Response Type: {}", resEntity.getBody().getClass());
         }
 

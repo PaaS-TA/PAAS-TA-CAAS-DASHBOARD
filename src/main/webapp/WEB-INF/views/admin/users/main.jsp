@@ -174,17 +174,48 @@
         var listLength = items.length;
 
         var checkListCount = 0;
-        var firstUserCount = 0;
         var htmlString = [];
+
+        // 첫번째로 들어온 사람 select box는 caas_account_name 뒤에 -admin/-user 로 판별
+        var caasAccountName;
+        var roleNameArr = [];
+        var userName;
+        var roleArr = [];
+        var splitRole;
+        var splitWord;
+        var selectBox = '';
 
         var roles = ['Administrator', 'Regular User', 'Init User'];
 
         for (var i = 0; i < listLength; i++) {
             var option = '';
+            selectBox = '';
             userId = items[i].userId;
 
             if ((nvl(searchKeyword) === "") || userId.indexOf(searchKeyword) > -1) {
 
+                // 1. caas_account_name : b8e85b00-04b4-4fa0-bd4f-5dac050cc3d9-hyunlee-admin
+                caasAccountName = items[i].caasAccountName;
+
+                // 2. 자를 단어 조합
+                roleNameArr = userId.split('@');
+                userName = roleNameArr[0].replace((/[_\W]+/g, "-")).toLowerCase();
+                splitWord = (ORGANIZATION_GUID + "-" + userName).toLowerCase() + "-";
+
+                // 3. role name 만 추출하자.
+                roleArr = caasAccountName.split(splitWord);
+                splitRole = roleArr[1];
+
+                // 4. splitRole 이 admin 인 경우 select box 는 disabled
+                if((splitRole == "admin")){
+                    selectBox += "<select disabled name='role-filter' data-user-id='"+ items[i].userId +"'>"
+                }else{
+                    selectBox += "<select name='role-filter' data-user-id='"+ items[i].userId +"'>"
+                }
+
+
+
+                // role code 이름 변환
                 if(items[i].roleSetCode == "RS0001"){
                     items[i].roleSetCode = "Administrator";
                 }else if(items[i].roleSetCode == "RS0002"){
@@ -206,7 +237,7 @@
                     + "<td class='userId'>" + items[i].userId + "</td>"
                     + "<td>" + items[i].created + "</td>"
                     + "<td>" + items[i].lastModified + "</td>"
-                    + "<td>" + "<select name='role-filter' data-user-id='"+ items[i].userId +"'>" + option + "</select>"
+                    + "<td>" + selectBox + option + "</select>"
                     + "<span data-target='#layerpop1' data-toggle='modal' name='saveRole'><i class='fas fa-save'></i></span>"
                     + "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser'><i class='fas fa-trash-alt'></i></span>"
                     + "</td>"
@@ -226,9 +257,6 @@
             resultArea.show();
             resultArea.html(htmlString);
         }
-
-        // Todo => 첫번째로 들어온 사람 select box는 disabled  firstUserCount == 1 일 때
-
 
     };
 
@@ -257,7 +285,7 @@
 
     // 사용자의 권한 변경
     $(document).on("click", "#roleUpdateBtn", function () {
-        console.log("여기 들어오니잉???");
+        //console.log("여기 들어오니잉???");
         updateRoleOfUser();
     });
 
@@ -280,7 +308,7 @@
 
     var callbackUpdateRoleOfUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        console.log("고쳐졌니?" + JSON.stringify(data));
+        //console.log("고쳐졌니?" + JSON.stringify(data));
         alert("권한이 수정되었습니다.");
         getUsersList();
     };
@@ -294,8 +322,8 @@
         var index = $('span[name=deleteUser]').index(this);
         deleteUserId = $("#resultArea").find(".userId").eq(index).text();
 
-        console.log("index 는 ", index);
-        console.log("id 는 ", deleteUserId);
+        //console.log("index 는 ", index);
+        //console.log("id 는 ", deleteUserId);
 
         var code = "<p class='account_modal_p'><span>" + deleteUserId + "</span> 님을 삭제하시겠습니까?<br>사용자를 삭제하면 복구할 수 없습니다.</p>";
         $(".deleteUser").html(code);
@@ -303,7 +331,7 @@
 
 
     $(document).on("click", "#userDeleteBtn", function () {
-        console.log("여기 들어오니잉???");
+        //console.log("여기 들어오니잉???");
         deleteUser(deleteUserId);
     });
 
@@ -316,7 +344,7 @@
 
     var callbackDeleteUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        console.log("result message 는?" + JSON.stringify(data));
+        //console.log("result message 는?" + JSON.stringify(data));
         alert("사용자가 삭제되었습니다.");
         location.reload(true);
     };

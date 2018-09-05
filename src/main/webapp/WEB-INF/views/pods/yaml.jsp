@@ -10,15 +10,12 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span class="resultServiceName"><c:out value="${podName}"/></span></h1>
-    <div class="cluster_tabs clearfix">
-        <ul>
-            <li name="tab01" class="cluster_tabs_left" onclick='movePage("detail");'>Details</li>
-            <li name="tab02" class="cluster_tabs_left" onclick='movePage("events");'>Events</li>
-            <li name="tab03" class="cluster_tabs_on" style="cursor: default;">YAML</li>
-        </ul>
-        <div class="cluster_tabs_line"></div>
-    </div>
+
+    <%--<jsp:include page="common-pods.jsp"/>--%>
+
+    <%-- NODES HEADER INCLUDE --%>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+
     <!-- Services YAML 시작-->
     <div class="cluster_content03 row two_line two_view harf_view custom_display_block">
         <ul class="maT30">
@@ -109,7 +106,7 @@
     }
 
     <%--var movePage = function(requestPage) {--%>
-        <%--var reqUrl = '<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/deployments/' + document.getElementById('requestDeploymentsName').value;--%>
+        <%--var reqUrl = '<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/pods/' + document.getElementById('requestDeploymentsName').value;--%>
         <%--if (requestPage.indexOf('detail') < 0) {--%>
             <%--reqUrl += '/' + requestPage;--%>
         <%--}--%>
