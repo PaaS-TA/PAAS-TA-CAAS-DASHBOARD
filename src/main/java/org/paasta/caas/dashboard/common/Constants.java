@@ -46,7 +46,7 @@ public class Constants {
     public static final String URI_API_SERVICES_LIST = "/namespaces/{namespace:.+}/services";
     public static final String URI_API_SERVICES_DETAIL = "/namespaces/{namespace:.+}/services/{serviceName:.+}";
     public static final String URI_API_SERVICES_YAML = "/namespaces/{namespace:.+}/services/{serviceName:.+}/yaml";
-    public static final String URI_API_SERVICES_RESOURCES = "/namespaces/{namespace:.+}/resource/{selector:.+}";
+    public static final String URI_API_SERVICES_RESOURCES = "/namespaces/{namespace:.+}/services/resource/{selector:.+}";
 
     // API URI :: ENDPOINTS
     public static final String URI_API_ENDPOINTS_DETAIL = "/namespaces/{namespace:.+}/endpoints/{serviceName:.+}";
