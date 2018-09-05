@@ -126,7 +126,6 @@
     }
 
     var getEventsListByNode = function(namespace, nodeName, callbackFunc) {
-        var namespace = "_all";
         var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/events/node/" + nodeName;
 
         if (null == callbackFunc)
@@ -140,8 +139,7 @@
         nodeName = urlInfo.resource;
         currentTab = urlInfo.tab == "_default"? "details" : urlInfo.tab;
 
-        var namespace = "_all";
-
+        var namespace = NAME_SPACE;
         getEventsListByNode(namespace, nodeName, callbackGetNodeEvent);
     });
 </script>
