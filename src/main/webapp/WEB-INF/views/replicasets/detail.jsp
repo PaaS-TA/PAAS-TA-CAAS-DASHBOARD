@@ -167,8 +167,8 @@
         var labels              = JSON.stringify(data.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
         var annotations         = JSON.stringify(data.metadata.annotations).replace(/["{}]/g, '').replace(/:/g, '=');
         var creationTimestamp   = data.metadata.creationTimestamp;
-        var selector            = data.metadata.selector;
-        var replicas            = data.status.replicas+"/"+data.status.replicas;   //  TOBE ::  current / desired
+        var selector            = procSetSelector(data.spec.selector.matchLabels);
+        var replicas            = data.status.replicas+" / "+data.status.replicas;   //  TOBE ::  current / desired
         var images              = new Array;
         var deployment          = "-"; // TODO :: label selector로 deployment 조회 및 링크
 
@@ -176,8 +176,6 @@
         for(var i=0; i < containers.length; i++){
             images.push(containers[i].image);
         }
-
-        selector = procSetSelector(data.spec.template.metadata.labels);
 
         $('#resultResourceName').html(replicaSetName);
         $('#resultNamespace').html(namespace);
@@ -190,7 +188,7 @@
         $('#resultDeployment').html(deployment);
 
         getDetailForPodsList(selector);
-        getServices(selector);
+        getServices(data.metadata.labels);
     };
 
 
@@ -253,6 +251,17 @@
 
     // GET SERVICE LIST
     var getServices = function(selector) {
+
+        /* Replicaset 생성시 추가되는 "pod-template-hash" 레이블은 service 레이블에 생성되지 않는다.
+            - service, deployment 레이블 조회시 => 필터링 조건에서 "pod-template-hash" 레이블은 제외한다.
+            - pods 레이블 조회시 =>  필터링 조건에서 "pod-template-hash" 레이블 포함함.
+         */
+        if(selector["pod-template-hash"] !== undefined){
+            delete selector["pod-template-hash"];
+        }
+
+        selector = procSetSelector(selector);
+
         var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/services/resource/" + selector;
         procCallAjax(reqUrl, "GET", null, null, callbackGetServices);
     };
@@ -345,7 +354,7 @@
 
         for (var i = 0; i < listLength; i++) {
             tempSelectorList = selectorList[i].split(",");
-            reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + tempNamespace + "/pods/service/" + tempSelectorList[1] + "/" + tempSelectorList[0];
+            reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + namespace + "/pods/service/" + tempSelectorList[1] + "/" + tempSelectorList[0];
 
             procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPods);
         }
@@ -368,7 +377,7 @@
             totalSum++;
         }
 
-        $('#' + data.serviceName).html(runningSum + "/" + totalSum);
+        $('#' + data.serviceName).html(runningSum + " / " + totalSum);
     };
 
     var createSpans = function (data, type) {
