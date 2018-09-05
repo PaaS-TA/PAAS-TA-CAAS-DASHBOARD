@@ -85,8 +85,8 @@
                         <p>Pods</p>
                         <ul class="colright_btn">
                             <li>
-                                <input type="text" id="table-search-01" name="" class="table-search" placeholder="search"/>
-                                <button name="button" class="btn table-search-on" type="button">
+                                <input type="text" id="table-search-01" name="" class="table-search" placeholder="Pod name" onkeypress="if(event.keyCode===13) { setPodsList(this.value); } " />
+                                <button name="button" class="btn table-search-on" id="tableSearchBtn" type="button">
                                     <i class="fas fa-search"></i>
                                 </button>
                             </li>
@@ -204,13 +204,15 @@
         $('#conditions_in_node > tbody').html(contents);
     }
 
+    var notFoundElement = '<tr id="podNotFound" style="display:none;"><td colspan="6" style="text-align:center;">Cannot find by pod name.</td></tr>';
+
     var callbackGetPods = function (data) {
         if (false == checkValidData(data)) {
             alert("Cannot load pods data");
             return;
         }
 
-        var contents = [];
+        var contents = [ notFoundElement ];
         $.each(data.items, function (index, podItem) {
             var pod = getPod(podItem);
 
@@ -242,8 +244,8 @@
             if (errorMsg != null && errorMsg != "")
                 nameHtml += '<br><span class="' + nameClassSet.span + '">' + errorMsg + '</span>';
 
-            var podRowHtml = '<tr pod-name="' + pod.name + '" created-on="' + pod.creationTimestamp + '">'
-                + '<td name="name" value>' + nameHtml + '</td>'
+            var podRowHtml = '<tr name="podRow" data-pod-name="' + pod.name + '" pod-name="' + pod.name + '" created-on="' + pod.creationTimestamp + '">'
+                + '<td>' + nameHtml + '</td>'
                 + '<td>' + pod.namespace + '</td>'
                 + '<td>' + pod.nodeName + '</td>'
                 + '<td>' + pod.podStatus + '</td>'
@@ -297,12 +299,35 @@
         };
     }
 
+    // filter pod list by pod name
+    var setPodsList = function(findValue) {
+        var podNotFound = $("#podNotFound");
+        var podRows = $("tr[name=podRow]");
+        if (nvl(findValue) === "") {
+            podNotFound.hide();
+            podRows.show();
+        } else {
+            $.each(podRows, function(index, row) {
+                var row = $(row);
+                if (row.data("podName").indexOf(findValue) > -1)
+                    row.show();
+                else
+                    row.hide();
+            });
+        }
+    };
+
     // ON LOAD
     $(document.body).ready(function () {
         // TODO :: Change chart functions.
         //createChart("current", "cpu");
         //createChart("current", "mem");
         //createChart("current", "disk");
+
+        $("#tableSearchBtn").on("click", function(event) {
+            var keyword = $("#table-search-01").val();
+            setPodsList(keyword);
+        });
 
         // add sort-arrow click event in pods table
         $(".sort-arrow").on("click", function(event) {
