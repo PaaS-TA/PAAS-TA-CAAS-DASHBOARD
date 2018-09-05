@@ -74,8 +74,9 @@
 
     // CALLBACK
     var callbackGetListNodes = function(data) {
-        if (false == checkValidData(data)) {
-            alert("Cannot load nodes data");
+        if (false == procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage("Node 정보를 가져오지 못했습니다.", false);
             return;
         }
 
@@ -90,8 +91,8 @@
                 })[0].status;
             var limitCPU = _status.capacity.cpu;
             var requestCPU = limitCPU - _status.allocatable.cpu;
-            var limitMemory = convertByte(_status.capacity.memory);
-            var requestMemory = limitMemory - convertByte(_status.allocatable.memory);
+            var limitMemory = procConvertByte(_status.capacity.memory);
+            var requestMemory = limitMemory - procConvertByte(_status.allocatable.memory);
             var creationTimestamp = _metadata.creationTimestamp;
 
             // TODO
@@ -106,8 +107,8 @@
                 + '<td>' + ready + '</td>'
                 + '<td>' + requestCPU + '</td>'
                 + '<td>' + limitCPU + '</td>'
-                + '<td>' + formatCapacity(requestMemory, "Mi") + '</td>'
-                + '<td>' + formatCapacity(limitMemory, "Mi") + '</td>'
+                + '<td>' + procFormatCapacity(requestMemory, "Mi") + '</td>'
+                + '<td>' + procFormatCapacity(limitMemory, "Mi") + '</td>'
                 + '<td>' + creationTimestamp + '</td></tr>'
             );
         });

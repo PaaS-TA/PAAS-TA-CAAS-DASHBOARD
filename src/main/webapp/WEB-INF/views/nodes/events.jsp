@@ -57,9 +57,9 @@
 </div>
 <script>
     var callbackGetNodeEvent = function (data) {
-        // TODO :: write logic
-        if (false == checkValidData(data)) {
-            alert("Cannot load pods data");
+        if (false == procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage("Node의 Pod 정보를 가져오지 못했습니다.", false);
             return;
         }
 
@@ -135,7 +135,7 @@
     }
 
     $(document.body).ready(function () {
-        var urlInfo = getURLInfo();
+        var urlInfo = procGetURLInfo();
         nodeName = urlInfo.resource;
         currentTab = urlInfo.tab == "_default"? "details" : urlInfo.tab;
 

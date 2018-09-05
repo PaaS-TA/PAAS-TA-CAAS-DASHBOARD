@@ -172,8 +172,9 @@
 <script>
     var callbackGetNodeSummary = function (data) {
         // check data validation
-        if (false == checkValidData(data)) {
-            alert("Cannot load node info.");
+        if (false == procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage("Node 정보를 가져오지 못했습니다.", false);
             return;
         }
 
@@ -206,8 +207,9 @@
     var notFoundElement = '<tr id="podNotFound" style="display:none;"><td colspan="6" style="text-align:center;">Cannot find by pod name.</td></tr>';
 
     var callbackGetPods = function (data) {
-        if (false == checkValidData(data)) {
-            alert("Cannot load pods data");
+        if (false == procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage("Node의 Pod 정보를 가져오지 못했습니다.", false);
             return;
         }
 
@@ -288,7 +290,7 @@
             nodeName: (_spec.nodeName != null? _spec.nodeName : "-"),
             podStatus: _status.phase,
             podErrorMsg: _podErrorMsg,
-            restartCount: processIfDataIsNull(
+            restartCount: procIfDataIsNull(
                 _status.containerStatuses, function (data) {
                     return data.reduce(function (a, b) {
                         return {restartCount: a.restartCount + b.restartCount};
@@ -318,11 +320,6 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        // TODO :: Change chart functions.
-        //createChart("current", "cpu");
-        //createChart("current", "mem");
-        //createChart("current", "disk");
-
         $("#tableSearchBtn").on("click", function(event) {
             var keyword = $("#table-search-01").val();
             setPodsList(keyword);

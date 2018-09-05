@@ -183,6 +183,12 @@
     };
 
     var callbackGetNodeDetail = function (data) {
+        if (false == procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage("Node 정보를 가져오지 못했습니다.", false);
+            return;
+        }
+
         var _metadata = data.metadata;
         var _spec = data.spec;
         var _status = data.status;
@@ -236,6 +242,7 @@
 
         })
         */
+        viewLoading('hide');
     };
 
     var loadLayerpop = function () {
@@ -246,7 +253,9 @@
     };
 
     $(document.body).ready(function () {
-       loadLayerpop();
+        viewLoading('show');
+
+        loadLayerpop();
 
         getNode(nodeName, callbackGetNodeDetail);
     });
