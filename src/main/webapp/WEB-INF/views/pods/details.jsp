@@ -432,7 +432,7 @@
                                         itemList.name +
                                     '</a>' +
                                 '</td>' +
-                                '<td>' + '<span class="green2"><i class="fas fa-check-circle"></i></span>' + getStatus(getContainer(containerStatuses, itemList.name), status.phase) + '</td>' +
+                                '<td>' + '<span class="green2"><i class="fas fa-check-circle"></i></span> ' + getStatus(getContainer(containerStatuses, itemList.name), status.phase) + '</td>' +
                                 '<td>' + itemList.image + '</td>' +
                                 '<td>' + nvl2(getContainer(containerStatuses, itemList.name).restartCount, "None") + '</td>' +
                               '</tr>' +
@@ -445,7 +445,7 @@
                                         '</colgroup>' +
                                         '<tbody>' +
                                             '<tr>' +
-                                                '<td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>' +
+                                                '<td>Name</td>' +
                                                 '<td>' + itemList.name + '</td>' +
                                             '</tr>' +
                                             '<tr>' +
