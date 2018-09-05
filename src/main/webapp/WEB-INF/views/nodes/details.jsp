@@ -150,6 +150,38 @@
     </div>
 </div>
 <script>
+    var createSpans = function (data, type) {
+        var datas = data.replace(/=/g, ':').split(',');
+        var spanTemplate = "";
+
+        if (type === "true") {
+            $.each(datas, function (index, data) {
+                if (index > 0)
+                    spanTemplate += '<br>';
+
+                spanTemplate += '<span class="bg_gray">' + data + '</span>';
+            });
+        } else {
+            $.each(datas, function (index, data) {
+                spanTemplate += '<span class="bg_gray">' + data + '</span> ';
+            });
+        }
+
+        return spanTemplate;
+    };
+
+    var stringifyKeyValue = function (data, mapFunc) {
+        if (data instanceof Array) {
+            if (null == mapFunc)
+                arrayFunc = function(index, item) { return item };
+
+            return data.map(mapFunc).reduce(function(prevItem, item) { return prevItem + ", " + item; });
+        } else {
+            return Object.keys(data).map( function (key) { return key + ": " + data[key]; })
+                .reduce(function(prevItem, item) { return prevItem + ", " + item; });
+        }
+    };
+
     var callbackGetNodeDetail = function (data) {
         var _metadata = data.metadata;
         var _spec = data.spec;
@@ -157,10 +189,10 @@
 
         // name, labels, annotations, created-at, addresses, pod-cidr, unschedulable
         var name = _metadata.name;
-        var labels = stringifyJSON(_metadata.labels);
-        var annotations = stringifyJSON(_metadata.annotations);
+        var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
+        var annotations = stringifyKeyValue(_metadata.annotations);
         var createdAt = _metadata.creationTimestamp;
-        var addresses = stringifyJSON(_status.addresses);
+        var addresses = stringifyKeyValue(_status.addresses, function(item) { return item.type + ": " + item.address; });
         var podCIDR = _spec.podCIDR;
         var unschedulable = _spec.taints != null?
             _spec.taints.filter(
@@ -180,10 +212,10 @@
         var architecture = nodeInfo.architecture;
 
         $('#node_name').html(name);
-        $('#node_labels').html(labels);
-        $('#node_annotations').html(annotations);
+        $('#node_labels').html(createSpans(labels, "false"));
+        $('#node_annotations').html(createSpans(annotations, "true"));
         $('#node_created_at').html(createdAt);
-        $('#node_addresses').html(addresses);
+        $('#node_addresses').html(createSpans(addresses, "false"));
         $('#node_pod_cidr').html(podCIDR);
         $('#node_unschedulable').html(unschedulable.toString());
 
@@ -204,7 +236,7 @@
 
         })
         */
-    }
+    };
 
     var loadLayerpop = function () {
         // MOVE LAYERPOP UNDER BODY ELEMENT

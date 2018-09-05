@@ -445,7 +445,7 @@
                                         '</colgroup>' +
                                         '<tbody>' +
                                             '<tr>' +
-                                                '<td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>' +
+                                                '<td>Name</td>' +
                                                 '<td>' + itemList.name + '</td>' +
                                             '</tr>' +
                                             '<tr>' +

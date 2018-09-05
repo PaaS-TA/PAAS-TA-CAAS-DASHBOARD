@@ -29,12 +29,12 @@
                             </colgroup>
                             <thead>
                             <tr>
-                                <td>Name<button sort-key="pod-name" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Name<button data-sort-key="pod-name" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
                                 <td>Node</td>
                                 <td>Status</td>
                                 <td>Restarts</td>
-                                <td>Created on<button sort-key="created-on" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Created on<button data-sort-key="created-on" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button></td>
                             </tr>
                             </thead>
                             <tbody><%-- tbody content : pod list --%></tbody>
@@ -113,7 +113,7 @@
             if (errorMsg != null && errorMsg != "")
                 nameHtml += '<br><span class="' + nameClassSet.span + '">' + errorMsg + '</span>';
 
-            var podRowHtml = '<tr pod-name="' + pod.name + '" created-on="' + pod.creationTimestamp + '">'
+            var podRowHtml = '<tr data-pod-name="' + pod.name + '" data-created-on="' + pod.creationTimestamp + '">'
                 + '<td name="name" value>' + nameHtml + '</td>'
                 + '<td>' + pod.namespace + '</td>'
                 + '<td>' + pod.nodeName + '</td>'
@@ -172,7 +172,7 @@
     $(document.body).ready(function () {
         $(".sort-arrow").on("click", function(event) {
             var tableId = "pods_table_in_workloads";
-            var sortKey = $(event.currentTarget).attr('sort-key');
+            var sortKey = $(event.currentTarget).data('sort-key');
             var isAscending = $(event.currentTarget).hasClass('sort')? true : false;
             sortTable(tableId, sortKey, isAscending);
         });
