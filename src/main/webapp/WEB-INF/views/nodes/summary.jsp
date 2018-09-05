@@ -104,15 +104,13 @@
                             </colgroup>
                             <thead>
                             <tr>
-                                <td>Name
-                                    <button sort-key="pod-name" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
+                                <td>Name <button data-sort-key="pod-name" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
                                 </td>
                                 <td>Namespace</td>
                                 <td>Node</td>
                                 <td>Status</td>
                                 <td>Restarts</td>
-                                <td>Created on
-                                    <button sort-key="created-on" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
+                                <td>Created on <button data-sort-key="created-on" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
                                 </td>
                             </tr>
                             </thead>
@@ -244,7 +242,7 @@
             if (errorMsg != null && errorMsg != "")
                 nameHtml += '<br><span class="' + nameClassSet.span + '">' + errorMsg + '</span>';
 
-            var podRowHtml = '<tr name="podRow" data-pod-name="' + pod.name + '" pod-name="' + pod.name + '" created-on="' + pod.creationTimestamp + '">'
+            var podRowHtml = '<tr name="podRow" data-pod-name="' + pod.name + '" data-created-on="' + pod.creationTimestamp + '">'
                 + '<td>' + nameHtml + '</td>'
                 + '<td>' + pod.namespace + '</td>'
                 + '<td>' + pod.nodeName + '</td>'
@@ -332,7 +330,7 @@
         // add sort-arrow click event in pods table
         $(".sort-arrow").on("click", function(event) {
             var tableId = "pods_table_in_node";
-            var sortKey = $(event.currentTarget).attr('sort-key');
+            var sortKey = $(event.currentTarget).data('sort-key');
             var isAscending = $(event.currentTarget).hasClass('sort')? true : false;
             sortTable(tableId, sortKey, isAscending);
         });
