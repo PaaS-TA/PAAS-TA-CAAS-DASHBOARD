@@ -292,15 +292,19 @@ var stringifyJSON = function (obj) {
 //     .then(function() { $('body').loadingModal('hide'); return delay(time); } )
 //     .then(function() { $('body').loadingModal('destroy') ;} );
 var viewLoading = function(type) {
-    if (type == 'show') {
+    if (type === 'show') {
         console.log(":: Show Loading..");
-        $('body').loadingModal();
-        $('body').loadingModal('animation', 'chasingDots').loadingModal('color', 'black').loadingModal('backgroundColor', 'white');
-    } else if (type == 'hide') {
+        var bodyObj = $('body');
+        bodyObj.loadingModal();
+        bodyObj.loadingModal('animation', 'chasingDots').loadingModal('color', 'black').loadingModal('backgroundColor', 'white');
+    } else if (type === 'hide') {
         console.log(":: Hide Loading..");
-        $('body').loadingModal('destroy') ;
+        setTimeout(function(){
+            $('body').loadingModal('destroy') ;
+        }, 1000);
+
     }
-}
+};
 
 var alertMessage = function(value, result) {
     $(".alertLayer .in").html(value);

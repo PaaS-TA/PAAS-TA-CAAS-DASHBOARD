@@ -112,7 +112,7 @@
     var getDetail = function() {
         viewLoading('show');
 
-        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/services/" + document.getElementById('requestServiceName').value;
+        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/services/" + document.getElementById('requestServiceName').value + '/yaml';
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
 

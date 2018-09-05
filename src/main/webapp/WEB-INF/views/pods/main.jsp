@@ -11,13 +11,13 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <div class="cluster_tabs clearfix"></div>
-    <div class="cluster_content01 row two_line two_view">
-        <ul>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <div class="cluster_content02 row two_line two_view harf_view" style="display: block;">
+        <ul class="maT30">
             <li>
                 <div class="sortable_wrap">
                     <div class="sortable_top">
-                        <p>Services</p>
+                        <p>Pods</p>
                         <ul class="colright_btn">
                             <li>
                                 <input type="text" id="table-search-01" name="" class="table-search" placeholder="search" onkeypress="if(event.keyCode===13) {setList(this.value);}" />

@@ -370,13 +370,13 @@
                 '</a>';
         }
 
-        document.getElementById("ip").textContent = data.status.podIP;
+        document.getElementById("ip").textContent =  nvl2(data.status.podIP, "None");
         document.getElementById("controllers").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>"+
                                                                 data.metadata.ownerReferences[0].name +
                                                             '</a>';
         document.getElementById("volumes").textContent = data.spec.volumes[0].name;
 
-        createContainerResultArea(data.status.containerStatuses, data.spec.containers);
+        createContainerResultArea(data.status, data.spec.containers);
     };
 
     var replaceLabels = function (data) {
@@ -411,37 +411,32 @@
         }
         return tempStr;
     }
-    
-    var createContainerResultArea = function (containerStatuses, containers) {
+
+    // 좀 더 좋은 로직 있으면 수정바람...
+    // statuses와 container 비교하는 구문..
+    var createContainerResultArea = function (status, containers) {
         var resultArea = $('#resultArea');
         var resultHeaderArea = $('#containersResultHeaderArea');
         var noResultArea = $('#noContainersResultArea');
 
         var listLength;
-        console.log("컨테이너들! " , containers);
-        console.log("컨테이너들! containerStatuses " , containerStatuses);
-        if(containerStatuses == null) {
-            containerStatuses = containers;
-            listLength = containers.length;
-            obj.key3 = "value3";
-        } else {
-            listLength = containerStatuses.length;
-        }
+        var containerStatuses = status.containerStatuses;
 
-        $.each(containerStatuses, function (index, itemList) {
-            console.log("뭐야 ", containers);
-            console.log("허허헣 ", itemList);
+        listLength = containers.length;
+
+        $.each(containers, function (index, itemList) {
+
             resultArea.append('<tr>' +
                                 '<td>' +
-                                    "<a href='#' onclick='event.preventDefault()'>"+
+                                    "<a href='javascript:void(0);' onclick='showHide(" + index + ");\'>"+
                                         itemList.name +
                                     '</a>' +
                                 '</td>' +
-                                '<td>' + '<span class="green2"><i class="fas fa-check-circle"></i></span>' + Object.keys(itemList.state) + '</td>' +
+                                '<td>' + '<span class="green2"><i class="fas fa-check-circle"></i></span>' + getStatus(getContainer(containerStatuses, itemList.name), status.phase) + '</td>' +
                                 '<td>' + itemList.image + '</td>' +
-                                '<td>' + itemList.restartCount + '</td>' +
+                                '<td>' + nvl2(getContainer(containerStatuses, itemList.name).restartCount, "None") + '</td>' +
                               '</tr>' +
-                              '<tr style="display">' +
+                              '<tr style="display:none;" id="' + index +'">' +
                                 '<td colspan="5">' +
                                     '<table class="table_detail alignL">' +
                                         '<colgroup>' +
@@ -450,7 +445,7 @@
                                         '</colgroup>' +
                                         '<tbody>' +
                                             '<tr>' +
-                                                '<td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>' +
+                                                '<td>Name</td>' +
                                                 '<td>' + itemList.name + '</td>' +
                                             '</tr>' +
                                             '<tr>' +
@@ -492,57 +487,61 @@
 
     var getContainer = function (containerList, conatinerName) {
 
+        if(!containerList) {
+            return "";
+        }
         var containerObject;
-            //data.spec.containers
+
         for(var index =0; index < containerList.length; index ++) {
             if(containerList[index].name == conatinerName) {
                 containerObject = containerList[index];
                 return containerObject;
             }
         }
-
     }
 
+    // 줄일 수 있으면 수정바라뮤ㅠㅠ 재귀를 쓸 타이밍인가;;
     var envParser = function (container) {
-
         var tempStr = "";
-        console.log("컨테이넛 ", container);
         if(container.env == null) {
             return tempStr = "None";
         }
-        envs = container.env;
+        var envs = container.env;
+
         for( var key in envs ) {
-            console.log("키자식111 ", Object.keys(envs[key]));
-            console.log("키자식222 ", Object.values(envs[key]));//Object.keys(object);
             if(key != 0 ) {
                 tempStr += '<br>';
             }
 
-            console.log("이게 틀렸네 ? ", Object.keys(envs[key])[1]);
-            // if(Object.keys(container[key])[1] == 'valueFrom') {
-            //     console.log(" ㅎㅎㅎ " ,container[key].Object.keys(container[key])[1]);
-            //     // console.log("뭐하고 있냐 ㅠ ", Object.values(container[key])[1].valueFrom);
-            //     // console.log("그러게 슈벙 ", Object.values(container[key])[1].valueFrom);
-            //     tempStr +=  Object.values(container[key])[0]  + ":&nbsp;" + Object.keys(Object.values(container[key].valueFrom)[1]) + Object.values(Object.values(container[key].valueFrom)[1]);
-            // } else {
+            if(Object.keys(envs[key])[1] == 'valueFrom') {
+                var testObject = Object.values(envs[key])[1];
+                var fieldRef = Object.values(testObject)[0];
+                Object.keys(fieldRef).forEach(function (key) {
+                    tempStr += fieldRef[key] + " &nbsp;";
+                });
+            } else {
                 tempStr +=  Object.values(envs[key])[0]  + ":&nbsp;" + Object.values(envs[key])[1];
-            // }
-            console.log( "씨발 ! ", tempStr);
+            }
         }
-
         return tempStr;
     }
 
-
-    // MOVE PAGE
-    var movePage = function(requestPage) {
-        var reqUrl = '<%= Constants.CAAS_BASE_URL %>/services/' + document.getElementById('requestServiceName').value;
-
-        if (requestPage.indexOf('detail') < 0) {
-            reqUrl += '/' + requestPage;
+    // state를 가져오기 위함.. state정보는 statuses에 있는데.. run된 흔적이 없으면 이게 null로 들어옴...
+    var getStatus = function (itemList, phase) {
+        if( !itemList ) {
+            return phase;
         }
+        return Object.keys(itemList.state);
+    }
 
-        procMovePage(reqUrl);
-    };
+    var showHide = function (indexId) {
+        var tr = $('#' + indexId);
+
+        if (tr.is(":visible")) {
+            tr.css('display', 'none');
+        } else {
+            tr.css('display', 'table-row');
+        }
+    }
 
 </script>
