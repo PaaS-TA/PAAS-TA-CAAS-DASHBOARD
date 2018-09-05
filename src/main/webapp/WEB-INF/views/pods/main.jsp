@@ -11,9 +11,9 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <div class="cluster_tabs clearfix"></div>
-    <div class="cluster_content01 row two_line two_view">
-        <ul>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <div class="cluster_content02 row two_line two_view harf_view" style="display: block;">
+        <ul class="maT30">
             <li>
                 <div class="sortable_wrap">
                     <div class="sortable_top">
