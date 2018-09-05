@@ -1,4 +1,4 @@
-created-on<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <div class="content">
