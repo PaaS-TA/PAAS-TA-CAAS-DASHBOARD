@@ -166,7 +166,8 @@ var procSetSortList = function(resultTableString, buttonObject, key) {
 
 
 var procCheckValidData = function (data) {
-    if (RESULT_STATUS_FAIL === data.resultStatus) {
+    // TODO :: resultStatus? resultCode? Codes' are congesting
+    if (RESULT_STATUS_FAIL === data.resultStatus || RESULT_STATUS_FAIL === data.resultCode) {
         console.debug("ResultStatus :: " + data.resultCode + " / " + "ResultMessage :: " + data.resultMessage);
         return false;
     } else {

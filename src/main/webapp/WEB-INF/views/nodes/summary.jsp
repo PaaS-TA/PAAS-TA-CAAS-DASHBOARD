@@ -85,7 +85,7 @@
                         <p>Pods</p>
                         <ul class="colright_btn">
                             <li>
-                                <input type="text" id="table-search-01" name="" class="table-search" placeholder="Pod name" onkeypress="if(event.keyCode===13) { setPodsList(this.value); } " />
+                                <input type="text" id="table-search-01" name="" class="table-search" placeholder="Pod name" onkeypress="if(event.keyCode===13) { setPodsListWithFilter(this.value); }" />
                                 <button name="button" class="btn table-search-on" id="tableSearchBtn" type="button">
                                     <i class="fas fa-search"></i>
                                 </button>
@@ -103,21 +103,19 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                            <tr>
-                                <td>Name <button data-sort-key="pod-name" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
-                                </td>
+                            <tr id="podNotFound" style="display:none;"><td colspan="6" style="text-align:center;">Node의 Pod가 없습니다.</td></tr>
+                            <tr id="podsTableHeader">
+                                <td>Name <button data-sort-key="pod-name" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
                                 <td>Node</td>
                                 <td>Status</td>
                                 <td>Restarts</td>
-                                <td>Created on <button data-sort-key="created-on" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
-                                </td>
+                                <td>Created on <button data-sort-key="created-on" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button></td>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr><td colspan="6" style="text-align: center;">LOADING PODS IN NODE</td></tr>
                             </tbody>
-                            <tfoot class="caas-pagenation-wrap"></tfoot>
+                            <tfoot></tfoot>
                         </table>
                     </div>
                 </div>
@@ -138,7 +136,8 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr>
+                            <tr id="conditionsNotFound" style="display:none;"><td colspan="6" style="text-align:center;">Node의 Condition 정보가 없습니다.</td></tr>
+                            <tr id="conditionsTableHeader">
                                 <td>Type</td>
                                 <td>Status</td>
                                 <td>Last heartbeat time</td>
@@ -148,16 +147,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr><td colspan="6" style="text-align: center;">LOADING CONDITIONS</td></tr>
                             </tbody>
-                            <!-- TODO :: REMOVE TFOOT ELEMENT IN NODE CONDITIONS -->
-                            <!--tfoot>
-                                <tr>
-                                    <td colspan="6">
-                                        <button class="btns2 btns2_1 colors4 event_btns">더보기</button>
-                                    </td>
-                                </tr>
-                            </tfoot-->
+                            <!--tfoot></tfoot-->
                         </table>
                     </div>
                 </div>
@@ -175,6 +166,13 @@
         if (false == procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage("Node 정보를 가져오지 못했습니다.", false);
+            $('#podNotFound').children().html("Node의 정보를 가져오지 못했습니다.");
+            $('#podNotFound').show();
+            $('#podsTableHeader').hide();
+
+            $('#conditionsNotFound').children().html("Node의 정보를 가져오지 못했습니다.");
+            $('#conditionsNotFound').show();
+            $('#conditionsTableHeader').hide();
             return;
         }
 
@@ -200,20 +198,27 @@
                 + '<td>' + condition.message + '</td></tr>');
         });
 
-        // append conditions tbody
-        $('#conditions_in_node > tbody').html(contents);
+        if (contents.length > 0) {
+            // append conditions tbody
+            $('#conditions_in_node > tbody').html(contents);
+        } else {
+            $('#conditionsNotFound').children().html("Node의 Condition 목록을 가져오지 못했습니다.");
+            $('#conditionsNotFound').show();
+            $('#conditionsTableHeader').hide();
+        }
     }
-
-    var notFoundElement = '<tr id="podNotFound" style="display:none;"><td colspan="6" style="text-align:center;">Cannot find by pod name.</td></tr>';
 
     var callbackGetPods = function (data) {
         if (false == procCheckValidData(data)) {
             viewLoading('hide');
-            alertMessage("Node의 Pod 정보를 가져오지 못했습니다.", false);
+            alertMessage("Node의 Pod 목록을 가져오지 못했습니다.", false);
+            $('#podNotFound').children().html("Node의 Pod 목록을 가져오지 못했습니다.");
+            $('#podNotFound').show();
+            $('#podsTableHeader').hide();
             return;
         }
 
-        var contents = [ notFoundElement ];
+        var contents = [];
         $.each(data.items, function (index, podItem) {
             var pod = getPod(podItem);
 
@@ -255,11 +260,17 @@
             contents.push(podRowHtml);
         });
 
-        // append pod tbody
-        $('#pods_table_in_node > tbody').html(contents);
+        if (contents.length > 0) {
+            // append pod tbody
+            $('#pods_table_in_node > tbody').html(contents);
+            // default sort : pod's name
+            sortTable("pods_table_in_node", "pod-name", true);
+        } else {
+            $('#podNotFound').show();
+            $('#podsTableHeader').hide();
+        }
 
-        // default sort : pod's name
-        sortTable("pods_table_in_node", "pod-name", true);
+        viewLoading('hide');
     }
 
     var getPod = function (podItem) {
@@ -301,28 +312,44 @@
     }
 
     // filter pod list by pod name
-    var setPodsList = function(findValue) {
+    var setPodsListWithFilter = function(findValue) {
+        var podsTableHeader = $("#podsTableHeader");
         var podNotFound = $("#podNotFound");
         var podRows = $("tr[name=podRow]");
-        if (nvl(findValue) === "") {
-            podNotFound.hide();
-            podRows.show();
-        } else {
-            $.each(podRows, function(index, row) {
-                var row = $(row);
-                if (row.data("podName").indexOf(findValue) > -1)
-                    row.show();
-                else
-                    row.hide();
-            });
+        if (podRows.length > 0) {
+            if (nvl(findValue) === "") {
+                // If input element's value is empty, show all rows.
+                podNotFound.hide();
+                podsTableHeader.show();
+                podRows.show();
+            } else {
+                var showCount = 0;
+                $.each(podRows, function(index, row) {
+                    var row = $(row);
+                    if (row.data("podName").indexOf(findValue) > -1) {
+                        row.show();
+                        showCount++;
+                    } else {
+                        row.hide();
+                    }
+                });
+
+                if (showCount <= 0) {
+                    podNotFound.children().html("Pod 이름으로 찾지 못했습니다.");
+                    podNotFound.show();
+                    podsTableHeader.hide();
+                }
+            }
         }
     };
 
     // ON LOAD
     $(document.body).ready(function () {
+        viewLoading('show');
+
         $("#tableSearchBtn").on("click", function(event) {
             var keyword = $("#table-search-01").val();
-            setPodsList(keyword);
+            setPodsListWithFilter(keyword);
         });
 
         // add sort-arrow click event in pods table

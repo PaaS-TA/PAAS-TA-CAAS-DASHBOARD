@@ -19,9 +19,8 @@
                         <p>Nodes</p>
                         <ul class="colright_btn">
                             <li>
-                                <input type="text" id="table-search-01" name="" class="table-search"
-                                       placeholder="search"/>
-                                <button name="button" class="btn table-search-on" type="button">
+                                <input type="text" id="table-search-01" name="" class="table-search" placeholder="Node name" onkeypress="if(event.keyCode===13) { setNodesListWithFilter(this.value); }"/>
+                                <button name="button" class="btn table-search-on" id="tableSearchBtn" type="button">
                                     <i class="fas fa-search"></i>
                                 </button>
                             </li>
@@ -39,25 +38,20 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                            <tr>
-                                <td>Name <button data-sort-key="node-name" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
-                                </td>
+                            <tr id="nodeNotFound" style="display:none;"><td colspan="7" style="text-align:center;">Node가 없습니다.</td></tr>
+                            <tr id="nodesTableHeader">
+                                <td>Name <button data-sort-key="node-name" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Ready</td>
                                 <td>CPU requests</td>
                                 <td>CPU limits</td>
                                 <td>Memory requests</td>
                                 <td>Memory limits</td>
-                                <td>Created on <button data-sort-key="created-on" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
+                                <td>Created on <button data-sort-key="created-on" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button></td>
                             </tr>
                             </thead>
                             <tbody>
-                                <tr><td colspan="7">노드의 정보를 가져올 수 없습니다.</td></tr>
                             </tbody>
-                            <!--tfoot>
-                                <tr>
-                                    <td colspan="7"><button class="btns2 btns2_1 colors4 event_btns">더보기</button></td>
-                                </tr>
-                            </tfoot-->
+                            <tfoot></tfoot>
                         </table>
                     </div>
                 </div>
@@ -77,6 +71,9 @@
         if (false == procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage("Node 정보를 가져오지 못했습니다.", false);
+            $('#nodeNotFound').children().html("Node 정보를 가져오지 못했습니다.");
+            $('#nodeNotFound').show();
+            $('#nodesTableHeader').hide();
             return;
         }
 
@@ -102,7 +99,7 @@
             else
                 nameHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span>' + nameHtml;
 
-            contents.push('<tr data-node-name="' + name + '" data-created-on="' + creationTimestamp + '">'
+            contents.push('<tr name="nodeRow" data-node-name="' + name + '" data-created-on="' + creationTimestamp + '">'
                 + '<td>' + nameHtml + '</td>'
                 + '<td>' + ready + '</td>'
                 + '<td>' + requestCPU + '</td>'
@@ -113,13 +110,61 @@
             );
         });
 
-        $('#clusters_nodes_table > tbody').html(contents);
+        if (contents.length > 0) {
+            // append node tbody
+            $('#clusters_nodes_table > tbody').html(contents);
+            // default sort : node's name
+            sortTable("clusters_nodes_table", "node-name");
+        } else {
+            $('#nodeNotFound').show();
+            $('#nodesTableHeader').hide();
+        }
 
-        sortTable("clusters_nodes_table", "node-name");
+        viewLoading('hide');
     }
 
+    // filter node list by node name
+    var setNodesListWithFilter = function(findValue) {
+        var nodeNotFound = $("#nodeNotFound");
+        var nodesTableHeader = $("#nodesTableHeader");
+        var nodeRows = $("tr[name=nodeRow]");
+        if (nodeRows.length > 0) {
+            if (nvl(findValue) === "") {
+                // If input element's value is empty, show all rows.
+                nodeNotFound.hide();
+                nodesTableHeader.show();
+                nodeRows.show();
+            } else {
+                var showCount = 0;
+
+                $.each(nodeRows, function(index, row) {
+                    var row = $(row);
+                    if (row.data("nodeName").indexOf(findValue) > -1) {
+                        row.show();
+                        showCount++;
+                    } else {
+                        row.hide();
+                    }
+                });
+
+                if (showCount <= 0) {
+                    nodeNotFound.children().html("Node 이름으로 찾지 못했습니다.");
+                    nodeNotFound.show();
+                    nodesTableHeader.hide();
+                }
+            }
+        }
+    };
+
     $(document.body).ready(function(){
-        // add sort-arrow click event in pods table
+        viewLoading('show');
+
+        $("#tableSearchBtn").on("click", function(event) {
+            var keyword = $("#table-search-01").val();
+            setNodesListWithFilter(keyword);
+        });
+
+        // add sort-arrow click event in nodes table
         $(".sort-arrow").on("click", function(event) {
             var tableId = "clusters_nodes_table";
             var sortKey = $(event.currentTarget).data('sort-key');
