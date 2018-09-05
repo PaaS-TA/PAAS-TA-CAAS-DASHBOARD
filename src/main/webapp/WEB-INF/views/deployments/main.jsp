@@ -117,7 +117,7 @@
             var namespace = _metadata.namespace;
             var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
             if (labels == null || labels == "null") {
-                labels = "None"
+                labels = "-";
             }
 
             var creationTimestamp = _metadata.creationTimestamp;

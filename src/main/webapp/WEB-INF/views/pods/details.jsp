@@ -361,7 +361,7 @@
         document.getElementById("conditions").textContent = conditionParser(data.status.conditions);
 
         if(data.spec.nodeName == null) {
-            document.getElementById("node").innerHTML =  "None";
+            document.getElementById("node").innerHTML =  "-";
         }
 
         if(data.spec.nodeName != null) {
@@ -370,7 +370,7 @@
                 '</a>';
         }
 
-        document.getElementById("ip").textContent =  nvl2(data.status.podIP, "None");
+        document.getElementById("ip").textContent =  nvl2(data.status.podIP, "-");
         document.getElementById("controllers").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>"+
                                                                 data.metadata.ownerReferences[0].name +
                                                             '</a>';
@@ -434,7 +434,7 @@
                                 '</td>' +
                                 '<td>' + '<span class="green2"><i class="fas fa-check-circle"></i></span> ' + getStatus(getContainer(containerStatuses, itemList.name), status.phase) + '</td>' +
                                 '<td>' + itemList.image + '</td>' +
-                                '<td>' + nvl2(getContainer(containerStatuses, itemList.name).restartCount, "None") + '</td>' +
+                                '<td>' + nvl2(getContainer(containerStatuses, itemList.name).restartCount, "-") + '</td>' +
                               '</tr>' +
                               '<tr style="display:none;" id="' + index +'">' +
                                 '<td colspan="5">' +
@@ -458,11 +458,11 @@
                                             '</tr>' +
                                             '<tr>' +
                                                 '<td>Commands</td>' +
-                                                '<td>' + nvl2(getContainer(containers, itemList.name).command, "None") + '</td>' +
+                                                '<td>' + nvl2(getContainer(containers, itemList.name).command, "-") + '</td>' +
                                             '</tr>' +
                                             '<tr>' +
                                                 '<td>Args</td>' +
-                                                '<td>' + nvl2(getContainer(containers, itemList.name).args, "None")  + '</td>' +
+                                                '<td>' + nvl2(getContainer(containers, itemList.name).args, "-")  + '</td>' +
                                             '</tr>' +
                                             '</tbody>' +
                                     '</table>' +
@@ -504,7 +504,7 @@
     var envParser = function (container) {
         var tempStr = "";
         if(container.env == null) {
-            return tempStr = "None";
+            return tempStr = "-";
         }
         var envs = container.env;
 
