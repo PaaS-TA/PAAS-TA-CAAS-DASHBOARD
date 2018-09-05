@@ -87,7 +87,7 @@ public class CustomServicesController {
 
 
     /**
-     * Gets custom services list.
+     * Services 목록을 조회한다.
      *
      * @param namespace the namespace
      * @return the custom services list
@@ -100,7 +100,7 @@ public class CustomServicesController {
 
 
     /**
-     * Gets custom service.
+     * Services 상세 정보를 조회한다.
      *
      * @param namespace   the namespace
      * @param serviceName the service name
@@ -114,11 +114,25 @@ public class CustomServicesController {
 
 
     /**
-     * Gets replicaSet refer list filter selector.
+     * Services YAML을 조회한다.
+     *
+     * @param namespace   the namespace
+     * @param serviceName the service name
+     * @return the custom services yaml
+     */
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_SERVICES_YAML)
+    @ResponseBody
+    public CustomServices getCustomServicesYaml(@PathVariable(value = "namespace") String namespace, @PathVariable("serviceName") String serviceName) {
+        return customServicesService.getCustomServicesYaml(namespace, serviceName);
+    }
+
+
+    /**
+     * Services 목록을 조회한다. (Label Selector)
      *
      * @param namespace the namespace
      * @param selector  the selector for filter
-     * @return ReplicaSetList
+     * @return the custom services list
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_SERVICES_RESOURCES)
     @ResponseBody
