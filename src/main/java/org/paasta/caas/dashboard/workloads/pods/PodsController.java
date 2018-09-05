@@ -132,9 +132,9 @@ public class PodsController {
         return podsList;
     }
 
-    @GetMapping(value = Constants.API_URL + "/workloads/pods/node/{nodeName:.+}")
+    @GetMapping(value = Constants.API_URL + BASE_URL + "/node/{nodeName:.+}")
     @ResponseBody
-    public PodsList getPodListAllNamespacesByNode(@PathVariable String nodeName) {
-        return podsService.getPodListAllNamespacesByNode( nodeName );
+    public PodsList getPodListAllNamespacesByNode(@PathVariable String namespace, @PathVariable String nodeName) {
+        return podsService.getPodListNamespaceByNode( namespace, nodeName );
     }
 }
