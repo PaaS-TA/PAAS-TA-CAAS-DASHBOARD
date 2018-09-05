@@ -28,7 +28,7 @@ public class CustomServicesService {
 
 
     /**
-     * Gets custom services list.
+     * Services 목록을 조회한다.
      *
      * @param namespace the namespace
      * @return the custom services list
@@ -41,7 +41,7 @@ public class CustomServicesService {
 
 
     /**
-     * Gets custom services.
+     * Services 상세 정보를 조회한다.
      *
      * @param namespace   the namespace
      * @param serviceName the service name
@@ -56,9 +56,25 @@ public class CustomServicesService {
 
 
     /**
-     * Gets custom services list.
+     * Services YAML을 조회한다.
+     *
+     * @param namespace   the namespace
+     * @param serviceName the service name
+     * @return the custom services yaml
+     */
+    CustomServices getCustomServicesYaml(String namespace, String serviceName) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_SERVICES_YAML
+                        .replace("{namespace:.+}", namespace)
+                        .replace("{serviceName:.+}", serviceName),
+                HttpMethod.GET, null, CustomServices.class);
+    }
+
+
+    /**
+     * Services 목록을 조회한다. (Label Selector)
      *
      * @param namespace the namespace
+     * @param selectors the selectors
      * @return the custom services list
      */
     CustomServicesList getCustomServicesListLabelSelector(String namespace, String selectors) {
