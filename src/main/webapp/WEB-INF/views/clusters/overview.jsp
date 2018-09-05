@@ -50,7 +50,8 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                                <tr>
+                                <tr id="noResultHeaderAreaForNodes" style="display: none;"><td colspan='3'><p class='service_p'>조회 된 Nodes가 없습니다.</p></td></tr>
+                                <tr id="resultHeaderAreaForNodes" style="display: none;">
                                     <td>Name<button sort-key="node-name" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button></td>
                                     <td>Ready</td>
                                     <td>CPU requests</td>
@@ -60,8 +61,7 @@
                                     <td>Created on<button sort-key="created-on" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr><td colspan="7">노드의 정보를 가져올 수 없습니다.</td></tr>
+                            <tbody id="resultAreaForNodes">
                             </tbody>
                         </table>
                     </div>
@@ -183,9 +183,16 @@
     }
 
     var callbackGetListNodes = function(data) {
-        if (false == checkValidData(data)) {
-            alert("Cannot load nodes data");
-            return;
+        var resultAreaForNodes = $("#resultAreaForNodes");
+        var noResultHeaderAreaForNodes = $("#noResultHeaderAreaForNodes");
+        var resultHeaderAreaForNodes = $("#resultHeaderAreaForNodes");
+
+        if (data.resultCode == "500") {
+            noResultHeaderAreaForNodes.show();
+            viewLoading('hide');
+            alertMessage('Get Nodes Fail~', false);
+
+            return false;
         }
 
         var contents = [];
@@ -221,7 +228,9 @@
             );
         });
 
-        $('#clusters_nodes_table > tbody').html(contents);
+        resultAreaForNodes.html(contents);
+        noResultHeaderAreaForNodes.hide();
+        resultHeaderAreaForNodes.show();
 
         sortTable("clusters_nodes_table", "node-name");
 
