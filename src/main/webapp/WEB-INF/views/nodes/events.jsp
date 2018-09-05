@@ -33,7 +33,8 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr>
+                            <tr id="nodeEventsnotFound" style="display:none;"><td colspan="6" style="text-align:center;">Node의 Event가 없습니다.</td></tr>
+                            <tr id="nodeEventsTableHeader">
                                 <td>Message</td>
                                 <td>Source</td>
                                 <td>Sub-object</td>
@@ -43,9 +44,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td colspan="6">Cannot load events for node</td>
-                            </tr>
                             </tbody>
                             <!--tfoot></tfoot-->
                         </table>
@@ -57,9 +55,12 @@
 </div>
 <script>
     var callbackGetNodeEvent = function (data) {
-        // TODO :: write logic
-        if (false == checkValidData(data)) {
-            alert("Cannot load pods data");
+        if (false == procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage("Node의 Event 목록을 가져오지 못했습니다.", false);
+            $('#nodeEventsnotFound').children().html("Node의 Event 목록을 가져오지 못했습니다.");
+            $('#nodeEventsnotFound').show();
+            $('#nodeEventsTableHeader').hide();
             return;
         }
 
@@ -105,11 +106,15 @@
             contents.push(eventRowHtml);
         });
 
-        // write event list into tbody
-        if (contents.length <= 0)
-            contents.push('<tr><td colspan="6">There is nothing to display here.</td></tr>');
+        if (contents.length > 0) {
+            // write event list into tbody
+            $('#events_table_in_node > tbody').html(contents);
+        } else {
+            $('#nodeEventsnotFound').show();
+            $('#nodeEventsTableHeader').hide();
+        }
 
-        $('#events_table_in_node > tbody').html(contents);
+        viewLoading('hide');
     }
 
     var getEvent = function(data) {
@@ -126,7 +131,6 @@
     }
 
     var getEventsListByNode = function(namespace, nodeName, callbackFunc) {
-        var namespace = "_all";
         var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/events/node/" + nodeName;
 
         if (null == callbackFunc)
@@ -136,12 +140,13 @@
     }
 
     $(document.body).ready(function () {
-        var urlInfo = getURLInfo();
+        viewLoading('show');
+
+        var urlInfo = procGetURLInfo();
         nodeName = urlInfo.resource;
         currentTab = urlInfo.tab == "_default"? "details" : urlInfo.tab;
 
-        var namespace = "_all";
-
+        var namespace = NAME_SPACE;
         getEventsListByNode(namespace, nodeName, callbackGetNodeEvent);
     });
 </script>

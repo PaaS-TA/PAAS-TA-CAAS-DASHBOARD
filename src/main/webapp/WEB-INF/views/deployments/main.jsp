@@ -161,17 +161,6 @@
         return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
     }
 
-    var processIfDataIsNull = function (data, procCallback, defaultValue) {
-        if (data == null)
-            return defaultValue;
-        else {
-            if (procCallback == null)
-                return defaultValue;
-            else
-                return procCallback(data);
-        }
-    }
-
     var createSpans = function (data, type) {
         var datas = data.replace(/=/g, ':').split(',');
         var spanTemplate = "";
