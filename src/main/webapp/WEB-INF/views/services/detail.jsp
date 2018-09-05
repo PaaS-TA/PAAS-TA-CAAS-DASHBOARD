@@ -410,7 +410,7 @@
                 htmlString.push(
                     "<tr>"
                     + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/" + document.getElementById('requestServiceName').value + "\");'>" + items[i].metadata.name + "</a>"
+                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/pods/" + podName + "\");'>" + podName + "</a>"
                     + "</td>"
                     + "<td>" + itemsMetadata.namespace + "</td>"
                     + "<td>" + items[i].spec.nodeName + "</td>"
