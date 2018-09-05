@@ -436,7 +436,7 @@
                                 '<td>' + itemList.image + '</td>' +
                                 '<td>' + nvl2(getContainer(containerStatuses, itemList.name).restartCount, "None") + '</td>' +
                               '</tr>' +
-                              '<tr style="display:none" id="' + index +'">' +
+                              '<tr style="display:none;" id="' + index +'">' +
                                 '<td colspan="5">' +
                                     '<table class="table_detail alignL">' +
                                         '<colgroup>' +
@@ -535,15 +535,12 @@
     }
 
     var showHide = function (indexId) {
-        console.log("값 잘 넘어옴? ", indexId);
-        var table = document.getElementById(indexId);
-        console.log("값 잘 넘어옴?2222 ", table);
-        if(table.style.display == "none"){
-            console.log("값 잘 넘어옴?3333 ", table);
-            table.style.display = "show";
-        }else{
-            console.log("값 잘 넘어옴?4444 ", table);
-            table.style.display = "none";
+        var tr = $('#' + indexId);
+
+        if (tr.is(":visible")) {
+            tr.css('display', 'none');
+        } else {
+            tr.css('display', 'table-row');
         }
     }
 
