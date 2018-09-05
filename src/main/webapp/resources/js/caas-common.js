@@ -195,8 +195,8 @@ var sortTable = function (tableId, sortKey, isAscending) {
 
     _rows.sort(function (rowA, rowB) {
         var _reverseNumber = (isAscending)? 1 : -1;
-        var _compareA = $(rowA).attr(sortKey);
-        var _compareB = $(rowB).attr(sortKey);
+        var _compareA = $(rowA).data(sortKey);
+        var _compareB = $(rowB).data(sortKey);
         if (_compareA == _compareB)
             return 0;
         else {
