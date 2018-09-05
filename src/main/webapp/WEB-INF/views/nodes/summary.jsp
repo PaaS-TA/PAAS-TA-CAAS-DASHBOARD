@@ -181,7 +181,8 @@
         var conditions = data.status.conditions;
 
         // get pods, conditions
-        var podsReqUrl = "<%= Constants.API_URL %>/workloads/pods/node/" + nodeName;
+        var namespace = NAME_SPACE;
+        var podsReqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + namespace + "/pods/node/" + nodeName;
 
         // pod info : Name, Namespace, Node, Status, Restarts, Created on
         procCallAjax(podsReqUrl, "GET", null, null, callbackGetPods);
