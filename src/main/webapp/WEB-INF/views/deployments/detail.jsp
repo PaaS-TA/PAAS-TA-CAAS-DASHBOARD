@@ -545,6 +545,13 @@
             var labels = JSON.stringify(itemList.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
             var creationTimestamp = itemList.metadata.creationTimestamp;
             var replicas = itemList.status.replicas;   //  TOBE ::  current / desired
+            var availableReplicas;
+            if ( !itemList.status.availableReplicas ) {
+                availableReplicas = 0;
+            } else {
+                availableReplicas = itemList.status.availableReplicas;
+            }
+
             var images = new Array;
 
             var containers = itemList.spec.template.spec.containers;
@@ -560,7 +567,7 @@
                                     '</td>' +
                                     '<td>' + namespace + '</td>' +
                                     '<td>' + createSpans(labels, "true") + '</td>' +
-                                    '<td>' + replicas + '</td>' +
+                                    '<td>' + availableReplicas + " / " + replicas + '</td>' +
                                     '<td>' + images + '</td>' +
                                     '<td>' + creationTimestamp + '</td>' +
                                 '</tr>' );

@@ -10,8 +10,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-
-    <%--<jsp:include page="common-pods.jsp"/>--%>
+    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <c:out value="${podName}"/> </h1>
 
     <%-- NODES HEADER INCLUDE --%>
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
