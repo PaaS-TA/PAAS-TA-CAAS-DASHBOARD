@@ -233,135 +233,13 @@
                     <!-- 닫기(x) 버튼 -->
                     <button type="button" class="close" data-dismiss="modal">×</button>
                     <!-- header title -->
-                    <h4 class="modal-title">Auto- Scaling 설정</h4>
+                    <h4 class="modal-title">kubectl.kubernetes.io/last-applied-configuration</h4>
                 </div>
                 <!-- body -->
                 <div class="modal-body">
-                    <div class="modal-bg">
-                        <span>
-                            앱 이름
-                        </span>
-                        <div class="pull-right">
-                            <input id="check1" checked="checked" type="checkbox"/>
-                            <label for="check1">자동확장 시</label>
-                            <input id="check2" type="checkbox"/>
-                            <label for="check2">자동축소 사용</label>
-                        </div>
-                    </div>
-                    <div class="">
-                        <table class="modal_t">
-                            <colgroup>
-                                <col style='width: 123px;'>
-                                <col style='width:40px;'>
-                                <col>
-                                <col style='width:50px;'>
-                                <col style='width:40px;'>
-                                <col>
-                                <col style='width:20px;'>
-                            </colgroup>
-                            <tbody>
-                            <tr>
-                                <th>인스턴스 수 설정
-                                </th>
-                                <td>최소</td>
-                                <td>
-                                    <div>
-                                        <input type="text" value="1"/>
-                                        <button><i class="fas fa-sort-up"></i>
-                                        </button>
-                                        <button><i class="fas fa-sort-down"></i>
-                                        </button>
-                                    </div>
-                                <td><p>개</p>
-                                </td>
-                                </td>
-                                <td>최대</td>
-                                <td>
-                                    <div>
-                                        <input type="text" value="10"/>
-                                        <button><i class="fas fa-sort-up"></i>
-                                        </button>
-                                        <button><i class="fas fa-sort-down"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td><p>개</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>CPU 임계 값 설정
-                                </th>
-                                <td>최소</td>
-                                <td>
-                                    <div>
-                                        <input type="text" value="20"/>
-                                        <button><i class="fas fa-sort-up"></i>
-                                        </button>
-                                        <button><i class="fas fa-sort-down"></i>
-                                        </button>
-                                    </div>
-                                <td><p>%</p>
-                                </td>
-                                </td>
-                                <td>최대</td>
-                                <td>
-                                    <div>
-                                        <input type="text" value="80"/>
-                                        <button><i class="fas fa-sort-up"></i>
-                                        </button>
-                                        <button><i class="fas fa-sort-down"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td><p>%</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>메모리 사이즈 설정
-                                </th>
-                                <td>최소</td>
-                                <td>
-                                    <div>
-                                        <input type="text" value="256"/>
-                                        <button><i class="fas fa-sort-up"></i>
-                                        </button>
-                                        <button><i class="fas fa-sort-down"></i>
-                                        </button>
-                                    </div>
-                                <td><p>MB</p>
-                                </td>
-                                </td>
-                                <td>최대</td>
-                                <td>
-                                    <div>
-                                        <input type="text" value="2048"/>
-                                        <button><i class="fas fa-sort-up"></i>
-                                        </button>
-                                        <button><i class="fas fa-sort-down"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td><p>MB</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>시간 설정</th>
-                                <td></td>
-                                <td>
-                                    <input class="time_left" type="text" value="10"/>
-                                </td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btns2 colors4 pull-left" data-dismiss="modal">삭제</button>
-                    <button type="button" class="btns2 colors4" data-dismiss="modal">변경</button>
-                    <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+                    <p>
+                        {"apiVersion":"extensions/v1beta1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"hrjin-spring-music"},"name":"hrjin-spring-music","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"hrjin-spring-music"}},"template":{"metadata":{"labels":{"app":"hrjin-spring-music"}},"spec":{"automountServiceAccountToken":true,"containers":[{"image":"bluedigm/hrjin-music:0.3","imagePullPolicy":"Always","name":"hrjin-spring-music-container","ports":[{"containerPort":7878}]}],"serviceAccountName":"hrjin-sa4"}}}}
+                    </p>
                 </div>
             </div>
         </div>
@@ -454,7 +332,7 @@
         var deployName = _metadata.name;
         var namespace = NAME_SPACE;
         var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');  //.replace(/=/g, ':')
-        var annotations = stringifyJSON(_metadata.annotations);
+        var annotations = _metadata.annotations;
         var creationTimestamp = _metadata.creationTimestamp;
 
         var selector = stringifyJSON(_spec.selector).replace(/matchLabels=/g, '');;
@@ -478,7 +356,7 @@
         document.getElementById("name").textContent = deployName;
         document.getElementById("namespaceID").textContent = namespace;
         document.getElementById("labels").innerHTML = createSpans(labels, "false");
-        document.getElementById("annotations").innerHTML = createSpans(annotations, "false");
+        document.getElementById("annotations").innerHTML = createAnnotations(annotations);
         document.getElementById("creationTime").textContent = creationTimestamp;
         document.getElementById("selector").innerHTML = createSpans(selector, "false");
         document.getElementById("strategy").textContent = strategy;
@@ -656,6 +534,26 @@
             resultTable.trigger("update");
         }
 
+    };
+
+    //3개 일때는 동작하지 않는드아!
+    var createAnnotations = function (annotations) {
+        var tempStr = "";
+        var index = 0;
+        Object.keys(annotations).forEach(function (key) {
+            console.log("하이~ 콘니치와!! ", key);
+            console.log("하이~ 콘니치와!!난데? ", index);
+            if(index == 0) {
+                console.log("와라에루 요나 ", key);
+                tempStr += createSpans(key + ":"+ annotations[key]);
+            } else {
+                tempStr += '<span class="bg_blue"><a href="#" data-target="#layerpop" data-toggle="modal">' + key + '</a></span>';
+                $("#modal-body").innerHTML = '<p>' + annotations[key] + '</p> ';
+            }
+            console.log("소레오 코에루!", tempStr);
+            index ++;
+        });
+        return tempStr;
     };
 
 
