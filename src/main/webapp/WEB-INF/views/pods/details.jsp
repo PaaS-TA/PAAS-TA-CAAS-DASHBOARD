@@ -406,8 +406,11 @@
     var conditionParser = function (data) {
         var tempStr = "";
         for ( var index in data) {
-            tempStr += data[index].type + ":" + data[index].status;
-            tempStr += "  ";
+            tempStr += data[index].type + ": " + data[index].status;
+            if((data.length -1) == index) {
+                break;
+            }
+            tempStr += ", ";
         }
         return tempStr;
     }
