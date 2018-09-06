@@ -52,13 +52,13 @@
                             <thead>
                                 <tr id="noResultHeaderAreaForNodes" style="display: none;"><td colspan='3'><p class='service_p'>조회 된 Nodes가 없습니다.</p></td></tr>
                                 <tr id="resultHeaderAreaForNodes" style="display: none;">
-                                    <td>Name<button sort-key="node-name" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button></td>
+                                    <td>Name <button data-sort-key="node-name" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button></td>
                                     <td>Ready</td>
                                     <td>CPU requests</td>
                                     <td>CPU limits</td>
                                     <td>Memory requests</td>
                                     <td>Memory limits</td>
-                                    <td>Created on<button sort-key="created-on" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
+                                    <td>Created on <button data-sort-key="created-on" class="sort-arrow sort"><i class="fas fa-caret-down"></i></button>
                                 </tr>
                             </thead>
                             <tbody id="resultAreaForNodes">
@@ -179,8 +179,8 @@
             })[0].status;
             var limitCPU = _status.capacity.cpu;
             var requestCPU = limitCPU - _status.allocatable.cpu;
-            var limitMemory = convertByte(_status.capacity.memory);
-            var requestMemory = limitMemory - convertByte(_status.allocatable.memory);
+            var limitMemory = procConvertByte(_status.capacity.memory);
+            var requestMemory = limitMemory - procConvertByte(_status.allocatable.memory);
             var creationTimestamp = _metadata.creationTimestamp;
 
             // TODO
@@ -190,13 +190,13 @@
             else
                 nameHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span>' + nameHtml;
 
-            contents.push('<tr node-name="' + name + '" created-on="' + creationTimestamp + '">'
+            contents.push('<tr data-node-name="' + name + '" data-created-on="' + creationTimestamp + '">'
                 + '<td>' + nameHtml + '</td>'
                 + '<td>' + ready + '</td>'
                 + '<td>' + requestCPU + '</td>'
                 + '<td>' + limitCPU + '</td>'
-                + '<td>' + formatCapacity(requestMemory, "Mi") + '</td>'
-                + '<td>' + formatCapacity(limitMemory, "Mi") + '</td>'
+                + '<td>' + procFormatCapacity(requestMemory, "Mi") + '</td>'
+                + '<td>' + procFormatCapacity(limitMemory, "Mi") + '</td>'
                 + '<td>' + creationTimestamp + '</td></tr>'
             );
         });
@@ -297,7 +297,7 @@
 
         $("#resultHeaderAreaForNodes .sort-arrow").on("click", function(event) {
             var tableId = "clusters_nodes_table";
-            var sortKey = $(event.currentTarget).attr('sort-key');
+            var sortKey = $(event.currentTarget).data('sort-key');
             var isAscending = $(event.currentTarget).hasClass('sort')? true : false;
             sortTable(tableId, sortKey, isAscending);
         });

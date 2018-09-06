@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PodsService {
-    private static final String REQ_URL = "workloads/{namespace}/pods";
+    private static final String REQ_URL = "workloads/namespaces/{namespace}/pods";
 
     private final RestTemplateService restTemplateService;
 
@@ -65,8 +65,8 @@ public class PodsService {
         return restTemplateService.send( Constants.TARGET_CAAS_API, reqURL, HttpMethod.GET, null, PodsList.class );
     }
 
-    PodsList getPodListAllNamespacesByNode(String nodeName ) {
-        String reqURL = REQ_URL.replace( "{namespace}", "_all" ) + "/nodes/" + nodeName;
+    PodsList getPodListNamespaceByNode(String namespace, String nodeName ) {
+        String reqURL = REQ_URL.replace( "{namespace}", namespace ) + "/node/" + nodeName;
         return restTemplateService.send( Constants.TARGET_CAAS_API, reqURL, HttpMethod.GET, null, PodsList.class );
     }
 

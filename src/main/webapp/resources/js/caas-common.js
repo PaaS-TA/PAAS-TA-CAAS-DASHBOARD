@@ -165,19 +165,20 @@ var procSetSortList = function(resultTableString, buttonObject, key) {
 };
 
 
-var checkValidData = function (data) {
-    if (RESULT_STATUS_FAIL === data.resultCode) {
-        console.log("ResultStatus :: " + data.resultCode + " / " + "ResultMessage :: " + data.resultMessage);
+var procCheckValidData = function (data) {
+    // TODO :: resultStatus? resultCode? Codes' are congesting
+    if (RESULT_STATUS_FAIL === data.resultStatus || RESULT_STATUS_FAIL === data.resultCode) {
+        console.debug("ResultStatus :: " + data.resultCode + " / " + "ResultMessage :: " + data.resultMessage);
         return false;
     } else {
         return true;
     }
 }
 
-var processIfDataIsNull = function (data, procCallback, defaultValue) {
-    if (data == null)
+var procIfDataIsNull = function (data, procCallback, defaultValue) {
+    if (data == null) {
         return defaultValue;
-    else {
+    } else {
         if (procCallback == null)
             return defaultValue;
         else
@@ -195,8 +196,8 @@ var sortTable = function (tableId, sortKey, isAscending) {
 
     _rows.sort(function (rowA, rowB) {
         var _reverseNumber = (isAscending)? 1 : -1;
-        var _compareA = $(rowA).attr(sortKey);
-        var _compareB = $(rowB).attr(sortKey);
+        var _compareA = $(rowA).data(sortKey);
+        var _compareB = $(rowB).data(sortKey);
         if (_compareA == _compareB)
             return 0;
         else {
@@ -213,7 +214,7 @@ var sortTable = function (tableId, sortKey, isAscending) {
     _tbody.html(_rows);
 }
 
-var convertByte = function(capacity) {
+var procConvertByte = function(capacity) {
     var _multipleSize;
     if (capacity.match("Ki").index != -1) {
         _multipleSize = 1024;
@@ -228,7 +229,7 @@ var convertByte = function(capacity) {
     return capacity.substring(0, capacity.length - 2) * _multipleSize;
 }
 
-var formatCapacity = function(capacity, unit) {
+var procFormatCapacity = function(capacity, unit) {
     var _unitSize;
     if (unit == null || "" == unit)
         _unitSize = 1;
@@ -241,7 +242,7 @@ var formatCapacity = function(capacity, unit) {
     return ((capacity / _unitSize).toFixed(2) + ' ' + unit);
 }
 
-var getURLInfo = function () {
+var procGetURLInfo = function () {
     // ex) slices = [ "workloads", "pods", "<pod-name>", "events"]
     // ex) slices = [ "clusters", "nodes", "<node-name>", "summary"]
     var _urlSplits = window.location.href.replace(/\?.*/, '').split('/');

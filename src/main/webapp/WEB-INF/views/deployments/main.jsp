@@ -117,7 +117,7 @@
             var namespace = _metadata.namespace;
             var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
             if (labels == null || labels == "null") {
-                labels = "None"
+                labels = "-";
             }
 
             var creationTimestamp = _metadata.creationTimestamp;
@@ -131,7 +131,7 @@
             resultArea.append('<tr>' +
                                     '<td>' +
                                         "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/deployments/" + deployName + "\");'>"+
-                                           '<span class="green2"><i class="fas fa-check-circle"></i></span>' + deployName +
+                                           '<span class="green2"><i class="fas fa-check-circle"></i></span> ' + deployName +
                                         '</a>' +
                                     '</td>' +
                                     '<td>' + namespace + '</td>' +
@@ -159,17 +159,6 @@
 
     var replaceLabels = function (data) {
         return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
-    }
-
-    var processIfDataIsNull = function (data, procCallback, defaultValue) {
-        if (data == null)
-            return defaultValue;
-        else {
-            if (procCallback == null)
-                return defaultValue;
-            else
-                return procCallback(data);
-        }
     }
 
     var createSpans = function (data, type) {

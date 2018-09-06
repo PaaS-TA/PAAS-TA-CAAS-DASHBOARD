@@ -11,9 +11,9 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <div class="cluster_tabs clearfix"></div>
-    <div class="cluster_content01 row two_line two_view">
-        <ul>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <div class="cluster_content02 row two_line two_view harf_view" style="display: block;">
+        <ul class="maT30">
             <li>
                 <div class="sortable_wrap">
                     <div class="sortable_top">
@@ -96,7 +96,7 @@
             var podsName = items[i].metadata.name;
             var containerStatuses;
             if(items[i].status.containerStatuses == null) {
-                containerStatuses = "None";
+                containerStatuses = "-";
             } else {
                 containerStatuses = items[i].status.containerStatuses[0].restartCount;
             }
@@ -107,7 +107,7 @@
                 + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/pods/" + podsName + "\");'>" + podsName + "</a>"
                 + "</td>"
                 + "<td>" + items[i].metadata.namespace + "</td>"
-                + "<td>" + nvl2(items[i].spec.nodeName, "None") + "</td>"
+                + "<td>" + nvl2(items[i].spec.nodeName, "-") + "</td>"
                 + "<td>" + items[i].status.phase + "</td>"
                 + "<td>" + containerStatuses + "</td>"
                 + "<td>" + items[i].metadata.creationTimestamp + "</td>"

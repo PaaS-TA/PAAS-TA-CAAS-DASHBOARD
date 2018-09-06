@@ -28,7 +28,7 @@ public class EndpointsService {
 
 
     /**
-     * Gets endpoints.
+     * Endpoints 상세 정보를 조회한다.
      *
      * @param namespace   the namespace
      * @param serviceName the service name

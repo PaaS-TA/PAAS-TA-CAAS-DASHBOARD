@@ -46,7 +46,7 @@ public class NodesController {
      */
     @GetMapping(value = "/caas/clusters" + BASE_URL)
     public ModelAndView getNodeList( HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, "/clusters" + BASE_URL, new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
 
     /**

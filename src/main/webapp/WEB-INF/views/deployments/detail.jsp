@@ -496,17 +496,6 @@
         return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
     }
 
-    var processIfDataIsNull = function (data, procCallback, defaultValue) {
-        if (data == null)
-            return defaultValue;
-        else {
-            if (procCallback == null)
-                return defaultValue;
-            else
-                return procCallback(data);
-        }
-    }
-
     var createSpans = function (data, type) {
         var datas = data.replace(/=/g, ':').split(',');
         var spanTemplate = "";
@@ -556,6 +545,13 @@
             var labels = JSON.stringify(itemList.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
             var creationTimestamp = itemList.metadata.creationTimestamp;
             var replicas = itemList.status.replicas;   //  TOBE ::  current / desired
+            var availableReplicas;
+            if ( !itemList.status.availableReplicas ) {
+                availableReplicas = 0;
+            } else {
+                availableReplicas = itemList.status.availableReplicas;
+            }
+
             var images = new Array;
 
             var containers = itemList.spec.template.spec.containers;
@@ -566,12 +562,12 @@
             resultArea.append('<tr>' +
                                     '<td>' +
                                         "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicasets/" + replicasetName + "\");'>"+
-                                            '<span class="green2"><i class="fas fa-check-circle"></i></span>' + replicasetName +
+                                            '<span class="green2"><i class="fas fa-check-circle"></i></span> ' + replicasetName +
                                         '</a>' +
                                     '</td>' +
                                     '<td>' + namespace + '</td>' +
                                     '<td>' + createSpans(labels, "true") + '</td>' +
-                                    '<td>' + replicas + '</td>' +
+                                    '<td>' + availableReplicas + " / " + replicas + '</td>' +
                                     '<td>' + images + '</td>' +
                                     '<td>' + creationTimestamp + '</td>' +
                                 '</tr>' );
@@ -622,7 +618,7 @@
             var namespace = NAME_SPACE;
             var nodeName = _spec.nodeName;
             var podStatus = _status.phase;
-            var restartCount = processIfDataIsNull(_status.containerStatuses,
+            var restartCount = procIfDataIsNull(_status.containerStatuses,
                 function (data) {
                     return data.reduce(function (a, b) {
                         return {restartCount: a.restartCount + b.restartCount};

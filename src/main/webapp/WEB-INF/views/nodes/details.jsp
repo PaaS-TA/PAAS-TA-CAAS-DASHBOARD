@@ -17,6 +17,7 @@
     <!-- Nodes Details 시작-->
     <div class="cluster_content02 row two_line two_view harf_view">
         <ul class="maT30">
+            <li class="cluster_first_box" id="nodeDetailNotFound" style="display:none;">Node의 정보를 가져오지 못했습니다.</li>
             <li class="cluster_first_box">
                 <div class="sortable_wrap">
                     <div class="sortable_top">
@@ -31,34 +32,31 @@
                             <tbody>
                             <tr>
                                 <th><i class="cWrapDot"></i> Name</th>
-                                <td id="node_name">ip-172-31-20-237</td>
+                                <td id="node_name"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td id="node_labels"><span class="bg_gray">app : nginx-2</span> <span class="bg_gray">tier : node</span></td>
+                                <td id="node_labels"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Annotations</th>
-                                <td id="node_annotations"><span class="bg_gray">deprecated.daemonset.template.generation: 1</span> <span
-                                        class="bg_blue"><a href="#" data-target="#layerpop" data-toggle="modal">kubectl.kubernetes.io/last-applied-Config</a></span>
-                                </td>
+                                <td id="node_annotations"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Creation Time</th>
-                                <td id="node_created_at">2018-07-04 20:15:30</td>
+                                <td id="node_created_at"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Addresses</th>
-                                <td id="node_addresses"><span class="bg_gray">InternalIP : 172.31.22.173</span> <span class="bg_gray">Hostname : ip-172-31-22-173</span>
-                                </td>
+                                <td id="node_addresses"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Pod CIDR</th>
-                                <td id="node_pod_cidr">10.244.1.0/24</td>
+                                <td id="node_pod_cidr"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Unschedulable</th>
-                                <td id="node_unschedulable">false</td>
+                                <td id="node_unschedulable"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -79,43 +77,43 @@
                             <tbody>
                             <tr>
                                 <th><i class="cWrapDot"></i> Machine ID</th>
-                                <td id="node_machine_id">fd43cfb2cc92450eb65e9d24660e0bc7</td>
+                                <td id="node_machine_id"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> System UUID</th>
-                                <td id="node_system_uuid">EC29F5E7-A61F-19FB-DABA-C4F461DDD978</td>
+                                <td id="node_system_uuid"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Boot ID</th>
-                                <td id="node_boot_id">8bb12b22-eb47-4dbf-ba87-403a57df178c</td>
+                                <td id="node_boot_id"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Kernel Version</th>
-                                <td id="node_kernel_version">4.4.0-1062-aws</td>
+                                <td id="node_kernel_version"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> OS Images</th>
-                                <td id="node_images">Ubuntu 16.04.4 LTS</td>
+                                <td id="node_images"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Container Runtime Version</th>
-                                <td id="node_container_version">docker://1.13.1</td>
+                                <td id="node_container_version"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Kubelet version</th>
-                                <td id="node_kubenet_version">v1.11.0</td>
+                                <td id="node_kubenet_version"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Kube-Proxy Version</th>
-                                <td id="node_kubeproxy_version">v1.11.0</td>
+                                <td id="node_kubeproxy_version"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Operation system</th>
-                                <td id="node_os_name">linux</td>
+                                <td id="node_os_name"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Architecture</th>
-                                <td id="node_architecture">amd64</td>
+                                <td id="node_architecture"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -150,17 +148,56 @@
     </div>
 </div>
 <script>
+    var createSpans = function (data, type) {
+        var datas = data.replace(/=/g, ':').split(',');
+        var spanTemplate = "";
+
+        if (type === "true") {
+            $.each(datas, function (index, data) {
+                if (index > 0)
+                    spanTemplate += '<br>';
+
+                spanTemplate += '<span class="bg_gray">' + data + '</span>';
+            });
+        } else {
+            $.each(datas, function (index, data) {
+                spanTemplate += '<span class="bg_gray">' + data + '</span> ';
+            });
+        }
+
+        return spanTemplate;
+    };
+
+    var stringifyKeyValue = function (data, mapFunc) {
+        if (data instanceof Array) {
+            if (null == mapFunc)
+                arrayFunc = function(index, item) { return item };
+
+            return data.map(mapFunc).reduce(function(prevItem, item) { return prevItem + ", " + item; });
+        } else {
+            return Object.keys(data).map( function (key) { return key + ": " + data[key]; })
+                .reduce(function(prevItem, item) { return prevItem + ", " + item; });
+        }
+    };
+
     var callbackGetNodeDetail = function (data) {
+        if (false == procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage("Node 정보를 가져오지 못했습니다.", false);
+            $("#nodeDetailNotFound").show();
+            return;
+        }
+
         var _metadata = data.metadata;
         var _spec = data.spec;
         var _status = data.status;
 
         // name, labels, annotations, created-at, addresses, pod-cidr, unschedulable
         var name = _metadata.name;
-        var labels = stringifyJSON(_metadata.labels);
-        var annotations = stringifyJSON(_metadata.annotations);
+        var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
+        var annotations = stringifyKeyValue(_metadata.annotations);
         var createdAt = _metadata.creationTimestamp;
-        var addresses = stringifyJSON(_status.addresses);
+        var addresses = stringifyKeyValue(_status.addresses, function(item) { return item.type + ": " + item.address; });
         var podCIDR = _spec.podCIDR;
         var unschedulable = _spec.taints != null?
             _spec.taints.filter(
@@ -180,10 +217,10 @@
         var architecture = nodeInfo.architecture;
 
         $('#node_name').html(name);
-        $('#node_labels').html(labels);
-        $('#node_annotations').html(annotations);
+        $('#node_labels').html(createSpans(labels, "false"));
+        $('#node_annotations').html(createSpans(annotations, "true"));
         $('#node_created_at').html(createdAt);
-        $('#node_addresses').html(addresses);
+        $('#node_addresses').html(createSpans(addresses, "false"));
         $('#node_pod_cidr').html(podCIDR);
         $('#node_unschedulable').html(unschedulable.toString());
 
@@ -204,7 +241,9 @@
 
         })
         */
-    }
+
+        viewLoading('hide');
+    };
 
     var loadLayerpop = function () {
         // MOVE LAYERPOP UNDER BODY ELEMENT
@@ -214,7 +253,9 @@
     };
 
     $(document.body).ready(function () {
-       loadLayerpop();
+        viewLoading('show');
+
+        loadLayerpop();
 
         getNode(nodeName, callbackGetNodeDetail);
     });

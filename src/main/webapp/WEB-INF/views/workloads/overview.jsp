@@ -4,58 +4,23 @@
   @version 1.0
   @since 2018.08.09
 --%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="content">
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
-    <%--<div class="cluster_tabs clearfix">--%>
-        <%--<ul>--%>
-            <%--<li name="tab01" class="cluster_tabs_on" onclick="procMovePage('/caas/workloads/overview');">Overview</li>--%>
-            <%--<li name="tab02" class="cluster_tabs_right">Deployments</li>--%>
-            <%--<li name="tab03" class="cluster_tabs_right">Pods</li>--%>
-            <%--<li name="tab04" class="cluster_tabs_right">Replica Sets</li>--%>
-
-            <%--&lt;%&ndash;TODO :: REMOVE&ndash;%&gt;--%>
-            <%--<li name="tab05" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/deployments');">Deployments VIEW</li>--%>
-            <%--<li name="tab06" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/pods');">Pods VIEW</li>--%>
-            <%--<li name="tab07" class="cluster_tabs_right" onclick="procMovePage('/caas/workloads/replicasets');">Replica Sets VIEW</li>--%>
-        <%--</ul>--%>
-        <%--<div class="cluster_tabs_line"></div>--%>
-    <%--</div>--%>
     <!-- Overview 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
-            <%--<!-- 그래프 시작 -->--%>
-            <%--<li class="cluster_first_box">--%>
-                <%--<div class="sortable_wrap">--%>
-                    <%--<div class="sortable_top">--%>
-                        <%--<p>Overview</p>--%>
-                        <%--<div class="sortable_right label">--%>
-                            <%--<span class="running2 maR10"><i class="fas fa-circle"></i></span>Running--%>
-                            <%--<span class="failed2 maL25 maR10"><i class="fas fa-circle"></i></span>Failed--%>
-                            <%--<span class="pending2 maL25 maR10"><i class="fas fa-circle"></i></span>Pending--%>
-                            <%--<span class="succeeded2 maL25 maR10"><i class="fas fa-circle"></i></span>Succeeded--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="graphArea"><div id="piechart01" style="height: 260px"></div></div>--%>
-                    <%--<div class="graphArea"><div id="piechart02" style="height: 260px"></div></div>--%>
-                    <%--<div class="graphArea"><div id="piechart03" style="height: 260px"></div></div>--%>
-                    <%--<!--<div class="graphArea"><img src="../resources/images/cluster/chart01.png"/></div>--%>
-                    <%--<div class="graphArea"><img src="../resources/images/cluster/chart02.png"/></div>--%>
-                    <%--<div class="graphArea"><img src="../resources/images/cluster/chart03.png"/></div>-->--%>
-                    <%--<div style="clear:both;"></div>--%>
-                <%--</div>--%>
-            <%--</li>--%>
-            <%--<!-- 그래프 끝 -->--%>
             <!-- Deployments 시작 -->
-            <li class="cluster_second_box">
+            <li class="cluster_first_box"><!--cluster_second_box-->
                 <div class="sortable_wrap">
                     <div class="sortable_top">
                         <p>Deployments</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
+                        <table class="table_event condition alignL" id="resultTableForDev">
                             <colgroup>
                                 <col style='width:auto;'>
                                 <col style='width:10%;'>
@@ -65,78 +30,33 @@
                                 <col style='width:25%;'>
                             </colgroup>
                             <thead>
-                            <tr>
-                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                            <tr id="noResultAreaForDev" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Deployments가 없습니다.</p></td></tr>
+                            <tr id="resultHeaderAreaForDev">
+                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTableForDev', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
                                 <td>Labels</td>
                                 <td>Pods</td>
-                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTableForDev', this, '4')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Images</td>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_deployments_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                    <span class="bg_gray">pod-template-hash : 26832</span>
-                                </td>
-                                <td>3 / 3
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                                <td>bluedigm/hyerin:portalapi
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_deployments_view.html">spring-cloud-web-user</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                </td>
-                                <td>1 / 1
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                                <td>bluedigm/hyerin:config-1.5<br/>
-                                    bluedigm/hyerin:registration-1.5<br/>
-                                    bluedigm/hyerin:gateway-1.0<br/>
-                                    bluedigm/hyerin:infra-admin<br/>
-                                    bluedigm/hyerin:common-api<br/>
-                                    bluedigm/hyerin:portalapi<br/>
-                                    cissc2/paas-ta-portal-webadmin:0.6<br/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_deployments_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                    <span class="bg_gray">pod-template-hash : 26832</span>
-                                </td>
-                                <td>3 / 3
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                                <td>bluedigm/hyerin:portalapi
-                                </td>
-                            </tr>
+                            <tbody id="deploymentsListArea">
                             </tbody>
                         </table>
                     </div>
                 </div>
             </li>
             <!-- Deployments 끝 -->
+
+            <!-- modal TODO :: 사용확인 후 삭제 -->
+            <div class="modal fade dashboard" id="layerpop">
+                <div class="vertical-alignment-helper">
+                    <div class="modal-dialog vertical-align-center">
+                    </div>
+                </div>
+            </div>
+            <!-- modal 끝 TODO :: 사용확인 후 삭제 -->
+
             <!-- Pods 시작 -->
             <li class="cluster_third_box">
                 <div class="sortable_wrap">
@@ -144,7 +64,7 @@
                         <p>Pods</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
+                        <table class="table_event condition alignL service-lh" id="resultTableForPods">
                             <colgroup>
                                 <col style='width:auto;'>
                                 <col style='width:15%;'>
@@ -154,162 +74,17 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                            <tr>
-                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                            <tr id="noResultAreaForPods" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Pods가 없습니다.</p></td></tr>
+                            <tr id="resultHeaderAreaForPods">
+                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTableForPods', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
                                 <td>Node</td>
                                 <td>Status</td>
                                 <td>Restarts</td>
-                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTableForPods', this, '5')"><i class="fas fa-caret-down"></i></button></td>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <span class="red2"><i class="fas fa-exclamation-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a><br/>
-                                    <span class="red2">Back-off restarting failed container</span>
-                                </td>
-                                <td>
-                                    aaa
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>waiting
-                                </td>
-                                <td>0
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>waiting
-                                </td>
-                                <td>0
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">spring-cloud-web-user</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name<br/>
-                                </td>
-                                <td>Terminated
-                                </td>
-                                <td>1
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>running
-                                </td>
-                                <td>2
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>running
-                                </td>
-                                <td>2
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>running
-                                </td>
-                                <td>2
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>running
-                                </td>
-                                <td>2
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>running
-                                </td>
-                                <td>2
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="red2"><i class="fas fa-exclamation-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment<br/></a>
-                                    <span class="red2">Back-off restarting failed container</span>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>waiting
-                                </td>
-                                <td>0
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
+                            <tbody id="resultAreaForPods">
                             </tbody>
                         </table>
                     </div>
@@ -323,7 +98,7 @@
                         <p>Replica Sets</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
+                        <table class="table_event condition alignL" id="resultTableForReplicaSet">
                             <colgroup>
                                 <col style='width:auto;'>
                                 <col style='width:10%;'>
@@ -333,72 +108,17 @@
                                 <col style='width:25%;'>
                             </colgroup>
                             <thead>
-                            <tr>
-                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                            <tr id="noResultAreaForReplicaSet" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
+                            <tr id="resultHeaderAreaForReplicaSet">
+                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
                                 <td>Labels</td>
                                 <td>Pods</td>
-                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '4')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Images</td>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_replica_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                    <span class="bg_gray">pod-template-hash : 26832</span>
-                                </td>
-                                <td>3 / 3
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                                <td>bluedigm/hyerin:portalapi
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_replica_view.html">spring-cloud-web-user</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                </td>
-                                <td>1 / 1
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                                <td>bluedigm/hyerin:config-1.5<br/>
-                                    bluedigm/hyerin:registration-1.5<br/>
-                                    bluedigm/hyerin:gateway-1.0<br/>
-                                    bluedigm/hyerin:infra-admin<br/>
-                                    bluedigm/hyerin:common-api<br/>
-                                    bluedigm/hyerin:portalapi<br/>
-                                    cissc2/paas-ta-portal-webadmin:0.6<br/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_replica_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                    <span class="bg_gray">pod-template-hash : 26832</span>
-                                </td>
-                                <td>3 / 3
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                                <td>bluedigm/hyerin:portalapi
-                                </td>
-                            </tr>
+                            <tbody id="resultAreaForReplicaSet">
                             </tbody>
                         </table>
                     </div>
@@ -408,515 +128,253 @@
         </ul>
     </div>
     <!-- Overview 끝 -->
-    <!-- Deployments 시작 -->
-    <div class="cluster_content02 row two_line two_view harf_view">
-        <ul class="maT30">
-            <li>
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Deployments</p>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
-                            <colgroup>
-                                <col style='width:auto;'>
-                                <col style='width:10%;'>
-                                <col style='width:15%;'>
-                                <col style='width:5%;'>
-                                <col style='width:15%;'>
-                                <col style='width:25%;'>
-                            </colgroup>
-                            <thead>
-                            <tr>
-                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Namespace</td>
-                                <td>Labels</td>
-                                <td>Pods</td>
-                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Images</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_deployments_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                    <span class="bg_gray">pod-template-hash : 26832</span>
-                                </td>
-                                <td>3 / 3
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                                <td>bluedigm/hyerin:portalapi
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_deployments_view.html">spring-cloud-web-user</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                </td>
-                                <td>1 / 1
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                                <td>bluedigm/hyerin:config-1.5<br/>
-                                    bluedigm/hyerin:registration-1.5<br/>
-                                    bluedigm/hyerin:gateway-1.0<br/>
-                                    bluedigm/hyerin:infra-admin<br/>
-                                    bluedigm/hyerin:common-api<br/>
-                                    bluedigm/hyerin:portalapi<br/>
-                                    cissc2/paas-ta-portal-webadmin:0.6<br/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_deployments_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                    <span class="bg_gray">pod-template-hash : 26832</span>
-                                </td>
-                                <td>3 / 3
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                                <td>bluedigm/hyerin:portalapi
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <!-- Deployments 끝 -->
-    <!-- Pods 시작 -->
-    <div class="cluster_content03 row two_line two_view">
-        <ul class="maT30">
-            <li>
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Pods</p>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
-                            <colgroup>
-                                <col style='width:auto;'>
-                                <col style='width:15%;'>
-                                <col style='width:15%;'>
-                                <col style='width:8%;'>
-                                <col style='width:8%;'>
-                                <col style='width:20%;'>
-                            </colgroup>
-                            <thead>
-                            <tr>
-                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Namespace</td>
-                                <td>Node</td>
-                                <td>Status</td>
-                                <td>Restarts</td>
-                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <span class="red2"><i class="fas fa-exclamation-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment<br/></a>
-                                    <span class="red2">Back-off restarting failed container</span>
-                                </td>
-                                <td>
-                                    aaa
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>waiting
-                                </td>
-                                <td>0
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>waiting
-                                </td>
-                                <td>0
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">spring-cloud-web-user</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name<br/>
-                                </td>
-                                <td>Terminated
-                                </td>
-                                <td>1
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>running
-                                </td>
-                                <td>2
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>running
-                                </td>
-                                <td>2
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>running
-                                </td>
-                                <td>2
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>running
-                                </td>
-                                <td>2
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>running
-                                </td>
-                                <td>2
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="red2"><i class="fas fa-exclamation-circle"></i></span> <a href="caas_pods_view.html">portal-api-deployment<br/></a>
-                                    <span class="red2">Back-off restarting failed container</span>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td>created node name
-                                </td>
-                                <td>waiting
-                                </td>
-                                <td>0
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <!-- Pods 끝 -->
-    <!-- Replica Sets 시작 -->
-    <div class="cluster_content04 row two_line two_view harf_view">
-        <ul class="maT30">
-            <li>
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Replica Sets</p>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
-                            <colgroup>
-                                <col style='width:auto;'>
-                                <col style='width:10%;'>
-                                <col style='width:15%;'>
-                                <col style='width:5%;'>
-                                <col style='width:15%;'>
-                                <col style='width:25%;'>
-                            </colgroup>
-                            <thead>
-                            <tr>
-                                <td>Name<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Namespace</td>
-                                <td>Labels</td>
-                                <td>Pods</td>
-                                <td>Created on<button class="sort-arrow"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Images</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_replica_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                    <span class="bg_gray">pod-template-hash : 26832</span>
-                                </td>
-                                <td>3 / 3
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                                <td>bluedigm/hyerin:portalapi
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_replica_view.html">spring-cloud-web-user</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                </td>
-                                <td>1 / 1
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                                <td>bluedigm/hyerin:config-1.5<br/>
-                                    bluedigm/hyerin:registration-1.5<br/>
-                                    bluedigm/hyerin:gateway-1.0<br/>
-                                    bluedigm/hyerin:infra-admin<br/>
-                                    bluedigm/hyerin:common-api<br/>
-                                    bluedigm/hyerin:portalapi<br/>
-                                    cissc2/paas-ta-portal-webadmin:0.6<br/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="green2"><i class="fas fa-check-circle"></i></span> <a href="caas_replica_view.html">portal-api-deployment</a>
-                                </td>
-                                <td>
-                                    kube-system
-                                </td>
-                                <td><span class="bg_gray">app : nginx-2</span><br/>
-                                    <span class="bg_gray">pod-template-hash : 26832</span>
-                                </td>
-                                <td>3 / 3
-                                </td>
-                                <td>2018-07-04 20:15:30
-                                </td>
-                                <td>bluedigm/hyerin:portalapi
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <!-- Replica Sets 끝 -->
+
 </div>
 
-<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
-<script>
-//    // 도넛차트
-//    var pieColors = ['#07ceb0', '#3076b2', '#4b4f53' , '#fe8d14'];
-//    Highcharts.chart('piechart01', {
-//        chart: {
-//            type: 'pie',
-//            marginTop: 0,
-//        },
-//        title: {
-//            text: 'Deployments',
-//            y : 120, // y position
-//            style: {
-//                fontSize: '15px',
-//                fontWeight: 'bold'
-//            }
-//        },
-//        plotOptions: {
-//            pie: {
-//                innerSize: 110,
-//                colors : pieColors,
-//                dataLabels: {
-//                    enabled: true,
-//                    format: '{point.percentage:.0f} %',
-//                    distance: -25,
-//                    style: {
-//                        fontSize: '14px',
-//                        fontWeight: 'bold'
-//                    }
-//                }
-//            }
-//        },
-//        tooltip: {
-//            headerFormat: '',
-//            pointFormat: '{point.name}: <b>{point.y:.2f}%</b><br/>',
-//            footerFormat:''
-//        },
-//        series: [{
-//            data: [
-//                ['Succeeded', 46],
-//                ['Running', 18],
-//                ['Failed', 18],
-//                ['Pendding', 18]
-//            ]
-//        }],
-//        credits: { // logo hide
-//            enabled: false
-//        }
-//    });
-//    Highcharts.chart('piechart02', {
-//        chart: {
-//            type: 'pie',
-//            marginTop: 0,
-//        },
-//        title: {
-//            text: 'Pods',
-//            y : 120, // y position
-//            style: {
-//                fontSize: '15px',
-//                fontWeight: 'bold'
-//            }
-//        },
-//        plotOptions: {
-//            pie: {
-//                innerSize: 110,
-//                colors : pieColors,
-//                dataLabels: {
-//                    enabled: true,
-//                    format: '{point.percentage:.0f} %',
-//                    distance: -25,
-//                    style: {
-//                        fontSize: '14px',
-//                        fontWeight: 'bold'
-//                    }
-//                }
-//            }
-//        },
-//        tooltip: {
-//            headerFormat: '',
-//            pointFormat: '{point.name}: <b>{point.y:.2f}%</b><br/>',
-//            footerFormat:''
-//        },
-//        series: [{
-//            data: [
-//                ['Succeeded', 46],
-//                ['Running', 18],
-//                ['Failed', 18],
-//                ['Pendding', 18]
-//            ]
-//        }],
-//        credits: { // logo hide
-//            enabled: false
-//        }
-//    });
-//    Highcharts.chart('piechart03', {
-//        chart: {
-//            type: 'pie',
-//            marginTop: 0,
-//        },
-//        title: {
-//            text: 'Replica Sets',
-//            y : 120, // y position
-//            style: {
-//                fontSize: '15px',
-//                fontWeight: 'bold'
-//            }
-//        },
-//        plotOptions: {
-//            pie: {
-//                innerSize: 110,
-//                colors : pieColors,
-//                dataLabels: {
-//                    enabled: true,
-//                    format: '{point.percentage:.0f} %',
-//                    distance: -25,
-//                    style: {
-//                        fontSize: '14px',
-//                        fontWeight: 'bold'
-//                    }
-//                }
-//            }
-//        },
-//        tooltip: {
-//            headerFormat: '',
-//            pointFormat: '{point.name}: <b>{point.y:.2f}%</b><br/>',
-//            footerFormat:''
-//        },
-//        series: [{
-//            data: [
-//                ['Succeeded', 46],
-//                ['Running', 18],
-//                ['Failed', 18],
-//                ['Pendding', 18]
-//            ]
-//        }],
-//        credits: { // logo hide
-//            enabled: false
-//        }
-//    });
+<%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>--%>
+<script type="text/javascript">
+    var gDevList; // For Deployment List
+    var gPodsList; // For Pods List
+    var gReplicaSetList; // For ReplicaSet List
+
+    // ***** For Deployment *****
+    // GET LIST
+    var getDevList = function() {
+        //procCallAjax("/api/namespaces/" + NAME_SPACE + "/replicasets", "GET", null, null, callbackGetDevList);
+        procCallAjax("/workloads/deployments/" + NAME_SPACE +"/getList.do", "GET", null, null, callbackGetDevList);
+    };
+
+
+    // CALLBACK
+    var callbackGetDevList = function(data) {
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+
+        gDevList = data;
+        setDevList();
+    };
+
+
+    // SET LIST
+    var setDevList = function() {
+
+        var listLength       = gDevList.items.length;
+        var resultArea       = $('#deploymentsListArea');
+        var resultHeaderArea = $('#resultHeaderAreaForDev');
+        var noResultArea     = $('#noResultAreaForDev');
+        var resultTable      = $('#resultTableForDev');
+
+        $.each(gDevList.items, function (index, itemList) {
+            // get data
+            var _metadata = itemList.metadata;
+            var _spec = itemList.spec;
+            var _status = itemList.status;
+
+            var deployName = _metadata.name;
+            var namespace = _metadata.namespace;
+            var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
+            if (labels == null || labels == "null") {
+                labels = "None"
+            }
+
+            var creationTimestamp = _metadata.creationTimestamp;
+
+            // Set replicas and total Pods are same.
+            var totalPods = _spec.replicas;
+            var runningPods = totalPods - _status.unavailableReplicas;
+            // var failPods = _status.unavailableReplicas;
+            var images = _spec.images;
+
+            resultArea.append('<tr>' +
+                    '<td><span class="green2"><i class="fas fa-check-circle"></i></span> ' +
+                    "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/deployments/" + deployName + "\");'>"+deployName+'</a>' +
+                    '</td>' +
+                    '<td>' + namespace + '</td>' +
+                    '<td>' + createSpans(labels, "true") + '</td>' +
+                    '<td>' + runningPods +" / " + totalPods + '</td>' +
+                    '<td>' + creationTimestamp + '</td>' +
+                    '<td>' + images + '</td>' +
+                    '</td>');
+        });
+
+        if (listLength < 1) {
+            resultHeaderArea.hide();
+            resultArea.hide();
+            noResultArea.show();
+        } else {
+            noResultArea.hide();
+            resultHeaderArea.show();
+            resultArea.show();
+            resultTable.tablesorter();
+            resultTable.trigger("update");
+        }
+
+    };
+
+    // ***** For Pods *****
+    // GET LIST
+    var getPodsList = function() {
+        procCallAjax("<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods", "GET", null, null, callbackGetPodsList);
+    };
+
+
+    // CALLBACK
+    var callbackGetPodsList = function(data) {
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+
+        gPodsList = data;
+        setPodsList();
+    };
+
+
+    // SET LIST
+    var setPodsList = function() {
+
+        var resultArea = $('#resultAreaForPods');
+        var resultHeaderArea = $('#resultHeaderAreaForPods');
+        var noResultArea = $('#noResultAreaForPods');
+        var resultTable = $('#resultTableForPods');
+
+        var items = gPodsList.items;
+        var listLength = items.length;
+        var htmlString = [];
+
+        for (var i = 0; i < listLength; i++) {
+            var podsName = items[i].metadata.name;
+            var containerStatuses;
+            if(items[i].status.containerStatuses == null) {
+                containerStatuses = "None";
+            } else {
+                containerStatuses = items[i].status.containerStatuses[0].restartCount;
+            }
+
+            htmlString.push(
+                    "<tr>"
+                    + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
+                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/pods/" + podsName + "\");'>" + podsName + "</a>"
+                    + "</td>"
+                    + "<td>" + items[i].metadata.namespace + "</td>"
+                    + "<td>" + nvl2(items[i].spec.nodeName, "None") + "</td>"
+                    + "<td>" + items[i].status.phase + "</td>"
+                    + "<td>" + containerStatuses + "</td>"
+                    + "<td>" + items[i].metadata.creationTimestamp + "</td>"
+                    + "</tr>");
+
+        }
+
+        if (listLength < 1) {
+            resultHeaderArea.hide();
+            resultArea.hide();
+            noResultArea.show();
+        } else {
+            noResultArea.hide();
+            resultHeaderArea.show();
+            resultArea.show();
+            resultArea.html(htmlString);
+            resultTable.tablesorter();
+            resultTable.trigger("update");
+        }
+
+    };
+
+    // ***** For ReplicaSet *****
+    // GET LIST
+    var getReplicaSetList = function() {
+        procCallAjax("<%= Constants.API_URL %>/namespaces/" + NAME_SPACE + "/replicasets", "GET", null, null, callbackGetReplicaSetList);
+    };
+
+
+    // CALLBACK
+    var callbackGetReplicaSetList = function(data) {
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+
+        gReplicaSetList = data;
+        setReplicaSetList();
+    };
+
+
+    // SET LIST
+    var setReplicaSetList = function() {
+
+        var resultArea       = $('#resultAreaForReplicaSet');
+        var resultHeaderArea = $('#resultHeaderAreaForReplicaSet');
+        var noResultArea     = $('#noResultAreaForReplicaSet');
+        var resultTable      = $('#resultTableForReplicaSet');
+
+        var items = gReplicaSetList.items;
+        var listLength = items.length;
+
+        $.each(items, function (index, itemList) {
+
+            var replicaSetName = itemList.metadata.name;
+            var namespace = itemList.metadata.namespace;
+            var labels = procSetSelector(itemList.metadata.labels);
+            var creationTimestamp = itemList.metadata.creationTimestamp;
+            var pods = itemList.status.availableReplicas +"/"+ itemList.status.replicas;  //  TODO ::  current / desired
+            //var selector = procSetSelector(items[i].spec.selector);
+            var images = new Array;
+
+            var containers = itemList.spec.template.spec.containers;
+            for(var i=0; i < containers.length; i++){
+                images.push(containers[i].image);
+            }
+
+            resultArea.append(
+                    "<tr>"
+                    + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
+                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/replicaSets/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
+                    + "</td>"
+                    + "<td>" + namespace + "</td>"
+                    + "<td>" + createSpans(labels, "LB") + "</td>"
+                    + "<td>" + pods + "</td>"
+                    + "<td>" + creationTimestamp+"</td>"
+                    + "<td>" + images.join("</br>") + "</td>"
+                    + "</tr>");
+        });
+
+        if (listLength < 1) {
+            resultHeaderArea.hide();
+            resultArea.hide();
+            noResultArea.show();
+        } else {
+            noResultArea.hide();
+            resultHeaderArea.show();
+            resultArea.show();
+            resultTable.tablesorter();
+            resultTable.trigger("update");
+        }
+
+    };
+
+
+
+    // TODO :: 업데이트(복수값일시 레이어 링크 제공) 및 공통화 필요
+    var createSpans = function (data, type) {
+        var datas = data.replace(/=/g, ':').split(',');
+        var spanTemplate = "";
+
+        if (type === "LB") { // Line Break
+            $.each(datas, function (index, data) {
+                if (index != 0) {
+                    spanTemplate += '<br>';
+                }
+                spanTemplate += '<span class="bg_gray">' + data + '</span>';
+            });
+        } else {
+            $.each(datas, function (index, data) {
+                spanTemplate += '<span class="bg_gray">' + data + '</span> ';
+            });
+        }
+
+        return spanTemplate;
+    }
+
+    // ON LOAD
+    $(document.body).ready(function () {
+        viewLoading('show');
+        getDevList();
+        getPodsList();
+        getReplicaSetList();
+        viewLoading('hide');
+    });
 
 </script>
