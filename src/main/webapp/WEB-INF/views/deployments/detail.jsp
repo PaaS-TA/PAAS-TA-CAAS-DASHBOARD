@@ -223,31 +223,7 @@
     </div>
     <!-- Details  끝 -->
 </div>
-<!-- modal -->
-<div class="modal fade dashboard" id="layerpop">
-    <div class="vertical-alignment-helper">
-        <div class="modal-dialog vertical-align-center">
-            <div class="modal-content">
-                <!-- header -->
-                <div class="modal-header">
-                    <!-- 닫기(x) 버튼 -->
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                    <!-- header title -->
-                    <h4 class="modal-title">kubectl.kubernetes.io/last-applied-configuration</h4>
-                </div>
-                <!-- body -->
-                <div class="modal-body">
-                    <p>
-                        {"apiVersion":"extensions/v1beta1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"hrjin-spring-music"},"name":"hrjin-spring-music","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"hrjin-spring-music"}},"template":{"metadata":{"labels":{"app":"hrjin-spring-music"}},"spec":{"automountServiceAccountToken":true,"containers":[{"image":"bluedigm/hrjin-music:0.3","imagePullPolicy":"Always","name":"hrjin-spring-music-container","ports":[{"containerPort":7878}]}],"serviceAccountName":"hrjin-sa4"}}}}
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
 
 <input type="hidden" id="requestDeploymentsName" name="requestDeploymentsName" value="<c:out value='${deploymentsName}' default='' />" />
 
@@ -547,7 +523,7 @@
                 console.log("와라에루 요나 ", key);
                 tempStr += createSpans(key + ":"+ annotations[key]);
             } else {
-                tempStr += '<span class="bg_blue"><a href="#" data-target="#layerpop" data-toggle="modal">' + key + '</a></span>';
+                tempStr += '<span class="bg_blue"><a href="#" data-target="#layerpop3" data-toggle="modal">' + key + '</a></span>';
                 $("#modal-body").innerHTML = '<p>' + annotations[key] + '</p> ';
             }
             console.log("소레오 코에루!", tempStr);
