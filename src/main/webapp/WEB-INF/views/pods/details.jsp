@@ -406,8 +406,8 @@
     var conditionParser = function (data) {
         var tempStr = "";
         for ( var index in data) {
-            tempStr += data[index].type + ": " + data[index].status;
-            tempStr += ", ";
+            tempStr += data[index].type + ":" + data[index].status;
+            tempStr += "  ";
         }
         return tempStr;
     }
@@ -437,7 +437,7 @@
                                 '<td>' + nvl2(getContainer(containerStatuses, itemList.name).restartCount, "-") + '</td>' +
                               '</tr>' +
                               '<tr style="display:none;" id="' + index +'">' +
-                                '<td colspan="5">' +
+                                '<td colspan="4">' +
                                     '<table class="table_detail alignL">' +
                                         '<colgroup>' +
                                             '<col style="*">' +
