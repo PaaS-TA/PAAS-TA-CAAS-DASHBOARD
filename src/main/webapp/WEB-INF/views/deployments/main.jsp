@@ -117,7 +117,7 @@
             var namespace = metadata.namespace;
             var labels = stringifyJSON(metadata.labels).replace(/,/g, ', ');
             if (labels == null || labels == "null") {
-                labels = "-";
+                labels = null;
             }
 
             var creationTimestamp = metadata.creationTimestamp;
@@ -162,6 +162,10 @@
     }
 
     var createSpans = function (data, type) {
+        if( !data ) {
+            return "-";
+        }
+
         var datas = data.replace(/=/g, ':').split(',');
         var spanTemplate = "";
 

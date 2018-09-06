@@ -327,7 +327,7 @@
         var replicaStatus = updatedReplicas + " updated, "
             + totalReplicas + " total, "
             + availableReplicas + " available, "
-            + unavailableReplicas + " unavailable.";
+            + unavailableReplicas + " unavailable";
 
         document.getElementById("name").textContent = deployName;
         document.getElementById("namespaceID").textContent = namespace;
@@ -341,8 +341,8 @@
         document.getElementById("rollingUpdateStrategy").textContent = rollingUpdateStrategy;
         document.getElementById("status").textContent = replicaStatus;
 
-        procCallAjax("/api/namespaces/" + NAME_SPACE + "/replicasets/resource/" + replaceLabels(labels), "GET", null, null, callbackGetReplicasetList);
-        procCallAjax("/api/workloads/namespaces/" + NAME_SPACE + "/pods/resource/" + replaceLabels(labels), "GET", null, null, callbackGetPodsList);
+        procCallAjax("/api/namespaces/" + NAME_SPACE + "/replicasets/resource/" + replaceLabels(selector), "GET", null, null, callbackGetReplicasetList);
+        procCallAjax("/api/workloads/namespaces/" + NAME_SPACE + "/pods/resource/" + replaceLabels(selector), "GET", null, null, callbackGetPodsList);
     }
 
 
@@ -351,6 +351,9 @@
     }
 
     var createSpans = function (data, type) {
+        if( !data || data == "null") {
+            return "-";
+        }
         var datas = data.replace(/=/g, ':').split(',');
         var spanTemplate = "";
 
@@ -415,7 +418,7 @@
 
             resultArea.append('<tr>' +
                                     '<td>' +
-                                        "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicasets/" + replicasetName + "\");'>"+
+                                        "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + replicasetName + "\");'>"+
                                             '<span class="green2"><i class="fas fa-check-circle"></i></span> ' + replicasetName +
                                         '</a>' +
                                     '</td>' +
@@ -517,16 +520,12 @@
         var tempStr = "";
         var index = 0;
         Object.keys(annotations).forEach(function (key) {
-            console.log("하이~ 콘니치와!! ", key);
-            console.log("하이~ 콘니치와!!난데? ", index);
             if(index == 0) {
-                console.log("와라에루 요나 ", key);
                 tempStr += createSpans(key + ":"+ annotations[key]);
             } else {
                 tempStr += '<span class="bg_blue"><a href="#" data-target="#layerpop3" data-toggle="modal">' + key + '</a></span>';
                 $("#modal-body").innerHTML = '<p>' + annotations[key] + '</p> ';
             }
-            console.log("소레오 코에루!", tempStr);
             index ++;
         });
         return tempStr;

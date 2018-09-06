@@ -173,7 +173,7 @@
             var namespace = _metadata.namespace;
             var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
             if (labels == null || labels == "null") {
-                labels = "None"
+                labels = null;
             }
 
             var creationTimestamp = _metadata.creationTimestamp;
@@ -242,7 +242,7 @@
             var podsName = items[i].metadata.name;
             var containerStatuses;
             if(items[i].status.containerStatuses == null) {
-                containerStatuses = "None";
+                containerStatuses = "-";
             } else {
                 containerStatuses = items[i].status.containerStatuses[0].restartCount;
             }
@@ -253,7 +253,7 @@
                     + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/pods/" + podsName + "\");'>" + podsName + "</a>"
                     + "</td>"
                     + "<td>" + items[i].metadata.namespace + "</td>"
-                    + "<td>" + nvl2(items[i].spec.nodeName, "None") + "</td>"
+                    + "<td>" + nvl2(items[i].spec.nodeName, "-") + "</td>"
                     + "<td>" + items[i].status.phase + "</td>"
                     + "<td>" + containerStatuses + "</td>"
                     + "<td>" + items[i].metadata.creationTimestamp + "</td>"
@@ -349,6 +349,9 @@
 
     // TODO :: 업데이트(복수값일시 레이어 링크 제공) 및 공통화 필요
     var createSpans = function (data, type) {
+        if( !data ) {
+            return "-";
+        }
         var datas = data.replace(/=/g, ':').split(',');
         var spanTemplate = "";
 

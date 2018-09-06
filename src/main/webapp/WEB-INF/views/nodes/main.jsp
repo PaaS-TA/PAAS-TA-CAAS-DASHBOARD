@@ -77,15 +77,34 @@
             return;
         }
 
+        var nodePodCountList = {};
+        if (data.items.length > 0) {
+            var podsReqBaseUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods/node/";
+            $.each(data.items, function (index, nodeItem) {
+                var podsReqUrl = podsReqBaseUrl + nodeItem.metadata.name;
+                procCallAjax(podsReqUrl, "GET", null, null, function(podList) {
+                    nodePodCountList[nodeItem.metadata.name] =
+                        (podList.items != null)? podList.items.length : 0;
+                });
+            });
+
+        }
+
+        // filtering nodes by pod
+        while (Object.keys(nodePodCountList) < data.items.length) { /* infinite loop */ }
+        var filterItems = data.items.filter(function (value, index) {
+            return nodePodCountList[value.metadata.name] > 0;
+        });
+
         var contents = [];
-        $.each(data.items, function (index, nodeItem) {
+        $.each(filterItems, function (index, nodeItem) {
             var _metadata = nodeItem.metadata;
             var _status = nodeItem.status;
 
             var name = _metadata.name;
             var ready = _status.conditions.filter(function(condition) {
-                    return condition.type === "Ready";
-                })[0].status;
+                return condition.type === "Ready";
+            })[0].status;
             var limitCPU = _status.capacity.cpu;
             var requestCPU = limitCPU - _status.allocatable.cpu;
             var limitMemory = procConvertByte(_status.capacity.memory);

@@ -134,7 +134,7 @@ public class PodsController {
 
     @GetMapping(value = Constants.API_URL + BASE_URL + "/node/{nodeName:.+}")
     @ResponseBody
-    public PodsList getPodListAllNamespacesByNode(@PathVariable String namespace, @PathVariable String nodeName) {
+    public PodsList getPodListNamespaceByNode(@PathVariable String namespace, @PathVariable String nodeName) {
         return podsService.getPodListNamespaceByNode( namespace, nodeName );
     }
 }
