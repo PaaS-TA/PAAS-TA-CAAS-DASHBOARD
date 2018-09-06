@@ -19,7 +19,7 @@
     }
 
     $(document.body).ready(function () {
-        var urlInfo = getURLInfo();
+        var urlInfo = procGetURLInfo();
         nodeName = urlInfo.resource;
         currentTab = urlInfo.tab == "_default"? "details" : urlInfo.tab;
 

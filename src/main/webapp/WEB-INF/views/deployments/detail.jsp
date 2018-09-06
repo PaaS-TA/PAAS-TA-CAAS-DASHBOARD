@@ -496,17 +496,6 @@
         return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
     }
 
-    var processIfDataIsNull = function (data, procCallback, defaultValue) {
-        if (data == null)
-            return defaultValue;
-        else {
-            if (procCallback == null)
-                return defaultValue;
-            else
-                return procCallback(data);
-        }
-    }
-
     var createSpans = function (data, type) {
         var datas = data.replace(/=/g, ':').split(',');
         var spanTemplate = "";
@@ -629,7 +618,7 @@
             var namespace = NAME_SPACE;
             var nodeName = _spec.nodeName;
             var podStatus = _status.phase;
-            var restartCount = processIfDataIsNull(_status.containerStatuses,
+            var restartCount = procIfDataIsNull(_status.containerStatuses,
                 function (data) {
                     return data.reduce(function (a, b) {
                         return {restartCount: a.restartCount + b.restartCount};
