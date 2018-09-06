@@ -520,16 +520,12 @@
         var tempStr = "";
         var index = 0;
         Object.keys(annotations).forEach(function (key) {
-            console.log("하이~ 콘니치와!! ", key);
-            console.log("하이~ 콘니치와!!난데? ", index);
             if(index == 0) {
-                console.log("와라에루 요나 ", key);
                 tempStr += createSpans(key + ":"+ annotations[key]);
             } else {
                 tempStr += '<span class="bg_blue"><a href="#" data-target="#layerpop3" data-toggle="modal">' + key + '</a></span>';
                 $("#modal-body").innerHTML = '<p>' + annotations[key] + '</p> ';
             }
-            console.log("소레오 코에루!", tempStr);
             index ++;
         });
         return tempStr;
