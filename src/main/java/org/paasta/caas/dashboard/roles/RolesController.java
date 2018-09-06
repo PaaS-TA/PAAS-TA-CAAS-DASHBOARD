@@ -93,8 +93,10 @@ public class RolesController {
 //        return roleService.getRole(role.getRoleName());
 //    }
 
-    @GetMapping(CAAS_BASE_URL + "/roles/{id:.+}")
-    public List<Roles> getRolesList(@PathVariable("roleSetCode") String roleSetCode){
-        return roleService.getRolesList(roleSetCode);
-    }
+    /*@GetMapping(CAAS_BASE_URL + "/roles/{id:.+}")
+    @ResponseBody
+    public List<Roles> getRolesList(@PathVariable("id") String roleSetCode, HttpServletRequest request){
+        return roleService.getRolesList(roleSetCode, request);
+    }*/
+
 }
