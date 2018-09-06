@@ -178,6 +178,10 @@
 
         var nodeName = data.metadata.name;
         var conditions = data.status.conditions;
+        $.each(conditions, function (index, condition) {
+            condition.lastHeartbeatTime = condition.lastHeartbeatTime.replace(/T/g, " ").replace(/Z.+/g, "");
+            condition.lastTransitionTime = condition.lastTransitionTime.replace(/T/g, " ").replace(/Z.+/g, "");
+        });
 
         // get pods, conditions
         var namespace = NAME_SPACE;

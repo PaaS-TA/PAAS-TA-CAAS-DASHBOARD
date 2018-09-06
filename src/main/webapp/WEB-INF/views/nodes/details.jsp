@@ -148,22 +148,41 @@
     </div>
 </div>
 <script>
+    var setLayerpop = function (eventElement) {
+        var select = $(eventElement);
+        $('.modal-title').html( atob( select.data('title') ) );
+        $('.modal-body').html( '<p id="node_annotation_content">' + atob( select.data('content') ) + '</p>' );
+    };
+
     var createSpans = function (data, type) {
         var datas = data.replace(/=/g, ':').split(',');
         var spanTemplate = "";
 
-        if (type === "true") {
-            $.each(datas, function (index, data) {
-                if (index > 0)
-                    spanTemplate += '<br>';
+        // data-target="#layerpop" data-toggle="modal"
+        // onclick -> layerpop에 데이터 세팅
 
-                spanTemplate += '<span class="bg_gray">' + data + '</span>';
-            });
-        } else {
-            $.each(datas, function (index, data) {
-                spanTemplate += '<span class="bg_gray">' + data + '</span> ';
-            });
-        }
+        $.each(datas, function (index, data) {
+            if (type === "true" && index > 0)
+                spanTemplate += '<br>';
+
+            if (data.length > 40) {
+                var _kv = data.split(': ');
+                if (_kv.length > 1) {
+                    var _title = btoa(_kv[0]);
+                    var _content = btoa(_kv.reduce(function(prev, cur, idx) {
+                            if (idx <= 1) return cur; else return prev + ': ' + cur }));
+
+                    var _generateSpanFront = ' <span class="bg_blue" data-target="#layerpop" data-toggle="modal" ';
+                    _generateSpanFront += 'onclick="setLayerpop(this)" data-title="' + _title + '" ';
+                    _generateSpanFront += 'data-content="' + _content + '">'
+                    spanTemplate += _generateSpanFront + data.substring(0, 30) + '...</span>';
+                } else {
+                    spanTemplate += ' <span class="bg_gray">' + data + '</span>';
+                }
+            } else {
+                spanTemplate += ' <span class="bg_gray">' + data + '</span>';
+            }
+        });
 
         return spanTemplate;
     };
@@ -194,8 +213,8 @@
 
         // name, labels, annotations, created-at, addresses, pod-cidr, unschedulable
         var name = _metadata.name;
-        var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
-        var annotations = stringifyKeyValue(_metadata.annotations);
+        var labels = stringifyKeyValue(_metadata.labels).replace(/,/g, ', ');
+        var annotations = _metadata.annotations;
         var createdAt = _metadata.creationTimestamp;
         var addresses = stringifyKeyValue(_status.addresses, function(item) { return item.type + ": " + item.address; });
         var podCIDR = _spec.podCIDR;
@@ -218,7 +237,7 @@
 
         $('#node_name').html(name);
         $('#node_labels').html(createSpans(labels, "false"));
-        $('#node_annotations').html(createSpans(annotations, "true"));
+        $('#node_annotations').html(createSpans(stringifyKeyValue(annotations), "true"));
         $('#node_created_at').html(createdAt);
         $('#node_addresses').html(createSpans(addresses, "false"));
         $('#node_pod_cidr').html(podCIDR);
