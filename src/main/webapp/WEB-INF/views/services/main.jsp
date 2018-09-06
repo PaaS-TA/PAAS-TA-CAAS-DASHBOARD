@@ -38,7 +38,7 @@
                             </colgroup>
                             <thead>
                             <tr id="noResultArea"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderArea" style="display: none;">
+                            <tr id="resultHeaderArea" class="headerSortFalse" style="display: none;">
                                 <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Service Type</td>
                                 <td>Cluster IP</td>
@@ -67,13 +67,13 @@
 
     var gList;
 
-    // TODO :: REMOVE
-    var tempNamespace = "<%= Constants.NAMESPACE_NAME %>";
-
     // GET LIST
     var getList = function() {
         viewLoading('show');
-        procCallAjax("<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/services", "GET", null, null, callbackGetList);
+
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_LIST %>"
+            .replace("{namespace:.+}", NAME_SPACE);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetList);
     };
 
 
@@ -163,6 +163,7 @@
             resultArea.html(htmlString);
             resultTable.tablesorter();
             resultTable.trigger("update");
+            $('.headerSortFalse > td').unbind();
         }
 
         getDetailForPods(selectorList);
@@ -177,7 +178,9 @@
 
         for (var i = 0; i < listLength; i++) {
             tempSelectorList = selectorList[i].split(",");
-            reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + tempNamespace + "/pods/service/" + tempSelectorList[1] + "/" + tempSelectorList[0];
+
+            // TODO :: CHECK GETTING PODS LIST URL
+            reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods/service/" + tempSelectorList[1] + "/" + tempSelectorList[0];
 
             procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPods);
         }
@@ -203,7 +206,7 @@
             totalSum++;
         }
 
-        $('#' + data.serviceName).html(runningSum + "/" + totalSum);
+        $('#' + data.serviceName).html(runningSum + " / " + totalSum);
 
         viewLoading('hide');
     };

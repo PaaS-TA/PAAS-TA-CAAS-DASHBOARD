@@ -235,7 +235,7 @@
                             </colgroup>
                             <thead>
                             <tr id="noResultAreaForPods"><td colspan='6'><p class='service_p'>조회 된 Pod가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderAreaForPods" style="display: none;">
+                            <tr id="resultHeaderAreaForPods" class="headerSortFalse" style="display: none;">
                                 <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
                                 <td>Node</td>
@@ -310,14 +310,13 @@
 
 <script type="text/javascript">
 
-    // TODO :: REMOVE
-    var tempNamespace = "<%= Constants.NAMESPACE_NAME %>";
-
     // GET DETAIL
     var getDetail = function() {
         viewLoading('show');
 
-        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/services/" + document.getElementById('requestServiceName').value;
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_DETAIL %>"
+            .replace("{namespace:.+}", NAME_SPACE)
+            .replace("{serviceName:.+}", document.getElementById('requestServiceName').value);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
 
@@ -366,7 +365,7 @@
     // GET DETAIL FOR PODS LIST
     var getDetailForPodsList = function(selector) {
         // TODO :: CHECK GETTING PODS LIST URL
-        var reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + tempNamespace + "/pods/service/_all/" + selector;
+        var reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods/service/_all/" + selector;
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPodsList);
     };
 
@@ -406,7 +405,6 @@
                 itemsMetadata = items[i].metadata;
                 itemsStatus = items[i].status;
 
-                // TODO :: SET LINK TO PODS DETAIL PAGE
                 htmlString.push(
                     "<tr>"
                     + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
@@ -434,6 +432,7 @@
             resultArea.html(htmlString);
             resultTable.tablesorter();
             resultTable.trigger("update");
+            $('.headerSortFalse > td').unbind();
         }
 
         getDetailForEndpoints();
@@ -442,7 +441,9 @@
 
     // GET DETAIL FOR ENDPOINTS
     var getDetailForEndpoints = function() {
-        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/endpoints/" + document.getElementById('requestServiceName').value;
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_ENDPOINTS_DETAIL %>"
+            .replace("{namespace:.+}", NAME_SPACE)
+            .replace("{serviceName:.+}", document.getElementById('requestServiceName').value);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForEndpoints);
     };
 

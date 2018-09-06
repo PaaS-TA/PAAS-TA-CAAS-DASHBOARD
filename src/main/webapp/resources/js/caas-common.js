@@ -162,6 +162,7 @@ var procSetSortList = function(resultTableString, buttonObject, key) {
     resultTable.tablesorter();
     resultTable.trigger("update");
     resultTable.trigger("sorton", [sorting]);
+    $('.headerSortFalse > td').unbind();
 };
 
 
