@@ -371,9 +371,15 @@
         }
 
         document.getElementById("ip").textContent =  nvl2(data.status.podIP, "-");
-        document.getElementById("controllers").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>"+
-                                                                data.metadata.ownerReferences[0].name +
-                                                            '</a>';
+
+        if(labels.match('job-name')) {
+            // jobs 기능이 구현되면 여기에 a링크 달 것
+            document.getElementById("controllers").innerHTML = data.metadata.ownerReferences[0].name;
+        } else {
+            document.getElementById("controllers").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>"+
+                data.metadata.ownerReferences[0].name +
+                '</a>';
+        }
         document.getElementById("volumes").textContent = data.spec.volumes[0].name;
 
         createContainerResultArea(data.status, data.spec.containers);
