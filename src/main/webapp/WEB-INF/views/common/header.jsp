@@ -94,7 +94,7 @@
                                 <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</li>
                             </c:when>
                             <c:when test="${path eq 'accessInfo'}" >
-                                <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</li>
+                                <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser('access')}</li>
                             </c:when>
                             <c:when test="${path eq 'users'}" >
                                 <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</li>
@@ -115,16 +115,9 @@
         </ul>
         <div class="btn-kuber">
             <c:forEach var="path" items="${pathArray}" varStatus="g">
-                <c:choose>
-                    <c:when test="${path eq 'clusters' || path eq 'accessInfo'}">
-                        <button class="btns colors4" onclick="window.open('https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl')">Kubectl download</button>
-                    </c:when>
-                    <c:when test="${path eq 'workloads'}">
-                        <button class="btns colors4" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/accessInfo');">Access</button>
-                    </c:when>
-                    <c:otherwise>
-                    </c:otherwise>
-                </c:choose>
+                <c:if test="${path eq 'clusters' || path eq 'workloads' || path eq 'services' || path eq 'users' || path eq 'roles'}">
+                    <button class="btns colors4" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/accessInfo');">Access</button>
+                </c:if>
             </c:forEach>
         </div>
     </div>
