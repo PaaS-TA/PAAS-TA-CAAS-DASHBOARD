@@ -109,24 +109,24 @@
 
         $.each(data.items, function (index, itemList) {
             // get data
-            var _metadata = itemList.metadata;
-            var _spec = itemList.spec;
-            var _status = itemList.status;
+            var metadata = itemList.metadata;
+            var spec = itemList.spec;
+            var status = itemList.status;
 
-            var deployName = _metadata.name;
-            var namespace = _metadata.namespace;
-            var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
+            var deployName = metadata.name;
+            var namespace = metadata.namespace;
+            var labels = stringifyJSON(metadata.labels).replace(/,/g, ', ');
             if (labels == null || labels == "null") {
-                labels = "-";
+                labels = null;
             }
 
-            var creationTimestamp = _metadata.creationTimestamp;
+            var creationTimestamp = metadata.creationTimestamp;
 
             // Set replicas and total Pods are same.
-            var totalPods = _spec.replicas;
-            var runningPods = totalPods - _status.unavailableReplicas;
+            var totalPods = spec.replicas;
+            var runningPods = totalPods - status.unavailableReplicas;
             // var failPods = _status.unavailableReplicas;
-            var images = _spec.images;
+            var images = spec.images;
             // console.log("야야야 ", _status);
             resultArea.append('<tr>' +
                                     '<td>' +
@@ -162,6 +162,10 @@
     }
 
     var createSpans = function (data, type) {
+        if( !data ) {
+            return "-";
+        }
+
         var datas = data.replace(/=/g, ':').split(',');
         var spanTemplate = "";
 

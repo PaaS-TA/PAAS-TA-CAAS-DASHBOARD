@@ -168,8 +168,27 @@
             return false;
         }
 
+        var nodePodCountList = {};
+        if (data.items.length > 0) {
+            var podsReqBaseUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods/node/";
+            $.each(data.items, function (index, nodeItem) {
+                var podsReqUrl = podsReqBaseUrl + nodeItem.metadata.name;
+                procCallAjax(podsReqUrl, "GET", null, null, function(podList) {
+                    nodePodCountList[nodeItem.metadata.name] =
+                        (podList.items != null)? podList.items.length : 0;
+                });
+            });
+
+        }
+
+        // filtering nodes by pod
+        while (Object.keys(nodePodCountList) < data.items.length) { /* infinite loop */ }
+        var filterItems = data.items.filter(function (value, index) {
+            return nodePodCountList[value.metadata.name] > 0;
+        });
+
         var contents = [];
-        $.each(data.items, function (index, nodeItem) {
+        $.each(filterItems, function (index, nodeItem) {
             var _metadata = nodeItem.metadata;
             var _status = nodeItem.status;
 

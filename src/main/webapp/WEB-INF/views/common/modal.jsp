@@ -6,7 +6,8 @@
   since: 2018.09.03
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<!-- modal -->
+<%--TODO :: REFACTOR--%>
+<%--FOR USERS--%>
 <div class="modal fade in" id="layerpop1">
     <div class="vertical-alignment-helper">
         <div class="modal-dialog vertical-align-center">
@@ -33,6 +34,8 @@
     </div>
 </div>
 
+<%--TODO :: REFACTOR--%>
+<%--FOR USERS--%>
 <div class="modal fade in" id="layerpop2">
     <div class="vertical-alignment-helper">
         <div class="modal-dialog vertical-align-center">
@@ -54,6 +57,30 @@
                 <div class="modal-footer">
                     <button type="button" class="btns2 colors4" data-dismiss="modal" id="userDeleteBtn">삭제</button>
                     <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--TODO :: REFACTOR--%>
+<%--FOR DEPLOYMENTS--%>
+<div class="modal fade dashboard" id="layerpop3">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <!-- header -->
+                <div class="modal-header">
+                    <!-- 닫기(x) 버튼 -->
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <!-- header title -->
+                    <h4 class="modal-title">kubectl.kubernetes.io/last-applied-configuration</h4>
+                </div>
+                <!-- body -->
+                <div class="modal-body">
+                    <p>
+                        {"apiVersion":"extensions/v1beta1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"hrjin-spring-music"},"name":"hrjin-spring-music","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"hrjin-spring-music"}},"template":{"metadata":{"labels":{"app":"hrjin-spring-music"}},"spec":{"automountServiceAccountToken":true,"containers":[{"image":"bluedigm/hrjin-music:0.3","imagePullPolicy":"Always","name":"hrjin-spring-music-container","ports":[{"containerPort":7878}]}],"serviceAccountName":"hrjin-sa4"}}}}
+                    </p>
                 </div>
             </div>
         </div>

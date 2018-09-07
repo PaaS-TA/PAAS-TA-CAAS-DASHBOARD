@@ -18,7 +18,7 @@
             border: solid 1px #bbb;
         }
         .panel-heading {
-            background-color: #343942; padding: 20px;
+            background-color: #2a6575; padding: 20px;
         }
 
         .panel-image {
@@ -52,8 +52,8 @@
             <div class="panel" style="">
                 <div class="panel-heading" style="">
                     <div>
-                        <%--<img  class="panel-image" src="<c:url value='/resources/images/logo.png'/>" style="width: 42px; height: 42px;">--%>
-                        <span class="header-title" style=""> 쿠버네티스 </span>
+                        <img  class="panel-image" src="<c:url value='/resources/images/main/logo.png'/>" style="width: 60px; height: 48px;">
+                        <span class="header-title" style=""> CaaS Service </span>
                     </div>
                 </div>
 

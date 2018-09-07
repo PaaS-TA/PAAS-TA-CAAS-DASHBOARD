@@ -371,9 +371,15 @@
         }
 
         document.getElementById("ip").textContent =  nvl2(data.status.podIP, "-");
-        document.getElementById("controllers").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>"+
-                                                                data.metadata.ownerReferences[0].name +
-                                                            '</a>';
+
+        if(labels.match('job-name')) {
+            // jobs 기능이 구현되면 여기에 a링크 달 것
+            document.getElementById("controllers").innerHTML = data.metadata.ownerReferences[0].name;
+        } else {
+            document.getElementById("controllers").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>"+
+                data.metadata.ownerReferences[0].name +
+                '</a>';
+        }
         document.getElementById("volumes").textContent = data.spec.volumes[0].name;
 
         createContainerResultArea(data.status, data.spec.containers);
@@ -407,6 +413,9 @@
         var tempStr = "";
         for ( var index in data) {
             tempStr += data[index].type + ": " + data[index].status;
+            if((data.length -1) == index) {
+                break;
+            }
             tempStr += ", ";
         }
         return tempStr;
@@ -437,7 +446,7 @@
                                 '<td>' + nvl2(getContainer(containerStatuses, itemList.name).restartCount, "-") + '</td>' +
                               '</tr>' +
                               '<tr style="display:none;" id="' + index +'">' +
-                                '<td colspan="5">' +
+                                '<td colspan="4">' +
                                     '<table class="table_detail alignL">' +
                                         '<colgroup>' +
                                             '<col style="*">' +
