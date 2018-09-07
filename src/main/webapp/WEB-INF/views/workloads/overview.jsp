@@ -141,7 +141,7 @@
     // GET LIST
     var getDevList = function() {
         //procCallAjax("/api/namespaces/" + NAME_SPACE + "/replicasets", "GET", null, null, callbackGetDevList);
-        procCallAjax("/workloads/deployments/" + NAME_SPACE +"/getList.do", "GET", null, null, callbackGetDevList);
+        procCallAjax("/workloads/deployments/" + NAME_SPACE, "GET", null, null, callbackGetDevList);
     };
 
 
@@ -165,24 +165,29 @@
 
         $.each(gDevList.items, function (index, itemList) {
             // get data
-            var _metadata = itemList.metadata;
-            var _spec = itemList.spec;
-            var _status = itemList.status;
+            var metadata = itemList.metadata;
+            var spec = itemList.spec;
+            var status = itemList.status;
 
-            var deployName = _metadata.name;
-            var namespace = _metadata.namespace;
-            var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
+            var deployName = metadata.name;
+            var namespace = metadata.namespace;
+            var labels = stringifyJSON(metadata.labels).replace(/,/g, ', ');
             if (labels == null || labels == "null") {
                 labels = null;
             }
 
-            var creationTimestamp = _metadata.creationTimestamp;
+            var creationTimestamp = metadata.creationTimestamp;
 
             // Set replicas and total Pods are same.
-            var totalPods = _spec.replicas;
-            var runningPods = totalPods - _status.unavailableReplicas;
+            var totalPods = spec.replicas;
+            var runningPods = totalPods - status.unavailableReplicas;
             // var failPods = _status.unavailableReplicas;
-            var images = _spec.images;
+            var images = new Array;
+            var containers = spec.template.spec.containers;
+
+            for(var i=0; i < containers.length; i++){
+                images.push(containers[i].image);
+            }
 
             resultArea.append('<tr>' +
                     '<td><span class="green2"><i class="fas fa-check-circle"></i></span> ' +
@@ -192,7 +197,7 @@
                     '<td>' + createSpans(labels, "true") + '</td>' +
                     '<td>' + runningPods +" / " + totalPods + '</td>' +
                     '<td>' + creationTimestamp + '</td>' +
-                    '<td>' + images + '</td>' +
+                    '<td>' + images.join("<br>") + '</td>' +
                     '</td>');
         });
 

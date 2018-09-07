@@ -81,7 +81,8 @@
 
 <script type="text/javascript">
     $(document.body).ready(function () {
-        procCallAjax("/workloads/deployments/" + NAME_SPACE +"/getList.do", "GET", null, null, callbackGetList);
+        viewLoading('show');
+        procCallAjax("/workloads/deployments/" + NAME_SPACE, "GET", null, null, callbackGetList);
     });
 
     var stringifyJSON = function (obj) {
@@ -90,6 +91,7 @@
 
     // CALLBACK
     var callbackGetList = function (data) {
+        viewLoading('hide');
         if (RESULT_STATUS_FAIL === data.resultCode) {
             $('#deploymentsListArea').html(
                 "ResultStatus :: " + data.resultCode + " <br><br>"
@@ -126,7 +128,13 @@
             var totalPods = spec.replicas;
             var runningPods = totalPods - status.unavailableReplicas;
             // var failPods = _status.unavailableReplicas;
-            var images = spec.images;
+            var images = new Array;
+            var containers = itemList.spec.template.spec.containers;
+
+            for(var i=0; i < containers.length; i++){
+                images.push(containers[i].image);
+            }
+
             // console.log("야야야 ", _status);
             resultArea.append('<tr>' +
                                     '<td>' +
@@ -138,7 +146,7 @@
                                     '<td>' + createSpans(labels, "true") + '</td>' +
                                     '<td>' + runningPods +" / " + totalPods + '</td>' +
                                     '<td>' + creationTimestamp + '</td>' +
-                                    '<td>' + images + '</td>' +
+                                    '<td>' + images.join("</br>") + '</td>' +
                                 '</td>');
         });
 
@@ -190,15 +198,4 @@
         $('#resultArea').html("");
     });
 
-    // ALREADY READY STATE
-    $(document).ready(function () {
-        $("#btnSearch").on("click", function (e) {
-            getDeployments();
-        });
-    });
-
-    // ON LOAD
-    $(document.body).ready(function () {
-        // getAllDeployments();
-    });
 </script>
