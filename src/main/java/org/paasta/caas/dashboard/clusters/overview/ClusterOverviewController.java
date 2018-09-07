@@ -46,14 +46,14 @@ public class ClusterOverviewController {
     @GetMapping(value = BASE_URL + "/overview")
     public ModelAndView getClustersOverview(HttpServletRequest httpServletRequest) {
 
-        // TODO :: DB 조회 - 권한 조회하여 Session에 저장
+        // 사용자가 처음 들어오는 곳에서 권한 관련 세션 설정
         // 1. 위 user 객체의 name / serviceInstanceId 로 user table에서 사용자 조회
         // 2. (JPA로 JOIN이 용이하지 않을시) 1의 결과값 rule_set_code 으로, rule_set 리스트 조회
         // 3. 2의 결과 리스트를 session에 저장
         HttpSession session = httpServletRequest.getSession();
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! session" + session);
         User user = (User)session.getAttribute("custom_user_role");
-        rolesService.setRolesList(user);
+        rolesService.setRolesListFirst(user);
 
         return commonService.setPathVariables(httpServletRequest, "/clusters/overview", new ModelAndView());
     }

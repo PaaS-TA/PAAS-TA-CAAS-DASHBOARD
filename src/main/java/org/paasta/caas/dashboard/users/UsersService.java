@@ -3,13 +3,20 @@ package org.paasta.caas.dashboard.users;
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
 import org.paasta.caas.dashboard.common.TemplateService;
+import org.paasta.caas.dashboard.config.security.userdetail.User;
+import org.paasta.caas.dashboard.refreshSession.RefreshSessionService;
 import org.paasta.caas.dashboard.roles.Roles;
+import org.paasta.caas.dashboard.roles.RolesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,17 +34,22 @@ public class UsersService {
     private static final String REQ_URL = "/users";
     private final RestTemplateService restTemplateService;
     private final TemplateService templateService;
+    private final RefreshSessionService refreshSessionService;
+    private final RolesService rolesService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UsersService.class);
     /**
      * Instantiates a new User service.
-     *
      * @param restTemplateService the rest template service
      * @param templateService
+     * @param refreshSessionService
+     * @param rolesService
      */
     @Autowired
-    public UsersService(RestTemplateService restTemplateService, TemplateService templateService) {this.restTemplateService = restTemplateService;
+    public UsersService(RestTemplateService restTemplateService, TemplateService templateService, RefreshSessionService refreshSessionService, RolesService rolesService) {this.restTemplateService = restTemplateService;
         this.templateService = templateService;
+        this.refreshSessionService = refreshSessionService;
+        this.rolesService = rolesService;
     }
 
     /**
@@ -70,8 +82,26 @@ public class UsersService {
      * @return the user
      */
     public Users updateUserRole(String serviceInstanceId, String organizationGuid, Users user) {
-        // Todo 세션을 지우는 서비스를 탄다.(refreshSession)
 
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+
+        // Security User 객체
+        User accessUser = (User)session.getAttribute("custom_user_role");
+        LOGGER.info("session 을 찾아랏!!!!!!!!!! {}", accessUser.getUsername());
+
+
+        // DB 용 User 객체
+        Users users = new Users();
+        users.setRoleSetCode(user.getRoleSetCode());
+
+        // 현재 접속되어 있는 사람과 권한 바꾸는 사람이 일치할 경우 세션 지우고 다시 세션 설정해주는 로직.
+        if(accessUser.getUsername().equals(user.getUserId())){
+            refreshSessionService.removeRolesSession(request);
+            rolesService.setRolesListAfter(user.getRoleSetCode());
+        }
+
+        // 아래부터는 직접적으로 권한 변경 로직 시작.
         String userName = user.getUserId();
         String userId[] = userName.split("@");
         String realUserName = (userId[0].replaceAll("([:.#$&!_\\(\\)`*%^~,\\<\\>\\[\\];+|-])+", "")).toLowerCase();
