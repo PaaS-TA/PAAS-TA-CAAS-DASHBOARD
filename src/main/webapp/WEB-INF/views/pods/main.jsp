@@ -73,12 +73,23 @@
 
     // CALLBACK
     var callbackGetList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        viewLoading('show');
+
+        if (false == procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage("Node의 Pod 목록을 가져오지 못했습니다.", false);
+            $('#noResultArea > td > p').html("Node의 Pod 목록을 가져오지 못했습니다.");
+            $('#noResultArea').show();
+            $('#resultArea').hide();
+            $('#resultHeaderArea').hide();
+            return;
+        }
 
         gList = data;
         setList();
-    };
 
+        viewLoading('hide');
+    };
 
     // SET LIST
     var setList = function() {
@@ -88,12 +99,40 @@
         var noResultArea = $('#noResultArea');
         var resultTable = $('#resultTable');
 
+        // constant value
+        var errorMsgPhase = ["Pending", "Failed", "Unknown"];
+
         var items = gList.items;
         var listLength = items.length;
         var htmlString = [];
 
         for (var i = 0; i < listLength; i++) {
             var podsName = items[i].metadata.name;
+            var nodeName = nvl2(items[i].spec.nodeName, "-");
+
+            var podErrorMsg = null;
+            if (errorMsgPhase.indexOf(items[i].status.phase) > -1) {
+                var findConditions = items[i].status.conditions.filter(function (item) { return item.reason != null && item.message != null});
+                if (findConditions.length > 0)
+                    podErrorMsg = findConditions[0].reason + " (" + findConditions[0].message + ")";
+            }
+
+            var nameClassSet;
+            switch (items[i].status.phase) {
+                case "Running":
+                    nameClassSet = {span: "running2", i: "fas fa-check-circle"}; break;
+                case "Succeeded":
+                    nameClassSet = {span: "succeeded2", i: "fas fa-check-circle"}; break;
+                case "Pending":
+                    nameClassSet = {span: "pending2", i: "fas fa-exclamation-triangle"}; break;
+                case "Failed":
+                    nameClassSet = {span: "failed2", i: "fas fa-exclamation-circle"}; break;
+                case "Unknown":
+                    nameClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"}; break;
+                default:
+                    break;
+            }
+
             var containerStatuses;
             if(items[i].status.containerStatuses == null) {
                 containerStatuses = "-";
@@ -101,18 +140,26 @@
                 containerStatuses = items[i].status.containerStatuses[0].restartCount;
             }
 
-           htmlString.push(
+            var podNameHtml = "<span class='" + nameClassSet.span + "'><i class='" + nameClassSet.i + "'></i></span> "
+                + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_PODS %>/" + podsName + "\");'>" + podsName + "</a>";
+            if (podErrorMsg != null && podErrorMsg != "")
+                podNameHtml += '<br><span class="' + nameClassSet.span + '">' + podErrorMsg + '</span>';
+
+            var nodeNameHtml;
+            if (nodeName !== "-")
+                nodeNameHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + nodeName + "/summary\");'>" + nodeName + "</a>";
+            else
+                nodeNameHtml = "-";
+
+            htmlString.push(
                 "<tr>"
-                + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/pods/" + podsName + "\");'>" + podsName + "</a>"
-                + "</td>"
+                + "<td>" + podNameHtml + "</td>"
                 + "<td>" + items[i].metadata.namespace + "</td>"
-                + "<td>" + nvl2(items[i].spec.nodeName, "-") + "</td>"
+                + "<td>" + nodeNameHtml + "</td>"
                 + "<td>" + items[i].status.phase + "</td>"
                 + "<td>" + containerStatuses + "</td>"
                 + "<td>" + items[i].metadata.creationTimestamp + "</td>"
                 + "</tr>");
-
         }
 
         if (listLength < 1) {
@@ -120,7 +167,6 @@
             resultArea.hide();
             noResultArea.show();
         } else {
-            console.log("아주 심기를 준비하자 ");
             noResultArea.hide();
             resultHeaderArea.show();
             resultArea.show();
@@ -128,12 +174,13 @@
             resultTable.tablesorter();
             resultTable.trigger("update");
         }
-
     };
 
     // ON LOAD
     $(document.body).ready(function () {
+        viewLoading('show');
         getList();
+        viewLoading('hide');
     });
 
 </script>

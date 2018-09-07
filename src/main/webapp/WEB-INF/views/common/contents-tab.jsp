@@ -43,7 +43,6 @@
                 <c:when test="${pathLevel3 eq 'overview'}">
                     <li name="tab01" class="cluster_tabs_on"    onclick="procMovePage('<%=Constants.URI_CLUSTER_OVERVIEW%>');">Overview</li>
                     <li name="tab02" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>');">Namespaces</li>
-                    <li name="tab03" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>');">Nodes</li>
                     <li name="tab04" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_PV%>');">Persistent Volumes</li>
                 </c:when>
                 <c:when test="${pathLevel3 eq 'namespaces'}">
@@ -51,7 +50,6 @@
                         <c:when test="${empty pathLevel4}">
                             <li name="tab01" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_OVERVIEW%>');">Overview</li>
                             <li name="tab02" class="cluster_tabs_on"    onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>');">Namespaces</li>
-                            <li name="tab03" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>');">Nodes</li>
                             <li name="tab04" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_PV%>');">Persistent Volumes</li>
                         </c:when>
                         <c:otherwise>
@@ -66,12 +64,7 @@
                 </c:when>
                 <c:when test="${pathLevel3 eq 'nodes'}">
                     <c:choose>
-                        <c:when test="${empty pathLevel4}">
-                            <li name="tab01" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_OVERVIEW%>');">Overview</li>
-                            <li name="tab02" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>');">Namespaces</li>
-                            <li name="tab03" class="cluster_tabs_on"    onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>');">Nodes</li>
-                            <li name="tab04" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_PV%>');">Persistent Volumes</li>
-                        </c:when>
+                        <c:when test="${empty pathLevel4}"></c:when>
                         <c:otherwise>
                             <li name="tab01" class="<c:if test="${pathLevel5 eq 'summary'}">cluster_tabs_on</c:if>
                                                     <c:if test="${pathLevel5 ne 'summary'}">cluster_tabs_right</c:if>"
@@ -90,7 +83,6 @@
                         <c:when test="${empty pathLevel4}">
                             <li name="tab01" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_OVERVIEW%>');">Overview</li>
                             <li name="tab02" class="cluster_tabs_right"    onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>');">Namespaces</li>
-                            <li name="tab03" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>');">Nodes</li>
                             <li name="tab04" class="cluster_tabs_on" onclick="procMovePage('<%=Constants.URI_CLUSTER_PV%>');">Persistent Volumes</li>
                         </c:when>
                         <c:otherwise>
