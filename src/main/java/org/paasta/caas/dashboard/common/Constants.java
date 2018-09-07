@@ -51,6 +51,9 @@ public class Constants {
     // API URI :: ENDPOINTS
     public static final String URI_API_ENDPOINTS_DETAIL = "/namespaces/{namespace:.+}/endpoints/{serviceName:.+}";
 
+    // API URI :: EVENTS
+    public static final String URI_API_EVENTS_LIST = "/namespaces/{namespace:.+}/events/resource/{resourceName:.+}";
+
     private Constants() {
         throw new IllegalStateException();
     }
