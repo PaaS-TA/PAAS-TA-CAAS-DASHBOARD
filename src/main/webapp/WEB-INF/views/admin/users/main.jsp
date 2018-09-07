@@ -300,6 +300,7 @@
 
         var reqParam = {
             userId: userIdSelectRole,
+            caasNamespace: NAME_SPACE,
             roleSetCode: userPerRole
         };
 
