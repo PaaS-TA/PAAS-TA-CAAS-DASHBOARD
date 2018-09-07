@@ -211,7 +211,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     /**
      * 생성된 namespace에 role을 생성한다. role이름은 'namespace명-role' 이다.
-     * instance/create_role.ftl의 변수를 채운 후 restTemplateService로 rest 통신한다.
+     * instance/create_init_role.ftl의 변수를 채운 후 restTemplateService로 rest 통신한다.
      *
      * @author Hyerin
      * @since 2018.07.30
@@ -226,7 +226,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         model.put("userName", userName);
         model.put("roleName", spaceName + "-" + roleName + "-role");
         String yml = null;
-        yml = templateService.convert("instance/create_role.ftl", model);
+        yml = templateService.convert("instance/create_init_role.ftl", model);
 
         try {
 //            restTemplateService.cubeSend(caasUrl+"/apis/rbac.authorization.k8s.io/v1/namespaces/" + spaceName + "/roles", yml, caas_adminValue, HttpMethod.POST, String.class);
