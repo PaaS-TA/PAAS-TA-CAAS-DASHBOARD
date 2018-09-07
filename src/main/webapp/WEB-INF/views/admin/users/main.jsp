@@ -136,7 +136,7 @@
 
     // GET LIST
     var getUsersList = function() {
-        procCallAjax(BASE_URL + "/users/getList.do?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, "GET", null, null, callbackGetUsersList);
+        procCallAjax(BASE_URL + "/users/getList?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, "GET", null, null, callbackGetUsersList);
     };
 
 
@@ -322,7 +322,7 @@
             roleSetCode: userPerRole
         };
 
-        postProcCallAjax(BASE_URL + "/users/updateUserRole.do?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackUpdateRoleOfUser);
+        postProcCallAjax(BASE_URL + "/users/updateUserRole?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackUpdateRoleOfUser);
     };
 
     var callbackUpdateRoleOfUser = function (data) {
@@ -358,7 +358,7 @@
         var reqParam = {
             userId: userId
         };
-        postProcCallAjax(BASE_URL + "/users/deleteUser.do?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackDeleteUser);
+        postProcCallAjax(BASE_URL + "/users/deleteUser?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackDeleteUser);
     };
 
     var callbackDeleteUser = function (data) {
