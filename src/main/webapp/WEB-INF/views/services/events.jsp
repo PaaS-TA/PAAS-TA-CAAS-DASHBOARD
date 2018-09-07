@@ -59,10 +59,6 @@
 
 <script type="text/javascript">
 
-    // TODO :: REMOVE
-    var tempNamespace = "<%= Constants.NAMESPACE_NAME %>";
-
-
     // GET LIST
     var getList = function() {
         viewLoading('show');
