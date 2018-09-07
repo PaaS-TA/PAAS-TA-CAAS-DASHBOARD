@@ -32,29 +32,29 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String url = request.getRequestURI();
-        StringBuffer addParam = new StringBuffer();
 
         LOGGER.info("### Intercepter start ###");
         LOGGER.info("** Request URI - "+url);
 
-//        if (!url.contains("/common/error/unauthorized")) {
+        if (!url.contains("/common/error/unauthorized")) {
             Pattern pattern = Pattern.compile("(/caas/clusters/overview/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
             Matcher matcher = pattern.matcher(url);
 
-//            LOGGER.info(":: Request Session..");
-//            SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
-//            if (ssoAuthenticationDetails.getServiceInstanceId() != null && !ssoAuthenticationDetails.getServiceInstanceId().trim().equals("") && ssoAuthenticationDetails.getOrganizationGuid() != null && !ssoAuthenticationDetails.getOrganizationGuid().trim().equals("")) {
-//                LOGGER.info(":: serviceInstanceId =" + ssoAuthenticationDetails.getServiceInstanceId());
-//
-//                List commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+ssoAuthenticationDetails.getServiceInstanceId()+"/organizationGuid/"+ssoAuthenticationDetails.getOrganizationGuid(), HttpMethod.GET, null, List.class);
-//
-//                if(commonGetUsers == null || commonGetUsers.size() == 0) {
-//                    LOGGER.info(":: Session not .. redirect.. unauthorized");
-//                    //TODO session 날릴 것인가?
-////                SecurityContextHolder.clearContext();
-//                    response.sendRedirect(request.getContextPath() + "/common/error/unauthorized");
-//                }
-//            }
+            LOGGER.info(":: Request Session..");
+            SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+            if (ssoAuthenticationDetails.getServiceInstanceId() != null && !ssoAuthenticationDetails.getServiceInstanceId().trim().equals("") && ssoAuthenticationDetails.getOrganizationGuid() != null && !ssoAuthenticationDetails.getOrganizationGuid().trim().equals("")) {
+                LOGGER.info(":: serviceInstanceId =" + ssoAuthenticationDetails.getServiceInstanceId());
+
+                List commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+ssoAuthenticationDetails.getServiceInstanceId()+"/organizationGuid/"+ssoAuthenticationDetails.getOrganizationGuid(), HttpMethod.GET, null, List.class);
+                LOGGER.info(commonGetUsers.toString());
+                LOGGER.info(String.valueOf(commonGetUsers.size()));
+                if(commonGetUsers == null || commonGetUsers.size() == 0) {
+                    LOGGER.info(":: Session not .. redirect.. unauthorized");
+                    SecurityContextHolder.clearContext();
+                    response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
+                    return false;
+                }
+            }
 
             if (url.contains("/caas/clusters/overview/") && matcher.find()) {
                 LOGGER.info("in!!!!!!!!!!!!!!!!!!");
@@ -62,17 +62,15 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
                     SecurityContextHolder.clearContext();
 
                     String serviceInstanceId = request.getServletPath().split("/")[4];
-
-                    addParam = new StringBuffer();
-                    addParam.append("?serviceInstanceId="+serviceInstanceId);
-                    response.sendRedirect("/caas/clusters/overview"+addParam);
+                    response.sendRedirect("/caas/clusters/overview?serviceInstanceId="+serviceInstanceId);
                     return false;
                 } catch (Exception e) {
                     e.printStackTrace();
-                    response.sendRedirect(request.getContextPath() + "/common/error/unauthorized");
+                    response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
+                    return false;
                 }
             }
-//        }
+        }
 
 //        response.setHeader("Cache-Control", "no-transform, public, max-age=86400");
 

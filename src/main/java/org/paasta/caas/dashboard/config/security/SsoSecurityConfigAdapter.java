@@ -127,6 +127,7 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
                     .antMatchers("/common/**").permitAll()
 //                    .anyRequest().access(isManagingApp())
                     .and()
+
                         .addFilterBefore(ssoClientContextFilter.unwrap(), AbstractPreAuthenticatedProcessingFilter.class)
                         .addFilterBefore(ssoSocialClientFilter.unwrap(), AbstractPreAuthenticatedProcessingFilter.class)
                         .logout()

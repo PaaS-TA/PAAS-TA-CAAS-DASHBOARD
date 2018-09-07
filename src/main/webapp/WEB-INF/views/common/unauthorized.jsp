@@ -52,7 +52,7 @@
             <div class="panel" style="">
                 <div class="panel-heading" style="">
                     <div>
-                        <img  class="panel-image" src="<c:url value='/resources/images/logo.png'/>" style="width: 42px; height: 42px;">
+                        <%--<img  class="panel-image" src="<c:url value='/resources/images/logo.png'/>" style="width: 42px; height: 42px;">--%>
                         <span class="header-title" style=""> 쿠버네티스 </span>
                     </div>
                 </div>
