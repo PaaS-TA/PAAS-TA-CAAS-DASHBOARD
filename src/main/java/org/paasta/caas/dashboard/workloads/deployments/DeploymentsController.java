@@ -40,21 +40,6 @@ public class DeploymentsController {
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments")
     public ModelAndView getDashboardMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
-//        return new ModelAndView() {{
-//            setViewName("main/main");
-//            addObject("ORGANIZATION_ID", "");
-//        }};
-    }
-
-    /**
-     * 모든 네임스페이스에 있는 deployment의 목록을 서비스를 통해 호출하여 받은 결과값을 반환한다.
-     *
-     * @param headers request headers
-     * @return List of deployment (All namespaces)
-     */
-    @GetMapping( "/workloads/deployments/getList.do" )
-    public DeploymentsList getDeploymentListByAllNamespaces(@RequestHeader HttpHeaders headers) {
-        return deploymentsService.getDeploymentsListByAllNamespaces();
     }
 
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}")
@@ -78,7 +63,7 @@ public class DeploymentsController {
      * @param namespace namespace
      * @return List of deployment (specific namespace)
      */
-    @GetMapping( "/workloads/deployments/{namespace}/getList.do" )
+    @GetMapping( "/workloads/deployments/{namespace}" )
     public DeploymentsList getDeploymentsList(@PathVariable String namespace) {
         return deploymentsService.getDeploymentsList(namespace);
     }
@@ -90,7 +75,7 @@ public class DeploymentsController {
      * @param params request parameters
      * @return Deployments's detail content (specific namespace and deployment)
      */
-    @GetMapping( "/workloads/deployments/{namespace}/getDeployment.do")
+    @GetMapping( "/workloads/deployments/{namespace}/deployment")
     public Deployments getDeployments(@PathVariable String namespace, @RequestParam Map<String, Object> params) {
         String deploymentName = params.get("name").toString();
         return deploymentsService.getDeployments(namespace, deploymentName);

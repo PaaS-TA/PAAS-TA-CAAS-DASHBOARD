@@ -81,7 +81,8 @@
 
 <script type="text/javascript">
     $(document.body).ready(function () {
-        procCallAjax("/workloads/deployments/" + NAME_SPACE +"/getList.do", "GET", null, null, callbackGetList);
+        viewLoading('show');
+        procCallAjax("/workloads/deployments/" + NAME_SPACE, "GET", null, null, callbackGetList);
     });
 
     var stringifyJSON = function (obj) {
@@ -90,6 +91,7 @@
 
     // CALLBACK
     var callbackGetList = function (data) {
+        viewLoading('hide');
         if (RESULT_STATUS_FAIL === data.resultCode) {
             $('#deploymentsListArea').html(
                 "ResultStatus :: " + data.resultCode + " <br><br>"
@@ -190,15 +192,4 @@
         $('#resultArea').html("");
     });
 
-    // ALREADY READY STATE
-    $(document).ready(function () {
-        $("#btnSearch").on("click", function (e) {
-            getDeployments();
-        });
-    });
-
-    // ON LOAD
-    $(document.body).ready(function () {
-        // getAllDeployments();
-    });
 </script>
