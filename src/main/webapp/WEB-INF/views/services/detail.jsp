@@ -160,7 +160,10 @@
 
     // CALLBACK
     var callbackGetDetail = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (RESULT_STATUS_FAIL === data.resultStatus) {
+            viewLoading('hide');
+            return false;
+        }
 
         var selector,
             specPortsList,
@@ -201,6 +204,7 @@
         $('#resultClusterIp').html(data.spec.clusterIP);
         $('#InternalEndpointsArea').html(endpoints);
 
+        viewLoading('hide');
         getDetailForPodsList(selector);
     };
 
@@ -208,7 +212,13 @@
     // GET DETAIL FOR PODS LIST
     var getDetailForPodsList = function(selector) {
         // TODO :: CHECK GETTING PODS LIST URL
-        var reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods/service/_all/" + selector;
+        viewLoading('show');
+
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE %>"
+            .replace("{namespace:.+}", NAME_SPACE)
+            .replace("{serviceName:.+}", "_all")
+            .replace("{selector:.+}", selector);
+
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPodsList);
     };
 
@@ -221,12 +231,16 @@
         }
 
         gList = data;
+        viewLoading('hide');
+
         setPodsList("");
     };
 
 
     // SET PODS LIST
     var setPodsList = function(searchKeyword) {
+        viewLoading('show');
+
         var podName,
             itemsMetadata,
             itemsStatus;
@@ -234,6 +248,7 @@
         var items = gList.items;
         var listLength = items.length;
         var checkListCount = 0;
+        var podNameList = [];
         var htmlString = [];
 
         var resultArea = $('#resultAreaForPods');
@@ -250,9 +265,7 @@
 
                 htmlString.push(
                     "<tr>"
-                    + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/pods/" + podName + "\");'>" + podName + "</a>"
-                    + "</td>"
+                    + "<td id='" + podName + "'></td>"
                     + "<td>" + itemsMetadata.namespace + "</td>"
                     + "<td>" + items[i].spec.nodeName + "</td>"
                     + "<td>" + itemsStatus.phase + "</td>"
@@ -262,6 +275,8 @@
 
                 checkListCount++;
             }
+
+            podNameList.push(podName);
         }
 
         if (listLength < 1 || checkListCount < 1) {
@@ -278,12 +293,17 @@
             $('.headerSortFalse > td').unbind();
         }
 
+        viewLoading('hide');
+
+        procSetEventStatusForPods(podNameList);
         getDetailForEndpoints();
     };
 
 
     // GET DETAIL FOR ENDPOINTS
     var getDetailForEndpoints = function() {
+        viewLoading('show');
+
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_ENDPOINTS_DETAIL %>"
             .replace("{namespace:.+}", NAME_SPACE)
             .replace("{serviceName:.+}", document.getElementById('requestServiceName').value);
@@ -367,7 +387,6 @@
             resultHeaderArea.hide();
             resultArea.hide();
             noResultArea.show();
-            viewLoading('hide');
         } else {
             noResultArea.hide();
             resultHeaderArea.show();
@@ -375,19 +394,20 @@
             resultArea.html(htmlString);
             getDetailForNodes(nodeNameList);
         }
+
+        viewLoading('hide');
     };
 
 
     // GET DETAIL FOR NODES
     var getDetailForNodes = function(nodeNameList) {
-        viewLoading('hide');
-
         var listLength = nodeNameList.length;
         var reqUrl;
 
         for (var i = 0; i < listLength; i++) {
             if (nodeNameList[i] !== '-') {
                 viewLoading('show');
+
                 reqUrl = "<%= Constants.API_URL %>/nodes/" + nodeNameList[i];
                 procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForNodes);
             }
