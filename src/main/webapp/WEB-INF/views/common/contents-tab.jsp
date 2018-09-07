@@ -38,75 +38,6 @@
 
 <div class="cluster_tabs clearfix">
     <c:choose>
-        <c:when test="${pathLevel2 eq 'clusters'}">
-            <c:choose>
-                <c:when test="${pathLevel3 eq 'overview'}">
-                    <li name="tab01" class="cluster_tabs_on"    onclick="procMovePage('<%=Constants.URI_CLUSTER_OVERVIEW%>');">Overview</li>
-                    <li name="tab02" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>');">Namespaces</li>
-                    <li name="tab03" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>');">Nodes</li>
-                    <li name="tab04" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_PV%>');">Persistent Volumes</li>
-                </c:when>
-                <c:when test="${pathLevel3 eq 'namespaces'}">
-                    <c:choose>
-                        <c:when test="${empty pathLevel4}">
-                            <li name="tab01" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_OVERVIEW%>');">Overview</li>
-                            <li name="tab02" class="cluster_tabs_on"    onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>');">Namespaces</li>
-                            <li name="tab03" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>');">Nodes</li>
-                            <li name="tab04" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_PV%>');">Persistent Volumes</li>
-                        </c:when>
-                        <c:otherwise>
-                            <li name="tab01" class="<c:if test="${empty pathLevel5}">cluster_tabs_on</c:if>
-                                                    <c:if test="${!empty pathLevel5}">cluster_tabs_right</c:if>"
-                                onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>'+'/${pathLevel4}');">Details</li>
-                            <li name="tab02" class="<c:if test="${pathLevel5 eq 'events'}">cluster_tabs_on</c:if>
-                                                    <c:if test="${pathLevel5 ne 'events'}">cluster_tabs_right</c:if>"
-                                onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>'+'/${pathLevel4}/events');">Events</li>
-                        </c:otherwise>
-                    </c:choose>
-                </c:when>
-                <c:when test="${pathLevel3 eq 'nodes'}">
-                    <c:choose>
-                        <c:when test="${empty pathLevel4}">
-                            <li name="tab01" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_OVERVIEW%>');">Overview</li>
-                            <li name="tab02" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>');">Namespaces</li>
-                            <li name="tab03" class="cluster_tabs_on"    onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>');">Nodes</li>
-                            <li name="tab04" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_PV%>');">Persistent Volumes</li>
-                        </c:when>
-                        <c:otherwise>
-                            <li name="tab01" class="<c:if test="${pathLevel5 eq 'summary'}">cluster_tabs_on</c:if>
-                                                    <c:if test="${pathLevel5 ne 'summary'}">cluster_tabs_right</c:if>"
-                                onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>'+'/${pathLevel4}/summary');">Summary</li>
-                            <li name="tab02" class="<c:if test="${empty pathLevel5}">cluster_tabs_on</c:if>
-                                                    <c:if test="${!empty pathLevel5}">cluster_tabs_right</c:if>"
-                                onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>'+'/${pathLevel4}');">Details</li>
-                            <li name="tab03" class="<c:if test="${pathLevel5 eq 'events'}">cluster_tabs_on</c:if>
-                                                    <c:if test="${pathLevel5 ne 'events'}">cluster_tabs_right</c:if>"
-                                onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>'+'/${pathLevel4}/events');">Events</li>
-                        </c:otherwise>
-                    </c:choose>
-                </c:when>
-                <c:when test="${pathLevel3 eq 'persistentVolumes'}">
-                    <c:choose>
-                        <c:when test="${empty pathLevel4}">
-                            <li name="tab01" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_OVERVIEW%>');">Overview</li>
-                            <li name="tab02" class="cluster_tabs_right"    onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>');">Namespaces</li>
-                            <li name="tab03" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>');">Nodes</li>
-                            <li name="tab04" class="cluster_tabs_on" onclick="procMovePage('<%=Constants.URI_CLUSTER_PV%>');">Persistent Volumes</li>
-                        </c:when>
-                        <c:otherwise>
-                            <li name="tab01" class="<c:if test="${empty pathLevel5}">cluster_tabs_on</c:if>
-                                                    <c:if test="${!empty pathLevel5}">cluster_tabs_right</c:if>"
-                                onclick="procMovePage('<%=Constants.URI_CLUSTER_PV%>'+'/${pathLevel4}');">Details</li>
-                            <li name="tab02" class="<c:if test="${pathLevel5 eq 'yaml'}">cluster_tabs_on</c:if>
-                                                    <c:if test="${pathLevel5 ne 'yaml'}">cluster_tabs_right</c:if>"
-                                onclick="procMovePage('<%=Constants.URI_CLUSTER_PV%>'+'/${pathLevel4}/yaml');">YAML</li>
-                        </c:otherwise>
-                    </c:choose>
-                </c:when>
-                <c:otherwise></c:otherwise>
-            </c:choose>
-        </c:when>
-
         <c:when test="${pathLevel2 eq 'workloads'}">
             <c:choose>
                 <c:when test="${pathLevel3 eq 'overview'}">
@@ -208,10 +139,8 @@
         // ON LOAD
         $(document.body).ready(function () {
         // 기존 탭클릭 이벤트 남아있는 부분 제거
-        // TODO: 1안 : 아래 스크립트 유지  2안: common.js 의 li Click 이벤트 정의 부분제거(소스 관리차 퍼블에게 수정 요청) 3안 : cluster_tabs 대신 다른 클래스 선언 및 cluster_tabs 클래스 css 분리
-        $('.cluster_tabs li').off('click');
+            $('.cluster_tabs li').off('click');
         });
 
         $(".cluster_tabs_on").css({ "cursor": "default"});
-        // current tab : default cursor
         </script>

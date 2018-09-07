@@ -95,4 +95,17 @@ public class DeploymentsController {
         String deploymentName = params.get("name").toString();
         return deploymentsService.getDeployments(namespace, deploymentName);
     }
+
+    /**
+     * deployments 목록을 조회한다. (Label Selector)
+     *
+     * @param namespace the namespace
+     * @param selector  the selector for filter
+     * @return the custom services list
+     */
+    @GetMapping(value = "/api/namespaces/{namespace}/deployments/resource/{selector}")
+    @ResponseBody
+    public DeploymentsList getDeploymentsListLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector) {
+        return deploymentsService.getDeploymentsListLabelSelector(namespace, selector);
+    }
 }

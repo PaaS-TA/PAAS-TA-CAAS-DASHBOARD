@@ -102,6 +102,9 @@
                             <c:when test="${path eq 'roles'}" >
                                 <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser('role')}</li>
                             </c:when>
+                            <c:when test="${path eq 'intro'}" >
+                                <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</li>
+                            </c:when>
                             <c:otherwise>
                                 <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${cfn:camelCaseParser(path)}</li>
                              </c:otherwise>

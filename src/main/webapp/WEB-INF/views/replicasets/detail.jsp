@@ -170,7 +170,7 @@
         var selector            = procSetSelector(data.spec.selector.matchLabels);
         var replicas            = data.status.replicas+" / "+data.status.replicas;   //  TOBE ::  current / desired
         var images              = new Array;
-        var deployment          = "-"; // TODO :: label selector로 deployment 조회 및 링크
+        var deployment          = "";
 
         var containers = data.spec.template.spec.containers;
         for(var i=0; i < containers.length; i++){
@@ -187,10 +187,37 @@
         $('#resultPods').html(replicas);
         $('#resultDeployment').html(deployment);
 
+        getDeploymentsInfo(selector);
         getDetailForPodsList(selector);
         getServices(data.metadata.labels);
     };
 
+    // GET DEPLOYMENTS INFO
+    var getDeploymentsInfo = function(selector) {
+        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/deployments/resource/" + selector;
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsInfo);
+    };
+
+    // CALLBACK
+    var callbackGetDeploymentsInfo = function(data) {
+
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+
+        var deploymentsInfo;
+
+        if(data.items.length > 0){
+
+            var deploymentsName = data.items[0].metadata.name;
+
+            console.log("deploymentsName:::"+deploymentsName);
+                deploymentsInfo = "<a href='/caas/workloads/deployments/"+deploymentsName+"'>"+deploymentsName+"</a>";
+        }else{
+            deploymentsInfo = "-";
+        }
+
+        $('#resultDeployment').append(deploymentsInfo);
+
+    };
 
     // GET DETAIL FOR PODS LIST
     var getDetailForPodsList = function(selector) {
