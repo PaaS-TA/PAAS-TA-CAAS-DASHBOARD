@@ -11,14 +11,7 @@
 
 <div class="content">
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <c:out value="${deploymentsName}"/></h1>
-    <div class="cluster_tabs clearfix">
-        <ul>
-            <li name="tab01" class="cluster_tabs_on">Details</li>
-            <li name="tab02" class="cluster_tabs_right" onclick='movePage("events");'>Events</li>
-            <li name="tab03" class="cluster_tabs_right yamlTab" onclick='movePage("yaml");'>YAML</li>
-        </ul>
-        <div class="cluster_tabs_line"></div>
-    </div>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
@@ -260,7 +253,8 @@
     var deployName = '<c:out value="${deploymentsName}"/>';
     console.log(deployName);
     $(document.body).ready(function () {
-        var URL = "/workloads/deployments/" + NAME_SPACE + "/getDeployment.do";
+        viewLoading('show');
+        var URL = "/workloads/deployments/" + NAME_SPACE + "/deployment";
         console.log("window.location.href ", window.location.href);
         var param = {
             name: deployName
@@ -273,6 +267,7 @@
     }
 
     var callbackGetDeployment = function (data) {
+        viewLoading('hide');
         if (RESULT_STATUS_FAIL === data.resultCode) {
             $('#resultArea').html(
                 "ResultStatus :: " + data.resultCode + " <br><br>"
@@ -530,24 +525,6 @@
         });
         return tempStr;
     };
-
-
-    // BIND
-    $("#btnReset").on("click", function () {
-        $('#resultArea').html("");
-    });
-
-    // ALREADY READY STATE
-    $(document).ready(function () {
-        $("#btnSearch").on("click", function (e) {
-            getDeployments();
-        });
-    });
-
-    // ON LOAD
-    $(document.body).ready(function () {
-        // getAllDeployments();
-    });
 
     // MOVE PAGE
     var movePage = function(requestPage) {

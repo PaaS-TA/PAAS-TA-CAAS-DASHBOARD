@@ -11,14 +11,7 @@
 
 <div class="content">
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <c:out value="${deploymentsName}"/> </h1>
-    <div class="cluster_tabs clearfix">
-        <ul>
-            <li name="tab01" class="cluster_tabs_left" onclick='movePage("details");'>Details</li>
-            <li name="tab02" class="cluster_tabs_on">Events</li>
-            <li name="tab03" class="cluster_tabs_right yamlTab" onclick='movePage("yaml");'>YAML</li>
-        </ul>
-        <div class="cluster_tabs_line"></div>
-    </div>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Events 시작-->
     <div class="cluster_content02 row two_line two_view harf_view">
         <ul class="maT30">
@@ -85,6 +78,7 @@
 
 <script type="text/javascript">
     $(document.body).ready(function () {
+        viewLoading('show');
         var URL = "/api/namespaces/" + NAME_SPACE + "/events/resource/" + document.getElementById('requestDeploymentsName').value;
         console.log("window.location.href ", window.location.href);
         procCallAjax(URL, "GET", null, null, callbackGetList);
@@ -92,6 +86,7 @@
 
     // CALLBACK
     var callbackGetList = function (data) {
+        viewLoading('hide');
         if (RESULT_STATUS_FAIL === data.resultCode) {
             $('#resultArea').html(
                 "ResultStatus :: " + data.resultCode + " <br><br>"
@@ -135,13 +130,4 @@
         }
     };
 
-    // MOVE PAGE
-    var movePage = function(requestPage) {
-        var reqUrl = '<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/deployments/' + document.getElementById('requestDeploymentsName').value;
-        if (requestPage.indexOf('detail') < 0) {
-            reqUrl += '/' + requestPage;
-        }
-
-        procMovePage(reqUrl);
-    };
 </script>

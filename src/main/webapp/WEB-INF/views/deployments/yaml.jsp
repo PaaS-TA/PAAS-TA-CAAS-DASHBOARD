@@ -11,14 +11,7 @@
 
 <div class="content">
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span class="resultServiceName"><c:out value="${deploymentsName}"/></span></h1>
-    <div class="cluster_tabs clearfix">
-        <ul>
-            <li name="tab01" class="cluster_tabs_left" onclick='movePage("detail");'>Details</li>
-            <li name="tab02" class="cluster_tabs_left" onclick='movePage("events");'>Events</li>
-            <li name="tab03" class="cluster_tabs_on" style="cursor: default;">YAML</li>
-        </ul>
-        <div class="cluster_tabs_line"></div>
-    </div>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Services YAML 시작-->
     <div class="cluster_content03 row two_line two_view harf_view custom_display_block">
         <ul class="maT30">
@@ -81,8 +74,9 @@
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function () {
+        viewLoading('show');
         var deployName = '<c:out value="${deploymentsName}"/>';
-        var URL = "/workloads/deployments/" + NAME_SPACE + "/getDeployment.do";
+        var URL = "/workloads/deployments/" + NAME_SPACE + "/deployment";
         console.log("window.location.href ", window.location.href);
         var param = {
             name: deployName
@@ -96,6 +90,7 @@
 <script type="text/javascript">
 
     var callbackGetDeployment = function (data) {
+        viewLoading('hide');
         if (RESULT_STATUS_FAIL === data.resultCode) {
             $('#resultArea').html(
                 "ResultStatus :: " + data.resultCode + " <br><br>"
