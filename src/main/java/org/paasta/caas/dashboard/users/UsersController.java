@@ -52,7 +52,7 @@ public class UsersController {
      *
      * @return the user list
      */
-    @GetMapping(value = "/getList.do")
+    @GetMapping(value = "/getList")
     @ResponseBody
     public List<Users> getUsesListByServiceInstanceId(@RequestParam("serviceInstanceId") String serviceInstanceId,
                                                       @RequestParam("organizationGuid") String organizationGuid) {
@@ -67,7 +67,7 @@ public class UsersController {
      * @param userId the userId
      * @return the user
      */
-    @GetMapping(value = "/getUser.do")
+    @GetMapping(value = "/getUser")
     @ResponseBody
     public Users getUserByServiceInstanceId(@RequestParam("serviceInstanceId") String serviceInstanceId,
                                             @RequestParam("organizationGuid") String organizationGuid,
@@ -83,7 +83,7 @@ public class UsersController {
      * @param users the user
      * @return the user
      */
-    @PostMapping(value = "/updateUserRole.do")
+    @PostMapping(value = "/updateUserRole")
     @ResponseBody
     public Users updateUserRole(@RequestParam("serviceInstanceId") String serviceInstanceId,
                                 @RequestParam("organizationGuid") String organizationGuid,
@@ -93,7 +93,7 @@ public class UsersController {
         return userService.updateUserRole(serviceInstanceId, organizationGuid, user);
     }
 
-    @PostMapping(value = "/deleteUser.do")
+    @PostMapping(value = "/deleteUser")
     @ResponseBody
     public Users deleteUser(@RequestParam("serviceInstanceId") String serviceInstanceId,
                             @RequestParam("organizationGuid") String organizationGuid,

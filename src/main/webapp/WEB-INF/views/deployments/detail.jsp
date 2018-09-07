@@ -458,6 +458,7 @@
         var noResultArea = $('#noPodsResultArea');
         var resultTable = $('#podsResultTable');
         var listLength = data.items.length;
+        var podNameList = [];
 
         $.each(data.items, function (index, itemList) {
             // get data
@@ -497,15 +498,19 @@
             var errorMessage = "";
 
             resultArea.append('<tr>' +
-                                '<td>' +
-                                    "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/pods/" + podName + "\");'>" + podName + "</a>" +
-                                '</td>' +
+                                "<td id='" + podName + "'></td>" +
+                                /*TODO :: REMOVE*/
+                                <%--'<td>' +--%>
+                                    <%--"<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/pods/" + podName + "\");'>" + podName + "</a>" +--%>
+                                <%--'</td>' +--%>
                                 '<td>' + namespace + '</td>' +
                                 '<td>' + nodeLink + '</td>' +
                                 '<td>' + podStatus + '</td>' +
                                 '<td>' + restartCount + '</td>' +
                                 '<td>' + creationTimestamp + '</td>' +
                             '</tr>');
+
+            podNameList.push(podName);
 
         });
 
@@ -521,7 +526,9 @@
             resultTable.trigger("update");
         }
 
+        procSetEventStatusForPods(podNameList);
     };
+
 
     //3개 일때는 동작하지 않는드아!
     var createAnnotations = function (annotations) {

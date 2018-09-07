@@ -75,7 +75,7 @@ public class RolesController {
      *
      * @return RoleList
      */
-    @GetMapping(value = "/roles/getList.do")
+    @GetMapping(value = "/roles/getList")
     @ResponseBody
     public RolesList getRoleList(){
         return roleService.getRoleList();

@@ -38,7 +38,7 @@
                             </colgroup>
                             <thead>
                             <tr id="noResultArea"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderArea" style="display: none;">
+                            <tr id="resultHeaderArea" class="headerSortFalse" style="display: none;">
                                 <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Service Type</td>
                                 <td>Cluster IP</td>
@@ -59,21 +59,19 @@
         </ul>
     </div>
 </div>
-<%--TODO--%>
-<!-- modal -->
 
 
 <script type="text/javascript">
 
     var gList;
 
-    // TODO :: REMOVE
-    var tempNamespace = "<%= Constants.NAMESPACE_NAME %>";
-
     // GET LIST
     var getList = function() {
         viewLoading('show');
-        procCallAjax("<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/services", "GET", null, null, callbackGetList);
+
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_LIST %>"
+            .replace("{namespace:.+}", NAME_SPACE);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetList);
     };
 
 
@@ -85,12 +83,16 @@
         }
 
         gList = data;
+        viewLoading('hide');
+
         setList("");
     };
 
 
     // SET LIST
     var setList = function(searchKeyword) {
+        viewLoading('show');
+
         var serviceName,
             selector,
             endpointsPreString,
@@ -142,11 +144,14 @@
                         + "<td>" + items[i].spec.type + "</td>"
                         + "<td>" + items[i].spec.clusterIP + "</td>"
                         + "<td>" + endpoints + "</td>"
-                        + "<td>" + "<span id='" + serviceName + "'></span></td>"
+                        + "<td>" + "<span id='" + serviceName + "'>0 / 0</span></td>"
                         + "<td>" + items[i].metadata.creationTimestamp + "</td>"
                         + "</tr>");
 
-                selectorList.push(selector + "," + serviceName);
+                if (selector !== 'false') {
+                    selectorList.push(selector + "," + serviceName);
+                }
+
                 endpoints = "";
                 checkListCount++;
             }
@@ -163,8 +168,10 @@
             resultArea.html(htmlString);
             resultTable.tablesorter();
             resultTable.trigger("update");
+            $('.headerSortFalse > td').unbind();
         }
 
+        viewLoading('hide');
         getDetailForPods(selectorList);
     };
 
@@ -176,8 +183,13 @@
         var reqUrl;
 
         for (var i = 0; i < listLength; i++) {
+            viewLoading('show');
             tempSelectorList = selectorList[i].split(",");
-            reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + tempNamespace + "/pods/service/" + tempSelectorList[1] + "/" + tempSelectorList[0];
+
+            reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE %>"
+                .replace("{namespace:.+}", NAME_SPACE)
+                .replace("{serviceName:.+}", tempSelectorList[1])
+                .replace("{selector:.+}", tempSelectorList[0]);
 
             procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPods);
         }
@@ -203,7 +215,7 @@
             totalSum++;
         }
 
-        $('#' + data.serviceName).html(runningSum + "/" + totalSum);
+        $('#' + data.serviceName).html(runningSum + " / " + totalSum);
 
         viewLoading('hide');
     };

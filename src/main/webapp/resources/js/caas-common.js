@@ -162,6 +162,7 @@ var procSetSortList = function(resultTableString, buttonObject, key) {
     resultTable.tablesorter();
     resultTable.trigger("update");
     resultTable.trigger("sorton", [sorting]);
+    $('.headerSortFalse > td').unbind();
 };
 
 
@@ -322,3 +323,47 @@ var alertMessage = function(value, result) {
     //   $(".alertLayer").removeClass("moveAlert");
     // }, 3000);
 }
+
+
+// SET EVENT STATUS FOR PODS
+var procSetEventStatusForPods = function(podNameList) {
+    viewLoading('show');
+
+    var listLength = podNameList.length;
+    var reqUrl;
+
+    for (var i = 0; i < listLength; i++) {
+        reqUrl = URI_API_EVENTS_LIST.replace("{namespace:.+}", NAME_SPACE).replace("{resourceName:.+}", podNameList[i]);
+        procCallAjax(reqUrl, "GET", null, null, callbackSetEventStatusForPods);
+    }
+};
+
+
+// CALLBACK
+var callbackSetEventStatusForPods = function(data) {
+    if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+
+    var items = data.items;
+    var listLength = items.length;
+    var itemType;
+    var itemName;
+    var itemMessageList = [];
+    var itemStatusIconHtml = "<span class='green2'><i class='fas fa-check-circle'></i></span>";
+    var itemNameLinkHtml = "";
+
+    for (var i = 0; i < listLength; i++) {
+        itemName = items[i].involvedObject.name;
+        itemType = items[i].type;
+        itemNameLinkHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"" + URI_WORKLOADS_PODS + "/" + itemName + "\");'>" + itemName + "</a>" ;
+
+        if (itemType === 'Warning') {
+            itemStatusIconHtml = "<span class='red2'><i class='fas fas fa-exclamation-circle'></i></span> ";
+            itemMessageList.push(
+                '<p class="red2" title="' + items[i].message + '">' + items[i].message + '</p>'
+            )
+        }
+    }
+
+    $('#' + itemName).html(itemStatusIconHtml + itemNameLinkHtml + itemMessageList.join(""));
+    viewLoading('hide');
+};

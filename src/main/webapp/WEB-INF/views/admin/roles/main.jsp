@@ -149,9 +149,11 @@
 
 <script type="text/javascript">
 
+    viewLoading('hide');
+
     // GET LIST
     var getRoleList = function() {
-        procCallAjax("/roles/getList.do", "GET", null, null, callbackGetRoleList);
+        procCallAjax("/roles/getList", "GET", null, null, callbackGetRoleList);
     };
 
     var callbackGetRoleList = function (data) {
@@ -197,6 +199,7 @@
 
     // ON LOAD
     $(document.body).ready(function () {
+        viewLoading('show');
         // getRoleList();
     });
 </script>
