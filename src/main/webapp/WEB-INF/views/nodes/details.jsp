@@ -170,8 +170,8 @@
 
                     var _generateSpanFront = ' <span class="bg_blue" data-target="#layerpop" data-toggle="modal" ';
                     _generateSpanFront += 'onclick="setLayerpop(this)" data-title="' + _title + '" ';
-                    _generateSpanFront += 'data-content="' + _content + '">'
-                    spanTemplate += _generateSpanFront + data.substring(0, 30) + '...</span>';
+                    _generateSpanFront += 'data-content="' + _content + '"><a>'
+                    spanTemplate += _generateSpanFront + data.substring(0, 30) + '...</a></span>';
                 } else {
                     spanTemplate += ' <span class="bg_gray">' + data + '</span>';
                 }
