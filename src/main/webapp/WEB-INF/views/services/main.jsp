@@ -83,12 +83,16 @@
         }
 
         gList = data;
+        viewLoading('hide');
+
         setList("");
     };
 
 
     // SET LIST
     var setList = function(searchKeyword) {
+        viewLoading('show');
+
         var serviceName,
             selector,
             endpointsPreString,
@@ -167,6 +171,7 @@
             $('.headerSortFalse > td').unbind();
         }
 
+        viewLoading('hide');
         getDetailForPods(selectorList);
     };
 
@@ -178,10 +183,13 @@
         var reqUrl;
 
         for (var i = 0; i < listLength; i++) {
+            viewLoading('show');
             tempSelectorList = selectorList[i].split(",");
 
-            // TODO :: CHECK GETTING PODS LIST URL
-            reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods/service/" + tempSelectorList[1] + "/" + tempSelectorList[0];
+            reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE %>"
+                .replace("{namespace:.+}", NAME_SPACE)
+                .replace("{serviceName:.+}", tempSelectorList[1])
+                .replace("{selector:.+}", tempSelectorList[0]);
 
             procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPods);
         }

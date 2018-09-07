@@ -54,6 +54,10 @@ public class Constants {
     // API URI :: EVENTS
     public static final String URI_API_EVENTS_LIST = "/namespaces/{namespace:.+}/events/resource/{resourceName:.+}";
 
+    // TODO :: MODIFY URI >> "/namespaces/{namespace:.+}/pods/service/{serviceName:.+}/{selector:.+}"
+    // API URI :: PODS
+    public static final String URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE = "/workloads/namespaces/{namespace:.+}/pods/service/{serviceName:.+}/{selector:.+}";
+
     private Constants() {
         throw new IllegalStateException();
     }
