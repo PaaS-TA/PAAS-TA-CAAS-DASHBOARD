@@ -137,7 +137,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             spaceName = "paas-"+serviceInstanceId+"-caas";
             LOGGER.info("spaceName : "+spaceName);
 
-//            List commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/79018229-f37a-44ff-864b-c486eabb3306/organizationGuid/6cb8be0d-67c6-4326-a78d-9a323a13ad19", HttpMethod.GET, null, List.class);
             if(commonGetUsers != null && commonGetUsers.size() > 0) {
                 if(commonGetUsers.toString().contains("userId="+username+",")) {
                     role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
@@ -165,11 +164,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                     user.setSpaceGuid(space_guid);
                     user.setRoleSetCode(initUserCode);
                     user.setDescription("user information");
-//                    user.setCreated("1");
-//                    user.setLastModified("2");
-//                    user.setCaasAccountAccessToken("1");
-//                    user.setNamespace("2");
-//                    user.setRoleName("3");
 
                     Users commonCreateUser = restTemplateService.send(Constants.TARGET_COMMON_API, "/users", HttpMethod.POST, user, Users.class);
                     LOGGER.info(commonCreateUser.getUserId());
