@@ -134,14 +134,10 @@
                         <!-- 닫기(x) 버튼 -->
                         <button type="button" class="close" data-dismiss="modal">×</button>
                         <!-- header title -->
-                        <h4 id="node_annotation_subject" class="modal-title">kubectl.kubernetes.io/last-applied-configuration</h4>
+                        <h4 class="modal-title"></h4>
                     </div>
                     <!-- body -->
-                    <div class="modal-body">
-                        <p id="node_annotation_content">
-                            {"apiVersion":"extensions/v1beta1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"hrjin-spring-music"},"name":"hrjin-spring-music","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"hrjin-spring-music"}},"template":{"metadata":{"labels":{"app":"hrjin-spring-music"}},"spec":{"automountServiceAccountToken":true,"containers":[{"image":"bluedigm/hrjin-music:0.3","imagePullPolicy":"Always","name":"hrjin-spring-music-container","ports":[{"containerPort":7878}]}],"serviceAccountName":"hrjin-sa4"}}}}
-                        </p>
-                    </div>
+                    <div class="modal-body"></div>
                 </div>
             </div>
         </div>
@@ -151,7 +147,7 @@
     var setLayerpop = function (eventElement) {
         var select = $(eventElement);
         $('.modal-title').html( atob( select.data('title') ) );
-        $('.modal-body').html( '<p id="node_annotation_content">' + atob( select.data('content') ) + '</p>' );
+        $('.modal-body').html( '<p>' + atob( select.data('content') ) + '</p>' );
     };
 
     var createSpans = function (data, type) {
