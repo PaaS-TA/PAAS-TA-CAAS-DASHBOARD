@@ -65,6 +65,7 @@
 
     // CALLBACK
     var callbackGetUser = function(data) {
+        viewLoading('hide');
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
         console.log("value", JSON.stringify(data));
         $("#access-user-token").val(data.caasAccountTokenName);
@@ -97,6 +98,7 @@
 
     // ON LOAD
     $(document.body).ready(function () {
+        viewLoading('show');
         $("#access-user-name").val(USER_ID);
 
         // copy function

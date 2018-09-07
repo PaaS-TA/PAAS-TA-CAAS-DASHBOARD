@@ -142,6 +142,7 @@
 
     // CALLBACK
     var callbackGetUsersList = function(data) {
+        viewLoading('hide');
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
         usersList = data;
@@ -369,6 +370,7 @@
 
     // ON LOAD
     $(document.body).ready(function () {
+        viewLoading('show');
         getUsersList();
     });
 
