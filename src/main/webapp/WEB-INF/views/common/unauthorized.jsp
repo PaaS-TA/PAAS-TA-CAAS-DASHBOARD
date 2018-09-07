@@ -35,7 +35,7 @@
             padding: 40px;
         }
         .panel-body span {
-            color: #2a6575;
+            color: #343942;
         }
         hr {
             margin-top: 20px;

@@ -2,6 +2,7 @@ package org.paasta.caas.dashboard.security;
 
 import org.paasta.caas.dashboard.config.security.userdetail.CustomUserDetailsService;
 import org.paasta.caas.dashboard.config.security.userdetail.User;
+import org.paasta.caas.dashboard.roles.RolesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -13,7 +14,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Collection;
 
 
@@ -64,10 +69,14 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
             authentication = new OAuth2Authentication(((OAuth2Authentication) authentication).getOAuth2Request(), new UsernamePasswordAuthenticationToken(ssoAuthenticationDetails.getUserid(), "N/A", role));
             ((OAuth2Authentication) authentication).setDetails(ssoAuthenticationDetails);
 
-            // TODO :: DB 조회 - 권한 조회하여 Session에 저장
-            // 1. 위 user 객체의 name / serviceInstanceId 로 user table에서 사용자 조회
-            // 2. (JPA로 JOIN이 용이하지 않을시) 1의 결과값 rule_set_code 으로, rule_set 리스트 조회
-            // 3. 2의 결과 리스트를 session에 저장
+
+            // 권한 변경 시 세션 처리를 위한 로직. custom_user_role 이름으로 user 객체 저장해서 ClusterOverviewController 에서 사용함.
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+            HttpSession session = request.getSession();
+            session.setAttribute("custom_user_role",user);
+
+
 
             LOGGER.info(((SsoAuthenticationDetails) details).getAccessToken().getValue());
             LOGGER.info("############### authenticate out!!!!!!!!!!");
