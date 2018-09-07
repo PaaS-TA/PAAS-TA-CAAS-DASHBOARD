@@ -59,8 +59,6 @@
         </ul>
     </div>
 </div>
-<%--TODO--%>
-<!-- modal -->
 
 
 <script type="text/javascript">
@@ -142,11 +140,14 @@
                         + "<td>" + items[i].spec.type + "</td>"
                         + "<td>" + items[i].spec.clusterIP + "</td>"
                         + "<td>" + endpoints + "</td>"
-                        + "<td>" + "<span id='" + serviceName + "'></span></td>"
+                        + "<td>" + "<span id='" + serviceName + "'>0 / 0</span></td>"
                         + "<td>" + items[i].metadata.creationTimestamp + "</td>"
                         + "</tr>");
 
-                selectorList.push(selector + "," + serviceName);
+                if (selector !== 'false') {
+                    selectorList.push(selector + "," + serviceName);
+                }
+
                 endpoints = "";
                 checkListCount++;
             }
