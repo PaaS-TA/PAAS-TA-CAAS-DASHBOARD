@@ -162,6 +162,8 @@
 
 <script>
     var callbackGetNodeSummary = function (data) {
+        viewLoading('show');
+
         // check data validation
         if (false == procCheckValidData(data)) {
             viewLoading('hide');
@@ -210,9 +212,13 @@
             $('#conditionsNotFound').show();
             $('#conditionsTableHeader').hide();
         }
+
+        viewLoading('hide');
     }
 
     var callbackGetPods = function (data) {
+        viewLoading('show');
+
         if (false == procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage("Node의 Pod 목록을 가져오지 못했습니다.", false);
@@ -227,37 +233,40 @@
             var pod = getPod(podItem);
 
             var nameClassSet;
-            var errorMsg = null;
+            var errorMsg = pod.podErrorMsg;
             switch (pod.podStatus) {
                 case "Pending":
-                    nameClassSet = {span: "pending2", i: "fas fa-exclamation-triangle"};
-                    errorMsg = pod.podErrorMsg;
-                    break;
+                    nameClassSet = {span: "pending2", i: "fas fa-exclamation-triangle"}; break;
                 case "Running":
                     nameClassSet = {span: "running2", i: "fas fa-check-circle"}; break;
                 case "Succeeded":
                     nameClassSet = {span: "succeeded2", i: "fas fa-check-circle"}; break;
+                case "Terminiated":
                 case "Failed":
-                    nameClassSet = {span: "failed2", i: "fas fa-exclamation-circle"};
-                    errorMsg = pod.podErrorMsg;
-                    break;
+                    nameClassSet = {span: "failed2", i: "fas fa-exclamation-circle"}; break;
+                case "Waiting":
+                    nameClassSet = {span: "yellow2", i: "fas fa-exclamation-triangle"}; break;
                 case "Unknown":
                 default:
-                    nameClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"};
-                    errorMsg = pod.podErrorMsg;
-                    break;
+                    nameClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"}; break;
             }
 
             var nameHtml =
-                '<span class="' + nameClassSet.span + '"><i class="' + nameClassSet.i + '"></i></span>'
-                + '<a href="/caas/workloads/pods/' + pod.name + '"> ' + pod.name + '</a>';
+                '<span class="' + nameClassSet.span + '"><i class="' + nameClassSet.i + '"></i></span> '
+                + '<a href="javascript:void(0);" onclick="procMovePage(\'<%= Constants.URI_WORKLOAD_PODS %>/' + pod.name + '\');">' + pod.name + '</a>';
             if (errorMsg != null && errorMsg != "")
                 nameHtml += '<br><span class="' + nameClassSet.span + '">' + errorMsg + '</span>';
+
+            var nodeNameHtml;
+            if (pod.nodeName !== "-")
+                nodeNameHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + pod.nodeName + "/summary\");'>" + pod.nodeName + "</a>";
+            else
+                nodeNameHtml = "-";
 
             var podRowHtml = '<tr name="podRow" data-pod-name="' + pod.name + '" data-created-on="' + pod.creationTimestamp + '">'
                 + '<td>' + nameHtml + '</td>'
                 + '<td>' + pod.namespace + '</td>'
-                + '<td>' + pod.nodeName + '</td>'
+                + '<td>' + nodeNameHtml + '</td>'
                 + '<td>' + pod.podStatus + '</td>'
                 + '<td>' + pod.restartCount + '</td>'
                 + '<td>' + pod.creationTimestamp + '</td></tr>'
@@ -277,14 +286,33 @@
         viewLoading('hide');
     }
 
+    var getPodContainerStatus = function (podStatus) {
+        if (podStatus["containerStatuses"] == null)
+            return "Waiting";
+
+        var containerStatuses =
+            podStatus.containerStatuses.map(function(item, index) {
+                return Object.keys(item.state)[0];
+        });
+
+        if (containerStatuses.indexOf("terminated") > -1)
+            return "Terminated";
+        else if (containerStatuses.indexOf("waiting") > -1)
+            return "Waiting";
+        else
+            return "Running";
+    }
+
     var getPod = function (podItem) {
         // required : name, namespace, node, status, restart(count), created on
         var _metadata = podItem.metadata;
         var _spec = podItem.spec;
         var _status = podItem.status;
+        var _containerStatus = getPodContainerStatus(podItem.status);
+
         var _podErrorMsg = null;
 
-        switch (_status.phase) {
+        switch (_status) {
             case "Pending":
             case "Failed":
             case "Unknown":
@@ -294,6 +322,17 @@
                 else
                     _podErrorMsg = null;
                 break;
+            case "Running":
+                if (_containerStatus !== "Running") {
+                    _status = _containerStatus;
+                    // TODO :: "conditions reason and message" to "reason and message into container statuses"
+                    var findConditions = _status.conditions.filter(function (item) { return item.reason != null && item.message != null});
+                    if (findConditions.length > 0)
+                        _podErrorMsg = findConditions[0].reason + " (" + findConditions[0].message + ")";
+                    else
+                        _podErrorMsg = null;
+                }
+                break;
             default:
                 break;
         }
@@ -302,7 +341,7 @@
         return {
             name: _metadata.name,
             namespace: _metadata.namespace,
-            nodeName: (_spec.nodeName != null? _spec.nodeName : "-"),
+            nodeName: nvl2(_spec.nodeName, "-"),
             podStatus: _status.phase,
             podErrorMsg: _podErrorMsg,
             restartCount: procIfDataIsNull(
@@ -365,6 +404,7 @@
         });
 
         getNode(nodeName, callbackGetNodeSummary);
+        viewLoading('hide');
     });
 </script>
 <!-- Nodes Summary 끝 -->
