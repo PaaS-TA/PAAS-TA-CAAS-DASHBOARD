@@ -122,6 +122,13 @@
     var usersList;
     var roleSearchName;
 
+    var rsUpdate = '<c:out value="${sessionScope.RS_USERMANAGEMENT_UPDATE}"/>';
+    var rsDelete = '<c:out value="${sessionScope.RS_USERMANAGEMENT_DELETE}"/>';
+
+    console.log("Session View:::"+rsUpdate);
+    console.log("Session Execute:::"+rsDelete);
+
+
     var changeRoleSearch = function () {
         roleSearchName = $(".user-filter option:checked").text();
         setUsersList(document.getElementById("table-search-01").value);
@@ -224,6 +231,16 @@
                     items[i].roleSetCode = "Init User";
                 }
 
+                var layerpop1 = "<span data-target='#layerpop1' data-toggle='modal' name='saveRole'><i class='fas fa-save'></i></span>";
+                var layerpop2 = "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser'><i class='fas fa-trash-alt'></i></span>";
+
+                if(rsUpdate !== "TRUE"){
+                    layerpop1 = '';
+                }
+                if(rsDelete !== "TRUE"){
+                    layerpop2 = '';
+                }
+
                 for (var r = 0; r < roles.length; r++) {
                     if (items[i].roleSetCode == roles[r]) {
                         option += '<option value="' + roles[r] + '" selected>' + roles[r] + '</option>';
@@ -238,8 +255,8 @@
                     + "<td>" + items[i].created + "</td>"
                     + "<td>" + items[i].lastModified + "</td>"
                     + "<td>" + selectBox + option + "</select>"
-                    + "<span data-target='#layerpop1' data-toggle='modal' name='saveRole'><i class='fas fa-save'></i></span>"
-                    + "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser'><i class='fas fa-trash-alt'></i></span>"
+                    + layerpop1
+                    + layerpop2
                     + "</td>"
                     + "</tr>");
 
@@ -311,7 +328,7 @@
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
         //console.log("고쳐졌니?" + JSON.stringify(data));
         alert("권한이 수정되었습니다.");
-        getUsersList();
+        location.reload(true);
     };
 
 
