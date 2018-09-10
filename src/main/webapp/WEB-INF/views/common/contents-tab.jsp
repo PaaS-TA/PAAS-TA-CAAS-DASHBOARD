@@ -127,6 +127,21 @@
                 <c:otherwise></c:otherwise>
             </c:choose>
         </c:when>
+
+        <c:when test="${pathLevel2 eq 'intro'}">
+            <c:choose>
+                <c:when test="${pathLevel3 eq 'overview'}">
+                    <li name="tab01" class="cluster_tabs_on"    onclick="procMovePage('<%=Constants.URI_INTRO_OVERVIEW%>');">Overview</li>
+                    <li name="tab02" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_INTRO_ACCESS_INFO%>');">Access</li>
+                </c:when>
+                <c:when test="${pathLevel3 eq 'accessInfo'}">
+                    <li name="tab01" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_INTRO_OVERVIEW%>');">Overview</li>
+                    <li name="tab02" class="cluster_tabs_on"    onclick="procMovePage('<%=Constants.URI_INTRO_ACCESS_INFO%>');">Access</li>
+                </c:when>
+                <c:otherwise></c:otherwise>
+            </c:choose>
+        </c:when>
+
         <c:otherwise></c:otherwise>
     </c:choose>
     </ul>

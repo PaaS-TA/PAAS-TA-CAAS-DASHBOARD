@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <div class="content">
-    <%--<h1 class="view-title"><i class="fas fa-info-circle"></i> Introduction</h1>--%>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Intro 시작-->
     <div class="cluster_content01 row two_line two_view">
         <ul id="detailTab" class="maT10">

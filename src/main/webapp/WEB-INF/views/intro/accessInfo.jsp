@@ -7,7 +7,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <div class="content">
-    <div class="cluster_tabs clearfix"></div>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <div class="cluster_content01 row two_line two_view">
         <div class="sortable_wrap custom-sortable_wrap">
             <div class="sortable_top">
