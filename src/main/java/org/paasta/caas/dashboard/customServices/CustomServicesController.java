@@ -44,7 +44,7 @@ public class CustomServicesController {
      * @param httpServletRequest the http servlet request
      * @return the custom services main
      */
-    @GetMapping(value = Constants.URI_CONTROLLER_SERVICES)
+    @GetMapping(value = Constants.URI_SERVICES)
     public ModelAndView getCustomServicesMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/main", new ModelAndView());
     }
@@ -56,7 +56,7 @@ public class CustomServicesController {
      * @param httpServletRequest the http servlet request
      * @return the custom services detail
      */
-    @GetMapping(value = Constants.URI_CONTROLLER_SERVICES + "/{serviceName:.+}")
+    @GetMapping(value = Constants.URI_SERVICES + "/{serviceName:.+}")
     public ModelAndView getCustomServicesDetail(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/detail", new ModelAndView());
     }
@@ -68,7 +68,7 @@ public class CustomServicesController {
      * @param httpServletRequest the http servlet request
      * @return the custom services detail events
      */
-    @GetMapping(value = Constants.URI_CONTROLLER_SERVICES + "/{serviceName:.+}/events")
+    @GetMapping(value = Constants.URI_SERVICES + "/{serviceName:.+}/events")
     public ModelAndView getCustomServicesDetailEvents(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/events", new ModelAndView());
     }
@@ -80,7 +80,7 @@ public class CustomServicesController {
      * @param httpServletRequest the http servlet request
      * @return the custom services detail yaml
      */
-    @GetMapping(value = Constants.URI_CONTROLLER_SERVICES + "/{serviceName:.+}/yaml")
+    @GetMapping(value = Constants.URI_SERVICES + "/{serviceName:.+}/yaml")
     public ModelAndView getCustomServicesDetailYaml(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/yaml", new ModelAndView());
     }

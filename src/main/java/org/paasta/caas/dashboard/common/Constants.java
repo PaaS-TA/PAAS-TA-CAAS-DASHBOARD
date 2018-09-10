@@ -35,9 +35,9 @@ public class Constants {
     // VIEW URL - services
     public static final String URI_SERVICES = "/caas/services";
 
-
-    // CONTROLLER MAPPING URI
-    public static final String URI_CONTROLLER_SERVICES = "/caas/services";
+    // VIEW URL - intro
+    public static final String URI_INTRO_OVERVIEW = "/caas/intro/overview";
+    public static final String URI_INTRO_ACCESS_INFO = "/caas/intro/accessInfo";
 
     // API URI :: SERVICES
     public static final String URI_API_SERVICES_LIST = "/namespaces/{namespace:.+}/services";

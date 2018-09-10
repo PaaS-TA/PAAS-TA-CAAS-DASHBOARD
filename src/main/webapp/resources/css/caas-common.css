@@ -51,3 +51,42 @@
 .alertLayer.moveAlert{-webkit-transform:translateY(180px);transform:translateY(180px);}
 
 .bg_blue { background-color:#337ab7; border-radius: 4px; font-size: 12px; padding: 2px 5px; color:#fff;}
+
+.custom-sortable_wrap {
+    border: #e7eaec solid 0;
+}
+
+.custom-access-wrap {
+    background-color: #fff;
+    width: 100%;
+    margin: 0;
+    padding: 0 0 20px 0;
+    font-weight: 700;
+}
+
+.custom-access-title-wrap {
+    height: 60px;
+}
+
+.custom-access-title {
+    padding: 20px;
+}
+
+.custom-access-title-right {
+    padding: 20px 30px 10px 0;
+}
+
+.custom-access-contents-wrap {
+    background-color: #fff;
+    padding: 0 30px;
+}
+
+.custom-access-contents {
+    background-color: #eee;
+    padding: 10px;
+    overflow: auto;
+}
+
+.custom-paB40 {
+    padding-bottom: 40px;
+}

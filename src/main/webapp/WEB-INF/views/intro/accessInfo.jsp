@@ -1,14 +1,19 @@
 <%--
-  Access Info main
+  Intro accessInfo
   @author REX
   @version 1.0
-  @since 2018.08.23
+  @since 2018.09.10
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <div class="content">
     <div class="cluster_tabs clearfix"></div>
     <div class="cluster_content01 row two_line two_view">
+        <div class="sortable_wrap custom-sortable_wrap">
+            <div class="sortable_top">
+                <p>User Info</p>
+            </div>
+        </div>
         <div class="account_table access">
             <table>
                 <colgroup>
