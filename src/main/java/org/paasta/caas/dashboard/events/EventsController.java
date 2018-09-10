@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -41,7 +40,11 @@ public class EventsController {
     @ResponseBody
     EventsList getEventList(@PathVariable("namespace") String namespace
             , @PathVariable("resourceName") String resourceName) {
-        return eventsService.getEventList( namespace, resourceName );
+        EventsList resultList = eventsService.getEventList(namespace, resourceName);
+
+        // FOR DASHBOARD
+        resultList.setResourceName(resourceName);
+        return resultList;
     }
 
     /**

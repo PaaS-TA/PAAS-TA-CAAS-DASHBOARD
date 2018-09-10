@@ -17,4 +17,7 @@ public class EventsList {
     private String resultCode;
     private List<Events> items;
 
+    // FOR DASHBOARD
+    private String resourceName;
+
 }
