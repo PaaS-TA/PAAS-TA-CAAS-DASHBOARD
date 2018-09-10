@@ -28,6 +28,9 @@ public class Constants {
     public static final String URI_CLUSTER_NAMESPACES   = "/caas/clusters/namespaces";
 
 
+    // VIEW URL - Namespace
+    public static final String URI_CLUSTER_NAMESPACES = "/caas/clusters/namespaces";
+
     // VIEW URL - workloads
     public static final String URI_WORKLOAD_OVERVIEW        = "/caas/workloads/overview";
     public static final String URI_WORKLOAD_DEPLOYMENTS     = "/caas/workloads/deployments";
@@ -66,6 +69,7 @@ public class Constants {
 
     // TODO :: MODIFY URI >> "/namespaces/{namespace:.+}/pods/service/{serviceName:.+}/{selector:.+}"
     // API URI :: PODS
+    public static final String URI_API_PODS_LIST_BY_SELECTOR = "/workloads/namespaces/{namespace:.+}/pods/service/{serviceName:.+}/{selector:.+}";
     public static final String URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE = "/workloads/namespaces/{namespace:.+}/pods/service/{serviceName:.+}/{selector:.+}";
 
     private Constants() {

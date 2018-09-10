@@ -167,72 +167,47 @@ var procSetSortList = function(resultTableString, buttonObject, key) {
 
 
 var procCheckValidData = function (data) {
-    // TODO :: resultStatus? resultCode? Codes' are congesting
-    if (RESULT_STATUS_FAIL === data.resultStatus || RESULT_STATUS_FAIL === data.resultCode) {
-        console.debug("ResultStatus :: " + data.resultCode + " / " + "ResultMessage :: " + data.resultMessage);
+    var ensureData = procIfDataIsNull(data, null, { resultCode: RESULT_STATUS_FAIL });
+    if (RESULT_STATUS_FAIL === ensureData.resultCode) {
+        console.debug("ResultStatus :: " + ensureData.resultCode);
+        if (null != ensureData.resultMessage) {
+            console.debug("ResultMessage :: " + ensureData.resultMessage);
+        }
         return false;
     } else {
         return true;
     }
-}
+};
 
 var procIfDataIsNull = function (data, procCallback, defaultValue) {
-    if (data == null) {
+    if (null == data) {
         return defaultValue;
     } else {
-        if (procCallback == null)
-            return defaultValue;
+        if (null == procCallback)
+            return data;
         else
             return procCallback(data);
     }
-}
-
-
-var sortTable = function (tableId, sortKey, isAscending) {
-    var _tbody = $('#' + tableId + ' > tbody');
-    var _rows = _tbody.children('tr');
-
-    if (null == isAscending)
-        isAscending = true;
-
-    _rows.sort(function (rowA, rowB) {
-        var _reverseNumber = (isAscending)? 1 : -1;
-        var _compareA = $(rowA).data(sortKey);
-        var _compareB = $(rowB).data(sortKey);
-        if (_compareA == _compareB)
-            return 0;
-        else {
-            if (_compareA == null)
-                return -1 * _reverseNumber;
-            else if (_compareB == null)
-                return 1 * _reverseNumber;
-            else if (_compareA > _compareB)
-                return 1 * _reverseNumber;
-            else
-                return -1 * _reverseNumber;
-        }
-    });
-    _tbody.html(_rows);
-}
+};
 
 var procConvertByte = function(capacity) {
     var _multipleSize;
-    if (capacity.match("Ki").index != -1) {
+    if (capacity.match("Ki").index !== -1) {
         _multipleSize = 1024;
-    } else if (capacity.match("Mi").index != -1) {
+    } else if (capacity.match("Mi").index !== -1) {
         _multipleSize = 1024 * 1024;
-    } else if (capacity.match("Gi").index != -1) {
+    } else if (capacity.match("Gi").index !== -1) {
         _multipleSize = 1024 * 1024 * 1024;
     } else {
         _multipleSize = 1;
     }
 
     return capacity.substring(0, capacity.length - 2) * _multipleSize;
-}
+};
 
 var procFormatCapacity = function(capacity, unit) {
     var _unitSize;
-    if (unit == null || "" == unit)
+    if (null == unit || "" === unit)
         _unitSize = 1;
     else {
         if (unit === "Ki")    _unitSize = 1024
@@ -241,7 +216,7 @@ var procFormatCapacity = function(capacity, unit) {
     }
 
     return ((capacity / _unitSize).toFixed(2) + ' ' + unit);
-}
+};
 
 var procGetURLInfo = function () {
     // ex) slices = [ "workloads", "pods", "<pod-name>", "events"]
@@ -269,7 +244,7 @@ var procGetURLInfo = function () {
 
 var stringifyJSON = function (obj) {
     return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
-}
+};
 
 //TODO 이중에 골라서.
 //https://www.jqueryscript.net/demo/Fullscreen-Loading-Modal-Indicator-Plugin-For-jQuery-loadingModal/
@@ -322,7 +297,7 @@ var alertMessage = function(value, result) {
     // setInterval(function(){
     //   $(".alertLayer").removeClass("moveAlert");
     // }, 3000);
-}
+};
 
 
 // SET EVENT STATUS FOR PODS
