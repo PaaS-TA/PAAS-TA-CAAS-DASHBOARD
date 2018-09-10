@@ -185,7 +185,7 @@
             //var namespaceHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + pod.namespace + "\");'>" + pod.namespace + "</a>";
             var namespaceHtml = createAnchorTag("<%= Constants.URI_CLUSTER_NAMESPACES %>/" + pod.namespace, pod.namespace);
 
-            htmlString.push("<tr name=\"podRow\" id=\"" + pod.name + "\">"
+            htmlString.push("<tr name=\"podRow\" id=\"row-" + pod.name + "\">"
                 + "<td>" + podNameHtml + "</td>"
                 + "<td>" + namespaceHtml + "</td>"
                 + "<td>" + nodeNameHtml + "</td>"
@@ -234,7 +234,7 @@
                 var showCount = 0;
                 $.each(podRows, function (index, row) {
                     var row = $(row);
-                    if (row.attr("id").indexOf(findValue) > -1) {
+                    if (row.attr("id").includes(findValue)) {
                         row.show();
                         showCount++;
                     } else {
