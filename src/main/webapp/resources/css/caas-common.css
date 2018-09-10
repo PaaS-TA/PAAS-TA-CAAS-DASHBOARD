@@ -90,3 +90,6 @@
 .custom-paB40 {
     padding-bottom: 40px;
 }
+
+.yellow2, .warning2, .waiting2 {color:#fcce00;}
+.errorMsgBold { font-weight: bolder; }
