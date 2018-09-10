@@ -110,7 +110,7 @@
 
         var status = getPodStatus(podItem.status);
         var errorMsg;
-        if (status !== "Running") {
+        if (status !== "Running" && status !== "Succeeded") {
             var findConditions = podItem.status.conditions.filter(function (item) {
                 return item.reason != null && item.message != null
             });
@@ -278,6 +278,7 @@
             podNameList.push(item.metadata.name);
         });
         setPodTable(podList);
+        isPodEventOverwrite = false;
         procSetEventStatusForPods(podNameList);
 
         viewLoading('hide');

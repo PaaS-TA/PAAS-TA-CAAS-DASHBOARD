@@ -300,6 +300,8 @@ var alertMessage = function(value, result) {
 };
 
 
+var isPodEventOverwrite = true;
+
 // SET EVENT STATUS FOR PODS
 var procSetEventStatusForPods = function(podNameList) {
     viewLoading('show');
@@ -330,6 +332,7 @@ var callbackSetEventStatusForPods = function(data) {
     var itemMessageHtml;
     var itemMessageList = [];
 
+    var warningCount = 0;
     for (var i = 0; i < listLength; i++) {
         itemType = items[i].type;
 
@@ -344,11 +347,15 @@ var callbackSetEventStatusForPods = function(data) {
             itemMessageList.push(
                 '<p class="' + messageStyle + '" title="' + items[i].message + '">' + items[i].message + '</p>'
             )
+
+            warningCount++;
         }
     }
 
-    itemMessageHtml = itemMessageList.join("");
-    $('#' + podName).html(itemStatusIconHtml + itemNameLinkHtml + itemMessageHtml);
+    if (warningCount > 1 || isPodEventOverwrite) {
+        itemMessageHtml = itemMessageList.join("");
+        $('#' + podName).html(itemStatusIconHtml + itemNameLinkHtml + itemMessageHtml);
+    }
 
     viewLoading('hide');
 };
