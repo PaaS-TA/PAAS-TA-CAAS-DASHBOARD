@@ -334,9 +334,15 @@ var callbackSetEventStatusForPods = function(data) {
         itemType = items[i].type;
 
         if (itemType === 'Warning') {
-            itemStatusIconHtml = "<span class='red2'><i class='fas fas fa-exclamation-circle'></i></span> ";
+            var messageStyle = null;
+            if (items[i].message.includes("Error:"))
+                messageStyle = "failed2";
+            else
+                messageStyle = "warning2";
+
+            itemStatusIconHtml = "<span class='" + messageStyle + "'><i class='fas fas fa-exclamation-circle'></i></span> ";
             itemMessageList.push(
-                '<p class="red2" title="' + items[i].message + '">' + items[i].message + '</p>'
+                '<p class="' + messageStyle + '" title="' + items[i].message + '">' + items[i].message + '</p>'
             )
         }
     }

@@ -186,7 +186,7 @@
             var namespaceHtml = createAnchorTag("<%= Constants.URI_CLUSTER_NAMESPACES %>/" + pod.namespace, pod.namespace);
 
             htmlString.push("<tr name=\"podRow\" id=\"row-" + pod.name + "\">"
-                + "<td>" + podNameHtml + "</td>"
+                + "<td id=\"" + pod.name + "\">" + podNameHtml + "</td>"
                 + "<td>" + namespaceHtml + "</td>"
                 + "<td>" + nodeNameHtml + "</td>"
                 + "<td>" + pod.podStatus + "</td>"
@@ -272,10 +272,13 @@
         }
 
         var podList = [];
+        var podNameList = [];
         $.each(data.items, function (index, item) {
             podList.push(getPod(item));
+            podNameList.push(item.metadata.name);
         });
         setPodTable(podList);
+        procSetEventStatusForPods(podNameList);
 
         viewLoading('hide');
     };
