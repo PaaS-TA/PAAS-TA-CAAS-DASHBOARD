@@ -58,39 +58,11 @@
             <!-- modal 끝 TODO :: 사용확인 후 삭제 -->
 
             <!-- Pods 시작 -->
-            <li class="cluster_third_box">
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Pods</p>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL service-lh" id="resultTableForPods">
-                            <colgroup>
-                                <col style='width:auto;'>
-                                <col style='width:15%;'>
-                                <col style='width:15%;'>
-                                <col style='width:8%;'>
-                                <col style='width:8%;'>
-                                <col style='width:20%;'>
-                            </colgroup>
-                            <thead>
-                            <tr id="noResultAreaForPods" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Pods가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderAreaForPods">
-                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTableForPods', this, '0')"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Namespace</td>
-                                <td>Node</td>
-                                <td>Status</td>
-                                <td>Restarts</td>
-                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTableForPods', this, '5')"><i class="fas fa-caret-down"></i></button></td>
-                            </tr>
-                            </thead>
-                            <tbody id="resultAreaForPods">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <li class="cluster_second_box">
+                <jsp:include page="../pods/list.jsp" flush="true"/>
             </li>
             <!-- Pods 끝 -->
+
             <!-- Replica Sets 시작 -->
             <li class="cluster_fourth_box maB50">
                 <div class="sortable_wrap">
@@ -134,7 +106,6 @@
 <%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>--%>
 <script type="text/javascript">
     var gDevList; // For Deployment List
-    var gPodsList; // For Pods List
     var gReplicaSetList; // For ReplicaSet List
 
     // ***** For Deployment *****
@@ -221,111 +192,9 @@
     // GET LIST
     var getPodsList = function() {
         viewLoading('show');
-        procCallAjax("<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods", "GET", null, null, callbackGetPodsList);
-    };
-
-
-    // CALLBACK
-    var callbackGetPodsList = function(data) {
-        if (false == procCheckValidData(data)) {
-            viewLoading('hide');
-            alertMessage("Node의 Pod 목록을 가져오지 못했습니다.", false);
-            $('#noResultAreaForPods > td > p').html("Node의 Pod 목록을 가져오지 못했습니다.");
-            $('#noResultAreaForPods').show();
-            $('#resultAreaForPods').hide();
-            $('#resultHeaderAreaForPods').hide();
-            return;
-        }
-
-        gPodsList = data;
-        setPodsList();
+        var reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods";
+        getPodListUsingRequestURL(reqUrl);
         viewLoading('hide');
-    };
-
-
-    // SET LIST
-    var setPodsList = function() {
-
-        var resultArea = $('#resultAreaForPods');
-        var resultHeaderArea = $('#resultHeaderAreaForPods');
-        var noResultArea = $('#noResultAreaForPods');
-        var resultTable = $('#resultTableForPods');
-
-        // constant value
-        var errorMsgPhase = ["Pending", "Failed", "Unknown"];
-
-        var items = gPodsList.items;
-        var listLength = items.length;
-        var htmlString = [];
-
-        for (var i = 0; i < listLength; i++) {
-            var podsName = items[i].metadata.name;
-            var nodeName = nvl2(items[i].spec.nodeName, "-");
-
-            var podErrorMsg = null;
-            if (errorMsgPhase.indexOf(items[i].status.phase) > -1) {
-                var findConditions = items[i].status.conditions.filter(function (item) { return item.reason != null && item.message != null});
-                if (findConditions.length > 0)
-                    podErrorMsg = findConditions[0].reason + " (" + findConditions[0].message + ")";
-            }
-
-            var nameClassSet;
-            switch (items[i].status.phase) {
-                case "Running":
-                    nameClassSet = {span: "running2", i: "fas fa-check-circle"}; break;
-                case "Succeeded":
-                    nameClassSet = {span: "succeeded2", i: "fas fa-check-circle"}; break;
-                case "Pending":
-                    nameClassSet = {span: "pending2", i: "fas fa-exclamation-triangle"}; break;
-                case "Failed":
-                    nameClassSet = {span: "failed2", i: "fas fa-exclamation-circle"}; break;
-                case "Unknown":
-                    nameClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"}; break;
-                default:
-                    break;
-            }
-
-            var containerStatuses;
-            if(items[i].status.containerStatuses == null) {
-                containerStatuses = "-";
-            } else {
-                containerStatuses = items[i].status.containerStatuses[0].restartCount;
-            }
-
-            var podNameHtml = "<span class='" + nameClassSet.span + "'><i class='" + nameClassSet.i + "'></i></span> "
-                + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_PODS %>/" + podsName + "\");'>" + podsName + "</a>";
-            if (podErrorMsg != null && podErrorMsg != "")
-                podNameHtml += '<br><span class="' + nameClassSet.span + '">' + podErrorMsg + '</span>';
-
-            var nodeNameHtml;
-            if (nodeName !== "-")
-                nodeNameHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + nodeName + "/summary\");'>" + nodeName + "</a>";
-            else
-                nodeNameHtml = "-";
-
-            htmlString.push(
-                "<tr>"
-                + "<td>" + podNameHtml + "</td>"
-                + "<td>" + items[i].metadata.namespace + "</td>"
-                + "<td>" + nodeNameHtml + "</td>"
-                + "<td>" + items[i].status.phase + "</td>"
-                + "<td>" + containerStatuses + "</td>"
-                + "<td>" + items[i].metadata.creationTimestamp + "</td>"
-                + "</tr>");
-        }
-
-        if (listLength < 1) {
-            resultHeaderArea.hide();
-            resultArea.hide();
-            noResultArea.show();
-        } else {
-            noResultArea.hide();
-            resultHeaderArea.show();
-            resultArea.show();
-            resultArea.html(htmlString);
-            resultTable.tablesorter();
-            resultTable.trigger("update");
-        }
     };
 
     // ***** For ReplicaSet *****
