@@ -29,8 +29,7 @@
                                 <col style='width:25%;'>
                             </colgroup>
                             <thead>
-                            <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderArea">
+                            <tr id="resultHeaderArea" class="headerSortFalse" style="display: none;">
                                 <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
                                 <td>Labels</td>
@@ -38,6 +37,7 @@
                                 <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '4')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Images</td>
                             </tr>
+                            <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
                             </thead>
                             <tbody id="resultArea">
                             </tbody>
@@ -106,9 +106,9 @@
             resultArea.append(
                     "<tr>"
                     + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_REPLICASETS %>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
+                    + "<a href='javascript:void(0);' data-toggle='tooltip' title='"+replicaSetName+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_REPLICASETS %>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
                     + "</td>"
-                    + "<td>" + namespace + "</td>"
+                    + "<td data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
                     + "<td>" + createSpans(labels, "LB") + "</td>"
                     + "<td>" + pods + "</td>"
                     + "<td>" + creationTimestamp+"</td>"
@@ -126,6 +126,7 @@
             resultArea.show();
             resultTable.tablesorter();
             resultTable.trigger("update");
+            $('.headerSortFalse > td').unbind();
         }
 
         viewLoading('hide');
@@ -155,6 +156,7 @@
 
     // ON LOAD
     $(document.body).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
         getList();
     });
 

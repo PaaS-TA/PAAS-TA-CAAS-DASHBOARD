@@ -36,6 +36,7 @@ public class Constants {
     public static final String URI_SERVICES = "/caas/services";
 
     // CONTROLLER MAPPING URI
+    public static final String URI_CONTROLLER_NAMESPACE      = "/caas/clusters/namespaces";
     public static final String URI_CONTROLLER_REPLICASETS    = "/caas/workloads/replicaSets";
     public static final String URI_CONTROLLER_SERVICES       = "/caas/services";
 
