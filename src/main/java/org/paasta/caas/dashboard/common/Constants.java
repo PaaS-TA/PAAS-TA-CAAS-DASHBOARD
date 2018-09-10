@@ -23,13 +23,16 @@ public class Constants {
 
     public static final String API_WORKLOAD = "/workloads";
 
-    // TAB URI - workloads
+    // VIEW URL - Clusters
+    public static final String URI_CLUSTER_NODES = "/caas/clusters/nodes";
+
+    // VIEW URL - workloads
     public static final String URI_WORKLOAD_OVERVIEW = "/caas/workloads/overview";
     public static final String URI_WORKLOAD_DEPLOYMENTS = "/caas/workloads/deployments";
     public static final String URI_WORKLOAD_PODS = "/caas/workloads/pods";
     public static final String URI_WORKLOAD_REPLICASETS = "/caas/workloads/replicaSets";
 
-    // TAB URI - services
+    // VIEW URL - services
     public static final String URI_SERVICES = "/caas/services";
 
 
