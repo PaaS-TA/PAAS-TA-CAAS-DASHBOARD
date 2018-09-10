@@ -1,5 +1,5 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
-<%@ page import="org.springframework.util.StringUtils" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: CISS
   Date: 7/5/2017
@@ -33,8 +33,6 @@
         <c:otherwise></c:otherwise>
     </c:choose>
 </c:forEach>
-
-<%--<span>servletPath::: ${servletPath}</span>--%>
 
 <div class="cluster_tabs clearfix">
     <c:choose>

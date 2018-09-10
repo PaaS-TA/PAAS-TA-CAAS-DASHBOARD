@@ -93,7 +93,11 @@
 
     // GET DETAIL
     var getDetail = function() {
-        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/replicasets/"+replicaSetName;
+        viewLoading('show');
+
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICASETS_YAML %>"
+                .replace("{namespace:.+}", NAME_SPACE)
+                .replace("{replicaSetName:.+}", replicaSetName);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
 
@@ -103,6 +107,8 @@
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
         $('#resultArea').html('---\n' + data.sourceTypeYaml);
+
+        viewLoading('hide');
     };
 
     // ON LOAD

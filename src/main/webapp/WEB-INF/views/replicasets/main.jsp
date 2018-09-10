@@ -49,9 +49,6 @@
         </ul>
     </div>
 </div>
-<%--TODO--%>
-<!-- modal -->
-
 
 <script type="text/javascript">
 
@@ -59,13 +56,21 @@
 
     // GET LIST
     var getList = function() {
+        viewLoading('show');
+
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_LIST %>"
+                .replace("{namespace:.+}", NAME_SPACE);
+
         procCallAjax("<%= Constants.API_URL %>/namespaces/" + NAME_SPACE + "/replicasets", "GET", null, null, callbackGetList);
     };
 
 
     // CALLBACK
     var callbackGetList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (RESULT_STATUS_FAIL === data.resultStatus){
+            viewLoading('hide');
+            return false;
+        }
 
         gList = data;
         setList();
@@ -101,7 +106,7 @@
             resultArea.append(
                     "<tr>"
                     + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/replicaSets/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
+                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_REPLICASETS %>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
                     + "</td>"
                     + "<td>" + namespace + "</td>"
                     + "<td>" + createSpans(labels, "LB") + "</td>"
@@ -122,6 +127,8 @@
             resultTable.tablesorter();
             resultTable.trigger("update");
         }
+
+        viewLoading('hide');
 
     };
 
