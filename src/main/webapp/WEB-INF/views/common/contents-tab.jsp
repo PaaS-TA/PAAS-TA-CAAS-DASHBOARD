@@ -36,6 +36,31 @@
 
 <div class="cluster_tabs clearfix">
     <c:choose>
+        <c:when test="${pathLevel2 eq 'clusters'}">
+            <c:choose>
+                <c:when test="${pathLevel3 eq 'nodes'}">
+                    <li name="tab01" class="<c:if test="${pathLevel5 eq 'summary'}">cluster_tabs_on</c:if>
+                                            <c:if test="${pathLevel5 ne 'summary'}">cluster_tabs_right</c:if>"
+                        onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>'+'/${pathLevel4}/summary');">Summary</li>
+                    <li name="tab02" class="<c:if test="${empty pathLevel5}">cluster_tabs_on</c:if>
+                                            <c:if test="${!empty pathLevel5}">cluster_tabs_right</c:if>"
+                        onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>'+'/${pathLevel4}');">Details</li>
+                    <li name="tab03" class="<c:if test="${pathLevel5 eq 'events'}">cluster_tabs_on</c:if>
+                                            <c:if test="${pathLevel5 ne 'events'}">cluster_tabs_right</c:if>"
+                        onclick="procMovePage('<%=Constants.URI_CLUSTER_NODES%>'+'/${pathLevel4}/events');">Events</li>
+                </c:when>
+                <c:when test="${pathLevel3 eq 'namespaces'}">
+                    <li name="tab01" class="<c:if test="${empty pathLevel5}">cluster_tabs_on</c:if>
+                                            <c:if test="${!empty pathLevel5}">cluster_tabs_right</c:if>"
+                        onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>'+'/${pathLevel4}');">Details</li>
+                    <li name="tab02" class="<c:if test="${pathLevel5 eq 'events'}">cluster_tabs_on</c:if>
+                                            <c:if test="${pathLevel5 ne 'events'}">cluster_tabs_right</c:if>"
+                        onclick="procMovePage('<%=Constants.URI_CLUSTER_NAMESPACES%>'+'/${pathLevel4}/events');">Events</li>
+                </c:when>
+                <c:otherwise></c:otherwise>
+            </c:choose>
+        </c:when>
+
         <c:when test="${pathLevel2 eq 'workloads'}">
             <c:choose>
                 <c:when test="${pathLevel3 eq 'overview'}">
