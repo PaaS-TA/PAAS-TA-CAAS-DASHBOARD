@@ -341,20 +341,22 @@ var procSetEventStatusForPods = function(podNameList) {
 
 // CALLBACK
 var callbackSetEventStatusForPods = function(data) {
-    if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+    if (!procCheckValidData(data)) {
+        viewLoading('hide');
+        return false;
+    }
 
+    var itemType;
+    var podName = data.resourceName;
     var items = data.items;
     var listLength = items.length;
-    var itemType;
-    var itemName;
-    var itemMessageList = [];
     var itemStatusIconHtml = "<span class='green2'><i class='fas fa-check-circle'></i></span>";
-    var itemNameLinkHtml = "";
+    var itemNameLinkHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"" + URI_WORKLOADS_PODS + "/" + podName + "\");'> " + podName + "</a>" ;
+    var itemMessageHtml;
+    var itemMessageList = [];
 
     for (var i = 0; i < listLength; i++) {
-        itemName = items[i].involvedObject.name;
         itemType = items[i].type;
-        itemNameLinkHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"" + URI_WORKLOADS_PODS + "/" + itemName + "\");'>" + itemName + "</a>" ;
 
         if (itemType === 'Warning') {
             itemStatusIconHtml = "<span class='red2'><i class='fas fas fa-exclamation-circle'></i></span> ";
@@ -364,6 +366,8 @@ var callbackSetEventStatusForPods = function(data) {
         }
     }
 
-    $('#' + itemName).html(itemStatusIconHtml + itemNameLinkHtml + itemMessageList.join(""));
+    itemMessageHtml = itemMessageList.join("");
+    $('#' + podName).html(itemStatusIconHtml + itemNameLinkHtml + itemMessageHtml);
+
     viewLoading('hide');
 };
