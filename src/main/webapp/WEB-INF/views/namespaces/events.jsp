@@ -63,7 +63,7 @@
             var eventMessage = itemList.message;
             var sourceComponent  = itemList.source.component;
             var sourceHost   = nvl(itemList.source.host);
-            var subObject    = nvl2(itemList.involvedObject.fieldPath,"-");
+            var subObject    = nvl(itemList.involvedObject.fieldPath,"-");
             var eventCount   = itemList.count;
             var firstSeen    = itemList.firstTimestamp;
             var lastSeen     = itemList.lastTimestamp;

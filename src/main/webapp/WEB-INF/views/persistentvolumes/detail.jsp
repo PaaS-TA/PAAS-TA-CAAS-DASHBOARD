@@ -145,8 +145,8 @@
         var accessModes     = nvl(data.spec.accessModes);
         var reason = "-";
         var message = "-";
-        var hostPath = nvl2(data.spec.hostPath.path,"-");
-        var storage = nvl2(data.spec.capacity.storage,"-");
+        var hostPath = nvl(data.spec.hostPath.path,"-");
+        var storage = nvl(data.spec.capacity.storage,"-");
 
         $('#resultName').html(pvName);
         $('#resultLabel').html(createSpans(labels));
