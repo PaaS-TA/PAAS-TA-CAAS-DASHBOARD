@@ -10,7 +10,7 @@
     <div class="scroll_style">
         <ul class="nav_1d caas_nav">
             <%--<li class="cur">--%>
-            <li id="left-menu-clusters" onclick="procMovePage('<%= Constants.CAAS_INIT_URI %>');">
+            <li id="left-menu-intro" onclick="procMovePage('<%= Constants.CAAS_INIT_URI %>');">
                 <dl>
                     <dt>
                         <div id="lnbimg19" class="lefticos">
