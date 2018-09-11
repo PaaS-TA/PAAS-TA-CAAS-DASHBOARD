@@ -18,8 +18,8 @@ public class Constants {
     public static final String API_URL = "/api";
     public static final String CAAS_BASE_URL = "/caas";
 
-    // TODO :: REMOVE AFTER TESTING
-    public static final String NAMESPACE_NAME = "kube-system";
+    // FOR SSO
+    public static final String CAAS_INIT_URI = "/caas/intro/overview";
 
     public static final String API_WORKLOAD = "/workloads";
 

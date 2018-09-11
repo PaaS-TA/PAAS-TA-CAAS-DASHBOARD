@@ -1,5 +1,6 @@
 package org.paasta.caas.dashboard.config.security;
 
+import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.security.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,23 +21,17 @@ import org.springframework.security.oauth2.client.token.AccessTokenRequest;
 import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.provider.token.*;
-import org.springframework.security.web.access.AccessDeniedHandlerImpl;
-import org.springframework.security.web.access.ExceptionTranslationFilter;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 
@@ -88,7 +83,9 @@ public class SsoSecurityConfiguration {
 
     @Bean(name = "ssoEntryPointMatcher")
     public RequestMatcher ssoEntryPointMatcher() {
-        return new AntPathRequestMatcher("/caas/clusters/overview/**");
+        /*TODO :: MODIFY OR REMOVE*/
+//        return new AntPathRequestMatcher("/caas/clusters/overview/**");
+        return new AntPathRequestMatcher(Constants.CAAS_INIT_URI + "/**");
     }
 
     @Bean(name = "ssoClientContextFilter")

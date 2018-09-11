@@ -10,7 +10,7 @@
     <div class="scroll_style">
         <ul class="nav_1d caas_nav">
             <%--<li class="cur">--%>
-            <li id="left-menu-clusters" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/clusters/overview');">
+            <li id="left-menu-clusters" onclick="procMovePage('<%= Constants.CAAS_INIT_URI %>');">
                 <dl>
                     <dt>
                         <div id="lnbimg19" class="lefticos">
@@ -24,7 +24,7 @@
                 </dl>
             </li>
             <%--<li onclick="location.href='caas_workloads.html'">--%>
-            <li id="left-menu-workloads" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/workloads/overview');">
+            <li id="left-menu-workloads" onclick="procMovePage('<%= Constants.URI_WORKLOAD_OVERVIEW %>');">
                 <dl>
                     <dt>
                         <div id="lnbimg17" class="">
@@ -39,7 +39,7 @@
                 </dl>
             </li>
             <%--<li onclick="location.href='caas_services.html'">--%>
-            <li id="left-menu-services" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/services');">
+            <li id="left-menu-services" onclick="procMovePage('<%= Constants.URI_SERVICES %>');">
                 <dl>
                     <dt>
                         <div id="lnbimg18" class="">

@@ -1,8 +1,8 @@
 package org.paasta.caas.dashboard.config.security;
 
+import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.config.security.userdetail.CustomUserDetailsService;
 import org.paasta.caas.dashboard.security.SsoAuthenticationProvider;
-import org.paasta.caas.dashboard.security.SsoLogoutHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.access.AccessDeniedHandlerImpl;
-import org.springframework.security.web.access.ExceptionTranslationFilter;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -117,8 +113,11 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
 //                    .antMatchers("/dashboard/**").permitAll()
 //                    .antMatchers("/caas/dashboard/main").permitAll()
-                    .antMatchers("/caas/clusters/overview").access("hasRole('ROLE_ADMIN')")
-                    .antMatchers("/caas/clusters/overview/**").authenticated()
+                    /*TODO :: MODIFY OR REMOVE*/
+//                    .antMatchers("/caas/clusters/overview").access("hasRole('ROLE_ADMIN')")
+//                    .antMatchers("/caas/clusters/overview/**").authenticated()
+                    .antMatchers(Constants.CAAS_INIT_URI).access("hasRole('ROLE_ADMIN')")
+                    .antMatchers(Constants.CAAS_INIT_URI + "/**").authenticated()
                     .antMatchers("/caas/clusters/namespaces/**").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/caas/dashboard").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/caas/dashboard/**").authenticated()
