@@ -118,7 +118,7 @@
             resultArea.append("<tr>"
                 + "<td>" + message + "</td>"
                 + "<td>" + source + "</td>"
-                + "<td>" + nvl2(subObject, "-") + "</td>"
+                + "<td>" + nvl(subObject, "-") + "</td>"
                 + "<td>" + count + "</td>"
                 + "<td>" + fristTimestamp + "</td>"
                 + "<td>" + lastTimestamp + "</td>"

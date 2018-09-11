@@ -87,7 +87,7 @@
                 "<tr>"
                 + "<td>" + items[i].message + "</td>"
                 + "<td>" + items[i].source.component + " " + nvl(items[i].source.host) + "</td>"
-                + "<td>" + nvl2(items[i].involvedObject.fieldPath, "-") + "</td>"
+                + "<td>" + nvl(items[i].involvedObject.fieldPath, "-") + "</td>"
                 + "<td>" + items[i].count + "</td>"
                 + "<td>" + items[i].firstTimestamp + "</td>"
                 + "<td>" + items[i].lastTimestamp + "</td>"

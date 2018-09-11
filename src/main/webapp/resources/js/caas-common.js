@@ -103,27 +103,19 @@ var procSetSelector = function (requestMapString) {
 
 
 /**
- * 문자열이 빈 문자열인지 체크하여 빈값("")으로 한다.
+ * 문자열이 빈 문자열인지 체크하여 빈값("") 또는 기본 문자열을 반환한다.
  * @param str           : 체크할 문자열
  */
-function nvl(str){
-    if(typeof str === "undefined" || str == null || str === "null" || str === ""){
-        str = "";
+function nvl(str, defaultStr){
+    if(str == "undefined" || str === undefined || str == "null" || str === null || str == ""){
+        if(defaultStr === undefined){
+            str = "";
+        }else{
+            str = defaultStr;
+        }
     }
     return str;
 }
-
-/**
- * 문자열이 빈 문자열인지 체크하여 기본 문자열로 리턴한다.
- * @param str           : 체크할 문자열
- * @param defaultStr    : 문자열이 비어있을경우 리턴할 기본 문자열
- */
-function nvl2(str, defaultStr){
-    if(typeof str === "undefined" || str == null || str === "null" || str === "")
-        str = defaultStr ;
-    return str ;
-}
-
 
 // SET MENU CURSOR
 var procSetMenuCursor = function () {

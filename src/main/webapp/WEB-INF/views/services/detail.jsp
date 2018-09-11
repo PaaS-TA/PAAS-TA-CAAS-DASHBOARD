@@ -368,7 +368,7 @@
                 portsListLength = ports.length;
 
                 for (var j = 0; j < addressesListLength; j++) {
-                    nodeName = nvl2(addresses[j].nodeName, '-');
+                    nodeName = nvl(addresses[j].nodeName, '-');
 
                     for (var k = 0; k < portsListLength; k++) {
                         var portName =  ports[k].name;

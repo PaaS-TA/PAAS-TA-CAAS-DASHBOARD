@@ -124,7 +124,7 @@
         return {
             name: _metadata.name,
             namespace: _metadata.namespace,
-            nodeName: nvl2(_spec.nodeName, "-"),
+            nodeName: nvl(_spec.nodeName, "-"),
             podStatus: status,
             podErrorMsg: errorMsg,
             restartCount: procIfDataIsNull(
