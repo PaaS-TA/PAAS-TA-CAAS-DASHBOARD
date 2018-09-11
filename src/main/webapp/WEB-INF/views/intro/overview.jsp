@@ -8,9 +8,10 @@
 
 <div class="content">
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <div class="cluster_tabs clearfix"></div>
     <!-- Intro 시작-->
     <div class="cluster_content01 row two_line two_view">
-        <ul id="detailTab" class="maT10">
+        <ul id="detailTab">
             <!-- Namespace 시작-->
             <li>
                 <div class="sortable_wrap">
