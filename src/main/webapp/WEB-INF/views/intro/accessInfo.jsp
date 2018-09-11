@@ -56,8 +56,25 @@
         </div>
         <div class="custom-access-wrap">
             <div class="custom-access-title-wrap">
+                <div class="custom-access-title">
+                    <p>2. 환경 변수 설정</p>
+                </div>
+            </div>
+            <div class="custom-access-contents-wrap">
+                <div class="custom-access-contents">
+                    <p>\$ export CAAS-SERVICE-CLUSTER-NAME="<span id="caasClusterName"></span>"</p>
+                    <p>\$ export CAAS-SERVICE-CLUSTER-SERVER="<span id="caasClusterServer"></span>"</p>
+                    <p>\$ export CAAS-SERVICE-USER-NAME="<span id="caasUserName"></span>"</p>
+                    <p>\$ export CAAS-SERVICE-CONTEXT-NAME="<span id="caasContextName"></span>"</p>
+                    <p>\$ export CAAS-SERVICE-NAMESPACE-NAME="<span id="caasNamespace"></span>"</p>
+                    <p>\$ export CAAS-SERVICE-CREDENTIALS-TOKEN="<span id="caasCredentialsToken"></span>"</p>
+                </div>
+            </div>
+        </div>
+        <div class="custom-access-wrap">
+            <div class="custom-access-title-wrap">
                 <div class="custom-access-title" style="float: left;">
-                    <p>2. Cluster 등록</p>
+                    <p>3. Cluster 등록</p>
                 </div>
                 <div class="custom-access-title-right" style="float: right;">
                     <button class="btns colors4" onclick="window.open('https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl')">Download certificate file</button>
@@ -66,65 +83,50 @@
             <div class="clearfix"></div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>\$ kubectl config set-cluster {CLUSTER_NAME} --insecure-skip-tls-verify=true --server={CLUSTER_URI:PORT} --certificate-authority={CLUSTER CERTIFICATE FILE PATH}</p>
-                    <p class="maT10">예시)</p>
-                    <p>\$ kubectl config set-cluster kubernetes --insecure-skip-tls-verify=true --server=https://115.68.47.174:6443 --certificate-authority=[DOWNLOADED FILE PATH]</p>
+                    <p>\$ kubectl config set-cluster \${CAAS-SERVICE-CLUSTER-NAME} --insecure-skip-tls-verify=true --server=\${CAAS-SERVICE-CLUSTER-SERVER} --certificate-authority=[DOWNLOADED FILE PATH]</p>
                 </div>
             </div>
         </div>
         <div class="custom-access-wrap">
             <div class="custom-access-title-wrap">
                 <div class="custom-access-title" style="float: left;">
-                    <p>3. Credential 등록</p>
+                    <p>4. Credential 등록</p>
                 </div>
                 <div class="custom-access-title-right" style="float: right;">
                     <button class="btns colors4" onclick="window.open('https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl')">Copy Token</button>
                 </div>
             </div>
             <div class="clearfix"></div>
-            <%--<div class="custom-access-title">--%>
-                <%--<p>2. Credential 등록--%>
-                    <%--<button class="btn-copy" data-clipboard-action="cut" data-clipboard-target="#out_a">--%>
-                        <%--<i class="fas fa-clipboard"></i>--%>
-                    <%--</button>--%>
-                <%--</p>--%>
-            <%--</div>--%>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>\$ kubectl config set-credentials {USER_NAME} --token={TOKEN}</p>
-                    <p class="maT10">예시)</p>
                     <p >## 토큰을 응용 프로그램과 공유 할 때 주의 하십시오. 공용 코드 저장소에 사용자 토큰을 게시하지 마십시오.</p>
-                    <p>\$ kubectl config set-credentials ffbf70af-e3d4-4e11-99ad-b6ace1455b64-98 --token=[PASTE COPIED TOKEN]</p>
+                    <p>\$ kubectl config set-credentials \${CAAS-SERVICE-USER-NAME} --token=\${CAAS-SERVICE-CREDENTIALS-TOKEN}</p>
                 </div>
             </div>
         </div>
         <div class="custom-access-wrap">
             <div class="custom-access-title">
-                <p>4. Context 설정</p>
+                <p>5. Context 설정</p>
             </div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>\$ kubectl config set-context {CONTEXT_NAME} --user={USER_NAME} --namespace={NAMESPACE_NAME} --cluster={CLUSTER_NAME}</p>
-                    <p class="maT10">예시)</p>
-                    <p>\$ kubectl config set-context ffbf70af-e3d4-4e11-99ad-b6ace1455b64-98-context --user=ffbf70af-e3d4-4e11-99ad-b6ace1455b64-98 --namespace=paas-e0fca1ca-9b8c-421f-bfaf-a8f8959f9029-caas --cluster=kubernetes</p>
+                    <p>\$ kubectl config set-context \${CAAS-SERVICE-CONTEXT-NAME} --user=\${CAAS-SERVICE-USER-NAME} --namespace=\${CAAS-SERVICE-NAMESPACE-NAME} --cluster=\${CAAS-SERVICE-CLUSTER-NAME}</p>
                 </div>
             </div>
         </div>
         <div class="custom-access-wrap">
             <div class="custom-access-title">
-                <p>5. Context 사용 설정</p>
+                <p>6. Context 사용 설정</p>
             </div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>\$ kubectl config use-context {CONTEXT_NAME}</p>
-                    <p class="maT10">예시)</p>
-                    <p>\$ kubectl config use-context ffbf70af-e3d4-4e11-99ad-b6ace1455b64-98-context</p>
+                    <p>\$ kubectl config use-context \${CAAS-SERVICE-CONTEXT-NAME}</p>
                 </div>
             </div>
         </div>
         <div class="custom-access-wrap">
             <div class="custom-access-title">
-                <p>6. Config 구성 확인</p>
+                <p>7. Config 구성 확인</p>
             </div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
@@ -134,7 +136,7 @@
         </div>
         <div class="custom-access-wrap custom-paB40">
             <div class="custom-access-title">
-                <p>7. Resource 확인</p>
+                <p>8. Resource 확인</p>
             </div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
@@ -206,5 +208,20 @@
         });
 
         getUser();
+
+        // TODO :: MODIFY
+        var clusterName = "kubernetes";
+        var clusterServer = "https://115.68.47.174:6443";
+        var userName = "ffbf70af-e3d4-4e11-99ad-b6ace1455b64-98";
+        var contextName = "ffbf70af-e3d4-4e11-99ad-b6ace1455b64-98-context";
+        var namespace = "paas-e0fca1ca-9b8c-421f-bfaf-a8f8959f9029-caas";
+        var credentialsToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJwYWFzLTYyNzExMTg1LTQ5OGUtNGE2Yi1iYjk1LTViMTRkZmFlOGFhMi1jYWFzIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6IjhhN2Y3MTBjLWFlOGUtNDM4NS05NDdjLWQ0NmRlZDViYjhhYy1oeXVubGVlLXVzZXItdG9rZW4tbTZkdnYiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiOGE3ZjcxMGMtYWU4ZS00Mzg1LTk0N2MtZDQ2ZGVkNWJiOGFjLWh5dW5sZWUtdXNlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjViOGIyMGY0LWFiMjAtMTFlOC04OTE3LTAwNTA1NjkwMGI5ZiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpwYWFzLTYyNzExMTg1LTQ5OGUtNGE2Yi1iYjk1LTViMTRkZmFlOGFhMi1jYWFzOjhhN2Y3MTBjLWFlOGUtNDM4NS05NDdjLWQ0NmRlZDViYjhhYy1oeXVubGVlLXVzZXIifQ.EQbvwM7sSBPQya0Jciq_xEYg-SIrvi2ehBwbdaK9rH0Z1So0zL3rM9ig7ZuOVMqc_XkLUypphUL5NU0hDQt3OnXX-6tAJEwYtO02xeNynrxSUTSE1hFJJcZtVGFcF_FVCJI6-DTVhRxf1OcdekCYI8YBLVVsXGm59sBJ9OU5GSlsFVMTLm1hUmho1yP--0KpcE7MiRQOyShRriiPhkI_WC6yrGpmTrg1VkUVBLK848XjbVr8aG01meYuODzx47-EX-zL2W6spV7JPuSbVMUdz86-ercjpx59PP16-gOdPQkPbmeREB4nw5333GajDFxt8IA4NTx3nLCQVOBjeL5bYQ";
+
+        $('#caasClusterName').html(clusterName);
+        $('#caasClusterServer').html(clusterServer);
+        $('#caasUserName').html(userName);
+        $('#caasContextName').html(contextName);
+        $('#caasNamespace').html(namespace);
+        $('#caasCredentialsToken').html(credentialsToken);
     });
 </script>
