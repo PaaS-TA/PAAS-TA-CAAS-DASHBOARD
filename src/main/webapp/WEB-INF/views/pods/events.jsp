@@ -91,6 +91,14 @@
         procCallAjax(URL, "GET", null, null, callbackGetList);
     });
 
+    var createAnchorTag = function (movePageUrl, content, isTooltip) {
+        var anchorTag = "<a href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>"
+        if (isTooltip)
+            return $(anchorTag).attr('data-toggle', 'tooltip').attr('title', content)[0].outerHTML;
+        else
+            return anchorTag;
+    };
+
     // CALLBACK
     var callbackGetList = function (data) {
         if (RESULT_STATUS_FAIL === data.resultCode) {
@@ -109,16 +117,20 @@
         var noResultArea = $('#noResultArea');
 
         $.each(data.items, function (index, itemList) {
-            var message = itemList.message;
-            var source = itemList.source.component;
-            var subObject = itemList.involvedObject.fieldPath;
+            var messageHtml = $('<span data-toggle="tooltip"></span>').attr('title', itemList.message).html(itemList.message)[0].outerHTML;
+            if (0 == itemList.message.indexOf("Error")) {
+                messageHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span> ' + $(messageHtml).addClass("red2")[0].outerHTML;
+            }
+            var source = (itemList.source.component + ': ' + itemList.source.host);
+            var subObject = (itemList.involvedObject != null)?
+                (itemList.involvedObject.kind + ': ' + itemList.involvedObject.name) : '-';
             var count = itemList.count;
             var fristTimestamp = itemList.firstTimestamp;
             var lastTimestamp = itemList.lastTimestamp;
             resultArea.append("<tr>"
-                + "<td>" + message + "</td>"
-                + "<td>" + source + "</td>"
-                + "<td>" + nvl(subObject, "-") + "</td>"
+                + "<td>" + messageHtml + "</td>"
+                + "<td data-toggle='tooltip' title='" + source + "'>" + source + "</td>"
+                + "<td data-toggle='tooltip' title='" + subObject + "'>" + subObject + "</td>"
                 + "<td>" + count + "</td>"
                 + "<td>" + fristTimestamp + "</td>"
                 + "<td>" + lastTimestamp + "</td>"
