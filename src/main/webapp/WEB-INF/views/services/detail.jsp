@@ -65,47 +65,49 @@
                 </div>
             </li>
             <li class="cluster_third_box">
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Pods</p>
-                        <ul class="colright_btn">
-                            <li>
-                                <input type="text" id="table-search-01" name="" class="table-search" placeholder="search" onkeypress="if(event.keyCode===13) {setPodsList(this.value);}" />
-                                <button name="button" class="btn table-search-on" type="button">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL service-lh" id="resultTable">
-                            <colgroup>
-                                <col style='width:auto;'>
-                                <col style='width:15%;'>
-                                <col style='width:15%;'>
-                                <col style='width:8%;'>
-                                <col style='width:8%;'>
-                                <col style='width:20%;'>
-                            </colgroup>
-                            <thead>
-                            <tr id="noResultAreaForPods"><td colspan='6'><p class='service_p'>조회 된 Pod가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderAreaForPods" class="headerSortFalse" style="display: none;">
-                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Namespace</td>
-                                <td>Node</td>
-                                <td>Status</td>
-                                <td>Restarts</td>
-                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
-                            </tr>
-                            </thead>
-                            <tbody id="resultAreaForPods">
-                            <tr>
-                                <td colspan="6"> - </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <jsp:include page="../pods/list.jsp" flush="true"/>
+                <%--TODO :: REMOVE--%>
+                <%--<div class="sortable_wrap">--%>
+                    <%--<div class="sortable_top">--%>
+                        <%--<p>Pods</p>--%>
+                        <%--<ul class="colright_btn">--%>
+                            <%--<li>--%>
+                                <%--<input type="text" id="table-search-01" name="" class="table-search" placeholder="search" onkeypress="if(event.keyCode===13) {setPodsList(this.value);}" />--%>
+                                <%--<button name="button" class="btn table-search-on" type="button">--%>
+                                    <%--<i class="fas fa-search"></i>--%>
+                                <%--</button>--%>
+                            <%--</li>--%>
+                        <%--</ul>--%>
+                    <%--</div>--%>
+                    <%--<div class="view_table_wrap">--%>
+                        <%--<table class="table_event condition alignL service-lh" id="resultTable">--%>
+                            <%--<colgroup>--%>
+                                <%--<col style='width:auto;'>--%>
+                                <%--<col style='width:15%;'>--%>
+                                <%--<col style='width:15%;'>--%>
+                                <%--<col style='width:8%;'>--%>
+                                <%--<col style='width:8%;'>--%>
+                                <%--<col style='width:20%;'>--%>
+                            <%--</colgroup>--%>
+                            <%--<thead>--%>
+                            <%--<tr id="noResultAreaForPods"><td colspan='6'><p class='service_p'>조회 된 Pod가 없습니다.</p></td></tr>--%>
+                            <%--<tr id="resultHeaderAreaForPods" class="headerSortFalse" style="display: none;">--%>
+                                <%--<td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>--%>
+                                <%--<td>Namespace</td>--%>
+                                <%--<td>Node</td>--%>
+                                <%--<td>Status</td>--%>
+                                <%--<td>Restarts</td>--%>
+                                <%--<td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>--%>
+                            <%--</tr>--%>
+                            <%--</thead>--%>
+                            <%--<tbody id="resultAreaForPods">--%>
+                            <%--<tr>--%>
+                                <%--<td colspan="6"> - </td>--%>
+                            <%--</tr>--%>
+                            <%--</tbody>--%>
+                        <%--</table>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </li>
             <li class="cluster_fourth_box maB50">
                 <div class="sortable_wrap">
@@ -171,6 +173,7 @@
 
         var serviceName = data.metadata.name;
         var namespace = data.metadata.namespace;
+        var namespaceHtml = "<a href='javascript:void(0);'data-toggle='tooltip' title='" + namespace + "' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + namespace + "\");'>" + namespace  + "</a>";
         var endpointsPreString = serviceName + "." + namespace + ":";
         var nodePort = data.spec.ports.nodePort;
         var endpoints = "";
@@ -196,7 +199,7 @@
         }
 
         $('.resultServiceName').html(serviceName);
-        $('#resultNamespace').html(namespace);
+        $('#resultNamespace').html(namespaceHtml);
         $('#resultCreationTimestamp').html(data.metadata.creationTimestamp);
         $('#resultLabelSelector').html(selectorString);
         $('#resultType').html(data.spec.type);
@@ -211,15 +214,27 @@
 
     // GET DETAIL FOR PODS LIST
     var getDetailForPodsList = function(selector) {
-        // TODO :: CHECK GETTING PODS LIST URL
-        viewLoading('show');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE %>"
             .replace("{namespace:.+}", NAME_SPACE)
             .replace("{serviceName:.+}", "_all")
             .replace("{selector:.+}", selector);
 
-        procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPodsList);
+        getPodListUsingRequestURL(reqUrl);
+        getDetailForEndpoints();
+        /*TODO :: REMOVE*/
+        <%--var podListReqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods/node/" + nodeName;--%>
+        // getPodListUsingRequestURL(podListReqUrl);
+
+        // TODO :: CHECK GETTING PODS LIST URL
+        <%--viewLoading('show');--%>
+
+        <%--var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE %>"--%>
+            <%--.replace("{namespace:.+}", NAME_SPACE)--%>
+            <%--.replace("{serviceName:.+}", "_all")--%>
+            <%--.replace("{selector:.+}", selector);--%>
+
+        <%--procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPodsList);--%>
     };
 
 
@@ -368,11 +383,13 @@
 
                     htmlString.push(
                         "<tr>"
-                        + "<td>" + addresses[j].ip + "</td>"
-                        + "<td>" + portsString + "</td>"
-                        + "<td>" + nodeName + "</td>"
-                        + "<td><span class='" + nodeName + "'></span>true</td>"
-                        + "</tr>");
+                            + "<td>" + addresses[j].ip + "</td>"
+                            + "<td>" + portsString + "</td>"
+                            + "<td>"
+                            + "<a href='javascript:void(0);'data-toggle='tooltip' title='" + nodeName+ "' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + nodeName + "/summary\");'>" + nodeName + "</a>"
+                            + "</td>"
+                            + "<td><span class='" + nodeName + "'>true</span></td>"
+                            + "</tr>");
 
                     portsString = '';
 
