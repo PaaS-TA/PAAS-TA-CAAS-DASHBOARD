@@ -139,7 +139,7 @@
                 htmlString.push(
                     "<tr>"
                         + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                        + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/" + serviceName + "\");'>" + serviceName + "</a>"
+                        + "<a href='javascript:void(0);'data-toggle='tooltip' title='" + serviceName+ "' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/" + serviceName + "\");'>" + serviceName + "</a>"
                         + "</td>"
                         + "<td>" + items[i].spec.type + "</td>"
                         + "<td>" + items[i].spec.clusterIP + "</td>"
