@@ -60,18 +60,15 @@
 
     var getPodStatus = function (podStatus) {
         /*
-        1. pod's status isn't "Running" -> return pod's status
-        2. pod's status is "Running"...
+        1. count of pod's containers is less than 0 -> return pod's status
+        2. else...
           2.1. all of pod's container statuses is "Running" -> return "Running"
           2.2. some of pod's container statuses isn't "Running" -> return these status, but "terminated" state is the highest order.
          */
-        if ("Running" !== podStatus.phase)
-            return podStatus.phase;
-
         // default value is empty array, callback is none.
         var containerStatuses = procIfDataIsNull(podStatus["containerStatuses"], null, []);
         if (containerStatuses instanceof Array && 0 === containerStatuses.length)
-            return "Pending";
+            return podStatus.phase;
 
         var notRunningIndex = -1;
         var notRunningState = "";
@@ -173,7 +170,7 @@
                 //+ "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_PODS %>/" + pod.name + "\");'>" + pod.name + "</a>";
                 + createAnchorTag("<%= Constants.URI_WORKLOAD_PODS %>/" + pod.name, pod.name);
             if (null != pod.podErrorMsg && "" !== pod.podErrorMsg)
-                podNameHtml += "<br><span class=\"" + styleClassSet.span + " errorMsgBold\">" + pod.podErrorMsg + "</span>";
+                podNameHtml += "<br><span class=\"red2 errorMsgBold\">" + pod.podErrorMsg + "</span>";
 
             var nodeNameHtml;
             if (pod.nodeName !== "-")

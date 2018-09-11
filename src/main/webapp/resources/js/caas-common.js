@@ -337,7 +337,7 @@ var callbackSetEventStatusForPods = function(data) {
 
             itemStatusIconHtml = "<span class='" + messageStyle + "'><i class='fas fas fa-exclamation-circle'></i></span> ";
             itemMessageList.push(
-                '<p class="' + messageStyle + '" title="' + items[i].message + '">' + items[i].message + '</p>'
+                '<p class="red2 errorMsgBold" title="' + items[i].message + '">' + items[i].message + '</p>'
             )
 
             warningCount++;
