@@ -63,7 +63,7 @@
 
 <script type="text/javascript">
 
-    var gList;
+    var G_SERVICE_LIST;
 
     // GET LIST
     var getList = function() {
@@ -77,12 +77,12 @@
 
     // CALLBACK
     var callbackGetList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
             return false;
         }
 
-        gList = data;
+        G_SERVICE_LIST = data;
         viewLoading('hide');
 
         setList("");
@@ -105,16 +105,12 @@
         var noResultArea = $('#noResultArea');
         var resultTable = $('#resultTable');
 
-        var items = gList.items;
+        var items = G_SERVICE_LIST.items;
         var listLength = items.length;
         var endpoints = "";
         var checkListCount = 0;
         var selectorList = [];
         var htmlString = [];
-
-        // REF
-        // service.namespace:port protocol
-        // service.namespace:nodePort protocol -> service.namespace:0 protocol
 
         for (var i = 0; i < listLength; i++) {
             serviceName = items[i].metadata.name;
@@ -198,7 +194,7 @@
 
     // CALLBACK
     var callbackGetDetailForPods = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
             return false;
         }

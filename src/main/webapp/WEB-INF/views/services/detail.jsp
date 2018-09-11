@@ -66,48 +66,6 @@
             </li>
             <li class="cluster_third_box">
                 <jsp:include page="../pods/list.jsp" flush="true"/>
-                <%--TODO :: REMOVE--%>
-                <%--<div class="sortable_wrap">--%>
-                    <%--<div class="sortable_top">--%>
-                        <%--<p>Pods</p>--%>
-                        <%--<ul class="colright_btn">--%>
-                            <%--<li>--%>
-                                <%--<input type="text" id="table-search-01" name="" class="table-search" placeholder="search" onkeypress="if(event.keyCode===13) {setPodsList(this.value);}" />--%>
-                                <%--<button name="button" class="btn table-search-on" type="button">--%>
-                                    <%--<i class="fas fa-search"></i>--%>
-                                <%--</button>--%>
-                            <%--</li>--%>
-                        <%--</ul>--%>
-                    <%--</div>--%>
-                    <%--<div class="view_table_wrap">--%>
-                        <%--<table class="table_event condition alignL service-lh" id="resultTable">--%>
-                            <%--<colgroup>--%>
-                                <%--<col style='width:auto;'>--%>
-                                <%--<col style='width:15%;'>--%>
-                                <%--<col style='width:15%;'>--%>
-                                <%--<col style='width:8%;'>--%>
-                                <%--<col style='width:8%;'>--%>
-                                <%--<col style='width:20%;'>--%>
-                            <%--</colgroup>--%>
-                            <%--<thead>--%>
-                            <%--<tr id="noResultAreaForPods"><td colspan='6'><p class='service_p'>조회 된 Pod가 없습니다.</p></td></tr>--%>
-                            <%--<tr id="resultHeaderAreaForPods" class="headerSortFalse" style="display: none;">--%>
-                                <%--<td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>--%>
-                                <%--<td>Namespace</td>--%>
-                                <%--<td>Node</td>--%>
-                                <%--<td>Status</td>--%>
-                                <%--<td>Restarts</td>--%>
-                                <%--<td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody id="resultAreaForPods">--%>
-                            <%--<tr>--%>
-                                <%--<td colspan="6"> - </td>--%>
-                            <%--</tr>--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
             </li>
             <li class="cluster_fourth_box maB50">
                 <div class="sortable_wrap">
@@ -162,7 +120,7 @@
 
     // CALLBACK
     var callbackGetDetail = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
             return false;
         }
@@ -208,12 +166,6 @@
         $('#InternalEndpointsArea').html(endpoints);
 
         viewLoading('hide');
-        getDetailForPodsList(selector);
-    };
-
-
-    // GET DETAIL FOR PODS LIST
-    var getDetailForPodsList = function(selector) {
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE %>"
             .replace("{namespace:.+}", NAME_SPACE)
@@ -221,96 +173,6 @@
             .replace("{selector:.+}", selector);
 
         getPodListUsingRequestURL(reqUrl);
-        getDetailForEndpoints();
-        /*TODO :: REMOVE*/
-        <%--var podListReqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods/node/" + nodeName;--%>
-        // getPodListUsingRequestURL(podListReqUrl);
-
-        // TODO :: CHECK GETTING PODS LIST URL
-        <%--viewLoading('show');--%>
-
-        <%--var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE %>"--%>
-            <%--.replace("{namespace:.+}", NAME_SPACE)--%>
-            <%--.replace("{serviceName:.+}", "_all")--%>
-            <%--.replace("{selector:.+}", selector);--%>
-
-        <%--procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPodsList);--%>
-    };
-
-
-    // CALLBACK
-    var callbackGetDetailForPodsList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) {
-            viewLoading('hide');
-            return false;
-        }
-
-        gList = data;
-        viewLoading('hide');
-
-        setPodsList("");
-    };
-
-
-    // SET PODS LIST
-    var setPodsList = function(searchKeyword) {
-        viewLoading('show');
-
-        var podName,
-            itemsMetadata,
-            itemsStatus;
-
-        var items = gList.items;
-        var listLength = items.length;
-        var checkListCount = 0;
-        var podNameList = [];
-        var htmlString = [];
-
-        var resultArea = $('#resultAreaForPods');
-        var resultHeaderArea = $('#resultHeaderAreaForPods');
-        var noResultArea = $('#noResultAreaForPods');
-        var resultTable = $('#resultTable');
-
-        for (var i = 0; i < listLength; i++) {
-            podName = items[i].metadata.name;
-
-            if ((nvl(searchKeyword) === "") || podName.indexOf(searchKeyword) > -1) {
-                itemsMetadata = items[i].metadata;
-                itemsStatus = items[i].status;
-
-                htmlString.push(
-                    "<tr>"
-                    + "<td id='" + podName + "'></td>"
-                    + "<td>" + itemsMetadata.namespace + "</td>"
-                    + "<td>" + items[i].spec.nodeName + "</td>"
-                    + "<td>" + itemsStatus.phase + "</td>"
-                    + "<td>" + itemsStatus.containerStatuses[0].restartCount + "</td>"
-                    + "<td>" + itemsMetadata.creationTimestamp + "</td>"
-                    + "</tr>");
-
-                checkListCount++;
-            }
-
-            podNameList.push(podName);
-        }
-
-        if (listLength < 1 || checkListCount < 1) {
-            resultHeaderArea.hide();
-            resultArea.hide();
-            noResultArea.show();
-        } else {
-            noResultArea.hide();
-            resultHeaderArea.show();
-            resultArea.show();
-            resultArea.html(htmlString);
-            resultTable.tablesorter();
-            resultTable.trigger("update");
-            $('.headerSortFalse > td').unbind();
-        }
-
-        viewLoading('hide');
-
-        procSetEventStatusForPods(podNameList);
         getDetailForEndpoints();
     };
 
@@ -328,7 +190,7 @@
 
     // CALLBACK
     var callbackGetDetailForEndpoints = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
             return false;
         }
@@ -434,7 +296,7 @@
 
     // CALLBACK
     var callbackGetDetailForNodes = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
             return false;
         }

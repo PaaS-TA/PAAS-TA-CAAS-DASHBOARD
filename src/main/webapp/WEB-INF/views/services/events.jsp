@@ -72,7 +72,10 @@
 
     // CALLBACK
     var callbackGetList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            return false;
+        }
 
         var resultArea = $('#resultArea');
         var resultHeaderArea = $('#resultHeaderArea');
