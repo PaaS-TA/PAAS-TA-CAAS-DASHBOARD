@@ -77,13 +77,14 @@
                     <p>3. Cluster 등록</p>
                 </div>
                 <div class="custom-access-title-right" style="float: right;">
-                    <button class="btns colors4" onclick="window.open('https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl')">Download certificate file</button>
+                    <button type="button" class="btns colors4" onclick="return downloadCrtToken();">Download certificate file</button>
+                    <%--<a id="download" href="javascript:void(0);"><button id="btnTest" class="btns colors4">Download certificate file</button></a>--%>
                 </div>
             </div>
             <div class="clearfix"></div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>\$ kubectl config set-cluster \${CAAS-SERVICE-CLUSTER-NAME} --insecure-skip-tls-verify=true --server=\${CAAS-SERVICE-CLUSTER-SERVER} --certificate-authority=[DOWNLOADED FILE PATH]</p>
+                    <p>\$ kubectl config set-cluster \${CAAS-SERVICE-CLUSTER-NAME} --embed-certs=true --server=\${CAAS-SERVICE-CLUSTER-SERVER} --certificate-authority=[DOWNLOADED FILE PATH]</p>
                 </div>
             </div>
         </div>
@@ -93,7 +94,7 @@
                     <p>4. Credential 등록</p>
                 </div>
                 <div class="custom-access-title-right" style="float: right;">
-                    <button class="btns colors4" onclick="window.open('https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl')">Copy Token</button>
+                    <button class="btns colors4" id="btn-copy" data-clipboard-action="cut" data-clipboard-target="#out_a">Copy Token</button>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -152,7 +153,50 @@
 
     var BASE_URL = "/caas";
     var roleName;
+    var caCertToken;
     var userAccessToken;
+
+    // kubectl access guide variable
+    var guideClusterName;
+    var guideClusterServer;
+    var guideUserName;
+    var guideContextName;
+    var guideNamespace;
+
+
+    // certification token download
+    var downloadCrtToken = function () {
+        var fileNameToSaveAs = "caas-cluster.crt";
+        var textToWrite = caCertToken;
+
+        var ie = navigator.userAgent.match(/MSIE\s([\d.]+)/),
+            ie11 = navigator.userAgent.match(/Trident\/7.0/) && navigator.userAgent.match(/rv:11/),
+            ieEDGE = navigator.userAgent.match(/Edge/g),
+            ieVer=(ie ? ie[1] : (ie11 ? 11 : (ieEDGE ? 12 : -1)));
+
+        if (ie && ieVer<10) {
+            console.log("No blobs on IE ver<10");
+            return;
+        }
+
+        var textFileAsBlob = new Blob([textToWrite], {
+            type: 'text/plain'
+        });
+
+        if (ieVer>-1) {
+            window.navigator.msSaveBlob(textFileAsBlob, fileNameToSaveAs);
+
+        } else {
+            var downloadLink = document.createElement("a");
+            downloadLink.download = fileNameToSaveAs;
+            downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+            downloadLink.onclick = function(e) { document.body.removeChild(e.target); };
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+        }
+    };
+
 
     // GET User
     var getUser = function() {
@@ -164,7 +208,13 @@
         viewLoading('hide');
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
         console.log("value", JSON.stringify(data));
-        $("#access-user-token").val(data.caasAccountTokenName);
+        //$("#access-user-token").val(data.caasAccountTokenName);
+
+        guideClusterName = data.caasClusterName;
+        guideClusterServer = data.caasUrl;
+        guideUserName = data.serviceInstanceId + "-" + data.id;
+        guideContextName = guideUserName + "-context";
+        guideNamespace = data.caasNamespace;
 
         if(data.roleSetCode == "RS0001"){
             roleName = "Administrator";
@@ -188,7 +238,9 @@
 
     var callbackGetAccessToken = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        $("#access-user-token").val(data.userAccessToken);
+        //$("#access-user-token").val(data.userAccessToken);
+        caCertToken = data.caCertToken;
+        userAccessToken = data.userAccessToken;
     };
 
 
@@ -198,9 +250,8 @@
         $("#access-user-name").val(USER_ID);
 
         // copy function
-        $(".btn-copy").on("click", function(){
-            var inA = $("#access-user-token").val();
-            inA.replace("\"/g", "");
+        $("#btn-copy").on("click", function(){
+            var inA = userAccessToken;
             $("#out_a").val(inA);
             $("#out_a").select();
             var successful = document.execCommand('copy');
@@ -209,13 +260,13 @@
 
         getUser();
 
-        // TODO :: MODIFY
-        var clusterName = "kubernetes";
-        var clusterServer = "https://115.68.47.174:6443";
-        var userName = "ffbf70af-e3d4-4e11-99ad-b6ace1455b64-98";
-        var contextName = "ffbf70af-e3d4-4e11-99ad-b6ace1455b64-98-context";
-        var namespace = "paas-e0fca1ca-9b8c-421f-bfaf-a8f8959f9029-caas";
-        var credentialsToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJwYWFzLTYyNzExMTg1LTQ5OGUtNGE2Yi1iYjk1LTViMTRkZmFlOGFhMi1jYWFzIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6IjhhN2Y3MTBjLWFlOGUtNDM4NS05NDdjLWQ0NmRlZDViYjhhYy1oeXVubGVlLXVzZXItdG9rZW4tbTZkdnYiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiOGE3ZjcxMGMtYWU4ZS00Mzg1LTk0N2MtZDQ2ZGVkNWJiOGFjLWh5dW5sZWUtdXNlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjViOGIyMGY0LWFiMjAtMTFlOC04OTE3LTAwNTA1NjkwMGI5ZiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpwYWFzLTYyNzExMTg1LTQ5OGUtNGE2Yi1iYjk1LTViMTRkZmFlOGFhMi1jYWFzOjhhN2Y3MTBjLWFlOGUtNDM4NS05NDdjLWQ0NmRlZDViYjhhYy1oeXVubGVlLXVzZXIifQ.EQbvwM7sSBPQya0Jciq_xEYg-SIrvi2ehBwbdaK9rH0Z1So0zL3rM9ig7ZuOVMqc_XkLUypphUL5NU0hDQt3OnXX-6tAJEwYtO02xeNynrxSUTSE1hFJJcZtVGFcF_FVCJI6-DTVhRxf1OcdekCYI8YBLVVsXGm59sBJ9OU5GSlsFVMTLm1hUmho1yP--0KpcE7MiRQOyShRriiPhkI_WC6yrGpmTrg1VkUVBLK848XjbVr8aG01meYuODzx47-EX-zL2W6spV7JPuSbVMUdz86-ercjpx59PP16-gOdPQkPbmeREB4nw5333GajDFxt8IA4NTx3nLCQVOBjeL5bYQ";
+        // kubectl access guide input logic
+        var clusterName = guideClusterName;
+        var clusterServer = guideClusterServer;
+        var userName = guideUserName;
+        var contextName = guideContextName;
+        var namespace = guideNamespace;
+        var credentialsToken = userAccessToken;
 
         $('#caasClusterName').html(clusterName);
         $('#caasClusterServer').html(clusterServer);

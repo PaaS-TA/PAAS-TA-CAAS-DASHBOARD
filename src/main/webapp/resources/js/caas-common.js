@@ -320,7 +320,7 @@ var callbackSetEventStatusForPods = function(data) {
     var items = data.items;
     var listLength = items.length;
     var itemStatusIconHtml = "<span class='green2'><i class='fas fa-check-circle'></i></span>";
-    var itemNameLinkHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"" + URI_WORKLOADS_PODS + "/" + podName + "\");'> " + podName + "</a>" ;
+    var itemNameLinkHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"" + URI_WORKLOADS_PODS + "/" + podName + "\");' data-toggle='tooltip' title='" + podName + "'> " + podName + "</a>" ;
     var itemMessageHtml;
     var itemMessageList = [];
 
@@ -337,14 +337,14 @@ var callbackSetEventStatusForPods = function(data) {
 
             itemStatusIconHtml = "<span class='" + messageStyle + "'><i class='fas fas fa-exclamation-circle'></i></span> ";
             itemMessageList.push(
-                '<p class="' + messageStyle + '" title="' + items[i].message + '">' + items[i].message + '</p>'
+                $('<p class="red2 errorMsgBold" data-toggle="tooltip">' + items[i].message + '</p>').attr('title', items[i].message)[0].outerHTML
             )
 
             warningCount++;
         }
     }
 
-    if (warningCount > 1 || isPodEventOverwrite) {
+    if (warningCount > 1) {
         itemMessageHtml = itemMessageList.join("");
         $('#' + podName).html(itemStatusIconHtml + itemNameLinkHtml + itemMessageHtml);
     }

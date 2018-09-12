@@ -30,4 +30,8 @@ public class Users {
     private String description;
     private String created;
     private String lastModified;
+
+    // variable for kubectl access
+    private String caasUrl;
+    private String caasClusterName;
 }

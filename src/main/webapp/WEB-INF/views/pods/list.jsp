@@ -60,18 +60,19 @@
 
     var getPodStatus = function (podStatus) {
         /*
-        1. pod's status isn't "Running" -> return pod's status
-        2. pod's status is "Running"...
+        1. Pod's status is succeeded -> return this.
+        1. count of pod's containers is less than 0 -> return pod's status
+        2. else...
           2.1. all of pod's container statuses is "Running" -> return "Running"
           2.2. some of pod's container statuses isn't "Running" -> return these status, but "terminated" state is the highest order.
          */
-        if ("Running" !== podStatus.phase)
+        if (podStatus.phase.includes("Succeeded"))
             return podStatus.phase;
 
         // default value is empty array, callback is none.
         var containerStatuses = procIfDataIsNull(podStatus["containerStatuses"], null, []);
         if (containerStatuses instanceof Array && 0 === containerStatuses.length)
-            return "Pending";
+            return podStatus.phase;
 
         var notRunningIndex = -1;
         var notRunningState = "";
@@ -157,8 +158,12 @@
         return styleClassSet;
     };
 
-    var createAnchorTag = function (movePageUrl, content) {
-        return "<a href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>";
+    var createAnchorTag = function (movePageUrl, content, isTooltip) {
+        var anchorTag = "<a href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>"
+        if (isTooltip)
+            return $(anchorTag).attr('data-toggle', 'tooltip').attr('title', content)[0].outerHTML;
+        else
+            return anchorTag;
     };
 
     var setPodTable = function (podList) {
@@ -171,22 +176,23 @@
 
             var podNameHtml = "<span class='" + styleClassSet.span + "'><i class='" + styleClassSet.i + "'></i></span> "
                 //+ "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_PODS %>/" + pod.name + "\");'>" + pod.name + "</a>";
-                + createAnchorTag("<%= Constants.URI_WORKLOAD_PODS %>/" + pod.name, pod.name);
-            if (null != pod.podErrorMsg && "" !== pod.podErrorMsg)
-                podNameHtml += "<br><span class=\"" + styleClassSet.span + " errorMsgBold\">" + pod.podErrorMsg + "</span>";
+                + createAnchorTag("<%= Constants.URI_WORKLOAD_PODS %>/" + pod.name, pod.name, true);
+            if (null != pod.podErrorMsg && "" !== pod.podErrorMsg) {
+                podNameHtml += $("<br><span class='red2 errorMsgBold' data-toggle='tooltip'>" + pod.podErrorMsg + "</span>").attr('title', pod.podErrorMsg)[0].outerHTML;
+            }
 
             var nodeNameHtml;
             if (pod.nodeName !== "-")
             //nodeNameHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + pod.nodeName + "/summary\");'>" + pod.nodeName + "</a>";
-                nodeNameHtml = createAnchorTag("<%= Constants.URI_CLUSTER_NODES %>/" + pod.nodeName + "/summary", pod.nodeName);
+                nodeNameHtml = createAnchorTag("<%= Constants.URI_CLUSTER_NODES %>/" + pod.nodeName + "/summary", pod.nodeName, true);
             else
                 nodeNameHtml = "-";
 
             //var namespaceHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + pod.namespace + "\");'>" + pod.namespace + "</a>";
-            var namespaceHtml = createAnchorTag("<%= Constants.URI_CLUSTER_NAMESPACES %>/" + pod.namespace, pod.namespace);
+            var namespaceHtml = createAnchorTag("<%= Constants.URI_CLUSTER_NAMESPACES %>/" + pod.namespace, pod.namespace, true);
 
-            htmlString.push("<tr name=\"podRow\" id=\"row-" + pod.name + "\">"
-                + "<td id=\"" + pod.name + "\">" + podNameHtml + "</td>"
+            htmlString.push("<tr name='podRow' id='row-" + pod.name + "'>"
+                + "<td id='" + pod.name + "'>" + podNameHtml + "</td>"
                 + "<td>" + namespaceHtml + "</td>"
                 + "<td>" + nodeNameHtml + "</td>"
                 + "<td>" + pod.podStatus + "</td>"
@@ -278,7 +284,6 @@
             podNameList.push(item.metadata.name);
         });
         setPodTable(podList);
-        isPodEventOverwrite = false;
         procSetEventStatusForPods(podNameList);
 
         viewLoading('hide');

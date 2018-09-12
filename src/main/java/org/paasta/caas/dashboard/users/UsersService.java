@@ -1,6 +1,7 @@
 package org.paasta.caas.dashboard.users;
 
 import org.paasta.caas.dashboard.common.Constants;
+import org.paasta.caas.dashboard.common.PropertyService;
 import org.paasta.caas.dashboard.common.RestTemplateService;
 import org.paasta.caas.dashboard.common.TemplateService;
 import org.paasta.caas.dashboard.config.security.userdetail.User;
@@ -36,6 +37,7 @@ public class UsersService {
     private final TemplateService templateService;
     private final RefreshSessionService refreshSessionService;
     private final RolesService rolesService;
+    private final PropertyService propertyService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UsersService.class);
     /**
@@ -44,12 +46,14 @@ public class UsersService {
      * @param templateService
      * @param refreshSessionService
      * @param rolesService
+     * @param propertyService
      */
     @Autowired
-    public UsersService(RestTemplateService restTemplateService, TemplateService templateService, RefreshSessionService refreshSessionService, RolesService rolesService) {this.restTemplateService = restTemplateService;
+    public UsersService(RestTemplateService restTemplateService, TemplateService templateService, RefreshSessionService refreshSessionService, RolesService rolesService, PropertyService propertyService) {this.restTemplateService = restTemplateService;
         this.templateService = templateService;
         this.refreshSessionService = refreshSessionService;
         this.rolesService = rolesService;
+        this.propertyService = propertyService;
     }
 
     /**
@@ -70,7 +74,10 @@ public class UsersService {
      * @return the user
      */
     public Users getUserByServiceInstanceId(String serviceInstanceId, String organizationGuid, String userId) {
-        return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL+"/serviceInstanceId/" + serviceInstanceId + "/organizationGuid/" + organizationGuid + "/userId/" + userId, HttpMethod.GET, null, Users.class);
+        Users users = restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL+"/serviceInstanceId/" + serviceInstanceId + "/organizationGuid/" + organizationGuid + "/userId/" + userId, HttpMethod.GET, null, Users.class);
+        users.setCaasUrl(propertyService.getCaasUrl());
+        users.setCaasClusterName(propertyService.getCaasClusterName());
+        return users;
     }
 
     /**
