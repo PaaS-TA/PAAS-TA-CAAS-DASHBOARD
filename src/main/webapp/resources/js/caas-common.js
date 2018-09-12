@@ -342,3 +342,63 @@ var callbackSetEventStatusForPods = function(data) {
 
     viewLoading('hide');
 };
+
+
+/**
+ * 해당 리소스에 이벤트 데이터를 추가한다.
+ * @param targetObject   : 해당 리소스의 리스트 JSON Object
+ * @param selector       : 연관된 POD를 조회하기 위한 SELECTOR
+ * @description
+ *    해당 리소스(replicaSet, deployment, service)에 연관된 POD명을 조회하여,
+ *    해당 POD의 이벤트를 조회후,
+ *    해당 리소스의 리스트에 이벤트 데이터를 추가 합니다.
+ *
+ *    targetObject : 이벤트 데이터를 추가할 대상 JSON Object 입니다.(replicaSet, deployment, service 리스트 데이터)
+ *    selector     : replace 처리되지 않은 json Data 입니다.
+ *
+ *    ex) addPodsEvent(itemList, itemList.spec.selector.matchLabels); // event Data added to 'itemList'
+ *
+ * @author CISS
+ * @since 2018.09.12
+ */
+var addPodsEvent = function(targetObject, selector) {
+
+    selector = procSetSelector(selector);
+
+    // 기존 리스트 데이터에 event.type, event.message 추가
+    var eventType = 'normal';
+    var eventMessage = [];
+
+    var reqPodsUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_RESOURCES %>"
+        .replace("{namespace:.+}", NAME_SPACE)
+        .replace("{selector:.+}", selector);
+    procCallAjax(reqPodsUrl, "GET", null, null, function(podsData){
+        $.each(podsData.items, function (index, itemList) {
+            var podsName = itemList.metadata.name;
+            //console.log("podsName::::::"+podsName);
+
+            var reqEventsUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
+                .replace("{namespace:.+}", NAME_SPACE)
+                .replace("{resourceName:.+}", podsName);
+            procCallAjax(reqEventsUrl, "GET", null, null, function(eventData){
+                $.each(eventData.items, function (index, eData) {
+
+                    var eType = eData.type;
+                    if(eType == 'Warning'){
+                        eventType = eType;
+                    }
+                    eventMessage.push(eData.message);
+                });
+
+            });
+
+            //console.log('eventType:::'+eventType);
+            //console.log('eventMessage:::'+eventMessage);
+        }); // Event API call end
+    }); //Pods API call end
+
+    targetObject.type = eventType;
+    targetObject.message = eventMessage;
+    //console.log("Print:::"+JSON.stringify(targetObject));
+
+}
