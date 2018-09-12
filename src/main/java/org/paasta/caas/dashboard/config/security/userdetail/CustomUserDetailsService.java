@@ -1,14 +1,11 @@
 package org.paasta.caas.dashboard.config.security.userdetail;
 
-//import org.openpaas.paasta.portal.web.user.service.CommonService;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.paasta.caas.dashboard.cf.CfService;
-import org.paasta.caas.dashboard.common.CommonService;
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
 import org.paasta.caas.dashboard.common.TemplateService;
-import org.paasta.caas.dashboard.common.model.AdminToken;
 import org.paasta.caas.dashboard.common.model.Users;
 import org.paasta.caas.dashboard.security.SsoAuthenticationDetails;
 import org.slf4j.Logger;
@@ -16,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -46,7 +42,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private CfService cfService;
 
-//    @Autowired
     private TemplateService templateService;
 
     private final RestTemplateService restTemplateService;
@@ -124,35 +119,28 @@ public class CustomUserDetailsService implements UserDetailsService {
                 LOGGER.info("orgName = "+orgName);
 
                 if(cfResult.toString().contains("entity={name="+orgName+",")) {
-                    LOGGER.info("org in.");
                     certificationFlag = true;
                 }
             }
         }
 
         if(certificationFlag) {
-            LOGGER.info("flag in!");
             List commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+serviceInstanceId+"/organizationGuid/"+organization_guid, HttpMethod.GET, null, List.class);
 
             spaceName = "paas-"+serviceInstanceId+"-caas";
-            LOGGER.info("spaceName : "+spaceName);
 
             if(commonGetUsers != null && commonGetUsers.size() > 0) {
                 if(commonGetUsers.toString().contains("userId="+username+",")) {
                     role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 } else {
-                    LOGGER.info("start~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                    LOGGER.warn("222======");
                     String tmpString[] = username.split("@");
                     String userName = (organization_guid + "-" + tmpString[0].replaceAll("([:.#$&!_\\(\\)`*%^~,\\<\\>\\[\\];+|-])+", "")).toLowerCase() + "-user";
                     String roleName = (tmpString[0].replaceAll("([:.#$&!_\\(\\)`*%^~,\\<\\>\\[\\];+|-])+", "")).toLowerCase();
-                    LOGGER.info("userName : "+userName);
                     createUser(spaceName, userName);
                     createRole(spaceName, userName, roleName);
                     createRoleBinding(spaceName, userName, roleName);
 
                     String cubeToken = getToken(spaceName, userName);
-                    LOGGER.info("cubeToken : "+cubeToken);
 
                     Users user = new Users();
                     user.setUserId(username);
@@ -166,8 +154,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                     user.setDescription("user information");
 
                     Users commonCreateUser = restTemplateService.send(Constants.TARGET_COMMON_API, "/users", HttpMethod.POST, user, Users.class);
-                    LOGGER.info(commonCreateUser.getUserId());
-                    LOGGER.info("end!!!");
 
                     role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 }

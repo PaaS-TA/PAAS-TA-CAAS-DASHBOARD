@@ -10,9 +10,9 @@
 <div class="sortable_wrap">
     <div class="sortable_top">
         <p>Pods</p>
-        <ul class="colright_btn">
+        <ul id="pod-list-search-form" class="colright_btn">
             <li>
-                <input type="text" id="table-search-01" name="" class="table-search" placeholder="Pod name" onkeypress="if (event.keyCode === 13) { setPodsListWithFilter(this.value); }"/>
+                <input type="text" id="table-search-01" name="table-search" class="table-search" placeholder="Pod name" onkeypress="if (event.keyCode === 13) { setPodsListWithFilter(this.value); }"/>
                 <button name="button" class="btn table-search-on" type="button">
                     <i class="fas fa-search"></i>
                 </button>
@@ -20,7 +20,7 @@
         </ul>
     </div>
     <div class="view_table_wrap">
-        <table class="table_event condition alignL service-lh" id="resultTable">
+        <table class="table_event condition alignL service-lh" id="resultTableForPod">
             <colgroup>
                 <col style='width:auto;'>
                 <col style='width:10%;'>
@@ -35,7 +35,7 @@
             </tr>
             <tr id="resultHeaderArea" class="headerSortFalse">
                 <td>Name
-                    <button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')">
+                    <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '0')">
                         <i class="fas fa-caret-down"></i></button>
                 </td>
                 <td>Namespace</td>
@@ -43,7 +43,7 @@
                 <td>Status</td>
                 <td>Restarts</td>
                 <td>Created on
-                    <button class="sort-arrow" onclick="procSetSortList('resultTable', this, '5')">
+                    <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '5')">
                         <i class="fas fa-caret-down"></i></button>
                 </td>
             </tr>
@@ -57,6 +57,10 @@
     var getPodListUsingRequestURL = function (reqUrl) {
         procCallAjax(reqUrl, "GET", null, null, callbackGetPodList);
     };
+
+    var disableSearchPodList = function () {
+        $('#pod-list-search-form').remove();
+    }
 
     var getPodStatus = function (podStatus) {
         /*
@@ -159,7 +163,7 @@
     };
 
     var createAnchorTag = function (movePageUrl, content, isTooltip) {
-        var anchorTag = "<a href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>"
+        var anchorTag = "<a class='custom-content-overflow' href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>"
         if (isTooltip)
             return $(anchorTag).attr('data-toggle', 'tooltip').attr('title', content)[0].outerHTML;
         else
@@ -178,7 +182,7 @@
                 //+ "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_PODS %>/" + pod.name + "\");'>" + pod.name + "</a>";
                 + createAnchorTag("<%= Constants.URI_WORKLOAD_PODS %>/" + pod.name, pod.name, true);
             if (null != pod.podErrorMsg && "" !== pod.podErrorMsg) {
-                podNameHtml += $("<br><span class='red2 errorMsgBold' data-toggle='tooltip'>" + pod.podErrorMsg + "</span>").attr('title', pod.podErrorMsg)[0].outerHTML;
+                podNameHtml += $("<br><span class='red2 custom-content-overflow' data-toggle='tooltip'>" + pod.podErrorMsg + "</span>").attr('title', pod.podErrorMsg)[0].outerHTML;
             }
 
             var nodeNameHtml;

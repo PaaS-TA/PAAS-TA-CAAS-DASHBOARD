@@ -113,7 +113,7 @@
     <%--var getDetail = function() {--%>
         <%--viewLoading('show');--%>
 
-        <%--procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail.do", "GET", null, null, callbackGetDetail);--%>
+        <%--procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail", "GET", null, null, callbackGetDetail);--%>
     <%--};--%>
 
 
@@ -149,7 +149,7 @@
     <%--var getResourceQuotaList = function(namespace) {--%>
         <%--viewLoading('show');--%>
 
-        <%--procCallAjax("/caas/clusters/namespaces/"+namespace+"/getResourceQuotaList.do", "GET", null, null, callbackGetResourceQuotaList);--%>
+        <%--procCallAjax("/caas/clusters/namespaces/"+namespace+"/getResourceQuotaList", "GET", null, null, callbackGetResourceQuotaList);--%>
     <%--};--%>
 
 
@@ -322,7 +322,7 @@
     <%--&lt;%&ndash;var getNamespaces = function() {&ndash;%&gt;--%>
         <%--&lt;%&ndash;viewLoading('show');&ndash;%&gt;--%>
 
-        <%--&lt;%&ndash;procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail.do", "GET", null, null, callbackGetNamespaces);&ndash;%&gt;--%>
+        <%--&lt;%&ndash;procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail", "GET", null, null, callbackGetNamespaces);&ndash;%&gt;--%>
     <%--&lt;%&ndash;};&ndash;%&gt;--%>
 
     <%--&lt;%&ndash;var callbackGetNamespaces = function(data) {&ndash;%&gt;--%>

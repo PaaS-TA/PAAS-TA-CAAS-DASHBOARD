@@ -7,9 +7,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
- * Namespace 관련 Caas API 를 호출 하는 컨트롤러이다.
+ * Namespaces Controller 클래스.
  *
  * @author indra
  * @version 1.0
@@ -24,32 +23,68 @@ public class NamespacesController {
     private final CommonService commonService;
     private final NamespacesService namespacesService;
 
+    /**
+     * Instantiates a Namespaces controller.
+     *
+     * @param commonService     the common service
+     * @param namespacesService the namespaces service
+     */
     @Autowired
     public NamespacesController(CommonService commonService, NamespacesService namespacesService) {
         this.commonService = commonService;
         this.namespacesService = namespacesService;
     }
 
+    /**
+     * Gets Namespaces main.
+     *
+     * @param httpServletRequest the http servlet request
+     * @return the namespaces main
+     */
     @GetMapping(value = {"/namespaces"})
     public ModelAndView getNamespaceMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
 
+    /**
+     * Gets Namespaces detail.
+     *
+     * @param httpServletRequest the http servlet request
+     * @return the namespaces detail
+     */
     @GetMapping(value = {"/namespaces/{namespace}"})
     public ModelAndView getNamespaceDetail(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/detail", new ModelAndView());
     }
 
-    @GetMapping(value = "/namespaces/{namespace}/getDetail.do")
+    /**
+     * Gets Namespaces.
+     *
+     * @param namespace the namespaces
+     * @return the Namespaces
+     */
+    @GetMapping(value = "/namespaces/{namespace}/getDetail")
     public Namespaces getNamespaces(@PathVariable String namespace) {
         return namespacesService.getNamespaces(namespace);
     }
 
-    @GetMapping(value = "/namespaces/{namespace}/getResourceQuotaList.do")
+    /**
+     * Gets ResourceQuotaList.
+     *
+     * @param namespace the namespaces
+     * @return the ResourceQuotaList
+     */
+    @GetMapping(value = "/namespaces/{namespace}/getResourceQuotaList")
     public ResourceQuotaList getResourceQuotaList(@PathVariable String namespace) {
         return namespacesService.getResourceQuotaList(namespace);
     }
 
+    /**
+     * Gets Namespace events.
+     *
+     * @param httpServletRequest the http servlet request
+     * @return the namespaces events
+     */
     @GetMapping(value = {"/namespaces/{namespace}/events"})
     public ModelAndView getNamespaceEvents(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());

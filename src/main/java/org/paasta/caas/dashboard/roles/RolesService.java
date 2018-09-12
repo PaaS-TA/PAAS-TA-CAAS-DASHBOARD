@@ -21,6 +21,8 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
+ * Roles service 클래스
+ *
  * @author hrjin
  * @version 1.0
  * @since 2018-08-16
@@ -33,7 +35,12 @@ public class RolesService {
     private final RestTemplateService restTemplateService;
     private final CommonService commonService;
 
-
+    /**
+     * Instantiates a new Roles service
+     *
+     * @param restTemplateService the rest template service
+     * @param commonService the common service
+     */
     @Autowired
     public RolesService(RestTemplateService restTemplateService, CommonService commonService) {
         this.restTemplateService = restTemplateService;
@@ -41,9 +48,9 @@ public class RolesService {
     }
 
     /**
-     * Gets role list (특정 네임스페이스에서 조회)
+     * Roles 목록을 조회한다.
      *
-     * @return the role list
+     * @return the roles list
      */
     public RolesList getRoleList() {
         // url :: /cluster/namespaces/{namespace}/roles
@@ -70,19 +77,17 @@ public class RolesService {
     /**
      * 사용자가 처음 들어올 때 권한을 설정해준다.
      *
-     * @param user
+     * @param user the user
      */
     public void setRolesListFirst(User user){
         ObjectMapper mapper = new ObjectMapper();
-        //RestTemplateService restTemplateService = new RestTemplateService()
+
         Users users = (Users) restTemplateService.send(Constants.TARGET_COMMON_API,"/users/serviceInstanceId/"+ user.getServiceInstanceId() + "/organizationGuid/" + user.getOrganizationGuid() + "/userId/" + user.getUsername(), HttpMethod.GET, null, Users.class);
 
-        LOGGER.info("users 는 :::: {}", users.toString());
-        LOGGER.info("role_set_code 는 :::: {}", users.getRoleSetCode());
+        LOGGER.info("role_set_code :::: {}", users.getRoleSetCode());
 
 
         // users.getRoleSetCode()로 role_set_code 목록을 불러온다.
-
         List<Roles> rolesList = restTemplateService.send(Constants.TARGET_COMMON_API, "/roles/" + users.getRoleSetCode(), HttpMethod.GET, null, List.class);
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
@@ -91,7 +96,6 @@ public class RolesService {
         for(int index =0; index < rolesList.size(); index++){
             Roles resultRole = mapper.convertValue(rolesList.get(index), Roles.class);
             session.setAttribute("RS_" + (resultRole.getResourceCode()).toUpperCase() + "_" + (resultRole.getVerbCode()).toUpperCase(),"TRUE");
-            LOGGER.info("role set code는 :::: {}", resultRole.getCreated());
         }
     }
 
@@ -99,7 +103,7 @@ public class RolesService {
     /**
      * 권한이 변경되었을 때 변경된 권한 대로 세션을 다시 설정해준다.
      *
-     * @param rsCode
+     * @param rsCode the rsCode
      */
     public void setRolesListAfter(String rsCode){
         ObjectMapper mapper = new ObjectMapper();

@@ -40,7 +40,7 @@
     var getDetail = function() {
         viewLoading('show');
 
-        procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail.do", "GET", null, null, callbackGetDetail);
+        procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail", "GET", null, null, callbackGetDetail);
     };
 
     var callbackGetDetail = function(data) {

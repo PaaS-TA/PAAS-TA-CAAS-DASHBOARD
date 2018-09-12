@@ -40,13 +40,14 @@ public class UsersService {
     private final PropertyService propertyService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UsersService.class);
+
     /**
      * Instantiates a new User service.
      * @param restTemplateService the rest template service
-     * @param templateService
-     * @param refreshSessionService
-     * @param rolesService
-     * @param propertyService
+     * @param templateService the template service
+     * @param refreshSessionService the refresh session service
+     * @param rolesService the role service
+     * @param propertyService the property service
      */
     @Autowired
     public UsersService(RestTemplateService restTemplateService, TemplateService templateService, RefreshSessionService refreshSessionService, RolesService rolesService, PropertyService propertyService) {this.restTemplateService = restTemplateService;
@@ -57,7 +58,7 @@ public class UsersService {
     }
 
     /**
-     * Gets user list.
+     * User 목록을 조회한다.
      *
      * @return the user list
      */
@@ -66,7 +67,7 @@ public class UsersService {
     }
 
     /**
-     * Gets user
+     * User 상세 정보를 조회한다.
      *
      * @param serviceInstanceId the serviceInstanceId
      * @param organizationGuid the organizationGuid
@@ -81,7 +82,7 @@ public class UsersService {
     }
 
     /**
-     * Update role of user
+     * User 의 권한을 변경한다.
      *
      * @param serviceInstanceId the serviceInstanceId
      * @param organizationGuid the organizationGuid
@@ -95,8 +96,6 @@ public class UsersService {
 
         // Security User 객체
         User accessUser = (User)session.getAttribute("custom_user_role");
-        LOGGER.info("session 을 찾아랏!!!!!!!!!! {}", accessUser.getUsername());
-
 
         // DB 용 User 객체
         Users users = new Users();
@@ -136,20 +135,22 @@ public class UsersService {
             resultCode = restTemplateService.send(Constants.TARGET_CAAS_API, "/roles/namespaces/" + user.getCaasNamespace() + "/roles/" + user.getCaasNamespace() + "-" + realUserName + "-role", HttpMethod.PUT, roleYml, String.class);
         }
 
-        LOGGER.info("role.ftl 는???? {}", roleYml);
-
-
-
         // 2. 해당 role-binding 찾아서 바꿔 준 role-name 넣어줘서 rolebinding replace 해준다.
         roleBindingYml = templateService.convert("instance/create_roleBinding.ftl", model);
         resultCodeBinding = restTemplateService.send(Constants.TARGET_CAAS_API, "/roleBindings/namespaces/" + user.getCaasNamespace() + "/rolebindings/" + user.getCaasNamespace() + "-" + realUserName + "-role-binding", HttpMethod.PUT, roleBindingYml, String.class);
-
 
 
         // 3. DB 의 role 변경
         return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL+"/serviceInstanceId/" + serviceInstanceId + "/organizationGuid/" + organizationGuid + "/userId/" + user.getUserId(), HttpMethod.POST, user, Users.class);
     }
 
+
+    /**
+     * User 를 삭제한다.
+     *
+     * @param user the user
+     * @return the Users
+     */
     public Users deleteUserByServiceInstanceId(Users user) {
         // Todo.. 나중에 어디서든 삭제하다 에러가 날 시 rollback 을 어떻게 할 지 로직 수정해야 함.
 
@@ -159,15 +160,12 @@ public class UsersService {
 
         // role binding 삭제
         String successRoleBinding = restTemplateService.send(Constants.TARGET_CAAS_API, "/roleBindings/namespaces/" + user.getCaasNamespace() + "/rolebindings/" + user.getCaasNamespace() + "-" + roleName + "-role-binding", HttpMethod.DELETE, null, String.class);
-        System.out.println("######################## 와댜댜댜댜댜1 : " + successRoleBinding);
 
         // role 삭제
         String successRole = restTemplateService.send(Constants.TARGET_CAAS_API, "/roles/namespaces/" + user.getCaasNamespace() + "/roles/" + user.getCaasNamespace() + "-" + roleName + "-role", HttpMethod.DELETE, null, String.class);
-        System.out.println("######################## 와댜댜댜댜댜2 : " + successRole);
 
         // service account 삭제
         String successServiceAccount = restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL +"/namespaces/" + user.getCaasNamespace() + "/serviceaccounts/" + user.getCaasAccountName(), HttpMethod.DELETE, null, String.class);
-        System.out.println("######################## 와댜댜댜댜댜3 : " + successServiceAccount);
 
         return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL, HttpMethod.DELETE, user, Users.class);
     }

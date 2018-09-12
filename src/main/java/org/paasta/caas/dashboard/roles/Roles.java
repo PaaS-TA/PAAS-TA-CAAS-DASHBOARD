@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Roles Model 클래스
+ *
  * @author hrjin
  * @version 1.0
  * @since 2018-08-16
