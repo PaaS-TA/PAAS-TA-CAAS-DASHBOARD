@@ -333,9 +333,6 @@
 
     var createChart = function() {
         console.log("createChart in!!!!!!");
-        // console.log(gDevList);
-        // console.log(gPodsList);
-        // console.log(gReplicaSetList);
 
         var devChartRunningCnt = 0;
         var devChartFailedCnt = 0;
@@ -357,56 +354,103 @@
         var podsChartSucceededPer= 0;
         var podsChartPenddingPer = 0;
 
-        var repsChartAvailableCnt = 0;
-        var repsChartUnAvailableCnt = 0;
+        var repsChartRunningCnt = 0;
+        var repsChartFailedCnt = 0;
+        var repsChartSucceededCnt= 0;
+        var repsChartPenddingCnt = 0;
 
-        var repsChartAvailablePer= 0;
-        var repsChartUnAvailablePer = 0;
+        var repsChartRunningPer = 0;
+        var repsChartFailedPer = 0;
+        var repsChartSucceededPer= 0;
+        var repsChartPenddingPer = 0;
 
-        // var devItems = gDevList.items;
-        // var devListLength = devItems.length;
-        //
-        // var podsItems = gPodsList.items;
-        // var podsListLength = podsItems.length;
-        //
-        // var gDevListString = JSON.stringify(gDevList);
-        //
-        // for (var i = 0; i < podsListLength; i++) {
-        //     var podsStatus = podsItems[i].status.phase;
-        //     var podsLabelsApp = podsItems[i].metadata.labels.app;
-        //     var podsLabelsTempHash = podsItems[i].metadata.labels["pod-template-hash"];
-        //
-        //     var labels = '"template":{"metadata":{"labels":{"app":"'+podsLabelsApp+'"}';
-        //
-        //     if(podsStatus.indexOf("Running") > -1) {
-        //         podsChartRunningCnt = podsChartRunningCnt + 1;
-        //         var re = new RegExp(labels,"g");
-        //         devChartRunningCnt = devChartRunningCnt + (gDevListString.match(re) || []).length;
-        //
-        //         //TODO succeded, pendding 있나?
-        //     } else {
-        //         podsChartFailedCnt = podsChartFailedCnt + 1;
-        //         var re = new RegExp(labels,"g");
-        //         devChartFailedCnt = devChartFailedCnt + (gDevListString.match(re) || []).length;
-        //     }
-        // }
 
-        // podsChartRunningPer = podsChartRunningCnt / podsListLength * 100;
-        // podsChartFailedPer = podsChartFailedCnt / podsListLength * 100;
-        // console.log("podsChartRunningPer : "+podsChartRunningPer);
-        // console.log("podsChartFailedPer : "+podsChartFailedPer);
+        var podStatuses = getPodStatuses();
+        var podsListLength = podStatuses.length;
+        var devListLength = gDevList.items.length;
+        var repsListLength = gReplicaSetList.items.length;
+        var statusMap = new Map();
+        var statusMap0 = new Map();
 
-        // devChartRunningPer = devChartRunningCnt / devListLength * 100;
-        // devChartFailedPer = devChartFailedCnt / devListLength * 100;
-        // console.log("devChartRunningPer : "+devChartRunningPer);
-        // console.log("devChartFailedPer : "+devChartFailedPer);
+        $.each(podStatuses, function (index, item) {
+            // console.log(item.name);
+            // console.log(item.status);
+            var repName = item.name.substring(0, item.name.lastIndexOf("-"));
+            // console.log(repName);
+            var depName = repName.substring(0, repName.lastIndexOf("-"));
+            // console.log(depName);
 
-        repsChartAvailableCnt = replicaSetAvailableReplicasCnt;
-        repsChartUnAvailableCnt = replicaSetReplicaTotalCtn - replicaSetAvailableReplicasCnt;
-        repsChartAvailablePer = repsChartAvailableCnt / replicaSetReplicaTotalCtn * 100;
-        repsChartUnAvailablePer = repsChartUnAvailableCnt / replicaSetReplicaTotalCtn * 100;
-        console.log("repsChartAvailablePer : "+repsChartAvailablePer);
-        console.log("repsChartUnAvailablePer : "+repsChartUnAvailablePer);
+            if(item.status.indexOf("Running") > -1) {
+                podsChartRunningCnt += 1;
+                statusMap0.set(repName, "Running");
+                statusMap.set(depName, "Running");
+            } else if (item.status.indexOf("Failed") > -1) {
+                podsChartFailedCnt += 1;
+                statusMap0.set(repName, "Failed");
+                statusMap.set(depName, "Failed");
+            } else if (item.status.indexOf("Pending") > -1) {
+                podsChartPenddingCnt += 1;
+                statusMap0.set(repName, "Pending");
+                statusMap.set(depName, "Pending");
+            } else if (item.status.indexOf("Succeeded") > -1) {
+                podsChartSucceededCnt += 1;
+                statusMap0.set(repName, "Succeeded");
+                statusMap.set(depName, "Succeeded");
+            }
+        });
+
+        $.each(gDevList.items, function (index, item) {
+            if(statusMap.get(item.metadata.name) != null && statusMap.get(item.metadata.name) != "") {
+                var devStatus = statusMap.get(item.metadata.name);
+                if(devStatus.indexOf("Running") > -1) {
+                    devChartRunningCnt += 1;
+                } else if (devStatus.indexOf("Failed") > -1) {
+                    devChartFailedCnt += 1;
+                } else if (devStatus.indexOf("Pending") > -1) {
+                    devChartPenddingCnt += 1;
+                } else if (devStatus.indexOf("Succeeded") > -1) {
+                    devChartSucceededCnt += 1;
+                } else {
+                    devChartRunningCnt += 1;
+                }
+            } else {
+                devChartRunningCnt += 1;
+            }
+        });
+
+        $.each(gReplicaSetList.items, function (index, item) {
+            if(statusMap0.get(item.metadata.name) != null && statusMap0.get(item.metadata.name) != "") {
+                var repsStatus = statusMap0.get(item.metadata.name);
+                if(repsStatus.indexOf("Running") > -1) {
+                    repsChartRunningCnt += 1;
+                } else if (repsStatus.indexOf("Failed") > -1) {
+                    repsChartFailedCnt += 1;
+                } else if (repsStatus.indexOf("Pending") > -1) {
+                    repsChartPenddingCnt += 1;
+                } else if (repsStatus.indexOf("Succeeded") > -1) {
+                    repsChartSucceededCnt += 1;
+                } else {
+                    repsChartRunningCnt += 1;
+                }
+            } else {
+                repsChartRunningCnt += 1;
+            }
+        });
+
+        podsChartRunningPer = podsChartRunningCnt / podsListLength * 100;
+        podsChartFailedPer = podsChartFailedCnt / podsListLength * 100;
+        podsChartPenddingPer = podsChartPenddingCnt / podsListLength * 100;
+        podsChartSucceededPer = podsChartSucceededCnt / podsListLength * 100;
+
+        devChartRunningPer = devChartRunningCnt / devListLength * 100;
+        devChartFailedPer = devChartFailedCnt / devListLength * 100;
+        devChartPenddingPer = devChartPenddingCnt / devListLength * 100;
+        devChartSucceededPer = devChartSucceededCnt / devListLength * 100;
+
+        repsChartRunningPer = repsChartRunningCnt / repsListLength * 100;
+        repsChartFailedPer = repsChartFailedCnt / repsListLength * 100;
+        repsChartPenddingPer = repsChartPenddingCnt / repsListLength * 100;
+        repsChartSucceededPer = repsChartSucceededCnt / repsListLength * 100;
 
         // 도넛차트
         var pieColors = ['#3076b2', '#85c014', '#f01108' , '#333440'];
@@ -516,7 +560,7 @@
             plotOptions: {
                 pie: {
                     innerSize: 110,
-                    colors : ['#3076b2', '#f01108'],
+                    colors : pieColors,
                     dataLabels: {
                         enabled: true,
                         format: '{point.percentage:.0f} %',
@@ -535,8 +579,10 @@
             },
             series: [{
                 data: [
-                    ['Available', repsChartAvailablePer],
-                    ['UnAvailable', repsChartUnAvailablePer]
+                    ['Succeeded', repsChartSucceededPer],
+                    ['Running', repsChartRunningPer],
+                    ['Failed', repsChartFailedPer],
+                    ['Pendding', repsChartPenddingPer]
                 ]
             }],
             credits: { // logo hide
