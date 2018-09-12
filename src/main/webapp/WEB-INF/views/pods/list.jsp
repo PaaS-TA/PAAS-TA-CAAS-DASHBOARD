@@ -10,9 +10,9 @@
 <div class="sortable_wrap">
     <div class="sortable_top">
         <p>Pods</p>
-        <ul class="colright_btn">
+        <ul id="pod-list-search-form" class="colright_btn">
             <li>
-                <input type="text" id="table-search-01" name="" class="table-search" placeholder="Pod name" onkeypress="if (event.keyCode === 13) { setPodsListWithFilter(this.value); }"/>
+                <input type="text" id="table-search-01" name="table-search" class="table-search" placeholder="Pod name" onkeypress="if (event.keyCode === 13) { setPodsListWithFilter(this.value); }"/>
                 <button name="button" class="btn table-search-on" type="button">
                     <i class="fas fa-search"></i>
                 </button>
@@ -57,6 +57,10 @@
     var getPodListUsingRequestURL = function (reqUrl) {
         procCallAjax(reqUrl, "GET", null, null, callbackGetPodList);
     };
+
+    var disableSearchPodList = function () {
+        $('#pod-list-search-form').remove();
+    }
 
     var getPodStatus = function (podStatus) {
         /*

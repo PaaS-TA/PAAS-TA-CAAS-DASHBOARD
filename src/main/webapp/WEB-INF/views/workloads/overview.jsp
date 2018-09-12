@@ -214,6 +214,7 @@
     // GET LIST
     var getPodsList = function() {
         viewLoading('show');
+        disableSearchPodList();
         var reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods";
         getPodListUsingRequestURL(reqUrl);
         viewLoading('hide');
