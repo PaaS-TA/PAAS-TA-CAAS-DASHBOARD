@@ -74,36 +74,7 @@
             <!-- Details 끝 -->
             <!-- Pods 시작 -->
             <li class="cluster_third_box">
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Pods</p>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL" id="resultTableForPods">
-                            <colgroup>
-                                <col style='width:auto;'>
-                                <col style='width:15%;'>
-                                <col style='width:15%;'>
-                                <col style='width:8%;'>
-                                <col style='width:8%;'>
-                                <col style='width:20%;'>
-                            </colgroup>
-                            <thead>
-                            <tr id="noResultAreaForPods" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Pod가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderAreaForPods">
-                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Namespace</td>
-                                <td>Node</td>
-                                <td>Status</td>
-                                <td>Restarts</td>
-                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
-                            </tr>
-                            </thead>
-                            <tbody id="resultAreaForPods">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <jsp:include page="../pods/list.jsp" flush="true"/>
             </li>
             <!-- Pods 끝 -->
             <!-- Services 시작 -->
@@ -168,9 +139,9 @@
         var annotations         = JSON.stringify(data.metadata.annotations).replace(/["{}]/g, '').replace(/:/g, '=');
         var creationTimestamp   = data.metadata.creationTimestamp;
         var selector            = procSetSelector(data.spec.selector.matchLabels);
-        var replicas            = data.status.replicas+" / "+data.status.replicas;   //  TOBE ::  current / desired
+        //var replicas            = data.status.replicas+" / "+data.status.replicas;   //  TOBE ::  current / desired
         var images              = new Array;
-        var deployment          = "-"; // TODO :: label selector로 deployment 조회 및 링크
+        //var deployment          = "";
 
         var containers = data.spec.template.spec.containers;
         for(var i=0; i < containers.length; i++){
@@ -184,70 +155,105 @@
         $('#resultCreationTimestamp').html(creationTimestamp);
         $('#resultSelector').html(createSpans(selector));
         $('#resultImage').html(images.join(","));
-        $('#resultPods').html(replicas);
-        $('#resultDeployment').html(deployment);
+        //$('#resultPods').html(replicas);
+        //$('#resultDeployment').html(deployment);
 
+        getDeploymentsInfo(selector);
         getDetailForPodsList(selector);
         getServices(data.metadata.labels);
     };
 
+    // GET DEPLOYMENTS INFO
+    var getDeploymentsInfo = function(selector) {
+
+        if(selector["pod-template-hash"] !== undefined){
+            delete selector["pod-template-hash"];
+        }
+
+        selector = procSetSelector(selector);
+
+        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/deployments/resource/" + selector;
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsInfo);
+    };
+
+    // CALLBACK
+    var callbackGetDeploymentsInfo = function(data) {
+
+        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+
+        var deploymentsInfo;
+
+        if(data.items.length > 0){
+
+            var deploymentsName = data.items[0].metadata.name;
+
+            console.log("deploymentsName:::"+deploymentsName);
+                deploymentsInfo = "<a href='/caas/workloads/deployments/"+deploymentsName+"'>"+deploymentsName+"</a>";
+        }else{
+            deploymentsInfo = "-";
+        }
+
+        $('#resultDeployment').append(deploymentsInfo);
+
+    };
 
     // GET DETAIL FOR PODS LIST
     var getDetailForPodsList = function(selector) {
         var reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + namespace + "/pods/resource/" + selector;
-        procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPodsList);
+        //procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPodsList);
+        getPodListUsingRequestURL(reqUrl);
     };
 
 
     // CALLBACK
-    var callbackGetDetailForPodsList = function(data) {
+    <%--var callbackGetDetailForPodsList = function(data) {--%>
 
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        <%--if (RESULT_STATUS_FAIL === data.resultStatus) return false;--%>
 
-        var podName, itemsMetadata, itemsStatus;
+        <%--var podName, itemsMetadata, itemsStatus;--%>
 
-        var items = data.items;
-        var listLength = items.length;
-        var htmlString = [];
+        <%--var items = data.items;--%>
+        <%--var listLength = items.length;--%>
+        <%--var htmlString = [];--%>
 
-        var resultArea       = $('#resultAreaForPods');
-        var resultHeaderArea = $('#resultHeaderAreaForPods');
-        var noResultArea     = $('#noResultAreaForPods');
-        var resultTable      = $('#resultTableForPods');
+        <%--var resultArea       = $('#resultAreaForPods');--%>
+        <%--var resultHeaderArea = $('#resultHeaderAreaForPods');--%>
+        <%--var noResultArea     = $('#noResultAreaForPods');--%>
+        <%--var resultTable      = $('#resultTableForPods');--%>
 
-        for (var i = 0; i < listLength; i++) {
-            podName = items[i].metadata.name;
+        <%--for (var i = 0; i < listLength; i++) {--%>
+            <%--podName = items[i].metadata.name;--%>
 
-            itemsMetadata = items[i].metadata;
-            itemsStatus = items[i].status;
+            <%--itemsMetadata = items[i].metadata;--%>
+            <%--itemsStatus = items[i].status;--%>
 
-            htmlString.push(
-                    "<tr>"
-                    + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/pods/" + items[i].metadata.name + "\");'>" + items[i].metadata.name + "</a>"
-                    + "</td>"
-                    + "<td>" + itemsMetadata.namespace + "</td>"
-                    + "<td>" + items[i].spec.nodeName + "</td>"
-                    + "<td>" + itemsStatus.phase + "</td>"
-                    + "<td>" + itemsStatus.containerStatuses[0].restartCount + "</td>"
-                    + "<td>" + itemsMetadata.creationTimestamp + "</td>"
-                    + "</tr>");
-        }
+            <%--htmlString.push(--%>
+                    <%--"<tr>"--%>
+                    <%--+ "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "--%>
+                    <%--+ "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/pods/" + items[i].metadata.name + "\");'>" + items[i].metadata.name + "</a>"--%>
+                    <%--+ "</td>"--%>
+                    <%--+ "<td>" + itemsMetadata.namespace + "</td>"--%>
+                    <%--+ "<td>" + items[i].spec.nodeName + "</td>"--%>
+                    <%--+ "<td>" + itemsStatus.phase + "</td>"--%>
+                    <%--+ "<td>" + itemsStatus.containerStatuses[0].restartCount + "</td>"--%>
+                    <%--+ "<td>" + itemsMetadata.creationTimestamp + "</td>"--%>
+                    <%--+ "</tr>");--%>
+        <%--}--%>
 
-        if (listLength < 1) {
-            resultHeaderArea.hide();
-            resultArea.hide();
-            noResultArea.show();
-        } else {
-            noResultArea.hide();
-            resultHeaderArea.show();
-            resultArea.show();
-            resultArea.html(htmlString);
-            resultTable.tablesorter();
-            resultTable.trigger("update");
-        }
+        <%--if (listLength < 1) {--%>
+            <%--resultHeaderArea.hide();--%>
+            <%--resultArea.hide();--%>
+            <%--noResultArea.show();--%>
+        <%--} else {--%>
+            <%--noResultArea.hide();--%>
+            <%--resultHeaderArea.show();--%>
+            <%--resultArea.show();--%>
+            <%--resultArea.html(htmlString);--%>
+            <%--resultTable.tablesorter();--%>
+            <%--resultTable.trigger("update");--%>
+        <%--}--%>
 
-    };
+    <%--};--%>
 
     // GET SERVICE LIST
     var getServices = function(selector) {

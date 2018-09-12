@@ -128,7 +128,13 @@
             var totalPods = spec.replicas;
             var runningPods = totalPods - status.unavailableReplicas;
             // var failPods = _status.unavailableReplicas;
-            var images = spec.images;
+            var images = new Array;
+            var containers = itemList.spec.template.spec.containers;
+
+            for(var i=0; i < containers.length; i++){
+                images.push(containers[i].image);
+            }
+
             // console.log("야야야 ", _status);
             resultArea.append('<tr>' +
                                     '<td>' +
@@ -140,7 +146,7 @@
                                     '<td>' + createSpans(labels, "true") + '</td>' +
                                     '<td>' + runningPods +" / " + totalPods + '</td>' +
                                     '<td>' + creationTimestamp + '</td>' +
-                                    '<td>' + images + '</td>' +
+                                    '<td>' + images.join("</br>") + '</td>' +
                                 '</td>');
         });
 

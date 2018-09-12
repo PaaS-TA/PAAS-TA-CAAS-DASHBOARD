@@ -11,156 +11,10 @@
 
 <div class="content">
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span class="resultServiceName"> - </span></h1>
-    <div class="cluster_tabs clearfix">
-        <ul>
-            <li name="tab01" class="cluster_tabs_on custom_cursor_default">Details</li>
-            <li name="tab02" class="cluster_tabs_right" onclick='movePage("events");'>Events</li>
-            <li name="tab03" class="cluster_tabs_right" onclick='movePage("yaml");'>YAML</li>
-        </ul>
-        <div class="cluster_tabs_line"></div>
-    </div>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Services Details 시작 -->
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT10">
-        <%--<ul class="maT30">--%>
-            <!-- 그래프 시작 -->
-            <%--<li class="cluster_first_box">--%>
-                <%--<div class="graph-legend-wrap clearfix">--%>
-                    <%--<ul class="graph-legend">--%>
-                        <%--<li rel="current" class="on">현재</li>--%>
-                        <%--<li rel="1h">1시간</li>--%>
-                        <%--<li rel="6h">6시간</li>--%>
-                        <%--<li rel="1d">1일</li>--%>
-                        <%--<li rel="7d">7일</li>--%>
-                        <%--<li rel="30d">30일</li>--%>
-                    <%--</ul>--%>
-                <%--</div>--%>
-
-                <%--TODO :: CHECK--%>
-                <%--<div class="custom-col-md-3">
-                    <div class="col-in col-in-bg" id="cpu">
-                        <dl>
-                            <dt class="tit">CPU
-                                <span class="pull-right rights">0.38</span>
-                            </dt>
-                            <dd><span>0.38</span><i>%</i><small> / 100%</small>
-                                <div class="pull-right">
-                                    <div class="icon_wrap">
-                                        <img alt="" src="<c:url value="/resources/images/custom-caas/cpu_ico.png"/>">
-                                    </div>
-                                    <div class="BG_wrap" style="top: -0.38%;">
-                                        <img alt="" src="<c:url value="/resources/images/custom-caas/ico_bg.png"/>">
-                                        <input id="cpuPer" value="20" title="">
-                                    </div>
-                                </div>
-                            </dd>
-                            <dt>
-                                <ul class="instance_ul">
-                                </ul>
-                            </dt>
-                        </dl>
-                    </div>
-                </div>
-                <div class="custom-col-md-3">
-                    <div class="col-in col-in-bg" id="memory">
-                        <dl>
-                            <dt class="tit">MEMORY
-                                <span class="pull-right rights">60</span>
-                            </dt>
-                            <dd>
-                                <span class="memS" id="memS1">512</span>
-                                <span class="memS" id="memS2" style="display:none;"><input class="instance_in" id="mem_in" style="font-size: 40px;" type="text" title=""></span>
-                                <i>M</i><small> / 최대 10G</small>
-                                <div class="pull-right">
-                                    <div class="icon_wrap">
-                                        <img alt="" src="<c:url value="/resources/images/custom-caas/memory_ico.png"/>">
-                                    </div>
-                                    <div class="BG_wrap" style="top: -60%;">
-                                        <img alt="" src="<c:url value="/resources/images/custom-caas/ico_bg.png"/>">
-                                        <input id="memoryPer" value="40" title="">
-                                    </div>
-                                </div>
-                            </dd>
-                            <dt>
-                                <ul class="instance_ul">
-                                </ul>
-                            </dt>
-                        </dl>
-                    </div>
-                </div>
-                <div class="custom-col-md-3">
-                    <div class="col-in col-in-bg" id="disk">
-                        <dl>
-                            <dt class="tit">DISK
-                                <span class="pull-right rights">15</span>
-                            </dt>
-                            <dd>
-                                <span class="diskS" id="diskS1">1</span>
-                                <span class="diskS" id="diskS2" style="display:none;"><input class="instance_in" id="disk_in" style="font-size: 40px;" type="text" title=""></span>
-                                <i>G</i><small> / 최대 10G</small>
-                                <div class="pull-right">
-                                    <div class="icon_wrap">
-                                        <img alt="" src="<c:url value="/resources/images/custom-caas/disk_ico.png"/>">
-                                    </div>
-                                    <div class="BG_wrap" style="top: -15%;">
-                                        <img alt="" src="<c:url value="/resources/images/custom-caas/ico_bg.png"/>">
-                                        <input id="diskPer" value="60" title="">
-                                    </div>
-                                </div>
-                            </dd>
-                            <dt>
-                                <ul class="instance_ul">
-                                </ul>
-                            </dt>
-                        </dl>
-                    </div>
-                </div>--%>
-
-                <%--<div class="graph-nodes">--%>
-                    <%--<div class="graph-tit-wrap">--%>
-                        <%--<p class="graph-tit">--%>
-                            <%--CPU<br/>--%>
-                            <%--현재 사용량--%>
-                        <%--</p>--%>
-                        <%--<p class="graph-rate tit-color1">--%>
-                            <%--<span>60</span>%--%>
-                        <%--</p>--%>
-                    <%--</div>--%>
-                    <%--<div class="graph-cnt">--%>
-                        <%--<div id="areachartcpu" style="min-width: 250px; height: 170px; margin: 0 auto"></div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <%--<div class="graph-nodes">--%>
-                    <%--<div class="graph-tit-wrap">--%>
-                        <%--<p class="graph-tit">--%>
-                            <%--메모리<br/>--%>
-                            <%--현재 사용량--%>
-                        <%--</p>--%>
-                        <%--<p class="graph-rate tit-color2">--%>
-                            <%--<span>60</span>%--%>
-                        <%--</p>--%>
-                    <%--</div>--%>
-                    <%--<div class="graph-cnt">--%>
-                        <%--<div id="areachartmem" style="min-width: 250px; height: 170px; margin: 0 auto"></div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-
-                <%--<div class="graph-nodes">--%>
-                    <%--<div class="graph-tit-wrap">--%>
-                        <%--<p class="graph-tit">--%>
-                            <%--디스크<br/>--%>
-                            <%--현재 사용량--%>
-                        <%--</p>--%>
-                        <%--<p class="graph-rate tit-color3">--%>
-                            <%--<span>60</span>%--%>
-                        <%--</p>--%>
-                    <%--</div>--%>
-                    <%--<div class="graph-cnt">--%>
-                        <%--<div id="areachartdisk" style="min-width: 250px; height: 170px; margin: 0 auto"></div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</li>--%>
-            <!-- 그래프 끝 -->
             <li class="cluster_second_box">
                 <div class="sortable_wrap">
                     <div class="sortable_top">
@@ -211,47 +65,7 @@
                 </div>
             </li>
             <li class="cluster_third_box">
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Pods</p>
-                        <ul class="colright_btn">
-                            <li>
-                                <input type="text" id="table-search-01" name="" class="table-search" placeholder="search" onkeypress="if(event.keyCode===13) {setPodsList(this.value);}" />
-                                <button name="button" class="btn table-search-on" type="button">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL service-lh" id="resultTable">
-                            <colgroup>
-                                <col style='width:auto;'>
-                                <col style='width:15%;'>
-                                <col style='width:15%;'>
-                                <col style='width:8%;'>
-                                <col style='width:8%;'>
-                                <col style='width:20%;'>
-                            </colgroup>
-                            <thead>
-                            <tr id="noResultAreaForPods"><td colspan='6'><p class='service_p'>조회 된 Pod가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderAreaForPods" style="display: none;">
-                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Namespace</td>
-                                <td>Node</td>
-                                <td>Status</td>
-                                <td>Restarts</td>
-                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
-                            </tr>
-                            </thead>
-                            <tbody id="resultAreaForPods">
-                            <tr>
-                                <td colspan="6"> - </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <jsp:include page="../pods/list.jsp" flush="true"/>
             </li>
             <li class="cluster_fourth_box maB50">
                 <div class="sortable_wrap">
@@ -267,7 +81,8 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr>
+                            <tr id="noResultAreaForEndpoints"><td colspan='4'><p class='service_p'>조회 된 Endpoints가 없습니다.</p></td></tr>
+                            <tr id="resultHeaderAreaForEndpoints" style="display: none;">
                                 <td>Host</td>
                                 <td>Ports (Name, Port, Protocol)</td>
                                 <td>Node</td>
@@ -287,44 +102,28 @@
     </div>
     <!-- Services Details 끝 -->
 </div>
-<%--TODO--%>
-<!-- modal -->
-
-
 <input type="hidden" id="requestServiceName" name="requestServiceName" value="<c:out value='${serviceName}' default='' />" />
 
 
-<%--TODO : REMOVE--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
-
 <script type="text/javascript">
-    // ON LOAD
-    $(document.body).ready(function () {
-        // createChart("current", "cpu");
-        // createChart("current", "mem");
-        // createChart("current", "disk");
-    });
-</script>
-
-
-<script type="text/javascript">
-
-    // TODO :: REMOVE
-    var tempNamespace = "<%= Constants.NAMESPACE_NAME %>";
 
     // GET DETAIL
     var getDetail = function() {
         viewLoading('show');
 
-        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/services/" + document.getElementById('requestServiceName').value;
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_DETAIL %>"
+            .replace("{namespace:.+}", NAME_SPACE)
+            .replace("{serviceName:.+}", document.getElementById('requestServiceName').value);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
 
 
     // CALLBACK
     var callbackGetDetail = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            return false;
+        }
 
         var selector,
             specPortsList,
@@ -332,9 +131,11 @@
 
         var serviceName = data.metadata.name;
         var namespace = data.metadata.namespace;
+        var namespaceHtml = "<a href='javascript:void(0);'data-toggle='tooltip' title='" + namespace + "' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + namespace + "\");'>" + namespace  + "</a>";
         var endpointsPreString = serviceName + "." + namespace + ":";
         var nodePort = data.spec.ports.nodePort;
         var endpoints = "";
+        var selectorString;
 
         if (nodePort === undefined) {
             nodePort = "0";
@@ -349,107 +150,47 @@
         }
 
         selector = procSetSelector(data.spec.selector);
+        selectorString = selector;
+
+        if (selector === false) {
+            selectorString = '-';
+        }
 
         $('.resultServiceName').html(serviceName);
-        $('#resultNamespace').html(namespace);
+        $('#resultNamespace').html(namespaceHtml);
         $('#resultCreationTimestamp').html(data.metadata.creationTimestamp);
-        $('#resultLabelSelector').html(selector);
+        $('#resultLabelSelector').html(selectorString);
         $('#resultType').html(data.spec.type);
         $('#resultSessionAffinity').html(data.spec.sessionAffinity);
         $('#resultClusterIp').html(data.spec.clusterIP);
         $('#InternalEndpointsArea').html(endpoints);
 
-        getDetailForPodsList(selector);
-    };
+        viewLoading('hide');
 
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE %>"
+            .replace("{namespace:.+}", NAME_SPACE)
+            .replace("{serviceName:.+}", "_all")
+            .replace("{selector:.+}", selector);
 
-    // GET DETAIL FOR PODS LIST
-    var getDetailForPodsList = function(selector) {
-        // TODO :: CHECK GETTING PODS LIST URL
-        var reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + tempNamespace + "/pods/service/_all/" + selector;
-        procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPodsList);
-    };
-
-
-    // CALLBACK
-    var callbackGetDetailForPodsList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) {
-            viewLoading('hide');
-            return false;
-        }
-
-        gList = data;
-        setPodsList("");
-    };
-
-
-    // SET PODS LIST
-    var setPodsList = function(searchKeyword) {
-        var podName,
-            itemsMetadata,
-            itemsStatus;
-
-        var items = gList.items;
-        var listLength = items.length;
-        var checkListCount = 0;
-        var htmlString = [];
-
-        var resultArea = $('#resultAreaForPods');
-        var resultHeaderArea = $('#resultHeaderAreaForPods');
-        var noResultArea = $('#noResultAreaForPods');
-        var resultTable = $('#resultTable');
-
-        for (var i = 0; i < listLength; i++) {
-            podName = items[i].metadata.name;
-
-            if ((nvl(searchKeyword) === "") || podName.indexOf(searchKeyword) > -1) {
-                itemsMetadata = items[i].metadata;
-                itemsStatus = items[i].status;
-
-                // TODO :: SET LINK TO PODS DETAIL PAGE
-                htmlString.push(
-                    "<tr>"
-                    + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/pods/" + podName + "\");'>" + podName + "</a>"
-                    + "</td>"
-                    + "<td>" + itemsMetadata.namespace + "</td>"
-                    + "<td>" + items[i].spec.nodeName + "</td>"
-                    + "<td>" + itemsStatus.phase + "</td>"
-                    + "<td>" + itemsStatus.containerStatuses[0].restartCount + "</td>"
-                    + "<td>" + itemsMetadata.creationTimestamp + "</td>"
-                    + "</tr>");
-
-                checkListCount++;
-            }
-        }
-
-        if (listLength < 1 || checkListCount < 1) {
-            resultHeaderArea.hide();
-            resultArea.hide();
-            noResultArea.show();
-        } else {
-            noResultArea.hide();
-            resultHeaderArea.show();
-            resultArea.show();
-            resultArea.html(htmlString);
-            resultTable.tablesorter();
-            resultTable.trigger("update");
-        }
-
+        getPodListUsingRequestURL(reqUrl);
         getDetailForEndpoints();
     };
 
 
     // GET DETAIL FOR ENDPOINTS
     var getDetailForEndpoints = function() {
-        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/endpoints/" + document.getElementById('requestServiceName').value;
+        viewLoading('show');
+
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_ENDPOINTS_DETAIL %>"
+            .replace("{namespace:.+}", NAME_SPACE)
+            .replace("{serviceName:.+}", document.getElementById('requestServiceName').value);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForEndpoints);
     };
 
 
     // CALLBACK
     var callbackGetDetailForEndpoints = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
             return false;
         }
@@ -461,47 +202,79 @@
             nodeName;
 
         var items = data.subsets;
-        var subsetsListLength = items.length;
+        var subsetsListLength = 0;
         var portsString = '';
         var separatorString = ", ";
+        var checkCount = 0;
         var nodeNameList = [];
         var htmlString = [];
+
+        var resultArea = $('#resultAreaForEndpoints');
+        var resultHeaderArea = $('#resultHeaderAreaForEndpoints');
+        var noResultArea = $('#noResultAreaForEndpoints');
+
+        if (items === null) {
+            checkCount++;
+        } else {
+            subsetsListLength = items.length;
+        }
 
         for (var i = 0; i < subsetsListLength; i++) {
             addresses = items[i].addresses;
             ports = items[i].ports;
-            addressesListLength = addresses.length;
-            portsListLength = ports.length;
 
-            for (var j = 0; j < addressesListLength; j++) {
-                nodeName = addresses[j].nodeName;
+            if (addresses === null || ports === null ) {
+                checkCount++;
+            } else {
+                addressesListLength = addresses.length;
+                portsListLength = ports.length;
 
-                for (var k = 0; k < portsListLength; k++) {
-                    var portName =  ports[k].name;
-                    var portNameString =  "[unset]";
+                for (var j = 0; j < addressesListLength; j++) {
+                    nodeName = nvl(addresses[j].nodeName, '-');
 
-                    if (portName !== null) {
-                        portNameString = portName;
+                    for (var k = 0; k < portsListLength; k++) {
+                        var portName =  ports[k].name;
+                        var portNameString =  "[-]";
+
+                        if (portName !== null) {
+                            portNameString = portName;
+                        }
+
+                        portsString += '<p>' + portNameString + separatorString + ports[k].port + separatorString + ports[k].protocol + '</p>';
                     }
 
-                    portsString += '<p>' + portNameString + separatorString + ports[k].port + separatorString + ports[k].protocol + '</p>';
+                    htmlString.push(
+                        "<tr>"
+                            + "<td>" + addresses[j].ip + "</td>"
+                            + "<td>" + portsString + "</td>"
+                            + "<td>"
+                            + "<a href='javascript:void(0);'data-toggle='tooltip' title='" + nodeName+ "' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + nodeName + "/summary\");'>" + nodeName + "</a>"
+                            + "</td>"
+                            + "<td><span class='" + nodeName + "'>true</span></td>"
+                            + "</tr>");
+
+                    portsString = '';
+
+                    if (nodeName !== '-') {
+                        nodeNameList.push(nodeName)
+                    }
                 }
-
-                htmlString.push(
-                    "<tr>"
-                    + "<td>" + addresses[j].ip + "</td>"
-                    + "<td>" + portsString + "</td>"
-                    + "<td>" + nodeName + "</td>"
-                    + "<td><span class='" + nodeName + "'></span></td>"
-                    + "</tr>");
-
-                portsString = '';
-                nodeNameList.push(nodeName)
             }
         }
 
-        $('#resultAreaForEndpoints').html(htmlString);
-        getDetailForNodes(nodeNameList);
+        if (subsetsListLength < 1 || checkCount > 0) {
+            resultHeaderArea.hide();
+            resultArea.hide();
+            noResultArea.show();
+        } else {
+            noResultArea.hide();
+            resultHeaderArea.show();
+            resultArea.show();
+            resultArea.html(htmlString);
+            getDetailForNodes(nodeNameList);
+        }
+
+        viewLoading('hide');
     };
 
 
@@ -511,15 +284,19 @@
         var reqUrl;
 
         for (var i = 0; i < listLength; i++) {
-            reqUrl = "<%= Constants.API_URL %>/nodes/" + nodeNameList[i];
-            procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForNodes);
+            if (nodeNameList[i] !== '-') {
+                viewLoading('show');
+
+                reqUrl = "<%= Constants.API_URL %>/nodes/" + nodeNameList[i];
+                procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForNodes);
+            }
         }
     };
 
 
     // CALLBACK
     var callbackGetDetailForNodes = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
             return false;
         }
@@ -534,18 +311,6 @@
         }
 
         viewLoading('hide');
-    };
-
-
-    // MOVE PAGE
-    var movePage = function(requestPage) {
-        var reqUrl = '<%= Constants.CAAS_BASE_URL %>/services/' + document.getElementById('requestServiceName').value;
-
-        if (requestPage.indexOf('detail') < 0) {
-            reqUrl += '/' + requestPage;
-        }
-
-        procMovePage(reqUrl);
     };
 
 

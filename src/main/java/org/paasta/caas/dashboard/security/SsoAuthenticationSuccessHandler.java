@@ -1,5 +1,6 @@
 package org.paasta.caas.dashboard.security;
 
+import org.paasta.caas.dashboard.common.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -44,7 +45,9 @@ public class SsoAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
             LOGGER.info(request.getSession().getAttribute("sessionRedirectUrl").toString());
             String reUrl = request.getSession().getAttribute("sessionRedirectUrl").toString();
             if(request.getSession().getAttribute("sessionRedirectUrl").toString().contains("?serviceInstanceId=")) {
-                reUrl = "/caas/clusters/overview";
+                /*TODO :: MODIFY OR REMOVE*/
+//                reUrl = "/caas/clusters/overview";
+                reUrl = Constants.CAAS_INIT_URI;
             }
             sessionRedirectUrl = reUrl;
         }

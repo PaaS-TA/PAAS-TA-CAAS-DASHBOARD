@@ -11,14 +11,7 @@
 
 <div class="content">
     <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span class="resultServiceName"><c:out value='${serviceName}' default='' /></span></h1>
-    <div class="cluster_tabs clearfix">
-        <ul>
-            <li name="tab01" class="cluster_tabs_left" onclick='movePage("detail");'>Details</li>
-            <li name="tab02" class="cluster_tabs_on custom_cursor_default">Events</li>
-            <li name="tab03" class="cluster_tabs_right" onclick='movePage("yaml");'>YAML</li>
-        </ul>
-        <div class="cluster_tabs_line"></div>
-    </div>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Services Events 시작-->
     <div class="cluster_content02 row two_line two_view harf_view custom_display_block">
         <ul class="maT30">
@@ -61,45 +54,28 @@
     </div>
     <!-- Services Events 끝 -->
 </div>
-<%--TODO--%>
-<!-- modal -->
-
-
 <input type="hidden" id="requestServiceName" name="requestServiceName" value="<c:out value='${serviceName}' default='' />" />
 
 
-<%--TODO : REMOVE--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
-
 <script type="text/javascript">
-    // ON LOAD
-    $(document.body).ready(function() {
-        // createChart("current", "cpu");
-        // createChart("current", "mem");
-        // createChart("current", "disk");
-    });
-</script>
-
-
-<script type="text/javascript">
-
-    // TODO :: REMOVE
-    var tempNamespace = "<%= Constants.NAMESPACE_NAME %>";
-
 
     // GET LIST
     var getList = function() {
         viewLoading('show');
 
-        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + tempNamespace + "/events/resource/" + document.getElementById('requestServiceName').value;
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
+            .replace("{namespace:.+}", NAME_SPACE)
+            .replace("{resourceName:.+}", document.getElementById('requestServiceName').value);
         procCallAjax(reqUrl, "GET", null, null, callbackGetList);
     };
 
 
     // CALLBACK
     var callbackGetList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            return false;
+        }
 
         var resultArea = $('#resultArea');
         var resultHeaderArea = $('#resultHeaderArea');
@@ -114,7 +90,7 @@
                 "<tr>"
                 + "<td>" + items[i].message + "</td>"
                 + "<td>" + items[i].source.component + " " + nvl(items[i].source.host) + "</td>"
-                + "<td>" + nvl2(items[i].involvedObject.fieldPath, "-") + "</td>"
+                + "<td>" + nvl(items[i].involvedObject.fieldPath, "-") + "</td>"
                 + "<td>" + items[i].count + "</td>"
                 + "<td>" + items[i].firstTimestamp + "</td>"
                 + "<td>" + items[i].lastTimestamp + "</td>"
@@ -133,18 +109,6 @@
         }
 
         viewLoading('hide');
-    };
-
-
-    // MOVE PAGE
-    var movePage = function(requestPage) {
-        var reqUrl = '<%= Constants.CAAS_BASE_URL %>/services/' + document.getElementById('requestServiceName').value;
-
-        if (requestPage.indexOf('detail') < 0) {
-            reqUrl += '/' + requestPage;
-        }
-
-        procMovePage(reqUrl);
     };
 
 

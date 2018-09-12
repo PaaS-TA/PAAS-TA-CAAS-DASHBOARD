@@ -10,21 +10,21 @@
     <div class="scroll_style">
         <ul class="nav_1d caas_nav">
             <%--<li class="cur">--%>
-            <li id="left-menu-clusters" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/clusters/overview');">
+            <li id="left-menu-intro" onclick="procMovePage('<%= Constants.CAAS_INIT_URI %>');">
                 <dl>
                     <dt>
-                        <div id="lnbimg16" class="lefticos">
+                        <div id="lnbimg19" class="lefticos">
                         </div>
                     </dt>
                     <dd>
                         <p>
-                            Clusters
+                            Intro
                         </p>
                     </dd>
                 </dl>
             </li>
             <%--<li onclick="location.href='caas_workloads.html'">--%>
-            <li id="left-menu-workloads" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/workloads/overview');">
+            <li id="left-menu-workloads" onclick="procMovePage('<%= Constants.URI_WORKLOAD_OVERVIEW %>');">
                 <dl>
                     <dt>
                         <div id="lnbimg17" class="">
@@ -39,7 +39,7 @@
                 </dl>
             </li>
             <%--<li onclick="location.href='caas_services.html'">--%>
-            <li id="left-menu-services" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/services');">
+            <li id="left-menu-services" onclick="procMovePage('<%= Constants.URI_SERVICES %>');">
                 <dl>
                     <dt>
                         <div id="lnbimg18" class="">
@@ -82,54 +82,3 @@
         </ul>
     </div>
 </nav>
-
-
-<%--TODO :: REMOVE--%>
-<%--<div>Left Menu--%>
-<%--<br>--%>
-<%--<br>--%>
-<%--<a href="javascript:void(0);" onclick="procMovePage('/');">[ HOME ]</a>--%>
-<%--<br>--%>
-<%--<br>--%>
-<%--</div>--%>
-<%--<div>--%>
-<%--조현구 전임님 ::--%>
-<%--<ul>--%>
-<%--<li><a href="javascript:void(0);" onclick="procMovePage('/nodes');">[ NODES ]</a></li>--%>
-<%--<li><a href="javascript:void(0);" onclick="procMovePage('/workload/deployments');">[ DEPLOYMENTS ]</a></li>--%>
-<%--<li><a href="javascript:void(0);" onclick="procMovePage('/workload/pods');">[ PODS ]</a></li>--%>
-<%--</ul>--%>
-<%--</div>--%>
-<%--<div>--%>
-<%--진현리 전임님 ::--%>
-<%--<ul>--%>
-<%--<li><a href="javascript:void(0);" onclick="procMovePage('/users');">[ USERS ]</a></li>--%>
-<%--<li><a href="javascript:void(0);" onclick="procMovePage('/roles');">[ ROLE ]</a></li>--%>
-<%--</ul>--%>
-<%--</div>--%>
-<%--<div>--%>
-<%--박혜린 전임님 ::--%>
-<%--<ul>--%>
-<%--<li>Service broker</li>--%>
-<%--</ul>--%>
-<%--</div>--%>
-<%--<div>--%>
-<%--김도현 책임님 ::--%>
-<%--<ul>--%>
-<%--<li>SSO</li>--%>
-<%--</ul>--%>
-<%--</div>--%>
-<%--<div>--%>
-<%--최윤석 책임님 ::--%>
-<%--<ul>--%>
-<%--<li><a href="javascript:void(0);" onclick="procMovePage('/workload/replicasets');">[ REPLICASETS ]</a></li>--%>
-<%--<li><a href="javascript:void(0);" onclick="procMovePage('/cluster/persistentvolume');">[ PERSISTENT VOL ]</a></li>--%>
-<%--</ul>--%>
-<%--</div>--%>
-<%--<div>--%>
-<%--조형래 책임님 ::--%>
-<%--<ul>--%>
-<%--<li><a href="javascript:void(0);" onclick="procMovePage('/services');">[ SERVICES ]</a></li>--%>
-<%--<li><a href="javascript:void(0);" onclick="procMovePage('/cluster/namespaces');">[ NAMESPACES ]</a></li>--%>
-<%--</ul>--%>
-<%--</div>--%>

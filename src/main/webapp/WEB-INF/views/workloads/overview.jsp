@@ -80,39 +80,11 @@
             <!-- modal 끝 TODO :: 사용확인 후 삭제 -->
 
             <!-- Pods 시작 -->
-            <li class="cluster_third_box">
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Pods</p>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL service-lh" id="resultTableForPods">
-                            <colgroup>
-                                <col style='width:auto;'>
-                                <col style='width:15%;'>
-                                <col style='width:15%;'>
-                                <col style='width:8%;'>
-                                <col style='width:8%;'>
-                                <col style='width:20%;'>
-                            </colgroup>
-                            <thead>
-                            <tr id="noResultAreaForPods" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Pods가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderAreaForPods">
-                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTableForPods', this, '0')"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Namespace</td>
-                                <td>Node</td>
-                                <td>Status</td>
-                                <td>Restarts</td>
-                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTableForPods', this, '5')"><i class="fas fa-caret-down"></i></button></td>
-                            </tr>
-                            </thead>
-                            <tbody id="resultAreaForPods">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <li class="cluster_second_box">
+                <jsp:include page="../pods/list.jsp" flush="true"/>
             </li>
             <!-- Pods 끝 -->
+
             <!-- Replica Sets 시작 -->
             <li class="cluster_fourth_box maB50">
                 <div class="sortable_wrap">
@@ -156,12 +128,12 @@
 <script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
 <script type="text/javascript">
     var gDevList; // For Deployment List
-    var gPodsList; // For Pods List
     var gReplicaSetList; // For ReplicaSet List
 
     // ***** For Deployment *****
     // GET LIST
     var getDevList = function() {
+        viewLoading('show');
         //procCallAjax("/api/namespaces/" + NAME_SPACE + "/replicasets", "GET", null, null, callbackGetDevList);
         procCallAjax("/workloads/deployments/" + NAME_SPACE, "GET", null, null, callbackGetDevList);
     };
@@ -173,6 +145,7 @@
 
         gDevList = data;
         setDevList();
+        viewLoading('hide');
     };
 
 
@@ -187,24 +160,29 @@
 
         $.each(gDevList.items, function (index, itemList) {
             // get data
-            var _metadata = itemList.metadata;
-            var _spec = itemList.spec;
-            var _status = itemList.status;
+            var metadata = itemList.metadata;
+            var spec = itemList.spec;
+            var status = itemList.status;
 
-            var deployName = _metadata.name;
-            var namespace = _metadata.namespace;
-            var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');
+            var deployName = metadata.name;
+            var namespace = metadata.namespace;
+            var labels = stringifyJSON(metadata.labels).replace(/,/g, ', ');
             if (labels == null || labels == "null") {
                 labels = null;
             }
 
-            var creationTimestamp = _metadata.creationTimestamp;
+            var creationTimestamp = metadata.creationTimestamp;
 
             // Set replicas and total Pods are same.
-            var totalPods = _spec.replicas;
-            var runningPods = totalPods - _status.unavailableReplicas;
+            var totalPods = spec.replicas;
+            var runningPods = totalPods - status.unavailableReplicas;
             // var failPods = _status.unavailableReplicas;
-            var images = _spec.images;
+            var images = new Array;
+            var containers = spec.template.spec.containers;
+
+            for(var i=0; i < containers.length; i++){
+                images.push(containers[i].image);
+            }
 
             resultArea.append('<tr>' +
                     '<td><span class="green2"><i class="fas fa-check-circle"></i></span> ' +
@@ -214,7 +192,7 @@
                     '<td>' + createSpans(labels, "true") + '</td>' +
                     '<td>' + runningPods +" / " + totalPods + '</td>' +
                     '<td>' + creationTimestamp + '</td>' +
-                    '<td>' + images + '</td>' +
+                    '<td>' + images.join("<br>") + '</td>' +
                     '</td>');
         });
 
@@ -235,72 +213,16 @@
     // ***** For Pods *****
     // GET LIST
     var getPodsList = function() {
-        procCallAjax("<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods", "GET", null, null, callbackGetPodsList);
-    };
-
-
-    // CALLBACK
-    var callbackGetPodsList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-
-        gPodsList = data;
-        setPodsList();
-    };
-
-
-    // SET LIST
-    var setPodsList = function() {
-
-        var resultArea = $('#resultAreaForPods');
-        var resultHeaderArea = $('#resultHeaderAreaForPods');
-        var noResultArea = $('#noResultAreaForPods');
-        var resultTable = $('#resultTableForPods');
-
-        var items = gPodsList.items;
-        var listLength = items.length;
-        var htmlString = [];
-
-        for (var i = 0; i < listLength; i++) {
-            var podsName = items[i].metadata.name;
-            var containerStatuses;
-            if(items[i].status.containerStatuses == null) {
-                containerStatuses = "-";
-            } else {
-                containerStatuses = items[i].status.containerStatuses[0].restartCount;
-            }
-
-            htmlString.push(
-                    "<tr>"
-                    + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/pods/" + podsName + "\");'>" + podsName + "</a>"
-                    + "</td>"
-                    + "<td>" + items[i].metadata.namespace + "</td>"
-                    + "<td>" + nvl2(items[i].spec.nodeName, "-") + "</td>"
-                    + "<td>" + items[i].status.phase + "</td>"
-                    + "<td>" + containerStatuses + "</td>"
-                    + "<td>" + items[i].metadata.creationTimestamp + "</td>"
-                    + "</tr>");
-
-        }
-
-        if (listLength < 1) {
-            resultHeaderArea.hide();
-            resultArea.hide();
-            noResultArea.show();
-        } else {
-            noResultArea.hide();
-            resultHeaderArea.show();
-            resultArea.show();
-            resultArea.html(htmlString);
-            resultTable.tablesorter();
-            resultTable.trigger("update");
-        }
-
+        viewLoading('show');
+        var reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods";
+        getPodListUsingRequestURL(reqUrl);
+        viewLoading('hide');
     };
 
     // ***** For ReplicaSet *****
     // GET LIST
     var getReplicaSetList = function() {
+        viewLoading('show');
         procCallAjax("<%= Constants.API_URL %>/namespaces/" + NAME_SPACE + "/replicasets", "GET", null, null, callbackGetReplicaSetList);
     };
 
@@ -311,6 +233,7 @@
 
         gReplicaSetList = data;
         setReplicaSetList();
+        viewLoading('hide');
     };
 
 

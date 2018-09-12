@@ -32,7 +32,7 @@ public class DeploymentsController {
     }
 
     /**
-     * 메인페이지로 이동한다.
+     * Deployments 메인페이지 (리스트 페이지) 로 이동한다.
      *
      * @return ModelAndView(Spring 클래스)
      */
@@ -42,16 +42,31 @@ public class DeploymentsController {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
 
+    /**
+     * Deployments detail 페이지로 이동한다.
+     *
+     * @return ModelAndView(Spring 클래스)
+     */
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}")
     public ModelAndView getDashboardDetail(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/detail", new ModelAndView());
     }
 
+    /**
+     * Deployments detail events 페이지로 이동한다.
+     *
+     * @return ModelAndView(Spring 클래스)
+     */
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/events")
     public ModelAndView getDashboardEvent(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());
     }
 
+    /**
+     * Deployments detail yaml 페이지로 이동한다.
+     *
+     * @return ModelAndView(Spring 클래스)
+     */
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/yaml")
     public ModelAndView getDashboardYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/yaml", new ModelAndView());
@@ -79,5 +94,18 @@ public class DeploymentsController {
     public Deployments getDeployments(@PathVariable String namespace, @RequestParam Map<String, Object> params) {
         String deploymentName = params.get("name").toString();
         return deploymentsService.getDeployments(namespace, deploymentName);
+    }
+
+    /**
+     * deployments 목록을 조회한다. (Label Selector)
+     *
+     * @param namespace the namespace
+     * @param selector  the selector for filter
+     * @return the custom services list
+     */
+    @GetMapping(value = "/api/namespaces/{namespace}/deployments/resource/{selector}")
+    @ResponseBody
+    public DeploymentsList getDeploymentsListLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector) {
+        return deploymentsService.getDeploymentsListLabelSelector(namespace, selector);
     }
 }

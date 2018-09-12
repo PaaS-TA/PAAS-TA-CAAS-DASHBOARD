@@ -66,8 +66,13 @@ public class RolesService {
         return rolesList;
     }*/
 
-    // Session 로직 처리
-    public void setRolesList(User user){
+
+    /**
+     * 사용자가 처음 들어올 때 권한을 설정해준다.
+     *
+     * @param user
+     */
+    public void setRolesListFirst(User user){
         ObjectMapper mapper = new ObjectMapper();
         //RestTemplateService restTemplateService = new RestTemplateService()
         Users users = (Users) restTemplateService.send(Constants.TARGET_COMMON_API,"/users/serviceInstanceId/"+ user.getServiceInstanceId() + "/organizationGuid/" + user.getOrganizationGuid() + "/userId/" + user.getUsername(), HttpMethod.GET, null, Users.class);
@@ -79,6 +84,27 @@ public class RolesService {
         // users.getRoleSetCode()로 role_set_code 목록을 불러온다.
 
         List<Roles> rolesList = restTemplateService.send(Constants.TARGET_COMMON_API, "/roles/" + users.getRoleSetCode(), HttpMethod.GET, null, List.class);
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+        HttpSession session = request.getSession();
+
+        for(int index =0; index < rolesList.size(); index++){
+            Roles resultRole = mapper.convertValue(rolesList.get(index), Roles.class);
+            session.setAttribute("RS_" + (resultRole.getResourceCode()).toUpperCase() + "_" + (resultRole.getVerbCode()).toUpperCase(),"TRUE");
+            LOGGER.info("role set code는 :::: {}", resultRole.getCreated());
+        }
+    }
+
+
+    /**
+     * 권한이 변경되었을 때 변경된 권한 대로 세션을 다시 설정해준다.
+     *
+     * @param rsCode
+     */
+    public void setRolesListAfter(String rsCode){
+        ObjectMapper mapper = new ObjectMapper();
+
+        List<Roles> rolesList = restTemplateService.send(Constants.TARGET_COMMON_API, "/roles/" + rsCode, HttpMethod.GET, null, List.class);
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         HttpSession session = request.getSession();

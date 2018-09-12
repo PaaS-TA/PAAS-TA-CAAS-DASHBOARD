@@ -37,7 +37,9 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
         LOGGER.info("** Request URI - "+url);
 
         if (!url.contains("/common/error/unauthorized")) {
-            Pattern pattern = Pattern.compile("(/caas/clusters/overview/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
+            /*TODO :: MODIFY OR REMOVE*/
+//            Pattern pattern = Pattern.compile("(/caas/clusters/overview/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
+            Pattern pattern = Pattern.compile("(/caas/intro/overview/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
             Matcher matcher = pattern.matcher(url);
 
             LOGGER.info(":: Request Session..");
@@ -56,13 +58,17 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
                 }
             }
 
-            if (url.contains("/caas/clusters/overview/") && matcher.find()) {
+            /*TODO :: MODIFY OR REMOVE*/
+//            if (url.contains("/caas/clusters/overview/") && matcher.find()) {
+            if (url.contains(Constants.CAAS_INIT_URI + "/") && matcher.find()) {
                 LOGGER.info("in!!!!!!!!!!!!!!!!!!");
                 try {
                     SecurityContextHolder.clearContext();
 
                     String serviceInstanceId = request.getServletPath().split("/")[4];
-                    response.sendRedirect("/caas/clusters/overview?serviceInstanceId="+serviceInstanceId);
+                    /*TODO :: MODIFY OR REMOVE*/
+//                    response.sendRedirect("/caas/clusters/overview?serviceInstanceId="+serviceInstanceId);
+                    response.sendRedirect(Constants.CAAS_INIT_URI + "?serviceInstanceId="+serviceInstanceId);
                     return false;
                 } catch (Exception e) {
                     e.printStackTrace();

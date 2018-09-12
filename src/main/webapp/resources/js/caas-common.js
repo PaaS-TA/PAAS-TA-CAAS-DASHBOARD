@@ -103,32 +103,24 @@ var procSetSelector = function (requestMapString) {
 
 
 /**
- * 문자열이 빈 문자열인지 체크하여 빈값("")으로 한다.
+ * 문자열이 빈 문자열인지 체크하여 빈값("") 또는 기본 문자열을 반환한다.
  * @param str           : 체크할 문자열
  */
-function nvl(str){
-    if(typeof str === "undefined" || str == null || str === "null" || str === ""){
-        str = "";
+function nvl(str, defaultStr){
+    if(str == "undefined" || str === undefined || str == "null" || str === null || str == ""){
+        if(defaultStr === undefined){
+            str = "";
+        }else{
+            str = defaultStr;
+        }
     }
     return str;
 }
 
-/**
- * 문자열이 빈 문자열인지 체크하여 기본 문자열로 리턴한다.
- * @param str           : 체크할 문자열
- * @param defaultStr    : 문자열이 비어있을경우 리턴할 기본 문자열
- */
-function nvl2(str, defaultStr){
-    if(typeof str === "undefined" || str == null || str === "null" || str === "")
-        str = defaultStr ;
-    return str ;
-}
-
-
 // SET MENU CURSOR
 var procSetMenuCursor = function () {
-    var leftMenuList = ["clusters", "workloads", "services", "accessInfo", "users", "roles"];
-    var headerMenuList = ["accessInfo", "users", "roles"];
+    var leftMenuList = ["intro", "workloads", "services", "users", "roles"];
+    var headerMenuList = ["users", "roles"];
     var leftMenuListLength = leftMenuList.length;
     var calledMenu = leftMenuList[0];
 
@@ -162,76 +154,52 @@ var procSetSortList = function(resultTableString, buttonObject, key) {
     resultTable.tablesorter();
     resultTable.trigger("update");
     resultTable.trigger("sorton", [sorting]);
+    $('.headerSortFalse > td').unbind();
 };
 
 
 var procCheckValidData = function (data) {
-    // TODO :: resultStatus? resultCode? Codes' are congesting
-    if (RESULT_STATUS_FAIL === data.resultStatus || RESULT_STATUS_FAIL === data.resultCode) {
-        console.debug("ResultStatus :: " + data.resultCode + " / " + "ResultMessage :: " + data.resultMessage);
+    var ensureData = procIfDataIsNull(data, null, { resultCode: RESULT_STATUS_FAIL });
+    if (RESULT_STATUS_FAIL === ensureData.resultCode) {
+        console.debug("ResultStatus :: " + ensureData.resultCode);
+        if (null != ensureData.resultMessage) {
+            console.debug("ResultMessage :: " + ensureData.resultMessage);
+        }
         return false;
     } else {
         return true;
     }
-}
+};
 
 var procIfDataIsNull = function (data, procCallback, defaultValue) {
-    if (data == null) {
+    if (null == data) {
         return defaultValue;
     } else {
-        if (procCallback == null)
-            return defaultValue;
+        if (null == procCallback)
+            return data;
         else
             return procCallback(data);
     }
-}
-
-
-var sortTable = function (tableId, sortKey, isAscending) {
-    var _tbody = $('#' + tableId + ' > tbody');
-    var _rows = _tbody.children('tr');
-
-    if (null == isAscending)
-        isAscending = true;
-
-    _rows.sort(function (rowA, rowB) {
-        var _reverseNumber = (isAscending)? 1 : -1;
-        var _compareA = $(rowA).data(sortKey);
-        var _compareB = $(rowB).data(sortKey);
-        if (_compareA == _compareB)
-            return 0;
-        else {
-            if (_compareA == null)
-                return -1 * _reverseNumber;
-            else if (_compareB == null)
-                return 1 * _reverseNumber;
-            else if (_compareA > _compareB)
-                return 1 * _reverseNumber;
-            else
-                return -1 * _reverseNumber;
-        }
-    });
-    _tbody.html(_rows);
-}
+};
 
 var procConvertByte = function(capacity) {
     var _multipleSize;
-    if (capacity.match("Ki").index != -1) {
+    if (capacity.match("Ki").index !== -1) {
         _multipleSize = 1024;
-    } else if (capacity.match("Mi").index != -1) {
+    } else if (capacity.match("Mi").index !== -1) {
         _multipleSize = 1024 * 1024;
-    } else if (capacity.match("Gi").index != -1) {
+    } else if (capacity.match("Gi").index !== -1) {
         _multipleSize = 1024 * 1024 * 1024;
     } else {
         _multipleSize = 1;
     }
 
     return capacity.substring(0, capacity.length - 2) * _multipleSize;
-}
+};
 
 var procFormatCapacity = function(capacity, unit) {
     var _unitSize;
-    if (unit == null || "" == unit)
+    if (null == unit || "" === unit)
         _unitSize = 1;
     else {
         if (unit === "Ki")    _unitSize = 1024
@@ -240,7 +208,7 @@ var procFormatCapacity = function(capacity, unit) {
     }
 
     return ((capacity / _unitSize).toFixed(2) + ' ' + unit);
-}
+};
 
 var procGetURLInfo = function () {
     // ex) slices = [ "workloads", "pods", "<pod-name>", "events"]
@@ -268,7 +236,7 @@ var procGetURLInfo = function () {
 
 var stringifyJSON = function (obj) {
     return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
-}
+};
 
 //TODO 이중에 골라서.
 //https://www.jqueryscript.net/demo/Fullscreen-Loading-Modal-Indicator-Plugin-For-jQuery-loadingModal/
@@ -321,4 +289,65 @@ var alertMessage = function(value, result) {
     // setInterval(function(){
     //   $(".alertLayer").removeClass("moveAlert");
     // }, 3000);
-}
+};
+
+
+var isPodEventOverwrite = true;
+
+// SET EVENT STATUS FOR PODS
+var procSetEventStatusForPods = function(podNameList) {
+    viewLoading('show');
+
+    var listLength = podNameList.length;
+    var reqUrl;
+
+    for (var i = 0; i < listLength; i++) {
+        reqUrl = URI_API_EVENTS_LIST.replace("{namespace:.+}", NAME_SPACE).replace("{resourceName:.+}", podNameList[i]);
+        procCallAjax(reqUrl, "GET", null, null, callbackSetEventStatusForPods);
+    }
+};
+
+
+// CALLBACK
+var callbackSetEventStatusForPods = function(data) {
+    if (!procCheckValidData(data)) {
+        viewLoading('hide');
+        return false;
+    }
+
+    var itemType;
+    var podName = data.resourceName;
+    var items = data.items;
+    var listLength = items.length;
+    var itemStatusIconHtml = "<span class='green2'><i class='fas fa-check-circle'></i></span>";
+    var itemNameLinkHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"" + URI_WORKLOADS_PODS + "/" + podName + "\");' data-toggle='tooltip' title='" + podName + "'> " + podName + "</a>" ;
+    var itemMessageHtml;
+    var itemMessageList = [];
+
+    var warningCount = 0;
+    for (var i = 0; i < listLength; i++) {
+        itemType = items[i].type;
+
+        if (itemType === 'Warning') {
+            var messageStyle = null;
+            if (items[i].message.includes("Error:"))
+                messageStyle = "failed2";
+            else
+                messageStyle = "warning2";
+
+            itemStatusIconHtml = "<span class='" + messageStyle + "'><i class='fas fas fa-exclamation-circle'></i></span> ";
+            itemMessageList.push(
+                $('<p class="red2 errorMsgBold" data-toggle="tooltip">' + items[i].message + '</p>').attr('title', items[i].message)[0].outerHTML
+            )
+
+            warningCount++;
+        }
+    }
+
+    if (warningCount > 1) {
+        itemMessageHtml = itemMessageList.join("");
+        $('#' + podName).html(itemStatusIconHtml + itemNameLinkHtml + itemMessageHtml);
+    }
+
+    viewLoading('hide');
+};

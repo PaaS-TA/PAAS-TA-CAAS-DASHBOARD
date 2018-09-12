@@ -370,7 +370,7 @@
                 '</a>';
         }
 
-        document.getElementById("ip").textContent =  nvl2(data.status.podIP, "-");
+        document.getElementById("ip").textContent =  nvl(data.status.podIP, "-");
 
         if(labels.match('job-name')) {
             // jobs 기능이 구현되면 여기에 a링크 달 것
@@ -443,7 +443,7 @@
                                 '</td>' +
                                 '<td>' + '<span class="green2"><i class="fas fa-check-circle"></i></span> ' + getStatus(getContainer(containerStatuses, itemList.name), status.phase) + '</td>' +
                                 '<td>' + itemList.image + '</td>' +
-                                '<td>' + nvl2(getContainer(containerStatuses, itemList.name).restartCount, "-") + '</td>' +
+                                '<td>' + nvl(getContainer(containerStatuses, itemList.name).restartCount, "-") + '</td>' +
                               '</tr>' +
                               '<tr style="display:none;" id="' + index +'">' +
                                 '<td colspan="4">' +
@@ -467,11 +467,11 @@
                                             '</tr>' +
                                             '<tr>' +
                                                 '<td>Commands</td>' +
-                                                '<td>' + nvl2(getContainer(containers, itemList.name).command, "-") + '</td>' +
+                                                '<td>' + nvl(getContainer(containers, itemList.name).command, "-") + '</td>' +
                                             '</tr>' +
                                             '<tr>' +
                                                 '<td>Args</td>' +
-                                                '<td>' + nvl2(getContainer(containers, itemList.name).args, "-")  + '</td>' +
+                                                '<td>' + nvl(getContainer(containers, itemList.name).args, "-")  + '</td>' +
                                             '</tr>' +
                                             '</tbody>' +
                                     '</table>' +

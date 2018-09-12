@@ -89,16 +89,15 @@
             // message, source, sub-object, count, first-seen, last-seen
             // message is including error message
             var _event = getEvent(eventItem);
-            var messageHtml;
-            if (0 == _event.message.indexOf("Error"))
-                messageHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i> ' + _event.message + '</span>';
-            else
-                messageHtml = '<span>' + _event.message + '</span>';
+            var messageHtml = $('<span data-toggle="tooltip"></span>').attr('title', _event.message).html(_event.message)[0].outerHTML;
+            if (0 == _event.message.indexOf("Error")) {
+                messageHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span> ' + $(messageHtml).addClass("red2")[0].outerHTML;
+            }
 
             var eventRowHtml = '<tr>'
                 + '<td>' + messageHtml + '</td>'
-                + '<td>' + _event.source + '</td>'
-                + '<td>' + _event.subObject + '</td>'
+                + '<td data-toggle="tooltip" title="' + _event.source + '">' + _event.source + '</td>'
+                + '<td data-toggle="tooltip" title="' + _event.subObject + '">' + _event.subObject + '</td>'
                 + '<td>' + _event.count + '</td>'
                 + '<td>' + _event.firstSeen + '</td>'
                 + '<td>' + _event.lastSeen + '</td>'
@@ -122,8 +121,8 @@
         // message is including error message
         return {
             message: data.message,
-            source: data.source.host,
-            subObject: (data.involvedObject.kind + ": " + data.involvedObject.name),
+            source: (data.source.host + ": " + data.source.component),
+            subObject: (data.involvedObject != null)? (data.involvedObject.kind + ": " + data.involvedObject.name) : "-",
             count: data.count,
             firstSeen: data.firstTimestamp,
             lastSeen: data.lastTimestamp

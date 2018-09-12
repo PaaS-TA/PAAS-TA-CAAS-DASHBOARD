@@ -15,6 +15,12 @@ import org.springframework.stereotype.Service;
 @Data
 public class PropertyService {
 
+    @Value("${caas.url}")
+    private String caasUrl;
+
+    @Value("${caas.cluster-name}")
+    private String caasClusterName;
+
     @Value("${caasApi.url}")
     private String caasApiUrl;
 

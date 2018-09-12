@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
  * Nodes Service 클래스
  *
  * @author REX
+ * @author Hyungu Cho
  * @version 1.0
  * @since 2018.08.13
  */
@@ -25,16 +26,6 @@ public class NodesService {
      */
     @Autowired
     public NodesService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
-
-
-    /**
-     * Gets node list.
-     *
-     * @return the node list
-     */
-    NodesList getNodeList() {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL, HttpMethod.GET, null, NodesList.class);
-    }
 
 
     /**

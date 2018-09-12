@@ -458,19 +458,31 @@
         var noResultArea = $('#noPodsResultArea');
         var resultTable = $('#podsResultTable');
         var listLength = data.items.length;
+        var podNameList = [];
 
         $.each(data.items, function (index, itemList) {
             // get data
-            var _metadata = itemList.metadata;
-            var _spec = itemList.spec;
-            var _status = itemList.status;
+            var metadata = itemList.metadata;
+            var spec = itemList.spec;
+            var status = itemList.status;
 
             // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
-            var podName = _metadata.name;
+            var podName = metadata.name;
             var namespace = NAME_SPACE;
-            var nodeName = _spec.nodeName;
-            var podStatus = _status.phase;
-            var restartCount = procIfDataIsNull(_status.containerStatuses,
+            var nodeName = spec.nodeName;
+            var nodeLink = "";
+            if(spec.nodeName == null) {
+                nodeLink += "-";
+            }
+
+            if(spec.nodeName != null) {
+                nodeLink += "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/clusters/nodes/" + nodeName + "/summary\");'>"+
+                                nodeName +
+                            '</a>';
+            }
+
+            var podStatus = status.phase;
+            var restartCount = procIfDataIsNull(status.containerStatuses,
                 function (data) {
                     return data.reduce(function (a, b) {
                         return {restartCount: a.restartCount + b.restartCount};
@@ -480,19 +492,25 @@
             //  .map(function(datum) { return datum.restartCount; })
             //  .reduce(function(a, b) { return a + b; }, 0 );
 
-            var creationTimestamp = _metadata.creationTimestamp;
+            var creationTimestamp = metadata.creationTimestamp;
             // error message will be filtering from namespace's event. a variable value is like...
             //var errorMessage = _status.error.message;
             var errorMessage = "";
 
             resultArea.append('<tr>' +
-                                '<td>' + podName + '</td>' +
+                                "<td id='" + podName + "'></td>" +
+                                /*TODO :: REMOVE*/
+                                <%--'<td>' +--%>
+                                    <%--"<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/pods/" + podName + "\");'>" + podName + "</a>" +--%>
+                                <%--'</td>' +--%>
                                 '<td>' + namespace + '</td>' +
-                                '<td>' + nodeName + '</td>' +
+                                '<td>' + nodeLink + '</td>' +
                                 '<td>' + podStatus + '</td>' +
                                 '<td>' + restartCount + '</td>' +
                                 '<td>' + creationTimestamp + '</td>' +
                             '</tr>');
+
+            podNameList.push(podName);
 
         });
 
@@ -508,7 +526,9 @@
             resultTable.trigger("update");
         }
 
+        procSetEventStatusForPods(podNameList);
     };
+
 
     //3개 일때는 동작하지 않는드아!
     var createAnnotations = function (annotations) {

@@ -69,6 +69,8 @@
 
     var RESULT_STATUS_SUCCESS = "<%= Constants.RESULT_STATUS_SUCCESS %>";
     var RESULT_STATUS_FAIL = "<%= Constants.RESULT_STATUS_FAIL %>";
+    var URI_API_EVENTS_LIST = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>";
+    var URI_WORKLOADS_PODS = "<%= Constants.URI_WORKLOAD_PODS %>";
 
     var USER_ID = "${userid}";
     var USER_NAME = "${username}";

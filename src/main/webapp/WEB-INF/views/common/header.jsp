@@ -11,7 +11,7 @@
 <%@ taglib prefix="cfn" uri="common/customTag.tld" %>
 <header class="header">
     <div class="logo">
-        <a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/clusters/overview');" class="custom_border_none"><h1><img src="<c:url value="/resources/images/main/logo.png"/>" alt=""/></h1></a>
+        <a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_INIT_URI %>');" class="custom_border_none"><h1><img src="<c:url value="/resources/images/main/logo.png"/>" alt=""/></h1></a>
         <%--<a href="#"><h1><img src="../resources/images/main/logo.png" alt=""/></h1></a>--%>
     </div>
 
@@ -65,7 +65,7 @@
                 </button>
                 <div id="r_user" class="dropdown-menu">
                     <ul class="caas-user">
-                        <li id="header-menu-accessInfo"><a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/accessInfo');">Access</a></li>
+                        <%--<li id="header-menu-accessInfo"><a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/accessInfo');">Access</a></li>--%>
                         <li id="header-menu-users"><a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/users');">User</a></li>
                         <li id="header-menu-roles"><a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/roles');">Role</a></li>
                         <%--<li class="cur"><a href="#">Access</a></li>
@@ -88,35 +88,36 @@
             <c:forEach var="path" items="${pathArray}" varStatus="g">
                 <c:choose>
                     <c:when test="${g.index eq 1}" >
-                        <button value="${path}"></button>
                         <c:choose>
-                            <c:when test="${path eq 'services'}" >
-                                <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</li>
-                            </c:when>
-                            <c:when test="${path eq 'accessInfo'}" >
-                                <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser('access')}</li>
-                            </c:when>
-                            <c:when test="${path eq 'users'}" >
-                                <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</li>
+                            <c:when test="${(path eq 'services') || (path eq 'users')}" >
+                                <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</a></li>
                             </c:when>
                             <c:when test="${path eq 'roles'}" >
-                                <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser('role')}</li>
+                                <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser('role')}</a></li>
                             </c:when>
                             <c:otherwise>
-                                <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${cfn:camelCaseParser(path)}</li>
+                                <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${cfn:camelCaseParser(path)}</a></li>
                              </c:otherwise>
                         </c:choose>
                     </c:when>
                     <c:when test="${g.index eq 2}">
-                        <li style="cursor:pointer" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${cfn:camelCaseParser(path)}</li>
+                        <c:choose>
+                            <c:when test="${pathArray[2] eq 'accessInfo'}" >
+                                <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${cfn:camelCaseParser('access')}</a></li>
+                            </c:when>
+                            <c:otherwise>
+                                <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${cfn:camelCaseParser(path)}</a></li>
+                            </c:otherwise>
+                        </c:choose>
                     </c:when>
                 </c:choose>
+                </li>
             </c:forEach>
         </ul>
         <div class="btn-kuber">
             <c:forEach var="path" items="${pathArray}" varStatus="g">
                 <c:if test="${path eq 'clusters' || path eq 'workloads' || path eq 'services' || path eq 'users' || path eq 'roles'}">
-                    <button class="btns colors4" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/accessInfo');">Access</button>
+                    <%--<button class="btns colors4" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/accessInfo');">Access</button>--%>
                 </c:if>
             </c:forEach>
         </div>

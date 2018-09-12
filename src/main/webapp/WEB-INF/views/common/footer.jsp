@@ -34,5 +34,8 @@
 
         // REMOVE UNNECESSARY EVENTS
         $(".sortable_wrap,.sortable_line > li").unbind();
+
+        // TOOL TIP
+        $('[data-toggle="tooltip"]').tooltip();
     });
 </script>

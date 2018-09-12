@@ -7,7 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 /**
- * Endpoint Service 클래스
+ * Replicaset Service 클래스
  *
  * @author 최윤석
  * @version 1.0
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReplicaSetsService {
 
-    //private static final String REQ_URL = "/" + Constants.NAMESPACE_NAME + "/replicaset";
     private final RestTemplateService restTemplateService;
 
     /**
@@ -30,42 +29,58 @@ public class ReplicaSetsService {
 
     /**
      * Gets replicaset list.
-     *
+     * @param namespace   the namespace
      * @return the replicaset list
      */
     ReplicaSetsList getReplicasetList(String namespace) {
-        // TODO :: reqUrl 따로 관리 여부 결정
-        String reqUrl = "/workloads/namespaces/{namespace}/replicasets"
-                .replaceAll("\\{" + "namespace" + "\\}", namespace);
-        return restTemplateService.send(Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, ReplicaSetsList.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICASETS_LIST
+                        .replace("{namespace:.+}", namespace),
+                HttpMethod.GET, null, ReplicaSetsList.class);
     }
 
 
     /**
      * Gets replicaset.
      *
-     * @param replicasetsName the replicaset name
+     * @param namespace   the namespace
+     * @param replicaSetName the replicaset name
      * @return the replicaset
      */
-    ReplicaSets getReplicaset(String namespace, String replicasetsName) {
-        // TODO :: reqUrl 따로 관리 여부 결정
-        String reqUrl = "/workloads/namespaces/{namespace}/replicasets/{name}"
-                .replaceAll("\\{" + "namespace" + "\\}", namespace)
-                .replaceAll("\\{" + "name" + "\\}", replicasetsName);
-        return restTemplateService.send(Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, ReplicaSets.class);
+    ReplicaSets getReplicaset(String namespace, String replicaSetName) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICASETS_DETAIL
+                        .replace("{namespace:.+}", namespace)
+                        .replace("{replicaSetName:.+}", replicaSetName)
+                , HttpMethod.GET, null, ReplicaSets.class);
     }
 
+
     /**
-     * Gets replicaset.
+     * Gets replicaset YAML.
      *
+     * @param namespace   the namespace
+     * @param replicaSetName the service name
+     * @return the custom services yaml
+     */
+    ReplicaSets getReplicasetYaml(String namespace, String replicaSetName) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICASETS_YAML
+                        .replace("{namespace:.+}", namespace)
+                        .replace("{replicaSetName:.+}", replicaSetName),
+                HttpMethod.GET, null, ReplicaSets.class);
+    }
+
+
+    /**
+     * Gets replicaset(Label Selector).
      *
+     * @param namespace the namespace
+     * @param selectors the selectors
      * @return the replicaset
      */
     ReplicaSetsList getReplicasetListLabelSelector(String namespace, String selectors) {
-        // TODO :: reqUrl 따로 관리 여부 결정
-        String reqUrl = "/workloads/namespaces/{namespace}/replicasets/resource/".replaceAll("\\{" + "namespace" + "\\}", namespace);
-        reqUrl = reqUrl + selectors;
-        return restTemplateService.send(Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, ReplicaSetsList.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICASETS_RESOURCES
+                     .replace("{namespace:.+}", namespace)
+                        .replace("{selector:.+}", selectors),
+                HttpMethod.GET, null, ReplicaSetsList.class);
     }
 
 }

@@ -75,4 +75,17 @@ public class DeploymentsService {
         return restTemplateService.send(
                 Constants.TARGET_CAAS_API, urlWithDeploymentName, HttpMethod.GET, null, Deployments.class);
     }
+
+    /**
+     * get deployment by selector.
+     *
+     * @param namespace request namespace
+     * @param selectors fitter selector
+     * @return List of deployment (specific namespace)
+     */
+    public DeploymentsList getDeploymentsListLabelSelector(String namespace, String selectors) {
+        String reqUrl = "/workloads/namespaces/{namespace}/deployments/resource/".replaceAll("\\{" + "namespace" + "\\}", namespace);
+        reqUrl = reqUrl + selectors;
+        return restTemplateService.send(Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, DeploymentsList.class);
+    }
 }
