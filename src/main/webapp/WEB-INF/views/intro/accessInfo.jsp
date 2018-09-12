@@ -166,7 +166,7 @@
 
     // certification token download
     var downloadCrtToken = function () {
-        var fileNameToSaveAs = "caas-cluster.crt";
+        var fileNameToSaveAs = "cluster-certificate.crt";
         var textToWrite = caCertToken;
 
         var ie = navigator.userAgent.match(/MSIE\s([\d.]+)/),
