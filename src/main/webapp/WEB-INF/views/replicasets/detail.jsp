@@ -154,11 +154,11 @@
         $('#resultAnnotation').html(createSpans(annotations));
         $('#resultCreationTimestamp').html(creationTimestamp);
         $('#resultSelector').html(createSpans(selector));
-        $('#resultImage').html(images.join(","));
+        $('#resultImage').html(images.join(", "));
         //$('#resultPods').html(replicas);
         //$('#resultDeployment').html(deployment);
 
-        getDeploymentsInfo(selector);
+        getDeploymentsInfo(data.metadata.labels);
         getDetailForPodsList(selector);
         getServices(data.metadata.labels);
     };
@@ -202,6 +202,7 @@
         var reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + namespace + "/pods/resource/" + selector;
         //procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPodsList);
         getPodListUsingRequestURL(reqUrl);
+        return 3;
     };
 
 
@@ -360,7 +361,10 @@
 
         for (var i = 0; i < listLength; i++) {
             tempSelectorList = selectorList[i].split(",");
-            reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + namespace + "/pods/service/" + tempSelectorList[1] + "/" + tempSelectorList[0];
+            reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE %>"
+                    .replace("{namespace:.+}", NAME_SPACE)
+                    .replace("{serviceName:.+}", tempSelectorList[1])
+                    .replace("{selector:.+}", tempSelectorList[0]);
 
             procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPods);
         }
@@ -369,7 +373,10 @@
 
     // CALLBACK
     var callbackGetDetailForPods = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            return false;
+        }
 
         var items = data.items;
         var listLength = items.length;

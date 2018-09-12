@@ -369,7 +369,7 @@ var addPodsEvent = function(targetObject, selector) {
     var eventType = 'normal';
     var eventMessage = [];
 
-    var reqPodsUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_RESOURCES %>"
+    var reqPodsUrl = URI_API_PODS_RESOURCES
         .replace("{namespace:.+}", NAME_SPACE)
         .replace("{selector:.+}", selector);
     procCallAjax(reqPodsUrl, "GET", null, null, function(podsData){
@@ -377,7 +377,7 @@ var addPodsEvent = function(targetObject, selector) {
             var podsName = itemList.metadata.name;
             //console.log("podsName::::::"+podsName);
 
-            var reqEventsUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
+            var reqEventsUrl = URI_API_EVENTS_LIST
                 .replace("{namespace:.+}", NAME_SPACE)
                 .replace("{resourceName:.+}", podsName);
             procCallAjax(reqEventsUrl, "GET", null, null, function(eventData){

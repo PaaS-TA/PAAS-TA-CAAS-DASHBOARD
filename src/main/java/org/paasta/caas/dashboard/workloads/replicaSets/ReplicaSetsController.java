@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * ReplicaSet Controller 클래스
  *
- * @author 최윤석
+ * @author CISS
  * @version 1.0
  * @since 2018.08.06
  */
@@ -23,14 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 public class ReplicaSetsController {
 
     private static final String VIEW_URL = "/replicasets";
-
     private final CommonService commonService;
     private final ReplicaSetsService replicaSetService;
 
     /**
      * Instantiates a new ReplicaSets controller.
      *
-     * @param commonService     the common service
+     * @param commonService      the common service
      * @param replicaSetsService the replicaset service
      */
     @Autowired
@@ -38,7 +37,6 @@ public class ReplicaSetsController {
         this.commonService = commonService;
         this.replicaSetService = replicaSetsService;
     }
-
 
     /**
      * Gets replicaSet main.
@@ -71,7 +69,7 @@ public class ReplicaSetsController {
      * @return the custom services detail events
      */
     @GetMapping(value = Constants.URI_CONTROLLER_REPLICASETS + "/{replicaSetName:.+}/events")
-    public ModelAndView getReplicaSetDetailEvents(HttpServletRequest httpServletRequest, @PathVariable("replicaSetName") String replicaSetName) {
+    public ModelAndView getReplicaSetDetailEvents(HttpServletRequest httpServletRequest) { // , @PathVariable("replicaSetName") String replicaSetName
         return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/events", new ModelAndView());
     }
 
@@ -83,7 +81,7 @@ public class ReplicaSetsController {
      * @return the custom services detail events
      */
     @GetMapping(value = Constants.URI_CONTROLLER_REPLICASETS + "/{replicaSetName:.+}/yaml")
-    public ModelAndView getReplicaSetDetailYaml(HttpServletRequest httpServletRequest, @PathVariable("replicaSetName") String replicaSetName) {
+    public ModelAndView getReplicaSetDetailYaml(HttpServletRequest httpServletRequest) { // , @PathVariable("replicaSetName") String replicaSetName
         return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/yaml", new ModelAndView());
     }
 

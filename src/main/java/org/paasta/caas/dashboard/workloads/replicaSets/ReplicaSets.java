@@ -10,18 +10,19 @@ import java.util.Map;
 /**
  * ReplicaSets Model 클래스
  *
- * @author 최윤석
+ * @author CISS
  * @version 1.0
  * @since 2018.08.07
  */
 @Data
 public class ReplicaSets {
 
-    private CommonMetaData metadata;
-    private CommonSpec spec;
-    private CommonStatus status;
-    private String sourceTypeYaml;
     private String resultCode;
     private String resultMessage;
 
+    private CommonMetaData metadata;
+    private CommonSpec spec;
+    private CommonStatus status;
+
+    private String sourceTypeYaml;
 }

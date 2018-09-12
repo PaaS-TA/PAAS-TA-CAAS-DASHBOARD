@@ -68,6 +68,8 @@ public class Constants {
     public static final String URI_API_PODS_LIST_BY_SELECTOR = "/workloads/namespaces/{namespace:.+}/pods/service/{serviceName:.+}/{selector:.+}";
     public static final String URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE = "/workloads/namespaces/{namespace:.+}/pods/service/{serviceName:.+}/{selector:.+}";
 
+    public static final String URI_API_PODS_RESOURCES = "/workloads/namespaces/{namespace:.+}/pods/resource/{selector:.+}";
+
     private Constants() {
         throw new IllegalStateException();
     }

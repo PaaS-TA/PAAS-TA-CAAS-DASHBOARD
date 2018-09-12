@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * Replicaset Service 클래스
  *
- * @author 최윤석
+ * @author CISS
  * @version 1.0
  * @since 2018.08.13
  */
@@ -19,7 +19,7 @@ public class ReplicaSetsService {
     private final RestTemplateService restTemplateService;
 
     /**
-     * Instantiates a new replicaset service.
+     * Instantiates a new ReplicaSet service.
      *
      * @param restTemplateService the rest template service
      */

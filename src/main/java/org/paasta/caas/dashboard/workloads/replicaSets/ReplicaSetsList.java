@@ -6,20 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ReplicaSets Model 클래스
+ * ReplicaSets List Model 클래스
  *
- * @author 최윤석
+ * @author CISS
  * @version 1.0
  * @since 2018.08.07
  */
 @Data
 public class ReplicaSetsList {
 
-//    private String kind;
-//    private String apiVersion;
-//    private CommonMetaData metadata;
     private String resultCode;
     private String resultMessage;
-
-    private List<ReplicaSets> items = new ArrayList<ReplicaSets>();
+    private List<ReplicaSets> items;
 }

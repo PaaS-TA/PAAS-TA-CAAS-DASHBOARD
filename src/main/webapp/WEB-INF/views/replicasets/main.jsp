@@ -52,40 +52,42 @@
 
 <script type="text/javascript">
 
-    var gList;
+    var G_REPLICASET_LIST; // replicaset list
+    var G_POD_EVENT_LIST;  // replicaset's POD Event list
 
     // GET LIST
     var getList = function() {
         viewLoading('show');
 
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_LIST %>"
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICASETS_LIST %>"
                 .replace("{namespace:.+}", NAME_SPACE);
-
-        procCallAjax("<%= Constants.API_URL %>/namespaces/" + NAME_SPACE + "/replicasets", "GET", null, null, callbackGetList);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetList);
     };
 
 
     // CALLBACK
     var callbackGetList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus){
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
             return false;
         }
 
-        gList = data;
+        G_REPLICASET_LIST = data;
+        viewLoading('hide');
+
         setList();
     };
 
-
     // SET LIST
     var setList = function() {
+        viewLoading('show');
 
         var resultArea       = $('#resultArea');
         var resultHeaderArea = $('#resultHeaderArea');
         var noResultArea     = $('#noResultArea');
         var resultTable      = $('#resultTable');
 
-        var items = gList.items;
+        var items = G_REPLICASET_LIST.items;
         var listLength = items.length;
 
         $.each(items, function (index, itemList) {
@@ -103,10 +105,29 @@
                 images.push(containers[i].image);
             }
 
+            //이벤트 관련 추가 START
+            addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가
+
+            var statusIconHtml;
+            var statusMessageHtml = [];
+
+            if(itemList.type == 'Warning'){
+                statusIconHtml    = "<span class='red2'><i class='fas fas fa-exclamation-circle'></i> </span>";
+                $.each(itemList.message , function (index, eventMessage) {
+                    statusMessageHtml += "<p class='red2 custom-content-overview' title='" + eventMessage + "'>" + eventMessage + "</p>";
+                    // tooltip 말고 그냥 title만 하는건 어떤지 확인
+                });
+
+            }else{
+                statusIconHtml    = "<span class='green2'><i class='fas fa-check-circle'></i> </span>";
+            }
+            //이벤트 관련 추가 END
+
             resultArea.append(
                     "<tr>"
-                    + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
+                    + "<td>"+statusIconHtml
                     + "<a href='javascript:void(0);' data-toggle='tooltip' title='"+replicaSetName+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_REPLICASETS %>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
+                    + statusMessageHtml
                     + "</td>"
                     + "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
                     + "<td>" + createSpans(labels, "LB") + "</td>"
