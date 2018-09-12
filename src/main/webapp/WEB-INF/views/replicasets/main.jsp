@@ -37,7 +37,7 @@
                                 <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '4')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Images</td>
                             </tr>
-                            <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
+                            <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 ReplicaSet이 없습니다.</p></td></tr>
                             </thead>
                             <tbody id="resultArea">
                             </tbody>
@@ -94,7 +94,7 @@
             var namespace = itemList.metadata.namespace;
             var labels = procSetSelector(itemList.metadata.labels);
             var creationTimestamp = itemList.metadata.creationTimestamp;
-            var pods = itemList.status.availableReplicas +"/"+ itemList.status.replicas;  //  TODO ::  current / desired
+            var pods = itemList.status.availableReplicas +"/"+ itemList.spec.replicas;  // current / desired
             //var selector = procSetSelector(items[i].spec.selector);
             var images = new Array;
 
@@ -108,7 +108,7 @@
                     + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
                     + "<a href='javascript:void(0);' data-toggle='tooltip' title='"+replicaSetName+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_REPLICASETS %>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
                     + "</td>"
-                    + "<td data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
+                    + "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
                     + "<td>" + createSpans(labels, "LB") + "</td>"
                     + "<td>" + pods + "</td>"
                     + "<td>" + creationTimestamp+"</td>"
@@ -156,7 +156,6 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
         getList();
     });
 
