@@ -28,9 +28,6 @@
                     <div class="graphArea"><div id="piechart01" style="height: 260px"></div></div>
                     <div class="graphArea"><div id="piechart02" style="height: 260px"></div></div>
                     <div class="graphArea"><div id="piechart03" style="height: 260px"></div></div>
-                    <!--<div class="graphArea"><img src="../resources/images/cluster/chart01.png"/></div>
-                    <div class="graphArea"><img src="../resources/images/cluster/chart02.png"/></div>
-                    <div class="graphArea"><img src="../resources/images/cluster/chart03.png"/></div>-->
                     <div style="clear:both;"></div>
                 </div>
             </li>
@@ -71,12 +68,12 @@
             <!-- Deployments 끝 -->
 
             <!-- modal TODO :: 사용확인 후 삭제 -->
-            <div class="modal fade dashboard" id="layerpop">
-                <div class="vertical-alignment-helper">
-                    <div class="modal-dialog vertical-align-center">
-                    </div>
-                </div>
-            </div>
+            <%--<div class="modal fade dashboard" id="layerpop">--%>
+                <%--<div class="vertical-alignment-helper">--%>
+                    <%--<div class="modal-dialog vertical-align-center">--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
             <!-- modal 끝 TODO :: 사용확인 후 삭제 -->
 
             <!-- Pods 시작 -->
@@ -229,7 +226,6 @@
         procCallAjax("<%= Constants.API_URL %>/namespaces/" + NAME_SPACE + "/replicasets", "GET", null, null, callbackGetReplicaSetList);
     };
 
-
     // CALLBACK
     var callbackGetReplicaSetList = function(data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
@@ -295,8 +291,6 @@
 
     };
 
-
-
     // TODO :: 업데이트(복수값일시 레이어 링크 제공) 및 공통화 필요
     var createSpans = function (data, type) {
         if( !data ) {
@@ -332,8 +326,6 @@
     });
 
     var createChart = function() {
-        console.log("createChart in!!!!!!");
-
         var devChartRunningCnt = 0;
         var devChartFailedCnt = 0;
         var devChartSucceededCnt= 0;
@@ -373,12 +365,8 @@
         var statusMap0 = new Map();
 
         $.each(podStatuses, function (index, item) {
-            // console.log(item.name);
-            // console.log(item.status);
             var repName = item.name.substring(0, item.name.lastIndexOf("-"));
-            // console.log(repName);
             var depName = repName.substring(0, repName.lastIndexOf("-"));
-            // console.log(depName);
 
             if(item.status.indexOf("Running") > -1) {
                 podsChartRunningCnt += 1;

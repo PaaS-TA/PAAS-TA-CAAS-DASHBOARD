@@ -7,7 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 /**
- * Namespace Service 클래스
+ * Namespaces Service 클래스
  *
  * @author indra
  * @version 1.0
@@ -26,10 +26,22 @@ public class NamespacesService {
     @Autowired
     public NamespacesService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
 
+    /**
+     * Gets Namespaces.
+     *
+     * @param namespace the namespaces
+     * @return the Namespaces
+     */
     Namespaces getNamespaces(String namespace) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, "/clusters/namespaces/"+namespace, HttpMethod.GET, null, Namespaces.class);
     }
 
+    /**
+     * Gets ResourceQuotaList.
+     *
+     * @param namespace the namespaces
+     * @return the ResourceQuotaList
+     */
     ResourceQuotaList getResourceQuotaList(String namespace) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, "/clusters/namespaces/"+namespace+"/getResourceQuotaList", HttpMethod.GET, null, ResourceQuotaList.class);
     }
