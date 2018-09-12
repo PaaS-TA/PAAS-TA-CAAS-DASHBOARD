@@ -13,8 +13,30 @@
     <!-- Overview 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
+            <!-- 그래프 시작 -->
+            <li class="cluster_first_box">
+                <div class="sortable_wrap">
+                    <div class="sortable_top">
+                        <p>Overview</p>
+                        <div class="sortable_right label">
+                            <span class="running2 maR10"><i class="fas fa-circle"></i></span>Running
+                            <span class="failed2 maL25 maR10"><i class="fas fa-circle"></i></span>Failed
+                            <span class="pendding2 maL25 maR10"><i class="fas fa-circle"></i></span>Pendding
+                            <span class="succeeded2 maL25 maR10"><i class="fas fa-circle"></i></span>Succeeded
+                        </div>
+                    </div>
+                    <div class="graphArea"><div id="piechart01" style="height: 260px"></div></div>
+                    <div class="graphArea"><div id="piechart02" style="height: 260px"></div></div>
+                    <div class="graphArea"><div id="piechart03" style="height: 260px"></div></div>
+                    <!--<div class="graphArea"><img src="../resources/images/cluster/chart01.png"/></div>
+                    <div class="graphArea"><img src="../resources/images/cluster/chart02.png"/></div>
+                    <div class="graphArea"><img src="../resources/images/cluster/chart03.png"/></div>-->
+                    <div style="clear:both;"></div>
+                </div>
+            </li>
+            <!-- 그래프 끝 -->
             <!-- Deployments 시작 -->
-            <li class="cluster_first_box"><!--cluster_second_box-->
+            <li class="cluster_second_box">
                 <div class="sortable_wrap">
                     <div class="sortable_top">
                         <p>Deployments</p>
@@ -131,7 +153,7 @@
 
 </div>
 
-<%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>--%>
+<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
 <script type="text/javascript">
     var gDevList; // For Deployment List
     var gPodsList; // For Pods List
@@ -141,7 +163,7 @@
     // GET LIST
     var getDevList = function() {
         //procCallAjax("/api/namespaces/" + NAME_SPACE + "/replicasets", "GET", null, null, callbackGetDevList);
-        procCallAjax("/workloads/deployments/" + NAME_SPACE +"/getList.do", "GET", null, null, callbackGetDevList);
+        procCallAjax("/workloads/deployments/" + NAME_SPACE, "GET", null, null, callbackGetDevList);
     };
 
 
@@ -377,7 +399,210 @@
         getDevList();
         getPodsList();
         getReplicaSetList();
+        createChart();
         viewLoading('hide');
     });
 
+    var createChart = function() {
+        console.log("createChart in!!!!!!");
+        console.log(gDevList);
+        console.log(gPodsList);
+        console.log(gReplicaSetList);
+
+        var devChartRunningCnt = 0;
+        var devChartFailedCnt = 0;
+        var devChartSucceededCnt= 0;
+        var devChartPenddingCnt = 0;
+
+        var devChartRunningPer = 0;
+        var devChartFailedPer = 0;
+        var devChartSucceededPer= 0;
+        var devChartPenddingPer = 0;
+
+        var podsChartRunningCnt = 0;
+        var podsChartFailedCnt = 0;
+        var podsChartSucceededCnt= 0;
+        var podsChartPenddingCnt = 0;
+
+        var podsChartRunningPer = 0;
+        var podsChartFailedPer = 0;
+        var podsChartSucceededPer= 0;
+        var podsChartPenddingPer = 0;
+
+        // var devItems = gDevList.items;
+        // var devListLength = devItems.length;
+        //
+        // var podsItems = gPodsList.items;
+        // var podsListLength = podsItems.length;
+        //
+        // var gDevListString = JSON.stringify(gDevList);
+        //
+        // for (var i = 0; i < podsListLength; i++) {
+        //     var podsStatus = podsItems[i].status.phase;
+        //     var podsLabelsApp = podsItems[i].metadata.labels.app;
+        //     var podsLabelsTempHash = podsItems[i].metadata.labels["pod-template-hash"];
+        //
+        //     var labels = '"template":{"metadata":{"labels":{"app":"'+podsLabelsApp+'"}';
+        //
+        //     if(podsStatus.indexOf("Running") > -1) {
+        //         podsChartRunningCnt = podsChartRunningCnt + 1;
+        //         var re = new RegExp(labels,"g");
+        //         devChartRunningCnt = devChartRunningCnt + (gDevListString.match(re) || []).length;
+        //
+        //         //TODO succeded, pendding 있나?
+        //     } else {
+        //         podsChartFailedCnt = podsChartFailedCnt + 1;
+        //         var re = new RegExp(labels,"g");
+        //         devChartFailedCnt = devChartFailedCnt + (gDevListString.match(re) || []).length;
+        //     }
+        // }
+
+        podsChartRunningPer = podsChartRunningCnt / podsListLength * 100;
+        podsChartFailedPer = podsChartFailedCnt / podsListLength * 100;
+        console.log("podsChartRunningPer : "+podsChartRunningPer);
+        console.log("podsChartFailedPer : "+podsChartFailedPer);
+
+        devChartRunningPer = devChartRunningCnt / devListLength * 100;
+        devChartFailedPer = devChartFailedCnt / devListLength * 100;
+        console.log("devChartRunningPer : "+devChartRunningPer);
+        console.log("devChartFailedPer : "+devChartFailedPer);
+
+        // 도넛차트
+        var pieColors = ['#3076b2', '#85c014', '#f01108' , '#333440'];
+        Highcharts.chart('piechart01', {
+            chart: {
+                type: 'pie',
+                marginTop: 0,
+            },
+            title: {
+                text: 'Deployments',
+                y : 120, // y position
+                style: {
+                    fontSize: '15px',
+                    fontWeight: 'bold'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    innerSize: 110,
+                    colors : pieColors,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.0f} %',
+                        distance: -25,
+                        style: {
+                            fontSize: '14px',
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                headerFormat: '',
+                pointFormat: '{point.name}: <b>{point.y:.2f}%</b><br/>',
+                footerFormat:''
+            },
+            series: [{
+                data: [
+                    ['Succeeded', devChartSucceededPer],
+                    ['Running', devChartRunningPer],
+                    ['Failed', devChartFailedPer],
+                    ['Pendding', devChartPenddingPer]
+                ]
+            }],
+            credits: { // logo hide
+                enabled: false
+            }
+        });
+        Highcharts.chart('piechart02', {
+            chart: {
+                type: 'pie',
+                marginTop: 0,
+            },
+            title: {
+                text: 'Pods',
+                y : 120, // y position
+                style: {
+                    fontSize: '15px',
+                    fontWeight: 'bold'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    innerSize: 110,
+                    colors : pieColors,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.0f} %',
+                        distance: -25,
+                        style: {
+                            fontSize: '14px',
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                headerFormat: '',
+                pointFormat: '{point.name}: <b>{point.y:.2f}%</b><br/>',
+                footerFormat:''
+            },
+            series: [{
+                data: [
+                    ['Succeeded', podsChartSucceededPer],
+                    ['Running', podsChartRunningPer],
+                    ['Failed', podsChartFailedPer],
+                    ['Pendding', podsChartPenddingPer]
+                ]
+            }],
+            credits: { // logo hide
+                enabled: false
+            }
+        });
+        Highcharts.chart('piechart03', {
+            chart: {
+                type: 'pie',
+                marginTop: 0,
+            },
+            title: {
+                text: 'Replica Sets',
+                y : 120, // y position
+                style: {
+                    fontSize: '15px',
+                    fontWeight: 'bold'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    innerSize: 110,
+                    colors : pieColors,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.0f} %',
+                        distance: -25,
+                        style: {
+                            fontSize: '14px',
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                headerFormat: '',
+                pointFormat: '{point.name}: <b>{point.y:.2f}%</b><br/>',
+                footerFormat:''
+            },
+            series: [{
+                data: [
+                    ['Succeeded', 46],
+                    ['Running', 18],
+                    ['Failed', 18],
+                    ['Pendding', 18]
+                ]
+            }],
+            credits: { // logo hide
+                enabled: false
+            }
+        });
+    }
 </script>
