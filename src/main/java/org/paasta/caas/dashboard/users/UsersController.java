@@ -37,7 +37,7 @@ public class UsersController {
     }
 
     /**
-     * Gets user main.
+     * User 메인 화면으로 이동한다.
      *
      * @param httpServletRequest the http servlet request
      * @return the user main
@@ -48,9 +48,9 @@ public class UsersController {
     }
 
     /**
-     * Gets user list by serviceInstanceId
+     * User 목록을 조회한다.
      *
-     * @return the user list
+     * @return the users list
      */
     @GetMapping(value = "/getList")
     @ResponseBody
@@ -60,12 +60,12 @@ public class UsersController {
     }
 
     /**
-     * Gets user by serviceInstanceId
+     * User 상세 정보를 조회한다.
      *
      * @param serviceInstanceId the serviceInstanceId
      * @param organizationGuid the organizationGuid
      * @param userId the userId
-     * @return the user
+     * @return the users
      */
     @GetMapping(value = "/getUser")
     @ResponseBody
@@ -76,12 +76,12 @@ public class UsersController {
     }
 
     /**
-     * Update role of user
+     * User 의 권한을 변경한다.
      *
      * @param serviceInstanceId the serviceInstanceId
      * @param organizationGuid the organizationGuid
-     * @param users the user
-     * @return the user
+     * @param users the users
+     * @return the users
      */
     @PostMapping(value = "/updateUserRole")
     @ResponseBody
@@ -93,6 +93,14 @@ public class UsersController {
         return userService.updateUserRole(serviceInstanceId, organizationGuid, user);
     }
 
+    /**
+     * User 를 삭제한다.
+     *
+     * @param serviceInstanceId the serviceInstanceId
+     * @param organizationGuid the organizationGuid
+     * @param users the users
+     * @return the users
+     */
     @PostMapping(value = "/deleteUser")
     @ResponseBody
     public Users deleteUser(@RequestParam("serviceInstanceId") String serviceInstanceId,
