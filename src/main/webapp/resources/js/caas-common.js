@@ -326,25 +326,16 @@ var callbackSetEventStatusForPods = function(data) {
 
     var warningCount = 0;
     for (var i = 0; i < listLength; i++) {
-        itemType = items[i].type;
-
-        if (itemType === 'Warning') {
-            var messageStyle = null;
-            if (items[i].message.includes("Error:"))
-                messageStyle = "failed2";
-            else
-                messageStyle = "warning2";
-
-            itemStatusIconHtml = "<span class='" + messageStyle + "'><i class='fas fas fa-exclamation-circle'></i></span> ";
+        if (items[i].type === 'Warning') {
+            itemStatusIconHtml = "<span class='failed2'><i class='fas fas fa-exclamation-circle'></i></span> ";
             itemMessageList.push(
-                $('<p class="red2 errorMsgBold" data-toggle="tooltip">' + items[i].message + '</p>').attr('title', items[i].message)[0].outerHTML
-            )
-
+                $('<p class="failed2 errorMsgBold" data-toggle="tooltip">' + items[i].message + '</p>').attr('title', items[i].message)[0].outerHTML
+            );
             warningCount++;
         }
     }
 
-    if (warningCount > 1) {
+    if (warningCount > 0) {
         itemMessageHtml = itemMessageList.join("");
         $('#' + podName).html(itemStatusIconHtml + itemNameLinkHtml + itemMessageHtml);
     }
