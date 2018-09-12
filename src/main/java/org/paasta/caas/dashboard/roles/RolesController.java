@@ -39,7 +39,7 @@ public class RolesController {
     }
 
     /**
-     * Role 메인 화면으로 이동
+     * Role 메인 화면으로 이동한다.
      *
      * @param httpServletRequest the http servlet request
      * @return the role main
@@ -50,7 +50,7 @@ public class RolesController {
     }
 
     /**
-     * Gets Role List (특정 네임스페이스에서 조회)
+     * Roles 목록을 조회한다.
      *
      * @return RoleList
      */
