@@ -119,7 +119,7 @@
     var getDetail = function() {
         viewLoading('show');
 
-        procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail.do", "GET", null, null, callbackGetDetail);
+        procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail", "GET", null, null, callbackGetDetail);
     };
 
 
@@ -155,7 +155,7 @@
     var getResourceQuotaList = function(namespace) {
         viewLoading('show');
 
-        procCallAjax("/caas/clusters/namespaces/"+namespace+"/getResourceQuotaList.do", "GET", null, null, callbackGetResourceQuotaList);
+        procCallAjax("/caas/clusters/namespaces/"+namespace+"/getResourceQuotaList", "GET", null, null, callbackGetResourceQuotaList);
     };
 
 
@@ -328,7 +328,7 @@
     <%--var getNamespaces = function() {--%>
         <%--viewLoading('show');--%>
 
-        <%--procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail.do", "GET", null, null, callbackGetNamespaces);--%>
+        <%--procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail", "GET", null, null, callbackGetNamespaces);--%>
     <%--};--%>
 
     <%--var callbackGetNamespaces = function(data) {--%>

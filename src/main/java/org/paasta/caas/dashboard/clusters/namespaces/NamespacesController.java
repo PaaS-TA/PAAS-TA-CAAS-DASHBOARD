@@ -40,12 +40,12 @@ public class NamespacesController {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/detail", new ModelAndView());
     }
 
-    @GetMapping(value = "/namespaces/{namespace}/getDetail.do")
+    @GetMapping(value = "/namespaces/{namespace}/getDetail")
     public Namespaces getNamespaces(@PathVariable String namespace) {
         return namespacesService.getNamespaces(namespace);
     }
 
-    @GetMapping(value = "/namespaces/{namespace}/getResourceQuotaList.do")
+    @GetMapping(value = "/namespaces/{namespace}/getResourceQuotaList")
     public ResourceQuotaList getResourceQuotaList(@PathVariable String namespace) {
         return namespacesService.getResourceQuotaList(namespace);
     }

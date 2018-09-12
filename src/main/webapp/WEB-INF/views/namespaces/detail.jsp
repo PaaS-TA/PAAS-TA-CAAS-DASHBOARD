@@ -80,7 +80,7 @@
     var getDetail = function() {
         viewLoading('show');
 
-        procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail.do", "GET", null, null, callbackGetDetail);
+        procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail", "GET", null, null, callbackGetDetail);
     };
 
     var callbackGetDetail = function(data) {
@@ -108,7 +108,7 @@
     var getResourceQuotaList = function(namespace) {
         viewLoading('show');
 
-        procCallAjax("/caas/clusters/namespaces/"+namespace+"/getResourceQuotaList.do", "GET", null, null, callbackGetResourceQuotaList);
+        procCallAjax("/caas/clusters/namespaces/"+namespace+"/getResourceQuotaList", "GET", null, null, callbackGetResourceQuotaList);
     };
 
     var callbackGetResourceQuotaList = function(data) {
