@@ -329,7 +329,7 @@ var callbackSetEventStatusForPods = function(data) {
         if (items[i].type === 'Warning') {
             itemStatusIconHtml = "<span class='failed2'><i class='fas fas fa-exclamation-circle'></i></span> ";
             itemMessageList.push(
-                $('<p class="failed2 errorMsgBold" data-toggle="tooltip">' + items[i].message + '</p>').attr('title', items[i].message)[0].outerHTML
+                $('<p class="failed2 custom-content-overflow" data-toggle="tooltip">' + items[i].message + '</p>').attr('title', items[i].message)[0].outerHTML
             );
             warningCount++;
         }

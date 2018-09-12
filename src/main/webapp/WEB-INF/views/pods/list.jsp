@@ -163,7 +163,7 @@
     };
 
     var createAnchorTag = function (movePageUrl, content, isTooltip) {
-        var anchorTag = "<a href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>"
+        var anchorTag = "<a class='custom-content-overflow' href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>"
         if (isTooltip)
             return $(anchorTag).attr('data-toggle', 'tooltip').attr('title', content)[0].outerHTML;
         else
@@ -182,7 +182,7 @@
                 //+ "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_PODS %>/" + pod.name + "\");'>" + pod.name + "</a>";
                 + createAnchorTag("<%= Constants.URI_WORKLOAD_PODS %>/" + pod.name, pod.name, true);
             if (null != pod.podErrorMsg && "" !== pod.podErrorMsg) {
-                podNameHtml += $("<br><span class='red2 errorMsgBold' data-toggle='tooltip'>" + pod.podErrorMsg + "</span>").attr('title', pod.podErrorMsg)[0].outerHTML;
+                podNameHtml += $("<br><span class='red2 custom-content-overflow' data-toggle='tooltip'>" + pod.podErrorMsg + "</span>").attr('title', pod.podErrorMsg)[0].outerHTML;
             }
 
             var nodeNameHtml;
