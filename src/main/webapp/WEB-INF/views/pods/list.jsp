@@ -263,6 +263,8 @@
         viewLoading('hide');
     };
 
+    var getPodStatuses;
+
     // CALLBACK POD LIST
     var callbackGetPodList = function (data) {
         viewLoading('show');
@@ -278,11 +280,31 @@
         }
 
         var podList = [];
+        var podStatusList = [];
         var podNameList = [];
         $.each(data.items, function (index, item) {
-            podList.push(getPod(item));
-            podNameList.push(item.metadata.name);
+            var _pod = getPod(item);
+            var _status;
+            switch (_pod.podStatus) {
+                case "Pending":
+                case "Running":
+                case "Succeeded":
+                    _status = _pod.podStatus;
+                    break;
+                default:
+                    _status = "Failed";
+                    break;
+            }
+
+            podList.push(_pod);
+            podStatusList.push({ name: _pod.name, status: _status });
+            podNameList.push(_pod.name);
         });
+
+        getPodStatuses = function() {
+            return podStatusList;
+        }
+
         setPodTable(podList);
         procSetEventStatusForPods(podNameList);
 
