@@ -20,7 +20,7 @@
         </ul>
     </div>
     <div class="view_table_wrap">
-        <table class="table_event condition alignL service-lh" id="resultTable">
+        <table class="table_event condition alignL service-lh" id="resultTableForPod">
             <colgroup>
                 <col style='width:auto;'>
                 <col style='width:10%;'>
@@ -35,7 +35,7 @@
             </tr>
             <tr id="resultHeaderArea" class="headerSortFalse">
                 <td>Name
-                    <button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')">
+                    <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '0')">
                         <i class="fas fa-caret-down"></i></button>
                 </td>
                 <td>Namespace</td>
@@ -43,7 +43,7 @@
                 <td>Status</td>
                 <td>Restarts</td>
                 <td>Created on
-                    <button class="sort-arrow" onclick="procSetSortList('resultTable', this, '5')">
+                    <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '5')">
                         <i class="fas fa-caret-down"></i></button>
                 </td>
             </tr>
