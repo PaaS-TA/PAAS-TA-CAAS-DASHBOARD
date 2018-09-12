@@ -7,7 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 /**
- * Namespaces Service 클래스
+ * Namespaces Service 클래스.
  *
  * @author indra
  * @version 1.0
