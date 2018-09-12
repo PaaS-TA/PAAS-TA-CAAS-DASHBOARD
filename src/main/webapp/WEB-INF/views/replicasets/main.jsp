@@ -114,8 +114,8 @@
             if(itemList.type == 'Warning'){
                 statusIconHtml    = "<span class='red2'><i class='fas fas fa-exclamation-circle'></i> </span>";
                 $.each(itemList.message , function (index, eventMessage) {
-                    statusMessageHtml += "<p class='red2 custom-content-overview' title='" + eventMessage + "'>" + eventMessage + "</p>";
-                    // tooltip 말고 그냥 title만 하는건 어떤지 확인
+                    statusMessageHtml += "<p class='red2 custom-content-overflow' title='" + eventMessage + "'>" + eventMessage + "</p>";
+                    // TODO :: 메시지는 tooltip 말고 그냥 title만 하는건 어떤지 확인
                 });
 
             }else{
