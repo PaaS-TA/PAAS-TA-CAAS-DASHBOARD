@@ -36,49 +36,44 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
         LOGGER.info("### Intercepter start ###");
         LOGGER.info("** Request URI - "+url);
 
-        if (!url.contains("/common/error/unauthorized")) {
-            /*TODO :: MODIFY OR REMOVE*/
-//            Pattern pattern = Pattern.compile("(/caas/clusters/overview/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
-            Pattern pattern = Pattern.compile("(/caas/intro/overview/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
-            Matcher matcher = pattern.matcher(url);
+        try {
+            if (!url.contains("/common/error/unauthorized")) {
+                Pattern pattern = Pattern.compile("(/caas/intro/overview/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
+                Matcher matcher = pattern.matcher(url);
 
-            LOGGER.info(":: Request Session..");
-            SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
-            if (ssoAuthenticationDetails.getServiceInstanceId() != null && !ssoAuthenticationDetails.getServiceInstanceId().trim().equals("") && ssoAuthenticationDetails.getOrganizationGuid() != null && !ssoAuthenticationDetails.getOrganizationGuid().trim().equals("")) {
-                LOGGER.info(":: serviceInstanceId =" + ssoAuthenticationDetails.getServiceInstanceId());
+                SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+                if (ssoAuthenticationDetails.getServiceInstanceId() != null && !ssoAuthenticationDetails.getServiceInstanceId().trim().equals("") && ssoAuthenticationDetails.getOrganizationGuid() != null && !ssoAuthenticationDetails.getOrganizationGuid().trim().equals("")) {
+                    List commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+ssoAuthenticationDetails.getServiceInstanceId()+"/organizationGuid/"+ssoAuthenticationDetails.getOrganizationGuid(), HttpMethod.GET, null, List.class);
 
-                List commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+ssoAuthenticationDetails.getServiceInstanceId()+"/organizationGuid/"+ssoAuthenticationDetails.getOrganizationGuid(), HttpMethod.GET, null, List.class);
-                LOGGER.info(commonGetUsers.toString());
-                LOGGER.info(String.valueOf(commonGetUsers.size()));
-                if(commonGetUsers == null || commonGetUsers.size() == 0) {
-                    LOGGER.info(":: Session not .. redirect.. unauthorized");
-                    SecurityContextHolder.clearContext();
-                    response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
-                    return false;
+                    if(commonGetUsers == null || commonGetUsers.size() == 0) {
+                        LOGGER.info(":: Session not .. redirect.. unauthorized");
+                        SecurityContextHolder.clearContext();
+                        response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
+                        return false;
+                    }
+                }
+
+                if (url.contains(Constants.CAAS_INIT_URI + "/") && matcher.find()) {
+                    try {
+                        SecurityContextHolder.clearContext();
+
+                        String serviceInstanceId = request.getServletPath().split("/")[4];
+
+                        response.sendRedirect(Constants.CAAS_INIT_URI + "?serviceInstanceId="+serviceInstanceId);
+                        return false;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
+                        return false;
+                    }
                 }
             }
+        } catch(Exception e) {
+            e.printStackTrace();
 
-            /*TODO :: MODIFY OR REMOVE*/
-//            if (url.contains("/caas/clusters/overview/") && matcher.find()) {
-            if (url.contains(Constants.CAAS_INIT_URI + "/") && matcher.find()) {
-                LOGGER.info("in!!!!!!!!!!!!!!!!!!");
-                try {
-                    SecurityContextHolder.clearContext();
-
-                    String serviceInstanceId = request.getServletPath().split("/")[4];
-                    /*TODO :: MODIFY OR REMOVE*/
-//                    response.sendRedirect("/caas/clusters/overview?serviceInstanceId="+serviceInstanceId);
-                    response.sendRedirect(Constants.CAAS_INIT_URI + "?serviceInstanceId="+serviceInstanceId);
-                    return false;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
-                    return false;
-                }
-            }
+            response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
+            return false;
         }
-
-//        response.setHeader("Cache-Control", "no-transform, public, max-age=86400");
 
         LOGGER.info("### Intercepter end ###");
         return super.preHandle(request, response, handler);
