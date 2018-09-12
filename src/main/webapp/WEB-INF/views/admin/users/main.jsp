@@ -122,13 +122,17 @@
     var usersList;
     var roleSearchName;
 
+    var userIdSelectRole;
+    var userPerRole;
+
+    var deleteUserId;
+
+    // SESSION VARIABLE
     var rsUpdate = '<c:out value="${sessionScope.RS_USERMANAGEMENT_UPDATE}"/>';
     var rsDelete = '<c:out value="${sessionScope.RS_USERMANAGEMENT_DELETE}"/>';
 
-    console.log("Session View:::"+rsUpdate);
-    console.log("Session Execute:::"+rsDelete);
 
-
+    // SELECTED ROLE VALUE
     var changeRoleSearch = function () {
         roleSearchName = $(".user-filter option:checked").text();
         setUsersList(document.getElementById("table-search-01").value);
@@ -278,15 +282,14 @@
 
     };
 
-    // bind
+    // BIND (SERACH USER BUTTON)
     $("#userSearchBtn").on("click", function () {
         var keyword = $("#table-search-01").val();
         setUsersList(keyword);
     });
 
-    var userIdSelectRole;
-    var userPerRole;
 
+    // BIND (CHANGE ROLE SAVE BUTTON)
     $(document).on("click", "span[name=saveRole]", function(){
         var index = $('span[name=saveRole]').index(this);
         //alert(index);
@@ -301,12 +304,13 @@
     });
 
 
-    // 사용자의 권한 변경
+    // BIND (CLICK ROLE SAVE BUTTON)
     $(document).on("click", "#roleUpdateBtn", function () {
         //console.log("여기 들어오니잉???");
         updateRoleOfUser();
     });
 
+    // SET UPDATE USER ROLE
     var updateRoleOfUser = function () {
         if(userPerRole == "Administrator"){
             userPerRole = "RS0001"
@@ -325,17 +329,17 @@
         postProcCallAjax(BASE_URL + "/users/updateUserRole?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackUpdateRoleOfUser);
     };
 
+    // CALLBACK USER ROLE
     var callbackUpdateRoleOfUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        //console.log("고쳐졌니?" + JSON.stringify(data));
         alert("권한이 수정되었습니다.");
         location.reload(true);
     };
 
 
-    var deleteUserId;
 
-    // 사용자 삭제
+
+    // BIND (DELETE USER MODAL)
     $(document).on("click", "span[name=deleteUser]", function () {
         console.log("user delete");
         var index = $('span[name=deleteUser]').index(this);
@@ -349,11 +353,13 @@
     });
 
 
+    // BIND (CLICK USER DELETE BUTTON)
     $(document).on("click", "#userDeleteBtn", function () {
         //console.log("여기 들어오니잉???");
         deleteUser(deleteUserId);
     });
 
+    // SET DELETE USER
     var deleteUser = function (userId) {
         var reqParam = {
             userId: userId
@@ -361,6 +367,7 @@
         postProcCallAjax(BASE_URL + "/users/deleteUser?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackDeleteUser);
     };
 
+    // CALLBACK DELETE USER
     var callbackDeleteUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
         //console.log("result message 는?" + JSON.stringify(data));

@@ -52,6 +52,8 @@
 
 .bg_blue { background-color:#337ab7; border-radius: 4px; font-size: 12px; padding: 2px 5px; color:#fff;}
 
+.yellow2, .warning2, .waiting2 {color:#fcce00;}
+
 .custom-sortable_wrap {
     border: #e7eaec solid 0;
 }
@@ -91,5 +93,8 @@
     padding-bottom: 40px;
 }
 
-.yellow2, .warning2, .waiting2 {color:#fcce00;}
-.errorMsgBold { font-weight: bolder; }
+.custom-content-overflow {
+    overflow: inherit;
+    text-overflow: ellipsis;
+}
+

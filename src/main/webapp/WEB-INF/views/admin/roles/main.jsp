@@ -151,53 +151,6 @@
 
     viewLoading('hide');
 
-    // TODO :: REMOVE
-    // // GET LIST
-    // var getRoleList = function() {
-    //     procCallAjax("/roles/getList", "GET", null, null, callbackGetRoleList);
-    // };
-    //
-    // var callbackGetRoleList = function (data) {
-    //     if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-    //
-    //     //console.log("델리스파이스", JSON.stringify(data));
-    //
-    //     var items = data.items;
-    //     var roleName;
-    //     var namespace;
-    //     var metadata;
-    //     var listLength = items.length;
-    //     var htmlString = [];
-    //
-    //     htmlString.push("Role List :: <br><br>");
-    //
-    //     for(var i = 0; i < listLength; i++){
-    //         metadata = items[i].metadata;
-    //         roleName = metadata.name;
-    //         namespace = metadata.namespace;
-    //
-    //         htmlString.push(
-    //             "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/roles/" + roleName + "\");'><span style='color: orangered;'>[ DETAIL ]</span></a>" + " || "
-    //             + "name :: " + roleName + " || "
-    //             + "namespace :: " + namespace + " || "
-    //             + "creationTimestamp :: " + items[i].metadata.creationTimestamp
-    //             + "<br><br>");
-    //     }
-    //
-    //     $('#resultArea').html(htmlString);
-    // };
-    //
-    // // BIND
-    // $("#btnSearch").on("click", function() {
-    //     getRoleList();
-    // });
-    //
-    //
-    // // BIND
-    // $("#btnReset").on("click", function() {
-    //     $('#resultArea').html("");
-    // });
-
     // ON LOAD
     $(document.body).ready(function () {
         viewLoading('show');

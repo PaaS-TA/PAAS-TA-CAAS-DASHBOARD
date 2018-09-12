@@ -146,41 +146,51 @@
 <script>
     var setLayerpop = function (eventElement) {
         var select = $(eventElement);
-        $('.modal-title').html( atob( select.data('title') ) );
-        $('.modal-body').html( '<p>' + atob( select.data('content') ) + '</p>' );
+        var _title = select.data('title');
+        if (_title instanceof Object) {
+            _title = JSON.stringify(_title);
+        }
+
+        var _content = select.data('content');
+        if (_content instanceof Object) {
+            _content = '<p>' + JSON.stringify(_content) + '</p>';
+        } else {
+            _content = '<p>' + _content + '</p>';
+        }
+
+        $('.modal-title').html(_title);
+        $('.modal-body').html(_content);
     };
 
-    var createSpans = function (data, type) {
-        var datas = data.replace(/=/g, ':').split(',');
-        var spanTemplate = "";
+    var createSpans = function (inputData, type) {
+        var data = inputData.replace(/=/g, ':').split(/,\s/);
+        var spanHtml = "";
 
         // data-target="#layerpop" data-toggle="modal"
         // onclick -> layerpop에 데이터 세팅
 
-        $.each(datas, function (index, data) {
+        $.each(data, function (index, item) {
             if (type === "true" && index > 0)
-                spanTemplate += '<br>';
+                spanHtml += '<br>';
 
-            if (data.length > 40) {
-                var _kv = data.split(': ');
+            if (item.length > 40) {
+                var _kv = item.split(': ');
                 if (_kv.length > 1) {
-                    var _title = btoa(_kv[0]);
-                    var _content = btoa(_kv.reduce(function(prev, cur, idx) {
-                            if (idx <= 1) return cur; else return prev + ': ' + cur }));
-
-                    var _generateSpanFront = ' <span class="bg_blue" data-target="#layerpop" data-toggle="modal" ';
-                    _generateSpanFront += 'onclick="setLayerpop(this)" data-title="' + _title + '" ';
-                    _generateSpanFront += 'data-content="' + _content + '"><a>'
-                    spanTemplate += _generateSpanFront + data.substring(0, 30) + '...</a></span>';
+                    var _title = _kv[0];
+                    var _content = _kv.reduce(function (prev, cur, idx) {
+                        if (idx <= 1) return cur; else return prev + ': ' + cur
+                    });
+                    var template = '<span class="bg_blue" data-target="#layerpop" data-toggle="modal" onclick="setLayerpop(this)">';
+                    spanHtml += ( $(template).html('<a>' + _title + '</a>').attr('data-title', _title).attr('data-content', _content)[0].outerHTML + ' ' );
                 } else {
-                    spanTemplate += ' <span class="bg_gray">' + data + '</span>';
+                    spanHtml += '<span class="bg_gray">' + item + '</span> ';
                 }
             } else {
-                spanTemplate += ' <span class="bg_gray">' + data + '</span>';
+                spanHtml += '<span class="bg_gray">' + item + '</span> ';
             }
         });
 
-        return spanTemplate;
+        return spanHtml;
     };
 
     var stringifyKeyValue = function (data, mapFunc) {
@@ -209,8 +219,8 @@
 
         // name, labels, annotations, created-at, addresses, pod-cidr, unschedulable
         var name = _metadata.name;
-        var labels = stringifyKeyValue(_metadata.labels).replace(/,/g, ', ');
-        var annotations = _metadata.annotations;
+        var labels = stringifyKeyValue(_metadata.labels);
+        var annotations = stringifyKeyValue(_metadata.annotations);
         var createdAt = _metadata.creationTimestamp;
         var addresses = stringifyKeyValue(_status.addresses, function(item) { return item.type + ": " + item.address; });
         var podCIDR = _spec.podCIDR;
@@ -233,7 +243,7 @@
 
         $('#node_name').html(name);
         $('#node_labels').html(createSpans(labels, "false"));
-        $('#node_annotations').html(createSpans(stringifyKeyValue(annotations), "true"));
+        $('#node_annotations').html(createSpans(annotations, "true"));
         $('#node_created_at').html(createdAt);
         $('#node_addresses').html(createSpans(addresses, "false"));
         $('#node_pod_cidr').html(podCIDR);
