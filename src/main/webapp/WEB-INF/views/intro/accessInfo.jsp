@@ -84,7 +84,7 @@
             <div class="clearfix"></div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>\$ kubectl config set-cluster \${CAAS-SERVICE-CLUSTER-NAME} --insecure-skip-tls-verify=true --server=\${CAAS-SERVICE-CLUSTER-SERVER} --certificate-authority=[DOWNLOADED FILE PATH]</p>
+                    <p>\$ kubectl config set-cluster \${CAAS-SERVICE-CLUSTER-NAME} --embed-certs=true --server=\${CAAS-SERVICE-CLUSTER-SERVER} --certificate-authority=[DOWNLOADED FILE PATH]</p>
                 </div>
             </div>
         </div>

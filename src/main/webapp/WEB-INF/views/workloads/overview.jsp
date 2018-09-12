@@ -257,7 +257,7 @@
             var namespace = itemList.metadata.namespace;
             var labels = procSetSelector(itemList.metadata.labels);
             var creationTimestamp = itemList.metadata.creationTimestamp;
-            var pods = itemList.status.availableReplicas +"/"+ itemList.status.replicas;  //  TODO ::  current / desired
+            var pods = itemList.status.availableReplicas +"/"+ itemList.spec.replicas;  // current / desired
             replicaSetReplicaTotalCtn += itemList.spec.replicas;
             replicaSetAvailableReplicasCnt += itemList.status.availableReplicas;
             //var selector = procSetSelector(items[i].spec.selector);
