@@ -130,6 +130,9 @@
     var gDevList; // For Deployment List
     var gReplicaSetList; // For ReplicaSet List
 
+    var replicaSetReplicaTotalCtn = 0;
+    var replicaSetAvailableReplicasCnt = 0;
+
     // ***** For Deployment *****
     // GET LIST
     var getDevList = function() {
@@ -255,6 +258,8 @@
             var labels = procSetSelector(itemList.metadata.labels);
             var creationTimestamp = itemList.metadata.creationTimestamp;
             var pods = itemList.status.availableReplicas +"/"+ itemList.status.replicas;  //  TODO ::  current / desired
+            replicaSetReplicaTotalCtn += itemList.spec.replicas;
+            replicaSetAvailableReplicasCnt += itemList.status.availableReplicas;
             //var selector = procSetSelector(items[i].spec.selector);
             var images = new Array;
 
@@ -328,9 +333,9 @@
 
     var createChart = function() {
         console.log("createChart in!!!!!!");
-        console.log(gDevList);
-        console.log(gPodsList);
-        console.log(gReplicaSetList);
+        // console.log(gDevList);
+        // console.log(gPodsList);
+        // console.log(gReplicaSetList);
 
         var devChartRunningCnt = 0;
         var devChartFailedCnt = 0;
@@ -351,6 +356,12 @@
         var podsChartFailedPer = 0;
         var podsChartSucceededPer= 0;
         var podsChartPenddingPer = 0;
+
+        var repsChartAvailableCnt = 0;
+        var repsChartUnAvailableCnt = 0;
+
+        var repsChartAvailablePer= 0;
+        var repsChartUnAvailablePer = 0;
 
         // var devItems = gDevList.items;
         // var devListLength = devItems.length;
@@ -380,15 +391,22 @@
         //     }
         // }
 
-        podsChartRunningPer = podsChartRunningCnt / podsListLength * 100;
-        podsChartFailedPer = podsChartFailedCnt / podsListLength * 100;
-        console.log("podsChartRunningPer : "+podsChartRunningPer);
-        console.log("podsChartFailedPer : "+podsChartFailedPer);
+        // podsChartRunningPer = podsChartRunningCnt / podsListLength * 100;
+        // podsChartFailedPer = podsChartFailedCnt / podsListLength * 100;
+        // console.log("podsChartRunningPer : "+podsChartRunningPer);
+        // console.log("podsChartFailedPer : "+podsChartFailedPer);
 
-        devChartRunningPer = devChartRunningCnt / devListLength * 100;
-        devChartFailedPer = devChartFailedCnt / devListLength * 100;
-        console.log("devChartRunningPer : "+devChartRunningPer);
-        console.log("devChartFailedPer : "+devChartFailedPer);
+        // devChartRunningPer = devChartRunningCnt / devListLength * 100;
+        // devChartFailedPer = devChartFailedCnt / devListLength * 100;
+        // console.log("devChartRunningPer : "+devChartRunningPer);
+        // console.log("devChartFailedPer : "+devChartFailedPer);
+
+        repsChartAvailableCnt = replicaSetAvailableReplicasCnt;
+        repsChartUnAvailableCnt = replicaSetReplicaTotalCtn - replicaSetAvailableReplicasCnt;
+        repsChartAvailablePer = repsChartAvailableCnt / replicaSetReplicaTotalCtn * 100;
+        repsChartUnAvailablePer = repsChartUnAvailableCnt / replicaSetReplicaTotalCtn * 100;
+        console.log("repsChartAvailablePer : "+repsChartAvailablePer);
+        console.log("repsChartUnAvailablePer : "+repsChartUnAvailablePer);
 
         // 도넛차트
         var pieColors = ['#3076b2', '#85c014', '#f01108' , '#333440'];
@@ -498,7 +516,7 @@
             plotOptions: {
                 pie: {
                     innerSize: 110,
-                    colors : pieColors,
+                    colors : ['#3076b2', '#f01108'],
                     dataLabels: {
                         enabled: true,
                         format: '{point.percentage:.0f} %',
@@ -517,10 +535,8 @@
             },
             series: [{
                 data: [
-                    ['Succeeded', 46],
-                    ['Running', 18],
-                    ['Failed', 18],
-                    ['Pendding', 18]
+                    ['Available', repsChartAvailablePer],
+                    ['UnAvailable', repsChartUnAvailablePer]
                 ]
             }],
             credits: { // logo hide
