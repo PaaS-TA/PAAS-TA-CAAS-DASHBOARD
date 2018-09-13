@@ -260,20 +260,39 @@ var stringifyJSON = function (obj) {
 //     .then(function() { $('body').loadingModal('color', 'black').loadingModal('text', 'Done :-)').loadingModal('backgroundColor', 'yellow');  return delay(time); } )
 //     .then(function() { $('body').loadingModal('hide'); return delay(time); } )
 //     .then(function() { $('body').loadingModal('destroy') ;} );
+// TODO :: CHECK
 var viewLoading = function(type) {
-    if (type === 'show') {
-        console.log(":: Show Loading..");
-        var bodyObj = $('body');
-        bodyObj.loadingModal();
-        bodyObj.loadingModal('animation', 'chasingDots').loadingModal('color', 'black').loadingModal('backgroundColor', 'white');
-    } else if (type === 'hide') {
-        console.log(":: Hide Loading..");
-        setTimeout(function(){
-            $('body').loadingModal('destroy') ;
-        }, 1000);
+    var dashboardWrap = $("#dashboardWrap");
+    var loader = $("#loadingSpinner");
 
+    if (type === 'show') {
+        loader.show().gSpinner();
+
+    } else {
+        dashboardWrap.show();
+
+        setTimeout(function(){
+            loader.gSpinner("hide").hide();
+        }, 1000);
     }
+
+    // var dashboardWrap = $("#dashboardWrap");
+    //
+    // if (type === 'show') {
+    //     console.log(":: Show Loading..");
+    //     var bodyObj = $('body');
+    //     bodyObj.loadingModal();
+    //     bodyObj.loadingModal('animation', 'chasingDots').loadingModal('color', 'black').loadingModal('backgroundColor', 'white');
+    //     dashboardWrap.show();
+    // } else if (type === 'hide') {
+    //     console.log(":: Hide Loading..");
+    //     setTimeout(function(){
+    //         $('body').loadingModal('destroy') ;
+    //     }, 1000);
+    //
+    // }
 };
+
 
 var alertMessage = function(value, result) {
     $(".alertLayer .in").html(value);

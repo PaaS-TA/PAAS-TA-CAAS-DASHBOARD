@@ -41,6 +41,7 @@
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/common_new.css"/>'>
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/caas-common.css"/>'>
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/jquery.loadingModal.css"/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/gspinner.min.css"/>'>
 
 <%--JS--%>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery-1.12.4.min.js"/>'></script>
@@ -53,6 +54,7 @@
 <script type="text/javascript" src='<c:url value="/resources/js/handlebars-v4.0.11.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.tablesorter.min.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.loadingModal.js"/>'></script>
+<script type="text/javascript" src='<c:url value="/resources/js/g-spinner.min.js"/>'></script>
 
 <%--JS :: USE ONLY ON REQUIRED PAGES--%>
 <%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
