@@ -149,11 +149,10 @@
 
 <script type="text/javascript">
 
-    viewLoading('hide');
-
     // ON LOAD
     $(document.body).ready(function () {
         viewLoading('show');
+        viewLoading('hide');
         // getRoleList();
     });
 </script>

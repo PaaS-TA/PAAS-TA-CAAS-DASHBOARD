@@ -75,6 +75,19 @@ public class Constants {
 
     public static final String URI_API_PODS_RESOURCES = "/workloads/namespaces/{namespace:.+}/pods/resource/{selector:.+}";
 
+    // API URI :: ROLES
+    public static final String URI_API_ROLES_DETAIL = "/roles/namespaces/{namespace:.+}/roles/{rolesName:.+}";
+
+    // API URI :: ROLE BINDINGS
+    public static final String URI_API_ROLE_BINDINGS_DETAIL = "/roleBindings/namespaces/{namespace:.+}/rolebindings/{roleBindingsName:.+}";
+
+    // API URI :: USERS(SERVICE ACCOUNT)
+    public static final String URI_API_SERVICE_ACCOUNT_DETAIL = "/users/namespaces/{namespace:.+}/serviceaccounts/{serviceAccounts:.+}";
+
+    // COMMON API URI :: USERS
+    public static final String URI_COMMON_API_USERS_LIST = "/users/serviceInstanceId/{serviceInstanceId:.+}/organizationGuid/{organizationGuid:.+}";
+    public static final String URI_COMMON_API_USERS_DETAIL = "/users/serviceInstanceId/{serviceInstanceId:.+}/organizationGuid/{organizationGuid:.+}/userId/{userId:.+}";
+
     private Constants() {
         throw new IllegalStateException();
     }
