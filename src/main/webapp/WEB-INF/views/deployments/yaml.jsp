@@ -10,7 +10,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <span class="resultServiceName"><c:out value="${deploymentsName}"/></span></h1>
+    <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${deploymentsName}"/></h1>
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Services YAML 시작-->
     <div class="cluster_content03 row two_line two_view harf_view custom_display_block">
