@@ -239,10 +239,10 @@
                 var layerpop1 = "<span data-target='#layerpop1' data-toggle='modal' name='saveRole'><i class='fas fa-save'></i></span>";
                 var layerpop2 = "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser'><i class='fas fa-trash-alt'></i></span>";
 
-                if(rsUpdate !== "TRUE"){
+                if(rsUpdate !== "TRUE" || splitRole == "admin"){
                     layerpop1 = '';
                 }
-                if(rsDelete !== "TRUE"){
+                if(rsDelete !== "TRUE" || splitRole == "admin"){
                     layerpop2 = '';
                 }
 
