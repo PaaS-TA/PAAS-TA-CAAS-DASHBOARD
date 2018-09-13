@@ -364,13 +364,15 @@
     }
 
     // ON LOAD
-    $(document.body).ready(function () {
-        viewLoading('show');
+    $(window).bind("load", function () {
+        // TODO :: REMOVE AFTER CHECK
+    // $(document.body).ready(function () {
+    //     viewLoading('show');
         getDevList();
         getPodsList();
         getReplicaSetList();
         createChart();
-        viewLoading('hide');
+        // viewLoading('hide');
     });
 
     var createChart = function() {

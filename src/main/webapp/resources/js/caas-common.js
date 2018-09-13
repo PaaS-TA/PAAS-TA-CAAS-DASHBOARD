@@ -260,6 +260,8 @@ var stringifyJSON = function (obj) {
 //     .then(function() { $('body').loadingModal('color', 'black').loadingModal('text', 'Done :-)').loadingModal('backgroundColor', 'yellow');  return delay(time); } )
 //     .then(function() { $('body').loadingModal('hide'); return delay(time); } )
 //     .then(function() { $('body').loadingModal('destroy') ;} );
+
+
 // TODO :: CHECK
 var viewLoading = function(type) {
     var dashboardWrap = $("#dashboardWrap");
@@ -267,10 +269,8 @@ var viewLoading = function(type) {
 
     if (type === 'show') {
         loader.show().gSpinner();
-
     } else {
         dashboardWrap.show();
-
         setTimeout(function(){
             loader.gSpinner("hide").hide();
         }, 1000);

@@ -13,6 +13,7 @@
         <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
         <put-attribute name="modal" value="/WEB-INF/views/common/modal.jsp"/>
         <put-attribute name="alert" value="/WEB-INF/views/common/alert.jsp"/>
+        <put-attribute name="loadingSpinner" value="/WEB-INF/views/common/loadingSpinner.jsp"/>
     </definition>
 
     <definition name="layout.admin" template="/WEB-INF/views/common/defaultLayout.jsp">
@@ -23,6 +24,7 @@
         <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
         <put-attribute name="modal" value="/WEB-INF/views/common/modal.jsp"/>
         <put-attribute name="alert" value="/WEB-INF/views/common/alert.jsp"/>
+        <put-attribute name="loadingSpinner" value="/WEB-INF/views/common/loadingSpinner.jsp"/>
     </definition>
 
     <!-- PAGES -->
