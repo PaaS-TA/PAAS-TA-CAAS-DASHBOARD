@@ -129,13 +129,18 @@
 
     var replicaSetReplicaTotalCtn = 0;
     var replicaSetAvailableReplicasCnt = 0;
+    var repsChartRunningCnt = 0;
+    var repsChartFailedCnt = 0;
+    var repsChartSucceededCnt= 0;
+    var repsChartPenddingCnt = 0;
 
     // ***** For Deployment *****
     // GET LIST
     var getDevList = function() {
         viewLoading('show');
-        //procCallAjax("/api/namespaces/" + NAME_SPACE + "/replicasets", "GET", null, null, callbackGetDevList);
-        procCallAjax("/workloads/deployments/" + NAME_SPACE, "GET", null, null, callbackGetDevList);
+        // procCallAjax("/workloads/deployments/" + NAME_SPACE, "GET", null, null, callbackGetDevList);
+        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDevList);
     };
 
 
@@ -259,6 +264,14 @@
             replicaSetAvailableReplicasCnt += itemList.status.availableReplicas;
             var images = new Array;
 
+            if(itemList.type == "normal") {
+                repsChartRunningCnt += 1;
+            } else if(itemList.type == "Warning") {
+                repsChartFailedCnt += 1;
+            } else {
+                repsChartFailedCnt += 1;
+            }
+
             var containers = itemList.spec.template.spec.containers;
             for(var i=0; i < containers.length; i++){
                 images.push(containers[i].image);
@@ -367,10 +380,10 @@
         var podsChartSucceededPer= 0;
         var podsChartPenddingPer = 0;
 
-        var repsChartRunningCnt = 0;
-        var repsChartFailedCnt = 0;
-        var repsChartSucceededCnt= 0;
-        var repsChartPenddingCnt = 0;
+        // var repsChartRunningCnt = 0;
+        // var repsChartFailedCnt = 0;
+        // var repsChartSucceededCnt= 0;
+        // var repsChartPenddingCnt = 0;
 
         var repsChartRunningPer = 0;
         var repsChartFailedPer = 0;
@@ -427,24 +440,24 @@
             }
         });
 
-        $.each(gReplicaSetList.items, function (index, item) {
-            if(statusMap0.get(item.metadata.name) != null && statusMap0.get(item.metadata.name) != "") {
-                var repsStatus = statusMap0.get(item.metadata.name);
-                if(repsStatus.indexOf("Running") > -1) {
-                    repsChartRunningCnt += 1;
-                } else if (repsStatus.indexOf("Failed") > -1) {
-                    repsChartFailedCnt += 1;
-                } else if (repsStatus.indexOf("Pending") > -1) {
-                    repsChartPenddingCnt += 1;
-                } else if (repsStatus.indexOf("Succeeded") > -1) {
-                    repsChartSucceededCnt += 1;
-                } else {
-                    repsChartRunningCnt += 1;
-                }
-            } else {
-                repsChartRunningCnt += 1;
-            }
-        });
+        // $.each(gReplicaSetList.items, function (index, item) {
+        //     if(statusMap0.get(item.metadata.name) != null && statusMap0.get(item.metadata.name) != "") {
+        //         var repsStatus = statusMap0.get(item.metadata.name);
+        //         if(repsStatus.indexOf("Running") > -1) {
+        //             repsChartRunningCnt += 1;
+        //         } else if (repsStatus.indexOf("Failed") > -1) {
+        //             repsChartFailedCnt += 1;
+        //         } else if (repsStatus.indexOf("Pending") > -1) {
+        //             repsChartPenddingCnt += 1;
+        //         } else if (repsStatus.indexOf("Succeeded") > -1) {
+        //             repsChartSucceededCnt += 1;
+        //         } else {
+        //             repsChartRunningCnt += 1;
+        //         }
+        //     } else {
+        //         repsChartRunningCnt += 1;
+        //     }
+        // });
 
         podsChartRunningPer = podsChartRunningCnt / podsListLength * 100;
         podsChartFailedPer = podsChartFailedCnt / podsListLength * 100;
