@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="content">
-    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <div class="cluster_content01 row two_line two_view">
         <ul>
             <!-- Replica Sets 시작 -->

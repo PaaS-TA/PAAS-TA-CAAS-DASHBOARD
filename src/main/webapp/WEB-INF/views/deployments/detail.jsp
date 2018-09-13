@@ -11,68 +11,10 @@
 
 <div class="content">
     <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${deploymentsName}"/></h1>
-    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
-            <!-- TODO : 그래프 구현필요 -->
-            <!-- 그래프 시작 -->
-            <%--<li class="cluster_first_box">
-                <div class="graph-legend-wrap clearfix">
-                    <ul class="graph-legend">
-                        <li rel="current" class="on">현재</li>
-                        <li rel="1h">1시간</li>
-                        <li rel="6h">6시간</li>
-                        <li rel="1d">1일</li>
-                        <li rel="7d">7일</li>
-                        <li rel="30d">30일</li>
-                    </ul>
-                </div>
-                <div class="graph-nodes">
-                    <div class="graph-tit-wrap">
-                        <p class="graph-tit">
-                            CPU<br/>
-                            현재 사용량
-                        </p>
-                        <p class="graph-rate tit-color1">
-                            <span>60</span>%
-                        </p>
-                    </div>
-                    <div class="graph-cnt">
-                        <div id="areachartcpu" style="min-width: 250px; height: 170px; margin: 0 auto"></div>
-                    </div>
-                </div>
-                <div class="graph-nodes">
-                    <div class="graph-tit-wrap">
-                        <p class="graph-tit">
-                            메모리<br/>
-                            현재 사용량
-                        </p>
-                        <p class="graph-rate tit-color2">
-                            <span>60</span>%
-                        </p>
-                    </div>
-                    <div class="graph-cnt">
-                        <div id="areachartmem" style="min-width: 250px; height: 170px; margin: 0 auto"></div>
-                    </div>
-                </div>
-                <div class="graph-nodes">
-                    <div class="graph-tit-wrap">
-                        <p class="graph-tit">
-                            디스크<br/>
-                            현재 사용량
-                        </p>
-                        <p class="graph-rate tit-color3">
-                            <span>60</span>%
-                        </p>
-                    </div>
-                    <div class="graph-cnt">
-                        <div id="areachartdisk" style="min-width: 250px; height: 170px; margin: 0 auto"></div>
-                    </div>
-                </div>
-            </li>--%>
-            <!-- 그래프 끝 -->
-            <!-- Details 시작 -->
             <li class="cluster_second_box">
                 <div class="sortable_wrap">
                     <div class="sortable_top">

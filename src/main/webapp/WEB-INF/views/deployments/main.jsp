@@ -13,7 +13,7 @@
 
 
 <div class="content">
-    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <!-- Deployments 시작 -->
     <div class="cluster_content02 row two_line two_view harf_view" style="display: block;">
         <ul class="maT30">

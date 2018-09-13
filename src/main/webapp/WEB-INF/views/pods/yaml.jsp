@@ -12,7 +12,7 @@
     <jsp:include page="common-pods.jsp" flush="true"/>
 
     <%-- NODES HEADER INCLUDE --%>
-    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
 
     <!-- Services YAML 시작-->
     <div class="cluster_content03 row two_line two_view harf_view custom_display_block">
@@ -25,20 +25,7 @@
                     <div class="paA30">
                         <div class="yaml">
                         <pre class="brush: yaml" id="resultArea">
-                                    <%--<pre class="brush: cpp" id="resultArea">--%>
-                                    <%--</pre>--%>
                         </pre>
-                            <!--button class="btns colors4">Save</button>
-                            <button class="btns colors5">Cancel</button>
-                            <button class="btns colors9 pull-right maL05">copy</button>
-                            <button class="btns colors9 pull-right">Download</button>
-                            <div class="yamlArea">
-                                <div class="number">1<br/>2<br/>3<br/>4<br/>5</div>
-                                <div class="text">fff<br/>ddd<br/>dfff<br/>dddd<br/>ddd<br/>dfff<br/>dddd</div>
-                                <div style="clear:both;"></div>
-                            </div>
-                            <button class="btns colors4">Save</button>
-                            <button class="btns colors5">Cancel</button-->
                         </div>
                     </div>
             </li>

@@ -11,7 +11,7 @@
 
 <div class="content">
     <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${serviceName}"/></h1>
-    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <!-- Services Events 시작-->
     <div class="cluster_content02 row two_line two_view harf_view custom_display_block">
         <ul class="maT30">

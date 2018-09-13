@@ -11,7 +11,7 @@
 
 <div class="content">
     <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${deploymentsName}"/></h1>
-    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <!-- Services YAML 시작-->
     <div class="cluster_content03 row two_line two_view harf_view custom_display_block">
         <ul class="maT30">
@@ -37,10 +37,6 @@
 
 <input type="hidden" id="requestDeploymentsName" name="requestDeploymentsName" value="<c:out value='${deploymentsName}' default='' />" />
 
-
-<%--TODO : REMOVE--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
 
 <!-- SyntexHighlighter -->
 <script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>

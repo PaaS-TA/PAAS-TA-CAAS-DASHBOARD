@@ -10,7 +10,7 @@
     <jsp:include page="common-pods.jsp" flush="true"/>
 
     <%-- NODES HEADER INCLUDE --%>
-    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
 
     <!-- Events 시작-->
     <div class="cluster_content02 row two_line two_view harf_view">

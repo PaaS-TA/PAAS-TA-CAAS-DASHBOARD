@@ -1,4 +1,3 @@
-
 <%--
   Admin Left Menu
 
@@ -11,21 +10,6 @@
 <nav style="height: 90%;">
     <div class="scroll_style">
         <ul class="nav_1d caas_nav">
-            <%--<li onclick="location.href='admin_access.html'">--%>
-            <%--<li id="left-menu-accessInfo" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/accessInfo');">--%>
-                <%--<dl>--%>
-                    <%--<dt>--%>
-                        <%--<div id="lnbimg9" class="">--%>
-                        <%--</div>--%>
-                    <%--</dt>--%>
-                    <%--<dd>--%>
-                        <%--<p>--%>
-                            <%--Access--%>
-                        <%--</p>--%>
-                    <%--</dd>--%>
-                <%--</dl>--%>
-            <%--</li>--%>
-            <%--<li class="cur">--%>
             <li id="left-menu-users" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/users');">
                 <dl>
                     <dt>
@@ -40,7 +24,6 @@
                     </dd>
                 </dl>
             </li>
-            <%--<li onclick="location.href='admin_role.html'">--%>
             <li id="left-menu-roles" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/roles');">
                 <dl>
                     <dt>

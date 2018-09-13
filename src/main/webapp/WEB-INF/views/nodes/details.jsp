@@ -11,7 +11,7 @@
     <jsp:include page="common-nodes.jsp"/>
 
     <%-- NODES HEADER INCLUDE --%>
-    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
 
     <!-- Nodes Details 시작-->
     <div class="cluster_content02 row two_line two_view harf_view">
