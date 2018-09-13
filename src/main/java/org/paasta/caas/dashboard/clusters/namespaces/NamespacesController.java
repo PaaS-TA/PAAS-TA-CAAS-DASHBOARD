@@ -86,7 +86,7 @@ public class NamespacesController {
      * @return the namespaces events
      */
     @GetMapping(value = {"/namespaces/{namespace}/events"})
-    public ModelAndView getNamespaceEvents(HttpServletRequest httpServletRequest) {
+    public ModelAndView getNamespaceEvents(HttpServletRequest httpServletRequest, @PathVariable String namespace) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());
     }
 }

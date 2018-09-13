@@ -10,7 +10,7 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <c:out value="${deploymentsName}"/></h1>
+    <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${deploymentsName}"/></h1>
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
