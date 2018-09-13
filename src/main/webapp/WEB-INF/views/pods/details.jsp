@@ -533,10 +533,14 @@
 
     // state를 가져오기 위함.. state정보는 statuses에 있는데.. run된 흔적이 없으면 이게 null로 들어옴...
     var getStatus = function (itemList, phase) {
+        var statusStr = "";
         if( !itemList ) {
-            return phase;
+            statusStr = phase;
+        } else {
+            statusStr = Object.keys(itemList.state)[0];
         }
-        return Object.keys(itemList.state);
+
+        return statusStr.charAt(0).toUpperCase() + statusStr.substring(1);
     }
 
     var showHide = function (indexId) {
