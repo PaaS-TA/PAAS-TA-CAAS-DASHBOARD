@@ -1,15 +1,13 @@
-<%@ page import="org.paasta.caas.dashboard.common.Constants" %><%--
+<%--
   Deployments main
   @author Hyungu Cho
   @version 1.0
   @since 2018.08.14
 --%>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
 <div class="content">
-    <jsp:include page="common-pods.jsp"/>
+    <jsp:include page="common-pods.jsp" flush="true"/>
 
     <%-- NODES HEADER INCLUDE --%>
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
@@ -318,12 +316,6 @@
     </div>
 </div>
 
-
-
-
-<input type="hidden" id="requestPodName" name="requestPodName" value="<c:out value='${podName}' default='' />" />
-
-
 <%--TODO : REMOVE--%>
 <%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>--%>
 <%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
@@ -331,25 +323,27 @@
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function () {
+        viewLoading('show');
         getDetail();
+        viewLoading('hide');
     });
-</script>
-
-
-<script type="text/javascript">
 
     // GET DETAIL
     var getDetail = function() {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.API_WORKLOAD %>/namespaces/" + NAME_SPACE + "/pods/" + document.getElementById('requestPodName').value;
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.API_WORKLOAD %>/namespaces/" + NAME_SPACE + "/pods/" + G_POD_NAME;
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
 
-
     // CALLBACK
     var callbackGetDetail = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        viewLoading('show');
 
-        console.log("잘 대나 해보쟝 ", data);
+        if (false === procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage("Node 정보를 가져오지 못했습니다.", false);
+            return;
+        }
+
         var labels = stringifyJSON(data.metadata.labels).replace(/,/g, ', ');
         // var selector = stringifyJSON(data.spec.selector).replace(/matchLabels=/g, '');
 
@@ -383,6 +377,8 @@
         document.getElementById("volumes").textContent = data.spec.volumes[0].name;
 
         createContainerResultArea(data.status, data.spec.containers);
+
+        viewLoading('hide');
     };
 
     var replaceLabels = function (data) {
