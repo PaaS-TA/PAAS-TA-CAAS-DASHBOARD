@@ -430,6 +430,16 @@
         listLength = containers.length;
 
         $.each(containers, function (index, itemList) {
+            var containerStatusStr = '';
+            var _status = getContainerStatus(getContainer(containerStatuses, itemList.name), status.phase);
+            if (_status.includes("Running")) {
+                containerStatusStr += '<span class="green2"><i class="fas fa-check-circle"></i></span>';
+            } else if (_status.includes("Waiting")) {
+                containerStatusStr += '<span class="red2"><i class="fas fa-exclamation-triangle"></i></span>';
+            } else {
+                containerStatusStr += '<span><i class="fas fa-check-circle"></i></span>';
+            }
+            containerStatusStr += (' ' + _status);
 
             resultArea.append('<tr>' +
                                 '<td>' +
@@ -437,7 +447,7 @@
                                         itemList.name +
                                     '</a>' +
                                 '</td>' +
-                                '<td>' + '<span class="green2"><i class="fas fa-check-circle"></i></span> ' + getStatus(getContainer(containerStatuses, itemList.name), status.phase) + '</td>' +
+                                '<td>' + containerStatusStr + '</td>' +
                                 '<td>' + itemList.image + '</td>' +
                                 '<td>' + nvl(getContainer(containerStatuses, itemList.name).restartCount, "-") + '</td>' +
                               '</tr>' +
@@ -532,7 +542,7 @@
     }
 
     // state를 가져오기 위함.. state정보는 statuses에 있는데.. run된 흔적이 없으면 이게 null로 들어옴...
-    var getStatus = function (itemList, phase) {
+    var getContainerStatus = function (itemList, phase) {
         var statusStr = "";
         if( !itemList ) {
             statusStr = phase;
