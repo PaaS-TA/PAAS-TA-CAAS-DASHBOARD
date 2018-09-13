@@ -4,13 +4,12 @@
   @version 1.0
   @since 2018.08.14
 --%>
-<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <c:out value="${podName}"/> </h1>
+    <jsp:include page="common-pods.jsp" flush="true"/>
 
     <%-- NODES HEADER INCLUDE --%>
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
@@ -47,28 +46,16 @@
     </div>
     <!-- Services YAML 끝 -->
 </div>
-<%--TODO--%>
-<!-- modal -->
-
-
-<input type="hidden" id="podName" name="podName" value="<c:out value='${podName}' default='' />" />
-
-
-<%--TODO : REMOVE--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
 
 <!-- SyntexHighlighter -->
 <script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushYaml.js"/>"></script>
 <link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">
 <link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">
-
 <script type="text/javascript">
     SyntaxHighlighter.defaults['quick-code'] = false;
     SyntaxHighlighter.all();
 </script>
-
 <style>
     .syntaxhighlighter .gutter .line{border-right-color:#ddd !important;}
 </style>
@@ -77,40 +64,25 @@
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function () {
-        var podName = '<c:out value="${podName}"/>';
-        var URL = "<%= Constants.API_URL %><%= Constants.API_WORKLOAD %>/namespaces/" + NAME_SPACE + "/pods/" + podName;
-        console.log("window.location.href ", window.location.href);
+        viewLoading('show');
+
+        var URL = "<%= Constants.API_URL %><%= Constants.API_WORKLOAD %>/namespaces/" + NAME_SPACE + "/pods/" + G_POD_NAME;
         procCallAjax(URL, "GET", null, null, callbackGetPods);
 
+        viewLoading('hide');
     });
-</script>
-
-
-<script type="text/javascript">
 
     var callbackGetPods = function (data) {
-        if (RESULT_STATUS_FAIL === data.resultCode) {
-            $('#resultArea').html(
-                "ResultStatus :: " + data.resultCode + " <br><br>"
-                + "ResultMessage :: " + data.resultMessage + " <br><br>");
-            return false;
+        viewLoading('show');
+
+        if (false === procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage("Pod 정보를 가져오지 못했습니다.", false);
+            return;
         }
 
-        console.log("CONSOLE DEBUG PRINT :: " + data);
-
-        var htmlString = [];
-
-
         $('#resultArea').html('---\n' + data.sourceTypeYaml);
+
+        viewLoading('hide');
     }
-
-    <%--var movePage = function(requestPage) {--%>
-        <%--var reqUrl = '<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/pods/' + document.getElementById('requestDeploymentsName').value;--%>
-        <%--if (requestPage.indexOf('detail') < 0) {--%>
-            <%--reqUrl += '/' + requestPage;--%>
-        <%--}--%>
-
-        <%--procMovePage(reqUrl);--%>
-    <%--};--%>
-
 </script>
