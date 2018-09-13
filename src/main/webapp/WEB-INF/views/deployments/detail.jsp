@@ -253,11 +253,15 @@
     var deployName = '<c:out value="${deploymentsName}"/>';
     $(document.body).ready(function () {
         viewLoading('show');
+        getDetail();
+    });
+
+    var getDetail = function() {
         var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_DETAIL %>".replace("{namespace:.+}", NAME_SPACE)
                                                                     .replace("{deploymentName:.+}", deployName);
 
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeployment);
-    });
+    };
 
     var stringifyJSON = function (obj) {
         return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
@@ -420,8 +424,6 @@
                                     '<td>' + creationTimestamp + '</td>' +
                                 '</tr>' );
 
-
-
         });
 
         if (listLength < 1) {
@@ -463,7 +465,6 @@
             var spec = itemList.spec;
             var status = itemList.status;
 
-            // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
             var podName = metadata.name;
             var namespace = NAME_SPACE;
             var nodeName = spec.nodeName;

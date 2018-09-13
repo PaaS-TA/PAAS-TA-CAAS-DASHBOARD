@@ -211,9 +211,4 @@
         return spanTemplate;
     }
 
-    // BIND
-    $("#btnReset").on("click", function () {
-        $('#resultArea').html("");
-    });
-
 </script>
