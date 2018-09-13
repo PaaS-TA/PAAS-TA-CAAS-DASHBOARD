@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <div class="content">
@@ -112,14 +113,11 @@
     };
 
     $(document.body).ready(function () {
-        getEventList(NAME_SPACE, NAME_SPACE);
-        // getEventList("hyerin-test-case", "kubernetes-ciss-test-d5f846fd7");
+        var namespace = '<c:out value="${namespace}"/>';
 
-        var urlPath = window.location.href;
-        var urlPathSplit = urlPath.split("/");
-        var namespaceId = urlPathSplit[6];
+        getEventList(NAME_SPACE, namespace);
 
-        $("#title").html(namespaceId);
+        $("#title").html(namespace);
     });
 
 </script>
