@@ -45,6 +45,12 @@ public class Constants {
     public static final String URI_CONTROLLER_REPLICASETS    = "/caas/workloads/replicaSets";
     public static final String URI_CONTROLLER_SERVICES       = "/caas/services";
 
+    // API URI :: DEPLOYMENTS
+    public static final String URI_API_DEPLOYMENTS_LIST         = "/namespaces/{namespace:.+}/deployments";
+    public static final String URI_API_DEPLOYMENTS_DETAIL       = "/namespaces/{namespace:.+}/deployments/{deploymentName:.+}";
+    public static final String URI_API_DEPLOYMENTS_YAML         = "/namespaces/{namespace:.+}/deployments/{deploymentName:.+}/yaml";
+    public static final String URI_API_DEPLOYMENTS_RESOURCES    = "/api//namespaces/{namespace:.+}/events/resource/{requestDeploymentsName:.+}";
+
     // API URI :: REPLICA SETS
     public static final String URI_API_REPLICASETS_LIST      = "/namespaces/{namespace:.+}/replicasets";
     public static final String URI_API_REPLICASETS_DETAIL    = "/namespaces/{namespace:.+}/replicasets/{replicaSetName:.+}";
