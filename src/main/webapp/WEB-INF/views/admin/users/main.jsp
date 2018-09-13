@@ -291,7 +291,7 @@
 
     // BIND (CHANGE ROLE SAVE BUTTON)
     $(document).on("click", "span[name=saveRole]", function(){
-        var index = $('span[name=saveRole]').index(this);
+        var index = $('span[name=saveRole]').index(this) + 1;
         //alert(index);
         //alert($('select[name=role-filter]').eq(index).data("userId"));
         //alert($('select[name=role-filter]').eq(index).find(':selected').val());
@@ -342,7 +342,8 @@
     // BIND (DELETE USER MODAL)
     $(document).on("click", "span[name=deleteUser]", function () {
         console.log("user delete");
-        var index = $('span[name=deleteUser]').index(this);
+        var index = $('span[name=deleteUser]').index(this) + 1;
+
         deleteUserId = $("#resultArea").find(".userId").eq(index).text();
 
         //console.log("index 는 ", index);
