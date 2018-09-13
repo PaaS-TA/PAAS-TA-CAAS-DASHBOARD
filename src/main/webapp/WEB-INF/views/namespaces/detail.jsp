@@ -41,39 +41,35 @@
     <!-- Details 끝 -->
 </div>
 
-<script id="quota-template" type="text/x-handlebars-template">
-<li class="cluster_second_box maB50">
-    <div class="sortable_wrap">
-        <div class="sortable_top">
-            <p>Resource Quotas</p>
-        </div>
-        <div class="view_table_wrap">
-            <table class="table_event condition alignL">
-                <p class="p30">- <strong>Name</strong> : {{metadata.name}} / - <strong>Scopes</strong> :
-                    {{#if spec.scopes}}
+<div id="quota-template" style="display:none;">
+    <li class="cluster_second_box maB50">
+        <div class="sortable_wrap">
+            <div class="sortable_top">
+                <p>Resource Quotas</p>
+            </div>
+            <div class="view_table_wrap">
+                <table class="table_event condition alignL">
+                    <p class="p30">- <strong>Name</strong> : {{metadata.name}} / - <strong>Scopes</strong> :
                         {{spec.scopes}}
-                    {{else}}
-                        -
-                    {{/if}}
-                </p>
-                <colgroup>
-                    <col style='width:auto;'>
-                    <col style='width:20%;'>
-                    <col style='width:20%;'>
-                </colgroup>
-                <thead>
+                    </p>
+                    <colgroup>
+                        <col style='width:auto;'>
+                        <col style='width:20%;'>
+                        <col style='width:20%;'>
+                    </colgroup>
+                    <thead>
                     <tr>
                         <td>Resource Name</td>
                         <td>Hard</td>
                         <td>Used</td>
                     </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
-    </div>
-</li>
-</script>
+    </li>
+</div>
 
 <script type="text/javascript">
 
@@ -112,15 +108,12 @@
     };
 
     var callbackGetResourceQuotaList = function(data) {
-        var source = $("#quota-template").html();
-        var template = Handlebars.compile(source);
-        var trHtml = "";
+        var html = $("#quota-template").html();
 
         if (data.resultCode == "500") {
-            var html0 = template(null);
-            html0 = html0.replace("<tbody>", "<tbody><tr><p class=service_p'>조회 된 ResourceQuota가 없습니다.</p></tr>");
+            html = html.replace("<tbody>", "<tbody><tr><p class=service_p'>조회 된 ResourceQuota가 없습니다.</p></tr>");
 
-            $("#detailTab").append(html0);
+            $("#detailTab").append(html);
 
             viewLoading('hide');
             alertMessage('Get NameSpaces Fail~', false);
@@ -128,10 +121,18 @@
             return false;
         }
 
+        var trHtml = "";
+
         for (var i = 0; i < data.items.length; i++) {
-            var html = template(data.items[i]);
+            var htmlRe = "";
             var hards = data.items[i].status.hard;
             var useds = data.items[i].status.used;
+            var name = data.items[i].metadata.name;
+            var scopes = data.items[i].spec.scopes;
+
+            if (scopes == null || scopes == "null") {
+                scopes = "-";
+            }
 
             for ( var key in hards ) {
                 trHtml +=
@@ -141,9 +142,13 @@
                     + "<td>" + useds[key] + "</td>"
                     + "</tr>";
             }
-            html = html.replace("<tbody>", "<tbody>"+trHtml);
 
-            $("#detailTab").append(html);
+            htmlRe = html.replace("<tbody>", "<tbody>"+trHtml);
+
+            htmlRe = htmlRe.replace("{{metadata.name}}", name);
+            htmlRe = htmlRe.replace("{{spec.scopes}}", scopes);
+
+            $("#detailTab").append(htmlRe);
         }
 
         viewLoading('hide');
