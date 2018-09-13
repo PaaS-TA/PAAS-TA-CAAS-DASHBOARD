@@ -199,7 +199,7 @@
 
     // GET DETAIL FOR PODS LIST
     var getDetailForPodsList = function(selector) {
-        var reqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + namespace + "/pods/resource/" + selector;
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>".replace("{namespace:.+}", namespace).replace("{selector:.+}", selector);
         //procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPodsList);
         getPodListUsingRequestURL(reqUrl);
         return 3;

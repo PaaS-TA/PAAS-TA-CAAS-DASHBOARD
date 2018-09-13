@@ -1,22 +1,15 @@
 package org.paasta.caas.dashboard.workloads.pods;
 
-//import org.springframework.http.HttpMethod;
-
 import org.paasta.caas.dashboard.common.CommonService;
 import org.paasta.caas.dashboard.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-// TODO :: REMOVE
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.ResponseBody;
-
-//import java.util.Map;
 
 /**
  * Pods 관련 Caas API 를 호출 하는 컨트롤러이다.
@@ -28,8 +21,7 @@ import java.io.IOException;
  */
 @RestController
 public class PodsController {
-    // URL Rule : Constants.API_URL + /workload/namespaces/{namespace}/pods[/.+]
-    private static final String BASE_URL = "/workloads/namespaces/{namespace}/pods";
+    private static final String VIEW_URL = "/pods";
     private final CommonService commonService;
     private final PodsService podsService;
 
@@ -44,100 +36,122 @@ public class PodsController {
         this.podsService = podsService;
     }
 
-    @GetMapping(value = "/caas/workloads/pods")
-    public ModelAndView getPodList( HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, "/pods/main", new ModelAndView());
-    }
-
-    @GetMapping(value = "/caas/workloads/pods/{podName:.+}")
-    public ModelAndView getPodDetails( HttpServletRequest httpServletRequest, @PathVariable("podName") String podName) {
-        return commonService.setPathVariables(httpServletRequest, "/pods/details", new ModelAndView());
-    }
-
-    @GetMapping(value = "/caas/workloads/pods/{podName:.+}/events")
-    public ModelAndView getPodEvents( HttpServletRequest httpServletRequest, @PathVariable("podName") String podName) {
-        return commonService.setPathVariables(httpServletRequest, "/pods/events", new ModelAndView());
-    }
-
-    @GetMapping(value = "/caas/workloads/pods/{podName:.+}/yaml")
-    public ModelAndView getPodYaml( HttpServletRequest httpServletRequest, @PathVariable("podName") String podName) {
-        return commonService.setPathVariables(httpServletRequest, "/pods/yaml", new ModelAndView());
-    }
-
-    @GetMapping(value = "/caas/workloads/pods/{podName:.+}/details")
-    public void getPodDetailsRedirect( HttpServletResponse httpServletResponse, @PathVariable("podName") String podName) throws IOException {
-        httpServletResponse.sendRedirect("/caas/workloads/pods/" + podName);
-    }
-
-    @GetMapping(value = Constants.API_URL + "/workloads/pods")
-    public PodsList getPodList() {
-        return podsService.getPodList();
+    /**
+     * Gets pod list
+     *
+     * @param httpServletRequest the http servlet request
+     * @return the pod list main
+     */
+    @GetMapping(value = Constants.URI_WORKLOAD_PODS)
+    public ModelAndView getPodList(HttpServletRequest httpServletRequest) {
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/main", new ModelAndView());
     }
 
     /**
-     * Get pod list using namespace (_all is All namespaces)
-     * @param namespace
-     * @return
+     * Gets pod details
+     *
+     * @param httpServletRequest the http servlet request
+     * @param podName            the pod name
+     * @return the pod details
      */
-    @GetMapping(value = Constants.API_URL + BASE_URL)
-    public PodsList getPodList(@PathVariable String namespace ) {
-        return podsService.getPodList( namespace );
+    @GetMapping(value = Constants.URI_WORKLOAD_PODS + "/{podName:.+}")
+    public ModelAndView getPodDetails(HttpServletRequest httpServletRequest, @PathVariable(value = "podName") String podName) {
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/details", new ModelAndView());
     }
 
     /**
-     * Get pod using namespace and pod's name
-     * @param namespace
-     * @param podName
-     * @return
+     * Gets pod events
+     *
+     * @param httpServletRequest the http servlet request
+     * @param podName            the pod name
+     * @return the pod events
      */
-    @GetMapping(value = Constants.API_URL + BASE_URL + "/{podName:.+}")
-    public Pods getPod(@PathVariable String namespace, @PathVariable String podName ) {
+    @GetMapping(value = Constants.URI_WORKLOAD_PODS + "/{podName:.+}/events")
+    public ModelAndView getPodEvents(HttpServletRequest httpServletRequest, @PathVariable(value = "podName") String podName) {
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/events", new ModelAndView());
+    }
+
+    /**
+     * Gets pod yaml
+     *
+     * @param httpServletRequest the http servlet request
+     * @param podName            the pod name
+     * @return the pod yaml
+     */
+    @GetMapping(value = Constants.URI_WORKLOAD_PODS + "/{podName:.+}/yaml")
+    public ModelAndView getPodYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "podName") String podName) {
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/yaml", new ModelAndView());
+    }
+
+    /**
+     * Gets pod list using namespace (_all is All namespaces)
+     *
+     * @param namespace the namespace
+     * @return the pod list
+     */
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_PODS_LIST)
+    public PodsList getPodList(@PathVariable(value = "namespace") String namespace) {
+        return podsService.getPodList(namespace);
+    }
+
+    /**
+     * Gets pod using namespace and pod's name
+     *
+     * @param namespace the namespace
+     * @param podName   the pod name
+     * @return the pod
+     */
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_PODS_DETAIL)
+    public Pods getPod(@PathVariable(value = "namespace") String namespace,
+                       @PathVariable(value = "podName") String podName) {
         return podsService.getPod(namespace, podName);
     }
 
     /**
      * Gets pod list.
      *
-     * @param selector the selector
+     * @param namespace the namespace
+     * @param selector  the selector
      * @return the pod list
      */
-    @GetMapping(value = Constants.API_URL + BASE_URL + "/resource/{selector:.+}")
-    @ResponseBody
-    public PodsList getPodListBySelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector) {
-        return podsService.getPodListBySelector(namespace, selector);
-    }
-
-
-    /**
-     * Gets pod list.
-     *
-     * @param serviceName the service name
-     * @param selector    the selector
-     * @return the pod list
-     */
-    @GetMapping(value = Constants.API_URL + BASE_URL + "/service/{serviceName:.+}/{selector:.+}")
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_PODS_LIST_BY_SELECTOR)
     @ResponseBody
     public PodsList getPodListBySelector(@PathVariable("namespace") String namespace,
-                                         @PathVariable("serviceName") String serviceName,
                                          @PathVariable("selector") String selector) {
-        PodsList podsList = podsService.getPodListBySelector(namespace, selector);
-
-        // FOR DASHBOARD
-        podsList.setServiceName(serviceName);
-        podsList.setSelector(selector);
-
-        return podsList;
+        return podsService.getPodListBySelector(namespace, selector);
     }
 
     /**
      * Gets pod list by node.
-     * @param namespace
-     * @param nodeName
+     *
+     * @param namespace the namespace
+     * @param nodeName  the node name
      * @return
      */
-    @GetMapping(value = Constants.API_URL + BASE_URL + "/node/{nodeName:.+}")
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_PODS_LIST_BY_NODE)
     @ResponseBody
-    public PodsList getPodListNamespaceByNode(@PathVariable String namespace, @PathVariable String nodeName) {
-        return podsService.getPodListNamespaceByNode( namespace, nodeName );
+    public PodsList getPodListByNode(@PathVariable(value = "namespace") String namespace,
+                                     @PathVariable(value = "nodeName") String nodeName) {
+        return podsService.getPodListNamespaceByNode(namespace, nodeName);
+    }
+
+    /**
+     * Gets pod list by selector as service name.
+     *
+     * @param namespace   the namespace
+     * @param serviceName the service name
+     * @param selector    the selector
+     * @return the pod list
+     */
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE)
+    @ResponseBody
+    public PodsList getPodListBySelectorWithService(@PathVariable("namespace") String namespace,
+                                                    @PathVariable("serviceName") String serviceName,
+                                                    @PathVariable("selector") String selector) {
+        PodsList podsList = podsService.getPodListBySelector(namespace, selector);
+        podsList.setServiceName(serviceName);  // FOR DASHBOARD
+        podsList.setSelector(selector);        // FOR DASHBOARD
+
+        return podsList;
     }
 }

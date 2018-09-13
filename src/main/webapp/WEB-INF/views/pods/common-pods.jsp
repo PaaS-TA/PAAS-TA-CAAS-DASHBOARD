@@ -45,14 +45,15 @@
             return "Running";
         } else {
             // ex : Waiting: ImagePullBackOff
-            var statusStr = notRunningState.substring(0, 1).toUpperCase() + notRunningState.substring(1, notRunningState.length);
+            var statusStr = notRunningState.charAt(0).toUpperCase() + notRunningState.substring(1);
             var reason = procIfDataIsNull(containerStatuses[notRunningIndex].state[notRunningState]["reason"], null, "Unknown");
             return (statusStr + ": " + reason);
         }
     };
 
     var setPodStatusIcon = function() {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.API_WORKLOAD %>/namespaces/" + NAME_SPACE + "/pods/" + G_POD_NAME;
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_DETAIL %>"
+            .replace("{namespace:.+}", NAME_SPACE).replace("{podName:.+}", G_POD_NAME);
         var _podStatus = "";
         procCallAjax(reqUrl, "GET", null, null, function(data) {
             _podStatus = getPodStatus(data.status);

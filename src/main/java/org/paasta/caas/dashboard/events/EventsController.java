@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class EventsController {
-
-    private static final String API_URL = Constants.API_URL;
     private final EventsService eventsService;
 
     /**
@@ -32,14 +30,14 @@ public class EventsController {
 
     /**
      * Gets Events list.
-     * @param namespace the namespace
+     *
+     * @param namespace    the namespace
      * @param resourceName the resourceName
      * @return the event list
      */
-    @GetMapping(value = API_URL + "/namespaces/{namespace:.+}/events/resource/{resourceName:.+}")
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_EVENTS_LIST)
     @ResponseBody
-    EventsList getEventList(@PathVariable("namespace") String namespace
-            , @PathVariable("resourceName") String resourceName) {
+    EventsList getEventList(@PathVariable("namespace") String namespace, @PathVariable("resourceName") String resourceName) {
         EventsList resultList = eventsService.getEventList(namespace, resourceName);
 
         // FOR DASHBOARD
@@ -49,11 +47,12 @@ public class EventsController {
 
     /**
      * Get Event List with filtering node's name.
-     * @param namespace
-     * @param nodeName
-     * @return
+     *
+     * @param namespace the namespace
+     * @param nodeName  the node name
+     * @return the event list
      */
-    @GetMapping(value = API_URL + "/namespaces/{namespace:.+}/events/node/{nodeName:.+}")
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_EVENTS_LIST_BY_NODE)
     @ResponseBody
     EventsList getEventListByNode(@PathVariable("namespace") String namespace, @PathVariable("nodeName") String nodeName) {
         return eventsService.getEventListByNode(namespace, nodeName);

@@ -287,7 +287,7 @@
             if (nodeNameList[i] !== '-') {
                 viewLoading('show');
 
-                reqUrl = "<%= Constants.API_URL %>/nodes/" + nodeNameList[i];
+                reqUrl = "<%= Constants.API_URL %><%= Constants.URI_CLUSTER_NODES %>/" + nodeNameList[i];
                 procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForNodes);
             }
         }

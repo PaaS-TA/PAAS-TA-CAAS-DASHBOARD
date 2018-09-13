@@ -27,7 +27,7 @@
 <script type="text/javascript">
     // GET LIST
     var getPodList = function() {
-        getPodListUsingRequestURL("<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods");
+        getPodListUsingRequestURL("<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>".replace("{namespace:.+}", NAME_SPACE));
     };
 
     // ON LOAD

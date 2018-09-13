@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class NodesService {
-    private static final String REQ_URL = "/nodes";
     private final RestTemplateService restTemplateService;
 
     /**
@@ -25,7 +24,9 @@ public class NodesService {
      * @param restTemplateService the rest template service
      */
     @Autowired
-    public NodesService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
+    public NodesService(RestTemplateService restTemplateService) {
+        this.restTemplateService = restTemplateService;
+    }
 
 
     /**
@@ -35,8 +36,9 @@ public class NodesService {
      * @return the node
      */
     Nodes getNode(String nodeName) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API,
-            REQ_URL + "/" + nodeName, HttpMethod.GET, null, Nodes.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_NODES_LIST
+                        .replace("{nodeName:.+}", nodeName),
+                HttpMethod.GET, null, Nodes.class);
     }
 
 }

@@ -66,8 +66,9 @@
     $(document.body).ready(function () {
         viewLoading('show');
 
-        var URL = "<%= Constants.API_URL %><%= Constants.API_WORKLOAD %>/namespaces/" + NAME_SPACE + "/pods/" + G_POD_NAME;
-        procCallAjax(URL, "GET", null, null, callbackGetPods);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_DETAIL %>"
+            .replace("{namespace:.+}", NAME_SPACE).replace("{podName:.+}", G_POD_NAME);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetPods);
 
         viewLoading('hide');
     });

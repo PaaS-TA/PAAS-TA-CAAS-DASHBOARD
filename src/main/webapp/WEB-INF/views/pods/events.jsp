@@ -56,7 +56,8 @@
     // ON LOAD
     $(document.body).ready(function () {
         viewLoading('show');
-        var URL = "/api/namespaces/" + NAME_SPACE + "/events/resource/" + G_POD_NAME;
+        var URL = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE)
+            .replace("{resourceName:.+}", G_POD_NAME);
         procCallAjax(URL, "GET", null, null, callbackGetList);
         viewLoading('hide');
     });

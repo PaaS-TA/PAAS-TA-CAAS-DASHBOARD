@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * Nodes Controller 클래스
@@ -22,7 +20,7 @@ import java.io.IOException;
  */
 @RestController
 public class NodesController {
-    private static final String BASE_URL = "/nodes";
+    private static final String VIEW_URL = "/nodes";
     private final CommonService commonService;
     private final NodesService nodesService;
 
@@ -30,7 +28,7 @@ public class NodesController {
      * Instantiates a new Nodes controller.
      *
      * @param commonService the common service
-     * @param nodesService   the node service
+     * @param nodesService  the node service
      */
     @Autowired
     public NodesController(CommonService commonService, NodesService nodesService) {
@@ -42,33 +40,36 @@ public class NodesController {
      * Gets node detail
      *
      * @param httpServletRequest the http servlet request
-     * @return the user main
+     * @param nodeName           the node name
+     * @return the node details
      */
-    @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName:.+}")
-    public ModelAndView getNodeDetails( HttpServletRequest httpServletRequest, @PathVariable("nodeName") String nodeName) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/details", new ModelAndView());
+    @GetMapping(value = Constants.URI_CLUSTER_NODES + "/{nodeName:.+}")
+    public ModelAndView getNodeDetails(HttpServletRequest httpServletRequest, @PathVariable(value = "nodeName") String nodeName) {
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/details", new ModelAndView());
     }
 
     /**
      * Gets node summary
      *
      * @param httpServletRequest the http servlet request
-     * @return the user main
+     * @param nodeName           the node name
+     * @return the node summary
      */
-    @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName:.+}/summary")
-    public ModelAndView getNodeSummary( HttpServletRequest httpServletRequest, @PathVariable("nodeName") String nodeName) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/summary", new ModelAndView());
+    @GetMapping(value = Constants.URI_CLUSTER_NODES + "/{nodeName:.+}/summary")
+    public ModelAndView getNodeSummary(HttpServletRequest httpServletRequest, @PathVariable("nodeName") String nodeName) {
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/summary", new ModelAndView());
     }
 
     /**
      * Gets node event
      *
      * @param httpServletRequest the http servlet request
-     * @return the user main
+     * @param nodeName           the node name
+     * @return the node events
      */
-    @GetMapping(value = "/caas/clusters" + BASE_URL + "/{nodeName:.+}/events")
-    public ModelAndView getNodeEvents( HttpServletRequest httpServletRequest, @PathVariable("nodeName") String nodeName) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());
+    @GetMapping(value = Constants.URI_CLUSTER_NODES + "/{nodeName:.+}/events")
+    public ModelAndView getNodeEvents(HttpServletRequest httpServletRequest, @PathVariable("nodeName") String nodeName) {
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/events", new ModelAndView());
     }
 
     /**
@@ -77,8 +78,8 @@ public class NodesController {
      * @param nodeName the node name
      * @return the node
      */
-    @GetMapping(value = Constants.API_URL + BASE_URL + "/{nodeName:.+}")
-    public Nodes getNode (@PathVariable("nodeName") String nodeName) {
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_NODES_LIST)
+    public Nodes getNode(@PathVariable("nodeName") String nodeName) {
         return nodesService.getNode(nodeName);
     }
 }
