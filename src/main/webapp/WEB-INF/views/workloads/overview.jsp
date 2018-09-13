@@ -127,6 +127,11 @@
     var gDevList; // For Deployment List
     var gReplicaSetList; // For ReplicaSet List
 
+    var devChartRunningCnt = 0;
+    var devChartFailedCnt = 0;
+    var devChartSucceededCnt= 0;
+    var devChartPenddingCnt = 0;
+
     var replicaSetReplicaTotalCtn = 0;
     var replicaSetAvailableReplicasCnt = 0;
     var repsChartRunningCnt = 0;
@@ -187,6 +192,16 @@
 
             for(var i=0; i < containers.length; i++){
                 images.push(containers[i].image);
+            }
+
+            addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
+
+            if(itemList.type == "normal") {
+                devChartRunningCnt += 1;
+            } else if(itemList.type == "Warning") {
+                devChartFailedCnt += 1;
+            } else {
+                devChartFailedCnt += 1;
             }
 
             resultArea.append('<tr>' +
@@ -359,90 +374,42 @@
     });
 
     var createChart = function() {
-        var devChartRunningCnt = 0;
-        var devChartFailedCnt = 0;
-        var devChartSucceededCnt= 0;
-        var devChartPenddingCnt = 0;
-
-        var devChartRunningPer = 0;
-        var devChartFailedPer = 0;
-        var devChartSucceededPer= 0;
-        var devChartPenddingPer = 0;
-
         var podsChartRunningCnt = 0;
         var podsChartFailedCnt = 0;
         var podsChartSucceededCnt= 0;
         var podsChartPenddingCnt = 0;
 
-        var podsChartRunningPer = 0;
-        var podsChartFailedPer = 0;
-        var podsChartSucceededPer= 0;
-        var podsChartPenddingPer = 0;
-
-        var repsChartRunningPer = 0;
-        var repsChartFailedPer = 0;
-        var repsChartSucceededPer= 0;
-        var repsChartPenddingPer = 0;
-
-
         var podStatuses = getPodStatuses();
         var podsListLength = podStatuses.length;
         var devListLength = gDevList.items.length;
         var repsListLength = gReplicaSetList.items.length;
-        var statusMap = new Map();
 
         $.each(podStatuses, function (index, item) {
-            var repName = item.name.substring(0, item.name.lastIndexOf("-"));
-            var depName = repName.substring(0, repName.lastIndexOf("-"));
-
             if(item.status.indexOf("Running") > -1) {
                 podsChartRunningCnt += 1;
-                statusMap.set(depName, "Running");
             } else if (item.status.indexOf("Failed") > -1) {
                 podsChartFailedCnt += 1;
-                statusMap.set(depName, "Failed");
             } else if (item.status.indexOf("Pending") > -1) {
                 podsChartPenddingCnt += 1;
-                statusMap.set(depName, "Pending");
             } else if (item.status.indexOf("Succeeded") > -1) {
                 podsChartSucceededCnt += 1;
-                statusMap.set(depName, "Succeeded");
             }
         });
 
-        $.each(gDevList.items, function (index, item) {
-            if(statusMap.get(item.metadata.name) != null && statusMap.get(item.metadata.name) != "") {
-                var devStatus = statusMap.get(item.metadata.name);
-                if(devStatus.indexOf("Running") > -1) {
-                    devChartRunningCnt += 1;
-                } else if (devStatus.indexOf("Failed") > -1) {
-                    devChartFailedCnt += 1;
-                } else if (devStatus.indexOf("Pending") > -1) {
-                    devChartPenddingCnt += 1;
-                } else if (devStatus.indexOf("Succeeded") > -1) {
-                    devChartSucceededCnt += 1;
-                } else {
-                    devChartRunningCnt += 1;
-                }
-            } else {
-                devChartRunningCnt += 1;
-            }
-        });
+        var podsChartRunningPer = podsChartRunningCnt / podsListLength * 100;
+        var podsChartFailedPer = podsChartFailedCnt / podsListLength * 100;
+        var podsChartPenddingPer = podsChartPenddingCnt / podsListLength * 100;
+        var podsChartSucceededPer = podsChartSucceededCnt / podsListLength * 100;
 
-        podsChartRunningPer = podsChartRunningCnt / podsListLength * 100;
-        podsChartFailedPer = podsChartFailedCnt / podsListLength * 100;
-        podsChartPenddingPer = podsChartPenddingCnt / podsListLength * 100;
-        podsChartSucceededPer = podsChartSucceededCnt / podsListLength * 100;
+        var devChartRunningPer = devChartRunningCnt / devListLength * 100;
+        var devChartFailedPer = devChartFailedCnt / devListLength * 100;
+        var devChartPenddingPer = devChartPenddingCnt / devListLength * 100;
+        var devChartSucceededPer = devChartSucceededCnt / devListLength * 100;
 
-        devChartRunningPer = devChartRunningCnt / devListLength * 100;
-        devChartFailedPer = devChartFailedCnt / devListLength * 100;
-        devChartPenddingPer = devChartPenddingCnt / devListLength * 100;
-        devChartSucceededPer = devChartSucceededCnt / devListLength * 100;
-
-        repsChartRunningPer = repsChartRunningCnt / repsListLength * 100;
-        repsChartFailedPer = repsChartFailedCnt / repsListLength * 100;
-        repsChartPenddingPer = repsChartPenddingCnt / repsListLength * 100;
-        repsChartSucceededPer = repsChartSucceededCnt / repsListLength * 100;
+        var repsChartRunningPer = repsChartRunningCnt / repsListLength * 100;
+        var repsChartFailedPer = repsChartFailedCnt / repsListLength * 100;
+        var repsChartPenddingPer = repsChartPenddingCnt / repsListLength * 100;
+        var repsChartSucceededPer = repsChartSucceededCnt / repsListLength * 100;
 
         // 도넛차트
         var pieColors = ['#3076b2', '#85c014', '#f01108' , '#333440'];
