@@ -79,10 +79,15 @@
 <script type="text/javascript">
     $(document.body).ready(function () {
         viewLoading('show');
-        var URL = "/api/namespaces/" + NAME_SPACE + "/events/resource/" + document.getElementById('requestDeploymentsName').value;
-        console.log("window.location.href ", window.location.href);
-        procCallAjax(URL, "GET", null, null, callbackGetList);
+        getDetail();
     });
+
+    var getDetail = function() {
+        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_RESOURCES %>".replace("{namespace:.+}", NAME_SPACE)
+                                                                        .replace("{requestDeploymentsName:.+}", document.getElementById('requestDeploymentsName').value);
+
+        procCallAjax(reqUrl, "GET", null, null, callbackGetList);
+    };
 
     // CALLBACK
     var callbackGetList = function (data) {
