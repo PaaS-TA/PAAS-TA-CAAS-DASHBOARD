@@ -34,18 +34,14 @@
 </div>
 <input type="hidden" id="requestServiceName" name="requestServiceName" value="<c:out value='${serviceName}' default='' />" />
 
-
 <%--SyntexHighlighter--%>
 <jsp:include page="../common/syntaxHighlighter.jsp" flush="true"/>
-
 
 
 <script type="text/javascript">
 
     // GET DETAIL
     var getDetail = function () {
-        viewLoading('show');
-
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_YAML %>"
             .replace("{namespace:.+}", NAME_SPACE)
             .replace("{serviceName:.+}", document.getElementById('requestServiceName').value);
@@ -55,16 +51,19 @@
 
     // CALLBACK
     var callbackGetDetail = function (data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            return false;
+        }
 
         $('#resultArea').html('---\n' + data.sourceTypeYaml);
-
         viewLoading('hide');
     };
 
 
     // ON LOAD
     $(document.body).ready(function () {
+        viewLoading('show');
         getDetail();
     });
 
