@@ -58,16 +58,16 @@
                             </colgroup>
                             <tbody>
                             <tr>
-                                <th><i class="cWrapDot"></i> Name</th>
-                                <td>CaaS service plan 4</td>
+                                <th><i class="cWrapDot"></i> Type</th>
+                                <td>CaaS service plan 1</td>
                             </tr>
                             <tr>
-                                <th><i class="cWrapDot"></i> Disk size</th>
-                                <td>100 GB</td>
-                            </tr>
-                            <tr>
-                                <th><i class="cWrapDot"></i> Status</th>
-                                <td>Running</td>
+                                <th><i class="cWrapDot"></i> Description</th>
+                                <td>
+                                    <p>
+                                        2 CPUs, 2GB Memory, 10GB Disk (free)
+                                    </p>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
