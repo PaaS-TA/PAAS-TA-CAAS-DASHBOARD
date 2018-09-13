@@ -36,7 +36,7 @@
 
 
 <%--SyntexHighlighter--%>
-<jsp:include page="../common/commonSyntaxHighlighter.jsp" flush="true"/>
+<jsp:include page="../common/syntaxHighlighter.jsp" flush="true"/>
 
 
 

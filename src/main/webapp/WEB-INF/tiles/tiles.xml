@@ -5,17 +5,17 @@
 <tiles-definitions>
 
     <!-- TEMPLATES -->
-    <definition name="layout.default" template="/WEB-INF/views/common/default-layout.jsp">
+    <definition name="layout.default" template="/WEB-INF/views/common/defaultLayout.jsp">
         <put-attribute name="title" value="CaaS Dashboard"/>
         <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
-        <put-attribute name="left-menu" value="/WEB-INF/views/common/left-menu.jsp"/>
+        <put-attribute name="left-menu" value="/WEB-INF/views/common/leftMenu.jsp"/>
         <put-attribute name="body" value=""/>
         <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
         <put-attribute name="modal" value="/WEB-INF/views/common/modal.jsp"/>
         <put-attribute name="alert" value="/WEB-INF/views/common/alert.jsp"/>
     </definition>
 
-    <definition name="layout.admin" template="/WEB-INF/views/common/default-layout.jsp">
+    <definition name="layout.admin" template="/WEB-INF/views/common/defaultLayout.jsp">
         <put-attribute name="title" value="CaaS Dashboard"/>
         <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
         <put-attribute name="left-menu" value="/WEB-INF/views/common/adminLeftMenu.jsp"/>
@@ -43,7 +43,7 @@
         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp"/>
     </definition>
 
-    <definition name="layout.empty" template="/WEB-INF/views/common/empty-layout.jsp">
+    <definition name="layout.empty" template="/WEB-INF/views/common/emptyLayout.jsp">
         <put-attribute name="body" value=""/>
     </definition>
 
