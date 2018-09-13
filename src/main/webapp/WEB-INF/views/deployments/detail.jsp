@@ -10,7 +10,7 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <c:out value="${deploymentsName}"/></h1>
+    <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${deploymentsName}"/></h1>
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
@@ -155,16 +155,16 @@
                             </colgroup>
                             <thead>
                             <tr id="noReplicasetsResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 ReplicaSets가 없습니다.</p></td></tr>
-                            <tr id="replicasetsResultHeaderArea">
+                            <tr id="replicasetsResultHeaderArea" class="headerSortFalse">
                                 <td>Name
-                                    <button sort-key="replicasets-name" class="sort-arrow sort" onclick="procSetSortList('replicasetsResultTable', this, '0')"><i class="fas fa-caret-down"></i></button>
+                                    <button class="sort-arrow" onclick="procSetSortList('replicasetsResultTable', this, '0')"><i class="fas fa-caret-down"></i></button>
                                 </td>
                                 <td>Namespace</td>
                                 <td>Labels</td>
                                 <td id="replicaPods">Pods</td>
                                 <td id="replicaImages">Images</td>
                                 <td id="replicaCreationTime">Created on
-                                    <button sort-key="replica-created-on" class="sort-arrow sort" onclick="procSetSortList('replicasetsResultTable', this, '6')"><i class="fas fa-caret-down"></i></button>
+                                    <button class="sort-arrow" onclick="procSetSortList('replicasetsResultTable', this, '6')"><i class="fas fa-caret-down"></i></button>
                                 </td>
                             </tr>
                             </thead>
@@ -192,16 +192,16 @@
                             </colgroup>
                             <thead>
                             <tr id="noPodsResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Pods가 없습니다.</p></td></tr>
-                            <tr id="podsResultHeaderArea">
+                            <tr id="podsResultHeaderArea" class="headerSortFalse">
                                 <td>Name
-                                    <button class="sort-arrow"><i class="fas fa-caret-down" onclick="procSetSortList('replicasetsResultTable', this, '0')"></i></button>
+                                    <button class="sort-arrow" onclick="procSetSortList('podsResultTable', this, '0')"><i class="fas fa-caret-down"></i></button>
                                 </td>
                                 <td>Namespace</td>
                                 <td>Node</td>
                                 <td>Status</td>
                                 <td>Restarts</td>
                                 <td>Created on
-                                    <button class="sort-arrow"><i class="fas fa-caret-down" onclick="procSetSortList('replicasetsResultTable', this, '5')"></i></button>
+                                    <button class="sort-arrow" onclick="procSetSortList('podsResultTable', this, '5')"><i class="fas fa-caret-down"></i></button>
                                 </td>
                             </tr>
                             </thead>
@@ -251,16 +251,17 @@
 
 <script type="text/javascript">
     var deployName = '<c:out value="${deploymentsName}"/>';
-    console.log(deployName);
     $(document.body).ready(function () {
         viewLoading('show');
-        var URL = "/workloads/deployments/" + NAME_SPACE + "/deployment";
-        console.log("window.location.href ", window.location.href);
-        var param = {
-            name: deployName
-        }
-        procCallAjax(URL, "GET", param, null, callbackGetDeployment);
+        getDetail();
     });
+
+    var getDetail = function() {
+        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_DETAIL %>".replace("{namespace:.+}", NAME_SPACE)
+                                                                    .replace("{deploymentName:.+}", deployName);
+
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDeployment);
+    };
 
     var stringifyJSON = function (obj) {
         return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
@@ -283,9 +284,9 @@
             + "Message :: " + data.resultMessage + " <br><br>");
 
         // get data
-        var _metadata = data.metadata;
-        var _spec = data.spec;
-        var _status = data.status;
+        var metadata = data.metadata;
+        var spec = data.spec;
+        var status = data.status;
 
         /* Deployment detail is under...
          * - name
@@ -300,32 +301,31 @@
          * - Rolling update strategy detail (maxSurge, maxUnavailable)
          * - Replica status (updated, total, available, unavailable)
          */
-        var deployName = _metadata.name;
+        var deployName = metadata.name;
         var namespace = NAME_SPACE;
-        var labels = stringifyJSON(_metadata.labels).replace(/,/g, ', ');  //.replace(/=/g, ':')
-        var annotations = _metadata.annotations;
-        var creationTimestamp = _metadata.creationTimestamp;
+        var labels = stringifyJSON(metadata.labels).replace(/,/g, ', ');  //.replace(/=/g, ':')
+        var annotations = metadata.annotations;
+        var creationTimestamp = metadata.creationTimestamp;
 
-        var selector = stringifyJSON(_spec.selector).replace(/matchLabels=/g, '');;
-        var strategy = _spec.strategy.type;
-        var minReadySeconds = _spec.minReadySeconds;
-        var revisionHistoryLimit = _spec.revisionHistoryLimit;
+        var selector = stringifyJSON(spec.selector).replace(/matchLabels=/g, '');;
+        var strategy = spec.strategy.type;
+        var minReadySeconds = spec.minReadySeconds;
+        var revisionHistoryLimit = spec.revisionHistoryLimit;
         var rollingUpdateStrategy =
-            "Max surge: " + _spec.strategy.rollingUpdate.maxSurge + ", "
-            + "Max unavailable: " + _spec.strategy.rollingUpdate.maxUnavailable;
-        var images = _spec.images;
+            "Max surge: " + spec.strategy.rollingUpdate.maxSurge + ", "
+            + "Max unavailable: " + spec.strategy.rollingUpdate.maxUnavailable;
 
-        var updatedReplicas = _status.updatedReplicas;
-        var totalReplicas = _status.replicas;
-        var availableReplicas = _status.availableReplicas;
-        var unavailableReplicas = _status.unavailableReplicas;
+        var updatedReplicas = status.updatedReplicas;
+        var totalReplicas = status.replicas;
+        var availableReplicas = status.availableReplicas;
+        var unavailableReplicas = status.unavailableReplicas;
         var replicaStatus = updatedReplicas + " updated, "
             + totalReplicas + " total, "
             + availableReplicas + " available, "
             + unavailableReplicas + " unavailable";
 
         document.getElementById("name").textContent = deployName;
-        document.getElementById("namespaceID").textContent = namespace;
+        document.getElementById("namespaceID").innerHTML = "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>";
         document.getElementById("labels").innerHTML = createSpans(labels, "false");
         document.getElementById("annotations").innerHTML = createAnnotations(annotations);
         document.getElementById("creationTime").textContent = creationTimestamp;
@@ -417,14 +417,12 @@
                                             '<span class="green2"><i class="fas fa-check-circle"></i></span> ' + replicasetName +
                                         '</a>' +
                                     '</td>' +
-                                    '<td>' + namespace + '</td>' +
+                                    "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
                                     '<td>' + createSpans(labels, "true") + '</td>' +
                                     '<td>' + availableReplicas + " / " + replicas + '</td>' +
-                                    '<td>' + images + '</td>' +
+                                    "<td data-toggle='tooltip' title='" + images.join('</br>') + "'>" + images.join("</br>") + "</td>" +
                                     '<td>' + creationTimestamp + '</td>' +
                                 '</tr>' );
-
-
 
         });
 
@@ -438,6 +436,7 @@
             resultArea.show();
             resultTable.tablesorter();
             resultTable.trigger("update");
+            $('.headerSortFalse > td').unbind();
         }
 
     };
@@ -466,7 +465,6 @@
             var spec = itemList.spec;
             var status = itemList.status;
 
-            // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
             var podName = metadata.name;
             var namespace = NAME_SPACE;
             var nodeName = spec.nodeName;
@@ -488,29 +486,36 @@
                         return {restartCount: a.restartCount + b.restartCount};
                     }, {restartCount: 0}).restartCount;
                 }, 0);
-            //var restartCount = _status.containerStatuses
-            //  .map(function(datum) { return datum.restartCount; })
-            //  .reduce(function(a, b) { return a + b; }, 0 );
 
             var creationTimestamp = metadata.creationTimestamp;
-            // error message will be filtering from namespace's event. a variable value is like...
-            //var errorMessage = _status.error.message;
-            var errorMessage = "";
+
+            addPodsEvent(itemList, metadata.labels);
+
+            var statusIconHtml;
+            var statusMessageHtml = [];
+
+            if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
+                statusIconHtml    = "<span class='red2'><i class='fas fa-exclamation-circle'></i> </span>";
+                $.each(itemList.message , function (index, eventMessage) {
+                    statusMessageHtml += "<p class='red2 custom-content-overflow' data-toggle='tooltip' title='" + eventMessage + "'>" + eventMessage + "</p>";
+                });
+
+            }else{
+                statusIconHtml    = "<span class='green2'><i class='fas fa-check-circle'></i> </span>";
+            }
 
             resultArea.append('<tr>' +
-                                "<td id='" + podName + "'></td>" +
-                                /*TODO :: REMOVE*/
-                                <%--'<td>' +--%>
-                                    <%--"<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/pods/" + podName + "\");'>" + podName + "</a>" +--%>
-                                <%--'</td>' +--%>
-                                '<td>' + namespace + '</td>' +
+                                '<td>' +
+                                    statusIconHtml +
+                                    "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/pods/" + podName + "\");'>" + podName + "</a>" +
+                                    statusMessageHtml +
+                                '</td>' +
+                                "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
                                 '<td>' + nodeLink + '</td>' +
                                 '<td>' + podStatus + '</td>' +
                                 '<td>' + restartCount + '</td>' +
                                 '<td>' + creationTimestamp + '</td>' +
                             '</tr>');
-
-            podNameList.push(podName);
 
         });
 
@@ -524,6 +529,7 @@
             resultArea.show();
             resultTable.tablesorter();
             resultTable.trigger("update");
+            $('.headerSortFalse > td').unbind();
         }
 
         procSetEventStatusForPods(podNameList);
@@ -546,13 +552,4 @@
         return tempStr;
     };
 
-    // MOVE PAGE
-    var movePage = function(requestPage) {
-        var reqUrl = '<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/deployments/' + document.getElementById('requestDeploymentsName').value;
-        if (requestPage.indexOf('detail') < 0) {
-            reqUrl += '/' + requestPage;
-        }
-
-        procMovePage(reqUrl);
-    };
 </script>

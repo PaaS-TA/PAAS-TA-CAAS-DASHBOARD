@@ -96,7 +96,14 @@
                                 <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser('role')}</a></li>
                             </c:when>
                             <c:otherwise>
-                                <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${cfn:camelCaseParser(path)}</a></li>
+                                <c:choose>
+                                    <c:when test="${path eq 'clusters'}" >
+                                        <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/intro/overview');">${cfn:camelCaseParser('intro')}</a></li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/overview');">${cfn:camelCaseParser(path)}</a></li>
+                                    </c:otherwise>
+                                </c:choose>
                              </c:otherwise>
                         </c:choose>
                     </c:when>
@@ -104,6 +111,13 @@
                         <c:choose>
                             <c:when test="${pathArray[2] eq 'accessInfo'}" >
                                 <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${cfn:camelCaseParser('access')}</a></li>
+                            </c:when>
+                            <c:when test="${pathArray[1] eq 'services'}" >
+                                <%-- service는 탭메뉴 없음. 1 depth만 표시 --%>
+                            </c:when>
+                            <c:when test="${ (pathArray[2] eq 'namespaces') || (pathArray[2] eq 'nodes')}" >
+                                <%-- namespaces, nodes main : Detail --%>
+                                <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}/${pathArray[3]}');"> ${cfn:camelCaseParser(path)}</a></li>
                             </c:when>
                             <c:otherwise>
                                 <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${cfn:camelCaseParser(path)}</a></li>

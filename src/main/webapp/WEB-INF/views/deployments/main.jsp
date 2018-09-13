@@ -1,3 +1,4 @@
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%--
   Deployment main
   @author Hyungu Cho
@@ -33,7 +34,7 @@
                             </colgroup>
                             <thead>
                             <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Deployments가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderArea">
+                            <tr id="resultHeaderArea" class="headerSortFalse">
                                 <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
                                 <td>Labels</td>
@@ -82,8 +83,13 @@
 <script type="text/javascript">
     $(document.body).ready(function () {
         viewLoading('show');
-        procCallAjax("/workloads/deployments/" + NAME_SPACE, "GET", null, null, callbackGetList);
+        getList();
     });
+
+    var getList = function() {
+        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetList);
+    };
 
     var stringifyJSON = function (obj) {
         return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
@@ -117,6 +123,7 @@
 
             var deployName = metadata.name;
             var namespace = metadata.namespace;
+            // 라벨이 없는 경우도 있음.
             var labels = stringifyJSON(metadata.labels).replace(/,/g, ', ');
             if (labels == null || labels == "null") {
                 labels = null;
@@ -135,14 +142,28 @@
                 images.push(containers[i].image);
             }
 
-            // console.log("야야야 ", _status);
+            addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
+
+            var statusIconHtml;
+            var statusMessageHtml = [];
+
+            if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
+                statusIconHtml    = "<span class='red2'><i class='fas fa-exclamation-circle'></i> </span>";
+                $.each(itemList.message , function (index, eventMessage) {
+                    statusMessageHtml += "<p class='red2 custom-content-overflow' data-toggle='tooltip' title='" + eventMessage + "'>" + eventMessage + "</p>";
+                });
+
+            }else{
+                statusIconHtml    = "<span class='green2'><i class='fas fa-check-circle'></i> </span>";
+            }
+
             resultArea.append('<tr>' +
                                     '<td>' +
-                                        "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/deployments/" + deployName + "\");'>"+
-                                           '<span class="green2"><i class="fas fa-check-circle"></i></span> ' + deployName +
-                                        '</a>' +
+                                        statusIconHtml +
+                                        "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/deployments/" + deployName + "\");'>" + deployName + '</a>' +
+                                        statusMessageHtml +
                                     '</td>' +
-                                    '<td>' + namespace + '</td>' +
+                                    "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
                                     '<td>' + createSpans(labels, "true") + '</td>' +
                                     '<td>' + runningPods +" / " + totalPods + '</td>' +
                                     '<td>' + creationTimestamp + '</td>' +
@@ -160,14 +181,11 @@
             resultArea.show();
             resultTable.tablesorter();
             resultTable.trigger("update");
+            $('.headerSortFalse > td').unbind();
         }
 
 
     };
-
-    var replaceLabels = function (data) {
-        return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
-    }
 
     var createSpans = function (data, type) {
         if( !data ) {
@@ -192,10 +210,5 @@
 
         return spanTemplate;
     }
-
-    // BIND
-    $("#btnReset").on("click", function () {
-        $('#resultArea').html("");
-    });
 
 </script>

@@ -10,7 +10,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span class="resultServiceName"><c:out value="${deploymentsName}"/></span></h1>
+    <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${deploymentsName}"/></h1>
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Services YAML 시작-->
     <div class="cluster_content03 row two_line two_view harf_view custom_display_block">
@@ -23,20 +23,7 @@
                     <div class="paA30">
                         <div class="yaml">
                         <pre class="brush: yaml" id="resultArea">
-                                    <%--<pre class="brush: cpp" id="resultArea">--%>
-                                    <%--</pre>--%>
                         </pre>
-                        <!--button class="btns colors4">Save</button>
-                        <button class="btns colors5">Cancel</button>
-                        <button class="btns colors9 pull-right maL05">copy</button>
-                        <button class="btns colors9 pull-right">Download</button>
-                        <div class="yamlArea">
-                            <div class="number">1<br/>2<br/>3<br/>4<br/>5</div>
-                            <div class="text">fff<br/>ddd<br/>dfff<br/>dddd<br/>ddd<br/>dfff<br/>dddd</div>
-                            <div style="clear:both;"></div>
-                        </div>
-                        <button class="btns colors4">Save</button>
-                        <button class="btns colors5">Cancel</button-->
                     </div>
                 </div>
             </li>
@@ -72,18 +59,21 @@
 <!-- SyntexHighlighter -->
 
 <script type="text/javascript">
+    var deployName = '<c:out value="${deploymentsName}"/>';
+
     // ON LOAD
     $(document.body).ready(function () {
         viewLoading('show');
-        var deployName = '<c:out value="${deploymentsName}"/>';
-        var URL = "/workloads/deployments/" + NAME_SPACE + "/deployment";
-        console.log("window.location.href ", window.location.href);
-        var param = {
-            name: deployName
-        }
-        procCallAjax(URL, "GET", param, null, callbackGetDeployment);
-
+        getDetail();
     });
+
+    var getDetail = function() {
+        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_DETAIL %>".replace("{namespace:.+}", NAME_SPACE)
+                                                                    .replace("{deploymentName:.+}", deployName);
+
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDeployment);
+    };
+
 </script>
 
 
@@ -100,19 +90,7 @@
 
         console.log("CONSOLE DEBUG PRINT :: " + data);
 
-        var htmlString = [];
-
-
         $('#resultArea').html('---\n' + data.sourceTypeYaml);
     }
-
-    var movePage = function(requestPage) {
-        var reqUrl = '<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/deployments/' + document.getElementById('requestDeploymentsName').value;
-        if (requestPage.indexOf('detail') < 0) {
-            reqUrl += '/' + requestPage;
-        }
-
-        procMovePage(reqUrl);
-    };
 
 </script>

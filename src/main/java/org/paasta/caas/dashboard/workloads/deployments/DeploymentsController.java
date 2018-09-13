@@ -78,7 +78,7 @@ public class DeploymentsController {
      * @param namespace namespace
      * @return List of deployment (specific namespace)
      */
-    @GetMapping( "/workloads/deployments/{namespace}" )
+    @GetMapping( "/namespaces/{namespace:.+}/deployments" )
     public DeploymentsList getDeploymentsList(@PathVariable String namespace) {
         return deploymentsService.getDeploymentsList(namespace);
     }
@@ -90,9 +90,8 @@ public class DeploymentsController {
      * @param params request parameters
      * @return Deployments's detail content (specific namespace and deployment)
      */
-    @GetMapping( "/workloads/deployments/{namespace}/deployment")
-    public Deployments getDeployments(@PathVariable String namespace, @RequestParam Map<String, Object> params) {
-        String deploymentName = params.get("name").toString();
+    @GetMapping( "/namespaces/{namespace}/deployments/{deploymentName:.+}")
+    public Deployments getDeployments(@PathVariable String namespace, @PathVariable String deploymentName) {
         return deploymentsService.getDeployments(namespace, deploymentName);
     }
 

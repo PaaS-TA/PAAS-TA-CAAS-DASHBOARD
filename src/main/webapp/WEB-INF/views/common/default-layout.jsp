@@ -23,7 +23,7 @@
     <%--COMMON LIBRARY :: END--%>
 </head>
 <body>
-    <div class="wrap dashboard">
+    <div class="wrap dashboard" id="dashboardWrap" style="display: none;">
         <tiles:insertAttribute name="header"/>
         <tiles:insertAttribute name="left-menu"/>
         <div class="contain">
@@ -38,6 +38,8 @@
     </textarea>
     <div>
         <tiles:insertAttribute name="alert"/>
+    </div>
+    <div id="loadingSpinner" style="display: none;">
     </div>
 </body>
 </html>

@@ -33,9 +33,7 @@ public class SsoAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
 
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws ServletException, IOException {
-
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         LOGGER.info("** onAuthenticationSuccess in");
         requestCache.saveRequest(request, response);
 
@@ -45,8 +43,6 @@ public class SsoAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
             LOGGER.info(request.getSession().getAttribute("sessionRedirectUrl").toString());
             String reUrl = request.getSession().getAttribute("sessionRedirectUrl").toString();
             if(request.getSession().getAttribute("sessionRedirectUrl").toString().contains("?serviceInstanceId=")) {
-                /*TODO :: MODIFY OR REMOVE*/
-//                reUrl = "/caas/clusters/overview";
                 reUrl = Constants.CAAS_INIT_URI;
             }
             sessionRedirectUrl = reUrl;

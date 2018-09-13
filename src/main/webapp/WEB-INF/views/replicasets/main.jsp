@@ -96,7 +96,7 @@
             var namespace = itemList.metadata.namespace;
             var labels = procSetSelector(itemList.metadata.labels);
             var creationTimestamp = itemList.metadata.creationTimestamp;
-            var pods = itemList.status.availableReplicas +"/"+ itemList.spec.replicas;  // current / desired
+            var pods = itemList.status.availableReplicas +" / "+ itemList.spec.replicas;  // current / desired
             //var selector = procSetSelector(items[i].spec.selector);
             var images = new Array;
 
@@ -106,16 +106,15 @@
             }
 
             //이벤트 관련 추가 START
-            addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가
+            addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
 
             var statusIconHtml;
             var statusMessageHtml = [];
 
-            if(itemList.type == 'Warning'){
-                statusIconHtml    = "<span class='red2'><i class='fas fas fa-exclamation-circle'></i> </span>";
+            if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
+                statusIconHtml    = "<span class='red2'><i class='fas fa-exclamation-circle'></i> </span>";
                 $.each(itemList.message , function (index, eventMessage) {
-                    statusMessageHtml += "<p class='red2 custom-content-overflow' title='" + eventMessage + "'>" + eventMessage + "</p>";
-                    // TODO :: 메시지는 tooltip 말고 그냥 title만 하는건 어떤지 확인
+                    statusMessageHtml += "<p class='red2 custom-content-overflow' data-toggle='tooltip' title='" + eventMessage + "'>" + eventMessage + "</p>";
                 });
 
             }else{

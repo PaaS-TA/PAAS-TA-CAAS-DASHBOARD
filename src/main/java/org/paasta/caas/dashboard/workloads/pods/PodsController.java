@@ -49,27 +49,25 @@ public class PodsController {
         return commonService.setPathVariables(httpServletRequest, "/pods/main", new ModelAndView());
     }
 
-    @GetMapping(value = "/caas/workloads/pods/{podName}")
-    public ModelAndView getPodDetails( HttpServletRequest httpServletRequest, @PathVariable String podName) {
+    @GetMapping(value = "/caas/workloads/pods/{podName:.+}")
+    public ModelAndView getPodDetails( HttpServletRequest httpServletRequest, @PathVariable("podName") String podName) {
         return commonService.setPathVariables(httpServletRequest, "/pods/details", new ModelAndView());
     }
 
-    @GetMapping(value = "/caas/workloads/pods/{podName}/events")
-    public ModelAndView getPodEvents( HttpServletRequest httpServletRequest, @PathVariable String podName) {
+    @GetMapping(value = "/caas/workloads/pods/{podName:.+}/events")
+    public ModelAndView getPodEvents( HttpServletRequest httpServletRequest, @PathVariable("podName") String podName) {
         return commonService.setPathVariables(httpServletRequest, "/pods/events", new ModelAndView());
     }
 
-    @GetMapping(value = "/caas/workloads/pods/{podName}/yaml")
-    public ModelAndView getPodYaml( HttpServletRequest httpServletRequest, @PathVariable String podName) {
+    @GetMapping(value = "/caas/workloads/pods/{podName:.+}/yaml")
+    public ModelAndView getPodYaml( HttpServletRequest httpServletRequest, @PathVariable("podName") String podName) {
         return commonService.setPathVariables(httpServletRequest, "/pods/yaml", new ModelAndView());
     }
 
-    @GetMapping(value = "/caas/workloads/pods/{podName}/details")
-    public void getPodDetailsRedirect( HttpServletResponse httpServletResponse, @PathVariable String podName) throws IOException {
+    @GetMapping(value = "/caas/workloads/pods/{podName:.+}/details")
+    public void getPodDetailsRedirect( HttpServletResponse httpServletResponse, @PathVariable("podName") String podName) throws IOException {
         httpServletResponse.sendRedirect("/caas/workloads/pods/" + podName);
     }
-
-
 
     @GetMapping(value = Constants.API_URL + "/workloads/pods")
     public PodsList getPodList() {
@@ -96,7 +94,6 @@ public class PodsController {
     public Pods getPod(@PathVariable String namespace, @PathVariable String podName ) {
         return podsService.getPod(namespace, podName);
     }
-
 
     /**
      * Gets pod list.
@@ -132,6 +129,12 @@ public class PodsController {
         return podsList;
     }
 
+    /**
+     * Gets pod list by node.
+     * @param namespace
+     * @param nodeName
+     * @return
+     */
     @GetMapping(value = Constants.API_URL + BASE_URL + "/node/{nodeName:.+}")
     @ResponseBody
     public PodsList getPodListNamespaceByNode(@PathVariable String namespace, @PathVariable String nodeName) {

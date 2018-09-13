@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>PaaS-TA c8s</title>
+    <title>CaaS Dashboard</title>
     <style>
         .layer {position:absolute;display:table;top:0;left:0;width:100%;height:100%}
         .layer .layer_inner{display:table-cell;text-align:center;vertical-align:middle}
@@ -52,7 +52,7 @@
             <div class="panel" style="">
                 <div class="panel-heading" style="">
                     <div>
-                        <img  class="panel-image" src="<c:url value='/resources/images/main/logo.png'/>" style="width: 60px; height: 48px;">
+                        <img  class="panel-image" src="<c:url value="/resources/images/main/logo.png"/>" style="width: 60px; height: 48px;">
                         <span class="header-title" style=""> CaaS Service </span>
                     </div>
                 </div>

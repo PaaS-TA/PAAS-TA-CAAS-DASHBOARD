@@ -10,7 +10,7 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <c:out value="${deploymentsName}"/> </h1>
+    <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${deploymentsName}"/> </h1>
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Events 시작-->
     <div class="cluster_content02 row two_line two_view harf_view">
@@ -79,10 +79,15 @@
 <script type="text/javascript">
     $(document.body).ready(function () {
         viewLoading('show');
-        var URL = "/api/namespaces/" + NAME_SPACE + "/events/resource/" + document.getElementById('requestDeploymentsName').value;
-        console.log("window.location.href ", window.location.href);
-        procCallAjax(URL, "GET", null, null, callbackGetList);
+        getDetail();
     });
+
+    var getDetail = function() {
+        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_RESOURCES %>".replace("{namespace:.+}", NAME_SPACE)
+                                                                        .replace("{requestDeploymentsName:.+}", document.getElementById('requestDeploymentsName').value);
+
+        procCallAjax(reqUrl, "GET", null, null, callbackGetList);
+    };
 
     // CALLBACK
     var callbackGetList = function (data) {

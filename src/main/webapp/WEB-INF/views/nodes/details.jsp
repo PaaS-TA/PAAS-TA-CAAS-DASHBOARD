@@ -7,7 +7,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
 <div class="content">
     <jsp:include page="common-nodes.jsp"/>
 
@@ -178,15 +177,15 @@
                 if (_kv.length > 1) {
                     var _title = _kv[0];
                     var _content = _kv.reduce(function (prev, cur, idx) {
-                        if (idx <= 1) return cur; else return prev + ': ' + cur
+                        if (idx <= 1) return cur; else return prev + ':' + cur
                     });
                     var template = '<span class="bg_blue" data-target="#layerpop" data-toggle="modal" onclick="setLayerpop(this)">';
                     spanHtml += ( $(template).html('<a>' + _title + '</a>').attr('data-title', _title).attr('data-content', _content)[0].outerHTML + ' ' );
                 } else {
-                    spanHtml += '<span class="bg_gray">' + item + '</span> ';
+                    spanHtml += '<span class="bg_gray">' + item.replace(': ', ':') + '</span> ';
                 }
             } else {
-                spanHtml += '<span class="bg_gray">' + item + '</span> ';
+                spanHtml += '<span class="bg_gray">' + item.replace(': ', ':') + '</span> ';
             }
         });
 
@@ -206,7 +205,9 @@
     };
 
     var callbackGetNodeDetail = function (data) {
-        if (false == procCheckValidData(data)) {
+        viewLoading('show');
+
+        if (false === procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage("Node 정보를 가져오지 못했습니다.", false);
             $("#nodeDetailNotFound").show();
@@ -260,29 +261,21 @@
         $('#node_os_name').html(operatingSystem);
         $('#node_architecture').html(architecture);
 
-        // annotations event
-        /*
-        $('#node_annotations').on("click", function() {
-
-        })
-        */
-
         viewLoading('hide');
     };
 
     var loadLayerpop = function () {
         // MOVE LAYERPOP UNDER BODY ELEMENT
-        var layerpop = $('#layerpop');
-        layerpop.parent().find(layerpop).remove();
-        $('body').append(layerpop);
+        var _layerpop = $('#layerpop');
+        _layerpop.parent().find(_layerpop).remove();
+        $('body').append(_layerpop);
     };
 
     $(document.body).ready(function () {
         viewLoading('show');
-
         loadLayerpop();
-
-        getNode(nodeName, callbackGetNodeDetail);
+        getNode(G_NODE_NAME, callbackGetNodeDetail);
+        viewLoading('hide');
     });
 </script>
 <!-- Nodes Details 끝 -->

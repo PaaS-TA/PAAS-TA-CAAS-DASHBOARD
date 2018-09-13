@@ -127,15 +127,17 @@
         viewLoading('show');
 
         // check data validation
-        if (false == procCheckValidData(data)) {
+        var podNotFound = $('#podNotFound');
+        var conditionsNotFound = $('#conditionsNotFound');
+        if (false === procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage("Node 정보를 가져오지 못했습니다.", false);
-            $('#podNotFound').children().html("Node의 정보를 가져오지 못했습니다.");
-            $('#podNotFound').show();
+            podNotFound.children().html("Node의 정보를 가져오지 못했습니다.");
+            podNotFound.show();
             $('#podsTableHeader').hide();
 
-            $('#conditionsNotFound').children().html("Node의 정보를 가져오지 못했습니다.");
-            $('#conditionsNotFound').show();
+            conditionsNotFound.children().html("Node의 정보를 가져오지 못했습니다.");
+            conditionsNotFound.show();
             $('#conditionsTableHeader').hide();
             return;
         }
@@ -155,32 +157,30 @@
         var contents = [];
         $.each(conditions, function (index, condition) {
             contents.push('<tr>'
-                + '<td>' + condition.type + '</td>'
+                + '<td class="custom-content-overflow" data-toggle="tooltip" title="' + condition.type + '">' + condition.type + '</td>'
                 + '<td>' + condition.status + '</td>'
                 + '<td>' + condition.lastHeartbeatTime + '</td>'
                 + '<td>' + condition.lastTransitionTime + '</td>'
-                + '<td>' + condition.reason + '</td>'
-                + '<td>' + condition.message + '</td></tr>');
+                + '<td class="custom-content-overflow" data-toggle="tooltip" title="' + condition.reason + '">' + condition.reason + '</td>'
+                + '<td class="custom-content-overflow" data-toggle="tooltip" title="' + condition.message + '">' + condition.message + '</td></tr>');
         });
 
         if (contents.length > 0) {
             // append conditions tbody
             $('#conditions_in_node > tbody').html(contents);
         } else {
-            $('#conditionsNotFound').children().html("Node의 Condition 목록을 가져오지 못했습니다.");
-            $('#conditionsNotFound').show();
+            conditionsNotFound.children().html("Node의 Condition 목록을 가져오지 못했습니다.");
+            conditionsNotFound.show();
             $('#conditionsTableHeader').hide();
         }
 
         viewLoading('hide');
-    }
+    };
 
     // ON LOAD
     $(document.body).ready(function () {
         viewLoading('show');
-
-        getNode(nodeName, callbackGetNodeSummary);
-
+        getNode(G_NODE_NAME, callbackGetNodeSummary);
         viewLoading('hide');
     });
 </script>

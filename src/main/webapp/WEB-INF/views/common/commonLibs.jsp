@@ -41,6 +41,7 @@
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/common_new.css"/>'>
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/caas-common.css"/>'>
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/jquery.loadingModal.css"/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/gspinner.min.css"/>'>
 
 <%--JS--%>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery-1.12.4.min.js"/>'></script>
@@ -50,9 +51,9 @@
 <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/jquery.jscrollpane.min.js"/>"></script>
 <script type="text/javascript" src='<c:url value="/resources/js/clipboard.min.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/resources/js/handlebars-v4.0.11.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.tablesorter.min.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.loadingModal.js"/>'></script>
+<script type="text/javascript" src='<c:url value="/resources/js/g-spinner.min.js"/>'></script>
 
 <%--JS :: USE ONLY ON REQUIRED PAGES--%>
 <%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
@@ -62,15 +63,13 @@
 <%--<script type="text/javascript" src='<c:url value="/resources/js/ResizeSensor.js"/>'></script>--%>
 <%--<script type="text/javascript" src='<c:url value="/resources/js/typeahead.bundle.js"/>'></script>--%>
 
-<script type="text/javascript" src='<c:url value="/resources/js/common.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/resources/js/caas-common.js"/>'></script>
-
 <script type="text/javascript">
 
-    var RESULT_STATUS_SUCCESS = "<%= Constants.RESULT_STATUS_SUCCESS %>";
-    var RESULT_STATUS_FAIL = "<%= Constants.RESULT_STATUS_FAIL %>";
-    var URI_API_EVENTS_LIST = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>";
-    var URI_WORKLOADS_PODS = "<%= Constants.URI_WORKLOAD_PODS %>";
+    var RESULT_STATUS_SUCCESS  = "<%= Constants.RESULT_STATUS_SUCCESS %>";
+    var RESULT_STATUS_FAIL     = "<%= Constants.RESULT_STATUS_FAIL %>";
+    var URI_API_EVENTS_LIST    = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>";
+    var URI_API_PODS_RESOURCES = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_RESOURCES %>"
+    var URI_WORKLOADS_PODS     = "<%= Constants.URI_WORKLOAD_PODS %>";
 
     var USER_ID = "${userid}";
     var USER_NAME = "${username}";
@@ -81,4 +80,8 @@
 
     var _csrf_token = document.getElementsByName("_csrf")[0].getAttribute("content");
     var _csrf_header = document.getElementsByName("_csrf_header")[0].getAttribute("content");
+
 </script>
+
+<script type="text/javascript" src='<c:url value="/resources/js/common.js"/>'></script>
+<script type="text/javascript" src='<c:url value="/resources/js/caas-common.js"/>'></script>
