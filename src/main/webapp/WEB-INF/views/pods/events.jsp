@@ -4,21 +4,14 @@
   @version 1.0
   @since 2018.08.14
 --%>
-<%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
-
+<%@ page contentType="text/html;charset=UTF-8" %>
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <c:out value="${podName}"/> </h1>
-    <div class="cluster_tabs clearfix">
-        <ul>
-            <li name="tab01" class="cluster_tabs_left" onclick='movePage("details");'>Details</li>
-            <li name="tab02" class="cluster_tabs_on">Events</li>
-            <li name="tab03" class="cluster_tabs_right yamlTab" onclick='movePage("yaml");'>YAML</li>
-        </ul>
-        <div class="cluster_tabs_line"></div>
-    </div>
+    <jsp:include page="common-pods.jsp" flush="true"/>
+
+    <%-- NODES HEADER INCLUDE --%>
+    <jsp:include page="../common/contents-tab.jsp" flush="true"/>
+
     <!-- Events 시작-->
     <div class="cluster_content02 row two_line two_view harf_view">
         <ul class="maT30">
@@ -57,55 +50,28 @@
         </ul>
     </div>
     <!-- Events 끝 -->
-
 </div>
 
-
-<input type="hidden" id="podsName" name="podsName" value="<c:out value='${podName}' default='' />" />
-
-<!-- SyntexHighlighter -->
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCpp.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCSharp.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushPython.js"/>"></script>
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">
-
 <script type="text/javascript">
-    SyntaxHighlighter.defaults['quick-code'] = false;
-    SyntaxHighlighter.all();
-</script>
-
-<style>
-    .syntaxhighlighter .gutter .line {
-        border-right-color: #ddd !important;
-    }
-</style>
-<!-- SyntexHighlighter -->
-
-<script type="text/javascript">
+    // ON LOAD
     $(document.body).ready(function () {
-        ///caas/workloads/pods/{podName}/events
-        var URL = "/api/namespaces/" + NAME_SPACE + "/events/resource/" + document.getElementById('podsName').value;
-        console.log("window.location.href ", window.location.href);
+        viewLoading('show');
+        var URL = "/api/namespaces/" + NAME_SPACE + "/events/resource/" + G_POD_NAME;
         procCallAjax(URL, "GET", null, null, callbackGetList);
+        viewLoading('hide');
     });
-
-    var createAnchorTag = function (movePageUrl, content, isTooltip) {
-        var anchorTag = "<a href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>"
-        if (isTooltip)
-            return $(anchorTag).attr('data-toggle', 'tooltip').attr('title', content)[0].outerHTML;
-        else
-            return anchorTag;
-    };
 
     // CALLBACK
     var callbackGetList = function (data) {
-        if (RESULT_STATUS_FAIL === data.resultCode) {
-            $('#resultArea').html(
-                "ResultStatus :: " + data.resultCode + " <br><br>"
-                + "ResultMessage :: " + data.resultMessage + " <br><br>");
-            return false;
+        viewLoading('show');
+
+        if (false === procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage("Pod 정보를 가져오지 못했습니다.", false);
+            $('#noResultArea').children().html("Pod의 Event 목록을 가져오지 못했습니다.");
+            $('#noResultArea').show();
+            $('#resultHeaderArea').hide();
+            return;
         }
 
         console.log("CONSOLE DEBUG PRINT :: " + data);
@@ -122,8 +88,12 @@
                 messageHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span> ' + $(messageHtml).addClass("red2")[0].outerHTML;
             }
             var source = (itemList.source.component + ': ' + itemList.source.host);
-            var subObject = (itemList.involvedObject != null)?
-                (itemList.involvedObject.kind + ': ' + itemList.involvedObject.name) : '-';
+            var subObject = "";
+            if ("Pod" === itemList.involvedObject.kind && G_POD_NAME === itemList.involvedObject.name) {
+                subObject = "-";
+            } else {
+                subObject = (itemList.involvedObject != null)? (itemList.involvedObject.kind + ': ' + itemList.involvedObject.name) : '-';
+            }
             var count = itemList.count;
             var fristTimestamp = itemList.firstTimestamp;
             var lastTimestamp = itemList.lastTimestamp;
@@ -146,15 +116,7 @@
             resultHeaderArea.show();
             resultArea.show();
         }
-    };
 
-    // MOVE PAGE
-    var movePage = function(requestPage) {
-        var reqUrl = '<%= Constants.CAAS_BASE_URL %><%= Constants.API_WORKLOAD %>/pods/' + document.getElementById('podsName').value;
-        if (requestPage.indexOf('detail') < 0) {
-            reqUrl += '/' + requestPage;
-        }
-
-        procMovePage(reqUrl);
+        viewLoading('hide');
     };
 </script>
