@@ -51,7 +51,6 @@
 <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/jquery.jscrollpane.min.js"/>"></script>
 <script type="text/javascript" src='<c:url value="/resources/js/clipboard.min.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/resources/js/handlebars-v4.0.11.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.tablesorter.min.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.loadingModal.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/g-spinner.min.js"/>'></script>
