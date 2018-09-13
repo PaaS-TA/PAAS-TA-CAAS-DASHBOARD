@@ -69,7 +69,7 @@ public class ReplicaSetsController {
      * @return the custom services detail events
      */
     @GetMapping(value = Constants.URI_CONTROLLER_REPLICASETS + "/{replicaSetName:.+}/events")
-    public ModelAndView getReplicaSetDetailEvents(HttpServletRequest httpServletRequest) { // , @PathVariable("replicaSetName") String replicaSetName
+    public ModelAndView getReplicaSetDetailEvents(HttpServletRequest httpServletRequest, @PathVariable("replicaSetName") String replicaSetName) {
         return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/events", new ModelAndView());
     }
 
@@ -81,7 +81,7 @@ public class ReplicaSetsController {
      * @return the custom services detail events
      */
     @GetMapping(value = Constants.URI_CONTROLLER_REPLICASETS + "/{replicaSetName:.+}/yaml")
-    public ModelAndView getReplicaSetDetailYaml(HttpServletRequest httpServletRequest) { // , @PathVariable("replicaSetName") String replicaSetName
+    public ModelAndView getReplicaSetDetailYaml(HttpServletRequest httpServletRequest, @PathVariable("replicaSetName") String replicaSetName) {
         return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/yaml", new ModelAndView());
     }
 
