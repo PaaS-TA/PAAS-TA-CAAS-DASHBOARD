@@ -163,7 +163,7 @@
     };
 
     var createAnchorTag = function (movePageUrl, content, isTooltip) {
-        var anchorTag = "<a class='custom-content-overflow' href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>"
+        var anchorTag = "<a href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>"
         if (isTooltip)
             return $(anchorTag).attr('data-toggle', 'tooltip').attr('title', content)[0].outerHTML;
         else
@@ -267,7 +267,13 @@
         viewLoading('hide');
     };
 
-    var getPodStatuses;
+    var getPodStatuses = function() {
+        // 기본값 추가
+        return {
+            name: "INVALID_NAME",
+            status: "INVALID_STATUS"
+        };
+    };
 
     // CALLBACK POD LIST
     var callbackGetPodList = function (data) {
