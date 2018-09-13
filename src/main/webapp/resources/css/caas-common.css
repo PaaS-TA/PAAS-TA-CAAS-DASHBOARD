@@ -96,5 +96,6 @@
 .custom-content-overflow {
     overflow: inherit;
     text-overflow: ellipsis;
+    margin-left: 17px;
 }
 
