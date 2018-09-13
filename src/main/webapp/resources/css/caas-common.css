@@ -94,7 +94,7 @@
 }
 
 .custom-content-overflow {
-    overflow: inherit;
+    overflow: hidden;
     text-overflow: ellipsis;
     margin-left: 17px;
 }
