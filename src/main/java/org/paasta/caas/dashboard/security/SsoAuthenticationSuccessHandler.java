@@ -33,9 +33,7 @@ public class SsoAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
 
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws ServletException, IOException {
-
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         LOGGER.info("** onAuthenticationSuccess in");
         requestCache.saveRequest(request, response);
 

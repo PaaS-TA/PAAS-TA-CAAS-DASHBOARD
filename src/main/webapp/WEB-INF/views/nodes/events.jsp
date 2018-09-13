@@ -53,9 +53,12 @@
         </ul>
     </div>
 </div>
-<script>
+
+<script type="text/javascript">
     var callbackGetNodeEvent = function (data) {
-        if (false == procCheckValidData(data)) {
+        viewLoading('show');
+
+        if (false === procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage("Node의 Event 목록을 가져오지 못했습니다.", false);
             $('#nodeEventsnotFound').children().html("Node의 Event 목록을 가져오지 못했습니다.");
@@ -70,15 +73,15 @@
             var _compareB = itemB.lastTimestamp;
             var _ascending = false;
             var _reverseNumber = (_ascending)? 1 : -1;
-            if (_compareA == _compareB)
+            if (_compareA === _compareB)
                 return 0;
             else {
                 if (_compareA == null)
                     return -1 * _reverseNumber;
                 else if (_compareB == null)
-                    return 1 * _reverseNumber;
+                    return _reverseNumber;
                 else if (_compareA > _compareB)
-                    return 1 * _reverseNumber;
+                    return _reverseNumber;
                 else
                     return -1 * _reverseNumber;
             }
@@ -90,7 +93,7 @@
             // message is including error message
             var _event = getEvent(eventItem);
             var messageHtml = $('<span data-toggle="tooltip"></span>').attr('title', _event.message).html(_event.message)[0].outerHTML;
-            if (0 == _event.message.indexOf("Error")) {
+            if (0 === _event.message.indexOf("Error")) {
                 messageHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span> ' + $(messageHtml).addClass("red2")[0].outerHTML;
             }
 
@@ -114,7 +117,7 @@
         }
 
         viewLoading('hide');
-    }
+    };
 
     var getEvent = function(data) {
         // message, source, sub-object, count, first-seen, last-seen
@@ -127,7 +130,7 @@
             firstSeen: data.firstTimestamp,
             lastSeen: data.lastTimestamp
         };
-    }
+    };
 
     var getEventsListByNode = function(namespace, nodeName, callbackFunc) {
         var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/events/node/" + nodeName;
@@ -136,17 +139,12 @@
             callbackFunc = callbackGetNodeEvent;
 
         procCallAjax(reqUrl, "GET", null, null, callbackFunc);
-    }
+    };
 
     $(document.body).ready(function () {
         viewLoading('show');
-
-        var urlInfo = procGetURLInfo();
-        nodeName = urlInfo.resource;
-        currentTab = urlInfo.tab == "_default"? "details" : urlInfo.tab;
-
-        var namespace = NAME_SPACE;
-        getEventsListByNode(namespace, nodeName, callbackGetNodeEvent);
+        getEventsListByNode(NAME_SPACE, G_NODE_NAME, callbackGetNodeEvent);
+        viewLoading('hide');
     });
 </script>
 <!-- NodeEvents 끝 -->
