@@ -10,7 +10,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span class="resultServiceName"><c:out value='${serviceName}' default='' /></span></h1>
+    <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${serviceName}"/></h1>
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Services YAML 시작-->
     <div class="cluster_content03 row two_line two_view harf_view custom_display_block">
@@ -32,31 +32,18 @@
     </div>
     <!-- Services YAML 끝 -->
 </div>
-<div id="hiddenResultArea" style="display: none;"></div>
 <input type="hidden" id="requestServiceName" name="requestServiceName" value="<c:out value='${serviceName}' default='' />" />
 
 
-<!-- SyntexHighlighter -->
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushYaml.js"/>"></script>
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">
+<%--SyntexHighlighter--%>
+<jsp:include page="../common/commonSyntaxHighlighter.jsp" flush="true"/>
 
-<script type="text/javascript">
-    SyntaxHighlighter.defaults['quick-code'] = false;
-    SyntaxHighlighter.all();
-</script>
-
-<style>
-    .syntaxhighlighter .gutter .line{border-right-color:#ddd !important;}
-</style>
-<!-- SyntexHighlighter -->
 
 
 <script type="text/javascript">
 
     // GET DETAIL
-    var getDetail = function() {
+    var getDetail = function () {
         viewLoading('show');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_YAML %>"
@@ -67,7 +54,7 @@
 
 
     // CALLBACK
-    var callbackGetDetail = function(data) {
+    var callbackGetDetail = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
         $('#resultArea').html('---\n' + data.sourceTypeYaml);

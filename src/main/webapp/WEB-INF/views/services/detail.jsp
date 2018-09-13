@@ -10,7 +10,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span class="resultServiceName"> - </span></h1>
+    <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${serviceName}"/></h1>
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Services Details 시작 -->
     <div class="cluster_content01 row two_line two_view harf_view">
@@ -245,13 +245,13 @@
 
                     htmlString.push(
                         "<tr>"
-                            + "<td>" + addresses[j].ip + "</td>"
-                            + "<td>" + portsString + "</td>"
-                            + "<td>"
-                            + "<a href='javascript:void(0);'data-toggle='tooltip' title='" + nodeName+ "' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + nodeName + "/summary\");'>" + nodeName + "</a>"
-                            + "</td>"
-                            + "<td><span class='" + nodeName + "'>true</span></td>"
-                            + "</tr>");
+                        + "<td>" + addresses[j].ip + "</td>"
+                        + "<td>" + portsString + "</td>"
+                        + "<td>"
+                        + "<a href='javascript:void(0);'data-toggle='tooltip' title='" + nodeName + "' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + nodeName + "/summary\");'>" + nodeName + "</a>"
+                        + "</td>"
+                        + "<td><span class='" + nodeName + "'>true</span></td>"
+                        + "</tr>");
 
                     portsString = '';
 

@@ -66,7 +66,7 @@
     var G_SERVICE_LIST;
 
     // GET LIST
-    var getList = function() {
+    var getList = function () {
         viewLoading('show');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_LIST %>"
@@ -76,7 +76,7 @@
 
 
     // CALLBACK
-    var callbackGetList = function(data) {
+    var callbackGetList = function (data) {
         if (!procCheckValidData(data)) {
             viewLoading('hide');
             return false;
@@ -90,7 +90,7 @@
 
 
     // SET LIST
-    var setList = function(searchKeyword) {
+    var setList = function (searchKeyword) {
         viewLoading('show');
 
         var serviceName,
@@ -98,7 +98,10 @@
             endpointsPreString,
             nodePort,
             specPortsList,
-            specPortsListLength;
+            specPortsListLength,
+            endpointWithSpecPort,
+            endpointWithNodePort,
+            endpointProtocol;
 
         var resultArea = $('#resultArea');
         var resultHeaderArea = $('#resultHeaderArea');
@@ -128,14 +131,18 @@
                 specPortsListLength = specPortsList.length;
 
                 for (var j = 0; j < specPortsListLength; j++) {
-                    endpoints += '<p>' + endpointsPreString + specPortsList[j].port + " " + specPortsList[j].protocol + '</p>'
-                            + '<p>' + endpointsPreString + nodePort + " " + specPortsList[j].protocol + '</p>';
+                    endpointProtocol = specPortsList[j].protocol;
+                    endpointWithSpecPort = endpointsPreString + specPortsList[j].port + " " + endpointProtocol;
+                    endpointWithNodePort = endpointsPreString + nodePort + " " + endpointProtocol;
+
+                    endpoints += '<p class="custom-content-overflow" data-toggle="tooltip" title="' + endpointWithSpecPort + '">' + endpointWithSpecPort + '</p>'
+                            + '<p class="custom-content-overflow" data-toggle="tooltip" title="' + endpointWithNodePort + '">' + endpointWithNodePort + '</p>';
                 }
 
                 htmlString.push(
                     "<tr>"
                         + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                        + "<a href='javascript:void(0);'data-toggle='tooltip' title='" + serviceName+ "' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/" + serviceName + "\");'>" + serviceName + "</a>"
+                        + "<a href='javascript:void(0); 'data-toggle='tooltip' title='" + serviceName + "' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/" + serviceName + "\");'>" + serviceName + "</a>"
                         + "</td>"
                         + "<td>" + items[i].spec.type + "</td>"
                         + "<td>" + items[i].spec.clusterIP + "</td>"
@@ -173,7 +180,7 @@
 
 
     // GET DETAIL FOR PODS
-    var getDetailForPods = function(selectorList) {
+    var getDetailForPods = function (selectorList) {
         var listLength = selectorList.length;
         var tempSelectorList;
         var reqUrl;
@@ -193,7 +200,7 @@
 
 
     // CALLBACK
-    var callbackGetDetailForPods = function(data) {
+    var callbackGetDetailForPods = function (data) {
         if (!procCheckValidData(data)) {
             viewLoading('hide');
             return false;

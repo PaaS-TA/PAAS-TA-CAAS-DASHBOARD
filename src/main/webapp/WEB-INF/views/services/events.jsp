@@ -10,7 +10,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span class="resultServiceName"><c:out value='${serviceName}' default='' /></span></h1>
+    <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${serviceName}"/></h1>
     <jsp:include page="../common/contents-tab.jsp" flush="true"/>
     <!-- Services Events 시작-->
     <div class="cluster_content02 row two_line two_view harf_view custom_display_block">
@@ -60,7 +60,7 @@
 <script type="text/javascript">
 
     // GET LIST
-    var getList = function() {
+    var getList = function () {
         viewLoading('show');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
@@ -71,7 +71,7 @@
 
 
     // CALLBACK
-    var callbackGetList = function(data) {
+    var callbackGetList = function (data) {
         if (!procCheckValidData(data)) {
             viewLoading('hide');
             return false;
@@ -113,7 +113,7 @@
 
 
     // ON LOAD
-    $(document.body).ready(function() {
+    $(document.body).ready(function () {
         getList();
     });
 
