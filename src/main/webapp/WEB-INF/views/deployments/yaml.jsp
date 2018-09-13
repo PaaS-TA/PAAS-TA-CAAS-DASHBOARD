@@ -64,12 +64,16 @@
     // ON LOAD
     $(document.body).ready(function () {
         viewLoading('show');
+        getDetail();
+    });
+
+    var getDetail = function() {
         var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_DETAIL %>".replace("{namespace:.+}", NAME_SPACE)
                                                                     .replace("{deploymentName:.+}", deployName);
 
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeployment);
+    };
 
-    });
 </script>
 
 
@@ -85,9 +89,6 @@
         }
 
         console.log("CONSOLE DEBUG PRINT :: " + data);
-
-        var htmlString = [];
-
 
         $('#resultArea').html('---\n' + data.sourceTypeYaml);
     }
