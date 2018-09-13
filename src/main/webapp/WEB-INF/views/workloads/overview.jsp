@@ -254,7 +254,6 @@
         var listLength = items.length;
 
         $.each(items, function (index, itemList) {
-
             var replicaSetName = itemList.metadata.name;
             var namespace = itemList.metadata.namespace;
             var labels = procSetSelector(itemList.metadata.labels);
@@ -264,14 +263,6 @@
             replicaSetAvailableReplicasCnt += itemList.status.availableReplicas;
             var images = new Array;
 
-            if(itemList.type == "normal") {
-                repsChartRunningCnt += 1;
-            } else if(itemList.type == "Warning") {
-                repsChartFailedCnt += 1;
-            } else {
-                repsChartFailedCnt += 1;
-            }
-
             var containers = itemList.spec.template.spec.containers;
             for(var i=0; i < containers.length; i++){
                 images.push(containers[i].image);
@@ -279,6 +270,14 @@
 
             //이벤트 관련 추가 START
             addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
+
+            if(itemList.type == "normal") {
+                repsChartRunningCnt += 1;
+            } else if(itemList.type == "Warning") {
+                repsChartFailedCnt += 1;
+            } else {
+                repsChartFailedCnt += 1;
+            }
 
             var statusIconHtml;
             var statusMessageHtml = [];
@@ -380,11 +379,6 @@
         var podsChartSucceededPer= 0;
         var podsChartPenddingPer = 0;
 
-        // var repsChartRunningCnt = 0;
-        // var repsChartFailedCnt = 0;
-        // var repsChartSucceededCnt= 0;
-        // var repsChartPenddingCnt = 0;
-
         var repsChartRunningPer = 0;
         var repsChartFailedPer = 0;
         var repsChartSucceededPer= 0;
@@ -396,7 +390,6 @@
         var devListLength = gDevList.items.length;
         var repsListLength = gReplicaSetList.items.length;
         var statusMap = new Map();
-        var statusMap0 = new Map();
 
         $.each(podStatuses, function (index, item) {
             var repName = item.name.substring(0, item.name.lastIndexOf("-"));
@@ -404,19 +397,15 @@
 
             if(item.status.indexOf("Running") > -1) {
                 podsChartRunningCnt += 1;
-                statusMap0.set(repName, "Running");
                 statusMap.set(depName, "Running");
             } else if (item.status.indexOf("Failed") > -1) {
                 podsChartFailedCnt += 1;
-                statusMap0.set(repName, "Failed");
                 statusMap.set(depName, "Failed");
             } else if (item.status.indexOf("Pending") > -1) {
                 podsChartPenddingCnt += 1;
-                statusMap0.set(repName, "Pending");
                 statusMap.set(depName, "Pending");
             } else if (item.status.indexOf("Succeeded") > -1) {
                 podsChartSucceededCnt += 1;
-                statusMap0.set(repName, "Succeeded");
                 statusMap.set(depName, "Succeeded");
             }
         });
@@ -439,25 +428,6 @@
                 devChartRunningCnt += 1;
             }
         });
-
-        // $.each(gReplicaSetList.items, function (index, item) {
-        //     if(statusMap0.get(item.metadata.name) != null && statusMap0.get(item.metadata.name) != "") {
-        //         var repsStatus = statusMap0.get(item.metadata.name);
-        //         if(repsStatus.indexOf("Running") > -1) {
-        //             repsChartRunningCnt += 1;
-        //         } else if (repsStatus.indexOf("Failed") > -1) {
-        //             repsChartFailedCnt += 1;
-        //         } else if (repsStatus.indexOf("Pending") > -1) {
-        //             repsChartPenddingCnt += 1;
-        //         } else if (repsStatus.indexOf("Succeeded") > -1) {
-        //             repsChartSucceededCnt += 1;
-        //         } else {
-        //             repsChartRunningCnt += 1;
-        //         }
-        //     } else {
-        //         repsChartRunningCnt += 1;
-        //     }
-        // });
 
         podsChartRunningPer = podsChartRunningCnt / podsListLength * 100;
         podsChartFailedPer = podsChartFailedCnt / podsListLength * 100;
