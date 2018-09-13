@@ -157,12 +157,12 @@
         var contents = [];
         $.each(conditions, function (index, condition) {
             contents.push('<tr>'
-                + '<td class="custom-content-overflow">' + condition.type + '</td>'
+                + '<td class="custom-content-overflow" data-toggle="tooltip" title="' + condition.type + '">' + condition.type + '</td>'
                 + '<td>' + condition.status + '</td>'
                 + '<td>' + condition.lastHeartbeatTime + '</td>'
                 + '<td>' + condition.lastTransitionTime + '</td>'
-                + '<td class="custom-content-overflow">' + condition.reason + '</td>'
-                + '<td class="custom-content-overflow">' + condition.message + '</td></tr>');
+                + '<td class="custom-content-overflow" data-toggle="tooltip" title="' + condition.reason + '">' + condition.reason + '</td>'
+                + '<td class="custom-content-overflow" data-toggle="tooltip" title="' + condition.message + '">' + condition.message + '</td></tr>');
         });
 
         if (contents.length > 0) {

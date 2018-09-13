@@ -260,20 +260,39 @@ var stringifyJSON = function (obj) {
 //     .then(function() { $('body').loadingModal('color', 'black').loadingModal('text', 'Done :-)').loadingModal('backgroundColor', 'yellow');  return delay(time); } )
 //     .then(function() { $('body').loadingModal('hide'); return delay(time); } )
 //     .then(function() { $('body').loadingModal('destroy') ;} );
+// TODO :: CHECK
 var viewLoading = function(type) {
-    if (type === 'show') {
-        console.log(":: Show Loading..");
-        var bodyObj = $('body');
-        bodyObj.loadingModal();
-        bodyObj.loadingModal('animation', 'chasingDots').loadingModal('color', 'black').loadingModal('backgroundColor', 'white');
-    } else if (type === 'hide') {
-        console.log(":: Hide Loading..");
-        setTimeout(function(){
-            $('body').loadingModal('destroy') ;
-        }, 1000);
+    var dashboardWrap = $("#dashboardWrap");
+    var loader = $("#loadingSpinner");
 
+    if (type === 'show') {
+        loader.show().gSpinner();
+
+    } else {
+        dashboardWrap.show();
+
+        setTimeout(function(){
+            loader.gSpinner("hide").hide();
+        }, 1000);
     }
+
+    // var dashboardWrap = $("#dashboardWrap");
+    //
+    // if (type === 'show') {
+    //     console.log(":: Show Loading..");
+    //     var bodyObj = $('body');
+    //     bodyObj.loadingModal();
+    //     bodyObj.loadingModal('animation', 'chasingDots').loadingModal('color', 'black').loadingModal('backgroundColor', 'white');
+    //     dashboardWrap.show();
+    // } else if (type === 'hide') {
+    //     console.log(":: Hide Loading..");
+    //     setTimeout(function(){
+    //         $('body').loadingModal('destroy') ;
+    //     }, 1000);
+    //
+    // }
 };
+
 
 var alertMessage = function(value, result) {
     $(".alertLayer .in").html(value);
@@ -349,11 +368,11 @@ var callbackSetEventStatusForPods = function(data) {
  * @param targetObject   : 해당 리소스의 리스트 JSON Object
  * @param selector       : 연관된 POD를 조회하기 위한 SELECTOR
  * @description
- *    해당 리소스(replicaSet, deployment, service)에 연관된 POD명을 조회하여,
+ *    해당 리소스(replicaSet, deployment)에 연관된 POD명을 조회하여,
  *    해당 POD의 이벤트를 조회후,
  *    해당 리소스의 리스트에 이벤트 데이터를 추가 합니다.
  *
- *    targetObject : 이벤트 데이터를 추가할 대상 JSON Object 입니다.(replicaSet, deployment, service 리스트 데이터)
+ *    targetObject : 이벤트 데이터를 추가할 대상 JSON Object 입니다.(replicaSet, deployment 리스트 데이터)
  *    selector     : replace 처리되지 않은 json Data 입니다.
  *
  *    ex) addPodsEvent(itemList, itemList.spec.selector.matchLabels); // event Data added to 'itemList'
