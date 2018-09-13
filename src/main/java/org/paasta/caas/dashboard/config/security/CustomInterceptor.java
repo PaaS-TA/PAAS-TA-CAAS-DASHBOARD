@@ -7,6 +7,7 @@ import org.paasta.caas.dashboard.security.SsoAuthenticationDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,8 +38,9 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
         LOGGER.info("** Request URI - "+url);
 
         try {
-            if (!url.contains("/common/error/unauthorized")) {
-                Pattern pattern = Pattern.compile("(/caas/intro/overview/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
+            if (!url.contains("/common/error/unauthorized") && !url.contains("/resources/images")) {
+//                Pattern pattern = Pattern.compile("(/caas/intro/overview/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
+                Pattern pattern = Pattern.compile("("+Constants.CAAS_INIT_URI+"/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
                 Matcher matcher = pattern.matcher(url);
 
                 SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
