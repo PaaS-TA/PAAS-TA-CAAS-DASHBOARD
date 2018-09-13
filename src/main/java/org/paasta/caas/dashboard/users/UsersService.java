@@ -63,7 +63,9 @@ public class UsersService {
      * @return the user list
      */
     public List<Users> getUsesListByServiceInstanceId(String serviceInstanceId, String organizationGuid) {
-        return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL+"/serviceInstanceId/" + serviceInstanceId + "/organizationGuid/" + organizationGuid, HttpMethod.GET, null, List.class);
+        return restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_USERS_LIST
+                .replace("{serviceInstanceId:.+}", serviceInstanceId)
+                .replace("{organizationGuid:.+}", organizationGuid), HttpMethod.GET, null, List.class);
     }
 
     /**
@@ -75,7 +77,10 @@ public class UsersService {
      * @return the user
      */
     public Users getUserByServiceInstanceId(String serviceInstanceId, String organizationGuid, String userId) {
-        Users users = restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL+"/serviceInstanceId/" + serviceInstanceId + "/organizationGuid/" + organizationGuid + "/userId/" + userId, HttpMethod.GET, null, Users.class);
+        Users users = restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_USERS_DETAIL
+                .replace("{serviceInstanceId:.+}", serviceInstanceId)
+                .replace("{organizationGuid:.+}", organizationGuid)
+                .replace("{userId:.+}", userId), HttpMethod.GET, null, Users.class);
         users.setCaasUrl(propertyService.getCaasUrl());
         users.setCaasClusterName(propertyService.getCaasClusterName());
         return users;
@@ -123,25 +128,35 @@ public class UsersService {
 
         Roles roles = null;
 
+        String rolesName = user.getCaasNamespace() + "-" + realUserName + "-role";
+        String roleBindingsName = user.getCaasNamespace() + "-" + realUserName + "-role-binding";
+
         // 1. roleSetCode 가 뭐 인지 확인 후 role-name 찾아서 해당 role.ftl 로 replace 해준다.
         if(user.getRoleSetCode().equals("RS0001")){
             roleYml = templateService.convert("instance/create_admin_role.ftl", model);
-            resultCode = restTemplateService.send(Constants.TARGET_CAAS_API, "/roles/namespaces/" + user.getCaasNamespace() + "/roles/" + user.getCaasNamespace() + "-" + realUserName + "-role", HttpMethod.PUT, roleYml, String.class);
         }else if(user.getRoleSetCode().equals("RS0002")){
             roleYml = templateService.convert("instance/create_regular_role.ftl", model);
-            resultCode = restTemplateService.send(Constants.TARGET_CAAS_API, "/roles/namespaces/" + user.getCaasNamespace() + "/roles/" + user.getCaasNamespace() + "-" + realUserName + "-role", HttpMethod.PUT, roleYml, String.class);
         }else if(user.getRoleSetCode().equals("RS0003")){
             roleYml = templateService.convert("instance/create_init_role.ftl", model);
-            resultCode = restTemplateService.send(Constants.TARGET_CAAS_API, "/roles/namespaces/" + user.getCaasNamespace() + "/roles/" + user.getCaasNamespace() + "-" + realUserName + "-role", HttpMethod.PUT, roleYml, String.class);
         }
+
+        resultCode = restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_ROLES_DETAIL
+                .replace("{namespace:.+}", user.getCaasNamespace())
+                .replace("{rolesName:.+}", rolesName) , HttpMethod.PUT, roleYml, String.class);
 
         // 2. 해당 role-binding 찾아서 바꿔 준 role-name 넣어줘서 rolebinding replace 해준다.
         roleBindingYml = templateService.convert("instance/create_roleBinding.ftl", model);
-        resultCodeBinding = restTemplateService.send(Constants.TARGET_CAAS_API, "/roleBindings/namespaces/" + user.getCaasNamespace() + "/rolebindings/" + user.getCaasNamespace() + "-" + realUserName + "-role-binding", HttpMethod.PUT, roleBindingYml, String.class);
+
+        resultCodeBinding = restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_ROLE_BINDINGS_DETAIL
+                .replace("{namespace:.+}", user.getCaasNamespace())
+                .replace("{roleBindingsName:.+}", roleBindingsName), HttpMethod.PUT, roleBindingYml, String.class);
 
 
         // 3. DB 의 role 변경
-        return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL+"/serviceInstanceId/" + serviceInstanceId + "/organizationGuid/" + organizationGuid + "/userId/" + user.getUserId(), HttpMethod.POST, user, Users.class);
+        return restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_USERS_DETAIL
+                .replace("{serviceInstanceId:.+}", serviceInstanceId)
+                .replace("{organizationGuid:.+}", organizationGuid)
+                .replace("{userId:.+}", user.getUserId()), HttpMethod.POST, user, Users.class);
     }
 
 
@@ -156,16 +171,25 @@ public class UsersService {
 
         String userName = user.getUserId();
         String userId[] = userName.split("@");
-        String roleName = (userId[0].replaceAll("([:.#$&!_\\(\\)`*%^~,\\<\\>\\[\\];+|-])+", "")).toLowerCase();
+        String realName = (userId[0].replaceAll("([:.#$&!_\\(\\)`*%^~,\\<\\>\\[\\];+|-])+", "")).toLowerCase();
+
+        String rolesName = user.getCaasNamespace() + "-" + realName + "-role";
+        String roleBindingsName = user.getCaasNamespace() + "-" + realName + "-role-binding";
 
         // role binding 삭제
-        String successRoleBinding = restTemplateService.send(Constants.TARGET_CAAS_API, "/roleBindings/namespaces/" + user.getCaasNamespace() + "/rolebindings/" + user.getCaasNamespace() + "-" + roleName + "-role-binding", HttpMethod.DELETE, null, String.class);
+        String successRoleBinding = restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_ROLE_BINDINGS_DETAIL
+                .replace("{namespace:.+}", user.getCaasNamespace())
+                .replace("{roleBindingsName:.+}", roleBindingsName), HttpMethod.DELETE, null, String.class);
 
         // role 삭제
-        String successRole = restTemplateService.send(Constants.TARGET_CAAS_API, "/roles/namespaces/" + user.getCaasNamespace() + "/roles/" + user.getCaasNamespace() + "-" + roleName + "-role", HttpMethod.DELETE, null, String.class);
+        String successRole = restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_ROLES_DETAIL
+                .replace("{namespace:.+}", user.getCaasNamespace())
+                .replace("{rolesName:.+}", rolesName), HttpMethod.DELETE, null, String.class);
 
         // service account 삭제
-        String successServiceAccount = restTemplateService.send(Constants.TARGET_CAAS_API, REQ_URL +"/namespaces/" + user.getCaasNamespace() + "/serviceaccounts/" + user.getCaasAccountName(), HttpMethod.DELETE, null, String.class);
+        String successServiceAccount = restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_SERVICE_ACCOUNT_DETAIL
+                .replace("{namespace:.+}", user.getCaasNamespace())
+                .replace("{serviceAccounts:.+}", user.getCaasAccountName()), HttpMethod.DELETE, null, String.class);
 
         return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL, HttpMethod.DELETE, user, Users.class);
     }

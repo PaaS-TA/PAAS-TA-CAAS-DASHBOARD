@@ -57,6 +57,8 @@
 
     // GET LIST
     var getList = function() {
+        viewLoading('show');
+
         var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/events/resource/" + replicaSetName;
         procCallAjax(reqUrl, "GET", null, null, callbackGetList);
     };
@@ -64,7 +66,10 @@
 
     // CALLBACK
     var callbackGetList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            return false;
+        }
 
         var resultArea = $('#resultArea');
         var resultHeaderArea = $('#resultHeaderArea');
@@ -96,6 +101,8 @@
             resultArea.show();
             resultArea.html(htmlString);
         }
+
+        viewLoading('hide');
     };
 
     // ON LOAD
