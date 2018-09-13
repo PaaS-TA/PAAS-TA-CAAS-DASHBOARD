@@ -157,14 +157,14 @@
                             <tr id="noReplicasetsResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 ReplicaSets가 없습니다.</p></td></tr>
                             <tr id="replicasetsResultHeaderArea" class="headerSortFalse">
                                 <td>Name
-                                    <button sort-key="replicasets-name" class="sort-arrow sort" onclick="procSetSortList('replicasetsResultTable', this, '0')"><i class="fas fa-caret-down"></i></button>
+                                    <button class="sort-arrow" onclick="procSetSortList('replicasetsResultTable', this, '0')"><i class="fas fa-caret-down"></i></button>
                                 </td>
                                 <td>Namespace</td>
                                 <td>Labels</td>
                                 <td id="replicaPods">Pods</td>
                                 <td id="replicaImages">Images</td>
                                 <td id="replicaCreationTime">Created on
-                                    <button sort-key="replica-created-on" class="sort-arrow sort" onclick="procSetSortList('replicasetsResultTable', this, '6')"><i class="fas fa-caret-down"></i></button>
+                                    <button class="sort-arrow" onclick="procSetSortList('replicasetsResultTable', this, '6')"><i class="fas fa-caret-down"></i></button>
                                 </td>
                             </tr>
                             </thead>
@@ -420,7 +420,7 @@
                                     "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
                                     '<td>' + createSpans(labels, "true") + '</td>' +
                                     '<td>' + availableReplicas + " / " + replicas + '</td>' +
-                                    '<td>' + images.join("</br>") + '</td>' +
+                                    "<td data-toggle='tooltip' title='" + images.join('</br>') + "'>" + images.join("</br>") + "</td>" +
                                     '<td>' + creationTimestamp + '</td>' +
                                 '</tr>' );
 
