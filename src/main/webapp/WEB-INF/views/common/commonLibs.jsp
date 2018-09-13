@@ -62,23 +62,25 @@
 <%--<script type="text/javascript" src='<c:url value="/resources/js/ResizeSensor.js"/>'></script>--%>
 <%--<script type="text/javascript" src='<c:url value="/resources/js/typeahead.bundle.js"/>'></script>--%>
 
-<script type="text/javascript" src='<c:url value="/resources/js/common.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/resources/js/caas-common.js"/>'></script>
-
 <script type="text/javascript">
 
-    var RESULT_STATUS_SUCCESS = "<%= Constants.RESULT_STATUS_SUCCESS %>";
-    var RESULT_STATUS_FAIL = "<%= Constants.RESULT_STATUS_FAIL %>";
-    var URI_API_EVENTS_LIST = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>";
-    var URI_WORKLOADS_PODS = "<%= Constants.URI_WORKLOAD_PODS %>";
+    var RESULT_STATUS_SUCCESS  = "<%= Constants.RESULT_STATUS_SUCCESS %>";
+    var RESULT_STATUS_FAIL     = "<%= Constants.RESULT_STATUS_FAIL %>";
+    var URI_API_EVENTS_LIST    = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>";
+    var URI_API_PODS_RESOURCES = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_RESOURCES %>"
+    var URI_WORKLOADS_PODS     = "<%= Constants.URI_WORKLOAD_PODS %>";
 
     var USER_ID = "${userid}";
     var USER_NAME = "${username}";
     var SERVICE_INSTANCE_ID = "${serviceInstanceId}";
     var ORGANIZATION_GUID = "${organizationGuid}";
     var SPACE_GUID = "${spaceGuid}";
-    var NAME_SPACE = "${nameSpace}";
+    <%--var NAME_SPACE = "${nameSpace}";--%>var NAME_SPACE = "default";
 
     var _csrf_token = document.getElementsByName("_csrf")[0].getAttribute("content");
     var _csrf_header = document.getElementsByName("_csrf_header")[0].getAttribute("content");
+
 </script>
+
+<script type="text/javascript" src='<c:url value="/resources/js/common.js"/>'></script>
+<script type="text/javascript" src='<c:url value="/resources/js/caas-common.js"/>'></script>
