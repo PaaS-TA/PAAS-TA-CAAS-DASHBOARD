@@ -254,10 +254,9 @@
             var namespace = itemList.metadata.namespace;
             var labels = procSetSelector(itemList.metadata.labels);
             var creationTimestamp = itemList.metadata.creationTimestamp;
-            var pods = itemList.status.availableReplicas +"/"+ itemList.spec.replicas;  // current / desired
+            var pods = itemList.status.availableReplicas +" / "+ itemList.spec.replicas;  // current / desired
             replicaSetReplicaTotalCtn += itemList.spec.replicas;
             replicaSetAvailableReplicasCnt += itemList.status.availableReplicas;
-            //var selector = procSetSelector(items[i].spec.selector);
             var images = new Array;
 
             var containers = itemList.spec.template.spec.containers;
@@ -265,12 +264,30 @@
                 images.push(containers[i].image);
             }
 
+            //이벤트 관련 추가 START
+            addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
+
+            var statusIconHtml;
+            var statusMessageHtml = [];
+
+            if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
+                statusIconHtml    = "<span class='red2'><i class='fas fa-exclamation-circle'></i> </span>";
+                $.each(itemList.message , function (index, eventMessage) {
+                    statusMessageHtml += "<p class='red2 custom-content-overflow' data-toggle='tooltip' title='" + eventMessage + "'>" + eventMessage + "</p>";
+                });
+
+            }else{
+                statusIconHtml    = "<span class='green2'><i class='fas fa-check-circle'></i> </span>";
+            }
+            //이벤트 관련 추가 END
+
             resultArea.append(
                     "<tr>"
-                    + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/replicaSets/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
+                    + "<td>"+statusIconHtml
+                    + "<a href='javascript:void(0);' data-toggle='tooltip' title='"+replicaSetName+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_REPLICASETS %>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
+                    + statusMessageHtml
                     + "</td>"
-                    + "<td>" + namespace + "</td>"
+                    + "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
                     + "<td>" + createSpans(labels, "LB") + "</td>"
                     + "<td>" + pods + "</td>"
                     + "<td>" + creationTimestamp+"</td>"
@@ -288,7 +305,10 @@
             resultArea.show();
             resultTable.tablesorter();
             resultTable.trigger("update");
+            $('.headerSortFalse > td').unbind();
         }
+
+        viewLoading('hide');
 
     };
 
