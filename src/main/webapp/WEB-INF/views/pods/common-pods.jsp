@@ -52,25 +52,9 @@
     };
 
     var setPodStatusIcon = function() {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_DETAIL %>"
-            .replace("{namespace:.+}", NAME_SPACE).replace("{podName:.+}", G_POD_NAME);
-        var _podStatus = "";
-        procCallAjax(reqUrl, "GET", null, null, function(data) {
-            _podStatus = getPodStatus(data.status);
-        });
-
-        // set subject of page
-        var podStatusIconHtml = "";
-        if (_podStatus.includes("Running")) {
-            podStatusIconHtml = '<span class="running2"><i class="fas fa-check-circle"></i></span>';
-        } else if (_podStatus.includes("Succeeded")) {
-            podStatusIconHtml = '<span class="succeeded2"><i class="fas fa-check-circle"></i></span>';
-        } else {
-            podStatusIconHtml = '<span class="failed2"><i class="fas fas fa-exclamation-circle"></i></span>';
-        }
-
+        var podStatusIconHtml = '<span class="fa fa-file-alt" style="color:#2a6575;"></span> ';
         $("#workload_pod_name").html( podStatusIconHtml + " " + G_POD_NAME);
-    }
+    };
 
     $(document.body).ready(function () {
         viewLoading('show');

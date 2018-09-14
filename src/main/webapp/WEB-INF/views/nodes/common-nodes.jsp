@@ -9,7 +9,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <h1 id="cluster_node_name" class="view-title">
-    <span class="green2"><i class="fas fa-check-circle"></i></span>
+    <%-- <span class="green2"><i class="fas fa-check-circle"></i></span> --%>
 </h1>
 <script>
     var G_NODE_NAME = '<c:out value="${nodeName}"/>';
@@ -25,7 +25,8 @@
             alertMessage("노드 이름을 찾을 수 없습니다.", false);
             return;
         }
-        $("#cluster_node_name").html('<span class="green2"><i class="fas fa-check-circle"></i></span> ' + G_NODE_NAME);
+        var iconHtml = '<span class="fa fa-file-alt" style="color:#2a6575;"></span> ';
+        $("#cluster_node_name").html(iconHtml + G_NODE_NAME);
         viewLoading('hide');
     });
 </script>
