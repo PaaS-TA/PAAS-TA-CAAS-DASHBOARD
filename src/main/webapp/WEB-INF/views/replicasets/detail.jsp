@@ -154,7 +154,7 @@
         $('#resultAnnotation').html(createSpans(annotations));
         $('#resultCreationTimestamp').html(creationTimestamp);
         $('#resultSelector').html(createSpans(selector));
-        $('#resultImage').html(images.join(", "));
+        $('#resultImage').html(images.join("<br>"));
         //$('#resultPods').html(replicas);
         $('#resultPods').html(data.status.availableReplicas+" running");
         //$('#resultDeployment').html(deployment);
