@@ -99,14 +99,16 @@
                                 <col style='width:25%;'>
                             </colgroup>
                             <thead>
-                            <tr id="noResultAreaForReplicaSet" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderAreaForReplicaSet">
+                            <tr id="resultHeaderAreaForReplicaSet" class="headerSortFalse" style="display: none;">
                                 <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTableForReplicaSet', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Namespace</td>
                                 <td>Labels</td>
                                 <td>Pods</td>
                                 <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTableForReplicaSet', this, '4')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Images</td>
+                            </tr>
+                            <tr id="noResultAreaForReplicaSet" style="display: none;">
+                                <td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td>
                             </tr>
                             </thead>
                             <tbody id="resultAreaForReplicaSet">
@@ -356,6 +358,7 @@
             $('.headerSortFalse > td').unbind();
         }
 
+        procSetToolTipForTableTd('resultAreaForReplicaSet');
         viewLoading('hide');
 
     };
