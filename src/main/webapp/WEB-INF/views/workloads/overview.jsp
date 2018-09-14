@@ -187,14 +187,26 @@
             var totalPods = spec.replicas;
             var runningPods = totalPods - status.unavailableReplicas;
             // var failPods = _status.unavailableReplicas;
-            var images = new Array;
             var containers = spec.template.spec.containers;
-
-            for(var i=0; i < containers.length; i++){
-                images.push(containers[i].image);
+            var imageTags = "";
+            for (var i = 0; i < containers.length; i++) {
+                imageTags += '<p class="custom-content-overflow" data-toggle="tooltip" title="' + containers[i].image + '">' + containers[i].image + '</p>';
             }
 
             addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
+
+            var statusIconHtml;
+            var statusMessageHtml = [];
+
+            if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
+                statusIconHtml    = "<span class='red2'><i class='fas fa-exclamation-circle'></i> </span>";
+                $.each(itemList.message , function (index, eventMessage) {
+                    statusMessageHtml += "<p class='red2 custom-content-overflow' data-toggle='tooltip' title='" + eventMessage + "'>" + eventMessage + "</p>";
+                });
+
+            }else{
+                statusIconHtml    = "<span class='green2'><i class='fas fa-check-circle'></i> </span>";
+            }
 
             if(itemList.type == "normal") {
                 devChartRunningCnt += 1;
@@ -204,16 +216,25 @@
                 devChartFailedCnt += 1;
             }
 
+            var labelObject ="";
+            if(!labels) {
+                labelObject += "<td>" + nvl(labels, "-") + "</td>";
+            } else {
+                labelObject += '<td  data-toggle=\'tooltip\' title=\'' + JSON.stringify(labels).replace(/["{}]/g, '').replace(/=/g, ':') +'\'>' + createSpans(labels, "true") + '</td>'
+            }
+
             resultArea.append('<tr>' +
-                    '<td><span class="green2"><i class="fas fa-check-circle"></i></span> ' +
-                    "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/deployments/" + deployName + "\");'>"+deployName+'</a>' +
-                    '</td>' +
-                    '<td>' + namespace + '</td>' +
-                    '<td>' + createSpans(labels, "true") + '</td>' +
-                    '<td>' + runningPods +" / " + totalPods + '</td>' +
-                    '<td>' + creationTimestamp + '</td>' +
-                    '<td>' + images.join("<br>") + '</td>' +
-                    '</td>');
+                                '<td>' +
+                                    statusIconHtml +
+                                    "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/deployments/" + deployName + "\");'>" + deployName + '</a>' +
+                                    statusMessageHtml +
+                                '</td>' +
+                                "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
+                                labelObject +
+                                '<td>' + runningPods +" / " + totalPods + '</td>' +
+                                '<td>' + creationTimestamp + '</td>' +
+                                "<td>" + imageTags + "</td>" +
+                                '</td>');
         });
 
         if (listLength < 1) {
@@ -551,4 +572,8 @@
             }
         });
     }
+    $(document.body).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
 </script>
