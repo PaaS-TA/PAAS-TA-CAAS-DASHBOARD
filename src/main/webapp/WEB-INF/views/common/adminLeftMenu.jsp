@@ -33,7 +33,7 @@
                     </dt>
                     <dd>
                         <p>
-                            Role
+                            Roles
                         </p>
                     </dd>
                 </dl>

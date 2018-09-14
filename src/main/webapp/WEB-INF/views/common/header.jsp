@@ -23,8 +23,8 @@
                 </button>
                 <div id="r_user" class="dropdown-menu">
                     <ul class="caas-user">
-                        <li id="header-menu-users"><a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/users');">User</a></li>
-                        <li id="header-menu-roles"><a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/roles');">Role</a></li>
+                        <li id="header-menu-users"><a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/users');">Users</a></li>
+                        <li id="header-menu-roles"><a href="javascript:void(0);" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/roles');">Roles</a></li>
                     </ul>
                 </div>
             </div>
@@ -43,11 +43,8 @@
                 <c:choose>
                     <c:when test="${g.index eq 1}" >
                         <c:choose>
-                            <c:when test="${(path eq 'services') || (path eq 'users')}" >
+                            <c:when test="${(path eq 'services') || (path eq 'users') || (path eq 'roles')}" >
                                 <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</a></li>
-                            </c:when>
-                            <c:when test="${path eq 'roles'}" >
-                                <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser('role')}</a></li>
                             </c:when>
                             <c:otherwise>
                                 <c:choose>
