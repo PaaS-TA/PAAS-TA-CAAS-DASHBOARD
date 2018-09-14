@@ -135,11 +135,11 @@
             var totalPods = spec.replicas;
             var runningPods = totalPods - status.unavailableReplicas;
             // var failPods = _status.unavailableReplicas;
-            var images = new Array;
             var containers = itemList.spec.template.spec.containers;
+            var imageTags = "";
 
-            for(var i=0; i < containers.length; i++){
-                images.push(containers[i].image);
+            for (var i = 0; i < containers.length; i++) {
+                imageTags += '<p class="custom-content-overflow" data-toggle="tooltip" title="' + containers[i].image + '">' + containers[i].image + '</p>';
             }
 
             addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
@@ -157,6 +157,13 @@
                 statusIconHtml    = "<span class='green2'><i class='fas fa-check-circle'></i> </span>";
             }
 
+            var labelObject ="";
+            if(!labels) {
+                labelObject += "<td>" + nvl(labels, "-") + "</td>";
+            } else {
+                labelObject += '<td  data-toggle=\'tooltip\' title=\'' + JSON.stringify(labels).replace(/["{}]/g, '').replace(/=/g, ':') +'\'>' + createSpans(labels, "true") + '</td>'
+            }
+
             resultArea.append('<tr>' +
                                     '<td>' +
                                         statusIconHtml +
@@ -164,10 +171,10 @@
                                         statusMessageHtml +
                                     '</td>' +
                                     "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
-                                    '<td>' + createSpans(labels, "true") + '</td>' +
+                                    labelObject +
                                     '<td>' + runningPods +" / " + totalPods + '</td>' +
                                     '<td>' + creationTimestamp + '</td>' +
-                                    '<td>' + images.join("</br>") + '</td>' +
+                                    "<td>" + imageTags + "</td>" +
                                 '</td>');
         });
 

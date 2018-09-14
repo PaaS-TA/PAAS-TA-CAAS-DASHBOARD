@@ -10,7 +10,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${serviceName}"/></h1>
+    <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <c:out value="${serviceName}"/></h1>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <!-- Services Details 시작 -->
     <div class="cluster_content01 row two_line two_view harf_view">
@@ -245,12 +245,12 @@
 
                     htmlString.push(
                         "<tr>"
-                        + "<td>" + addresses[j].ip + "</td>"
+                        + "<td><p>" + addresses[j].ip + "</p></td>"
                         + "<td>" + portsString + "</td>"
                         + "<td>"
-                        + "<a href='javascript:void(0);'data-toggle='tooltip' title='" + nodeName + "' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + nodeName + "/summary\");'>" + nodeName + "</a>"
+                        + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + nodeName + "/summary\");'>" + nodeName + "</a>"
                         + "</td>"
-                        + "<td><span class='" + nodeName + "'>true</span></td>"
+                        + "<td><p class='" + nodeName + "'>true</p></td>"
                         + "</tr>");
 
                     portsString = '';
@@ -274,6 +274,7 @@
             getDetailForNodes(nodeNameList);
         }
 
+        procSetToolTipForTableTd('resultAreaForEndpoints');
         viewLoading('hide');
     };
 
@@ -287,7 +288,8 @@
             if (nodeNameList[i] !== '-') {
                 viewLoading('show');
 
-                reqUrl = "<%= Constants.API_URL %><%= Constants.URI_CLUSTER_NODES %>/" + nodeNameList[i];
+                reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_NODES_LIST %>"
+                    .replace('{nodeName:.+}', nodeNameList[i]);
                 procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForNodes);
             }
         }
@@ -310,6 +312,7 @@
             }
         }
 
+        procSetToolTipForTableTd('resultAreaForEndpoints');
         viewLoading('hide');
     };
 

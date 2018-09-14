@@ -8,7 +8,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <c:out value="${replicaSetName}"/></h1>
+    <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <c:out value="${replicaSetName}"/></h1>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
@@ -156,6 +156,7 @@
         $('#resultSelector').html(createSpans(selector));
         $('#resultImage').html(images.join(", "));
         //$('#resultPods').html(replicas);
+        $('#resultPods').html(data.status.availableReplicas+" running");
         //$('#resultDeployment').html(deployment);
 
         getDeploymentsInfo(data.metadata.labels);
@@ -202,59 +203,7 @@
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>".replace("{namespace:.+}", namespace).replace("{selector:.+}", selector);
         //procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPodsList);
         getPodListUsingRequestURL(reqUrl);
-        return 3;
     };
-
-
-    // CALLBACK
-    <%--var callbackGetDetailForPodsList = function(data) {--%>
-
-        <%--if (RESULT_STATUS_FAIL === data.resultStatus) return false;--%>
-
-        <%--var podName, itemsMetadata, itemsStatus;--%>
-
-        <%--var items = data.items;--%>
-        <%--var listLength = items.length;--%>
-        <%--var htmlString = [];--%>
-
-        <%--var resultArea       = $('#resultAreaForPods');--%>
-        <%--var resultHeaderArea = $('#resultHeaderAreaForPods');--%>
-        <%--var noResultArea     = $('#noResultAreaForPods');--%>
-        <%--var resultTable      = $('#resultTableForPods');--%>
-
-        <%--for (var i = 0; i < listLength; i++) {--%>
-            <%--podName = items[i].metadata.name;--%>
-
-            <%--itemsMetadata = items[i].metadata;--%>
-            <%--itemsStatus = items[i].status;--%>
-
-            <%--htmlString.push(--%>
-                    <%--"<tr>"--%>
-                    <%--+ "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "--%>
-                    <%--+ "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/pods/" + items[i].metadata.name + "\");'>" + items[i].metadata.name + "</a>"--%>
-                    <%--+ "</td>"--%>
-                    <%--+ "<td>" + itemsMetadata.namespace + "</td>"--%>
-                    <%--+ "<td>" + items[i].spec.nodeName + "</td>"--%>
-                    <%--+ "<td>" + itemsStatus.phase + "</td>"--%>
-                    <%--+ "<td>" + itemsStatus.containerStatuses[0].restartCount + "</td>"--%>
-                    <%--+ "<td>" + itemsMetadata.creationTimestamp + "</td>"--%>
-                    <%--+ "</tr>");--%>
-        <%--}--%>
-
-        <%--if (listLength < 1) {--%>
-            <%--resultHeaderArea.hide();--%>
-            <%--resultArea.hide();--%>
-            <%--noResultArea.show();--%>
-        <%--} else {--%>
-            <%--noResultArea.hide();--%>
-            <%--resultHeaderArea.show();--%>
-            <%--resultArea.show();--%>
-            <%--resultArea.html(htmlString);--%>
-            <%--resultTable.tablesorter();--%>
-            <%--resultTable.trigger("update");--%>
-        <%--}--%>
-
-    <%--};--%>
 
     // GET SERVICE LIST
     var getServices = function(selector) {

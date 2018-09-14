@@ -236,13 +236,23 @@
                     items[i].roleSetCode = "Init User";
                 }
 
-                var layerpop1 = "<span data-target='#layerpop1' data-toggle='modal' name='saveRole'><i class='fas fa-save'></i></span>";
-                var layerpop2 = "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser'><i class='fas fa-trash-alt'></i></span>";
+                var layerpop1 = '';
+                var layerpop2 = '';
 
-                if(rsUpdate !== "TRUE" || splitRole == "admin"){
+                if(splitRole == "admin"){
+                    layerpop1 += "<span data-target='#layerpop1' data-toggle='modal' name='saveRole' style='display: none'><i class='fas fa-save'></i></span>";
+                    layerpop2 += "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser' style='display: none'><i class='fas fa-trash-alt'></i></span>";
+                }else{
+                    layerpop1 += "<span data-target='#layerpop1' data-toggle='modal' name='saveRole'><i class='fas fa-save'></i></span>";
+                    layerpop2 += "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser' ><i class='fas fa-trash-alt'></i></span>";
+                }
+
+
+                // 현재 세션이 admin 이 아닐 때
+                if(rsUpdate !== "TRUE"){
                     layerpop1 = '';
                 }
-                if(rsDelete !== "TRUE" || splitRole == "admin"){
+                if(rsDelete !== "TRUE"){
                     layerpop2 = '';
                 }
 
@@ -291,7 +301,7 @@
 
     // BIND (CHANGE ROLE SAVE BUTTON)
     $(document).on("click", "span[name=saveRole]", function(){
-        var index = $('span[name=saveRole]').index(this) + 1;
+        var index = $('span[name=saveRole]').index(this);
         //alert(index);
         //alert($('select[name=role-filter]').eq(index).data("userId"));
         //alert($('select[name=role-filter]').eq(index).find(':selected').val());
@@ -332,17 +342,16 @@
     // CALLBACK USER ROLE
     var callbackUpdateRoleOfUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        alert("권한이 수정되었습니다.");
-        location.reload(true);
+        //alert("권한이 수정되었습니다.");
+        alertMessage("권한이 수정되었습니다.", true);
+        setTimeout(reload, 2000);
     };
-
-
 
 
     // BIND (DELETE USER MODAL)
     $(document).on("click", "span[name=deleteUser]", function () {
         console.log("user delete");
-        var index = $('span[name=deleteUser]').index(this) + 1;
+        var index = $('span[name=deleteUser]').index(this);
 
         deleteUserId = $("#resultArea").find(".userId").eq(index).text();
 
@@ -372,7 +381,13 @@
     var callbackDeleteUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
         //console.log("result message 는?" + JSON.stringify(data));
-        alert("사용자가 삭제되었습니다.");
+        //alert("사용자가 삭제되었습니다.");
+        alertMessage("사용자가 삭제되었습니다.", true);
+        setTimeout(reload, 2000);
+    };
+
+    // page reload
+    var reload = function () {
         location.reload(true);
     };
 

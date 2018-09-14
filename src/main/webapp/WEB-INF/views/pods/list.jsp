@@ -60,7 +60,7 @@
 
     var disableSearchPodList = function () {
         $('#pod-list-search-form').remove();
-    }
+    };
 
     var getPodStatus = function (podStatus) {
         /*
@@ -195,11 +195,13 @@
             //var namespaceHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + pod.namespace + "\");'>" + pod.namespace + "</a>";
             var namespaceHtml = createAnchorTag("<%= Constants.URI_CLUSTER_NAMESPACES %>/" + pod.namespace, pod.namespace, true);
 
+            var statusHtml = "<span data-toggle='tooltip' title='" + pod.podStatus + "'>" + pod.podStatus + "</span>"
+
             htmlString.push("<tr name='podRow' id='row-" + pod.name + "'>"
                 + "<td id='" + pod.name + "'>" + podNameHtml + "</td>"
                 + "<td>" + namespaceHtml + "</td>"
                 + "<td>" + nodeNameHtml + "</td>"
-                + "<td>" + pod.podStatus + "</td>"
+                + "<td>" + statusHtml + "</td>"
                 + "<td>" + pod.restartCount + "</td>"
                 + "<td>" + pod.creationTimestamp + "</td>"
                 + "</tr>");
@@ -269,10 +271,10 @@
 
     var getPodStatuses = function() {
         // 기본값 추가
-        return {
+        return [{
             name: "INVALID_NAME",
             status: "INVALID_STATUS"
-        };
+        }];
     };
 
     // CALLBACK POD LIST
@@ -313,10 +315,13 @@
 
         getPodStatuses = function() {
             return podStatusList;
-        }
+        };
 
         setPodTable(podList);
         procSetEventStatusForPods(podNameList);
+
+        // TOOL TIP
+        $('[data-toggle="tooltip"]').tooltip();
 
         viewLoading('hide');
     };
