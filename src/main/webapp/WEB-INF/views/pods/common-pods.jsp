@@ -11,7 +11,7 @@
 <h1 id="workload_pod_name" class="view-title">
     <%-- <span class="green2"><i class="fas fa-check-circle"></i></span> --%>
 </h1>
-<script>
+<script type="text/javascript">
     var G_POD_NAME = '<c:out value="${podName}" default="" />';
 
     var getPodStatus = function (podStatus) {

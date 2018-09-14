@@ -60,7 +60,7 @@
 
     var disableSearchPodList = function () {
         $('#pod-list-search-form').remove();
-    }
+    };
 
     var getPodStatus = function (podStatus) {
         /*
@@ -271,10 +271,10 @@
 
     var getPodStatuses = function() {
         // 기본값 추가
-        return {
+        return [{
             name: "INVALID_NAME",
             status: "INVALID_STATUS"
-        };
+        }];
     };
 
     // CALLBACK POD LIST
@@ -315,7 +315,7 @@
 
         getPodStatuses = function() {
             return podStatusList;
-        }
+        };
 
         setPodTable(podList);
         procSetEventStatusForPods(podNameList);

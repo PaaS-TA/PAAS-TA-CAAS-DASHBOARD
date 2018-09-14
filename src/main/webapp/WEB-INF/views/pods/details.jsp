@@ -286,7 +286,7 @@
         // var selector = stringifyJSON(data.spec.selector).replace(/matchLabels=/g, '');
 
         document.getElementById("name").textContent = data.metadata.name;
-        document.getElementById("labels").innerHTML = createSpans(labels, "false");
+        document.getElementById("labels").innerHTML = createSpans(labels, "true");
         document.getElementById("creationTime").textContent = data.metadata.creationTimestamp;
         document.getElementById("status").innerHTML = data.status.phase;
         document.getElementById("qosClass").textContent = data.status.qosClass; //qosClass
@@ -321,7 +321,7 @@
 
     var replaceLabels = function (data) {
         return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D').replace(/, /g, '&');
-    }
+    };
 
     var createSpans = function (data, type) {
         var datas = data.replace(/=/g, ':').split(',');
@@ -341,7 +341,7 @@
         }
 
         return spanTemplate;
-    }
+    };
     
     var conditionParser = function (data) {
         var tempStr = "";
@@ -353,7 +353,7 @@
             tempStr += ", ";
         }
         return tempStr;
-    }
+    };
 
     // 좀 더 좋은 로직 있으면 수정바람...
     // statuses와 container 비교하는 구문..
@@ -437,11 +437,9 @@
             resultArea.tablesorter();
             resultArea.trigger("update");
         }
-
-    }
+    };
 
     var getContainer = function (containerList, conatinerName) {
-
         if(!containerList) {
             return "";
         }
@@ -453,7 +451,7 @@
                 return containerObject;
             }
         }
-    }
+    };
 
     // 줄일 수 있으면 수정바라뮤ㅠㅠ 재귀를 쓸 타이밍인가;;
     var envParser = function (container) {
@@ -479,7 +477,7 @@
             }
         }
         return tempStr;
-    }
+    };
 
     // state를 가져오기 위함.. state정보는 statuses에 있는데.. run된 흔적이 없으면 이게 null로 들어옴...
     var getContainerStatus = function (itemList, phase) {
@@ -491,7 +489,7 @@
         }
 
         return statusStr.charAt(0).toUpperCase() + statusStr.substring(1);
-    }
+    };
 
     var showHide = function (indexId) {
         var tr = $('#' + indexId);
@@ -501,6 +499,5 @@
         } else {
             tr.css('display', 'table-row');
         }
-    }
-
+    };
 </script>

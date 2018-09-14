@@ -11,13 +11,13 @@
 <h1 id="cluster_node_name" class="view-title">
     <%-- <span class="green2"><i class="fas fa-check-circle"></i></span> --%>
 </h1>
-<script>
+<script type="text/javascript">
     var G_NODE_NAME = '<c:out value="${nodeName}"/>';
 
     var getNode = function (nodeName, callbackFunc) {
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_NODES_LIST %>".replace("{nodeName:.+}", nodeName);
         procCallAjax(reqUrl, "GET", null, null, callbackFunc);
-    }
+    };
 
     $(document.body).ready(function () {
         viewLoading('show');
