@@ -121,10 +121,6 @@ a:hover{border-bottom:1px solid #154c94;color:#154c94;font-weight:bold;}
 
 .modal-dialog.nodes{width:800px!important;}
 
-/* detail Icon */
-.detail_icon{color:#2a6575;}
-
-
 @media screen and (min-width:781px){
 	.cluster_tabs li {
 		width: 206px !important;

@@ -10,7 +10,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${serviceName}"/></h1>
+    <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <c:out value="${serviceName}"/></h1>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <!-- Services Events 시작-->
     <div class="cluster_content02 row two_line two_view harf_view custom_display_block">
@@ -88,12 +88,12 @@
         for (var i = 0; i < listLength; i++) {
             htmlString.push(
                 "<tr>"
-                + "<td>" + items[i].message + "</td>"
-                + "<td>" + items[i].source.component + " " + nvl(items[i].source.host) + "</td>"
-                + "<td>" + nvl(items[i].involvedObject.fieldPath, "-") + "</td>"
-                + "<td>" + items[i].count + "</td>"
-                + "<td>" + items[i].firstTimestamp + "</td>"
-                + "<td>" + items[i].lastTimestamp + "</td>"
+                + "<td><p>" + items[i].message + "</p></td>"
+                + "<td><p>" + items[i].source.component + " " + nvl(items[i].source.host) + "</p></td>"
+                + "<td><p>" + nvl(items[i].involvedObject.fieldPath, "-") + "</p></td>"
+                + "<td><p>" + items[i].count + "</p></td>"
+                + "<td><p>" + items[i].firstTimestamp + "</p></td>"
+                + "<td><p>" + items[i].lastTimestamp + "</p></td>"
                 + "</tr>");
         }
 
@@ -108,6 +108,7 @@
             resultArea.html(htmlString);
         }
 
+        procSetToolTipForTableTd('resultArea');
         viewLoading('hide');
     };
 

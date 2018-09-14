@@ -63,6 +63,32 @@
     </div>
 </div>
 
+<%--FOR USERS--%>
+<div class="modal fade in" id="layerpop-single-button">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <!-- header -->
+                <div class="modal-header">
+                    <!-- 닫기(x) 버튼 -->
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <!-- header title -->
+                    <h4 class="modal-title">Role 변경 완료</h4>
+                </div>
+                <!-- body -->
+                <div class="modal-body roleUpdate">
+                    <%-- <p class="account_modal_p"><span>hong@test.com</span> 님을 <span>Administrator</span>로 Role을 변경하시겠습니까?
+                     </p>--%>
+                </div>
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btns2 colors4" data-dismiss="modal" id="okBtn">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <%--TODO :: REFACTOR--%>
 <%--FOR DEPLOYMENTS--%>
 <div class="modal fade dashboard" id="layerpop3">

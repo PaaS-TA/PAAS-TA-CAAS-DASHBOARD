@@ -37,7 +37,7 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td id="labels"></td>
+                                <td class="labels_wrap" id="labels"></td>
                             </tr>
 
                             <tr>
@@ -346,11 +346,10 @@
                 availableReplicas = itemList.status.availableReplicas;
             }
 
-            var images = new Array;
-
             var containers = itemList.spec.template.spec.containers;
+            var imageTags = "";
             for (var i = 0; i < containers.length; i++) {
-                images.push(containers[i].image);
+                imageTags += '<p class="custom-content-overflow" data-toggle="tooltip" title="' + containers[i].image + '">' + containers[i].image + '</p>';
             }
 
             resultArea.append('<tr>' +
@@ -363,7 +362,7 @@
                                     "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
                                     '<td  data-toggle=\'tooltip\' title=\'' + JSON.stringify(labels).replace(/["{}]/g, '').replace(/=/g, ':') +'\'>' + createSpans(labels, "true") + '</td>' +
                                     '<td>' + availableReplicas + " / " + replicas + '</td>' +
-                                    "<td data-toggle='tooltip' title='" + images + "'>" + images.join("</br>") + "</td>" +
+                                    "<td>" + imageTags + "</td>" +
                                     '<td>' + creationTimestamp + '</td>' +
                                 '</tr>' );
 
@@ -393,7 +392,7 @@
             return false;
         }
 
-        console.log("CONSOLE DEBUG PRINT :: " + data);
+        console.log("CONSOLE DEBUG PRINT :: ", data);
 
         var resultArea = $('#podsListTable');
         var resultHeaderArea = $('#podsResultHeaderArea');
@@ -417,7 +416,7 @@
             }
 
             if(spec.nodeName != null) {
-                nodeLink += "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/clusters/nodes/" + nodeName + "/summary\");'>"+
+                nodeLink += "<a href='javascript:void(0);' data-toggle='tooltip' title='"+nodeName+"' onclick='procMovePage(\"/caas/clusters/nodes/" + nodeName + "/summary\");'>"+
                                 nodeName +
                             '</a>';
             }
@@ -454,7 +453,7 @@
                                     statusMessageHtml +
                                 '</td>' +
                                 "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
-                                '<td>' + nodeLink + '</td>' +
+                                "<td>" + nodeLink + '</td>' +
                                 "<td data-toggle='tooltip' title='"+podStatus+"'>" + podStatus + '</td>' +
                                 '<td>' + restartCount + '</td>' +
                                 '<td>' + creationTimestamp + '</td>' +

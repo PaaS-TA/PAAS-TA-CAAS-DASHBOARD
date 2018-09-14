@@ -69,8 +69,12 @@
             return;
         }
 
+        var filterItems = data.items.filter(function(item, index) {
+           return item["involvedObject"] != null && item["involvedObject"]["kind"] == "Node";
+        });
+
         // pre-sort : last seen (last timestamp)
-        data.items.sort(function(itemA, itemB) {
+        filterItems.sort(function(itemA, itemB) {
             var _compareA = itemA.lastTimestamp;
             var _compareB = itemB.lastTimestamp;
             var _ascending = false;
@@ -90,7 +94,7 @@
         });
 
         var contents = [];
-        $.each(data.items, function (index, eventItem) {
+        $.each(filterItems, function (index, eventItem) {
             // message, source, sub-object, count, first-seen, last-seen
             // message is including error message
             var _event = getEvent(eventItem);
@@ -146,5 +150,6 @@
         getEventsListByNode(NAME_SPACE, G_NODE_NAME);
         viewLoading('hide');
     });
+
 </script>
 <!-- NodeEvents 끝 -->

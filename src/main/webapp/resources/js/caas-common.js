@@ -421,3 +421,51 @@ var addPodsEvent = function(targetObject, selector) {
     //console.log("Print:::"+JSON.stringify(targetObject));
 
 }
+
+
+// SET TOOL TIP FOR TABLE TD
+var procSetToolTipForTableTd = function (tableObjectString) {
+    if (nvl(tableObjectString) === '') {
+        return false;
+    }
+
+    var tableObject = $('#' + tableObjectString + ' tr');
+
+    tableObject.each(function () {
+        var tdTags = $(this).find('td');
+        var pTags,
+            aTags,
+            spanTags;
+
+        if (tdTags != null) {
+            pTags = $(this).find('p');
+            aTags = $(this).find('a');
+            spanTags = $(this).find('span');
+
+            pTags.each(function () {
+                if (nvl(pTags) !== '') {
+                    procSetToolTipAttributes($(this));
+                }
+            });
+
+            aTags.each(function () {
+                if (nvl(aTags) !== '') {
+                    procSetToolTipAttributes($(this));
+                }
+            });
+
+            spanTags.each(function () {
+                if (nvl(spanTags) !== '') {
+                    procSetToolTipAttributes($(this));
+                }
+            });
+        }
+    });
+};
+
+
+// PROC SET TOOL TIP ATTRIBUTES
+var procSetToolTipAttributes = function (tagObject) {
+    tagObject.addClass('custom-content-overflow');
+    tagObject.attr('data-toggle', 'tooltip').attr('title', tagObject.html()).attr('style', 'margin: 0;');
+};
