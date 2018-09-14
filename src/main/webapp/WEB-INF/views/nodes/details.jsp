@@ -142,7 +142,7 @@
         </div>
     </div>
 </div>
-<script>
+<script type="text/javascript">
     var setLayerpop = function (eventElement) {
         var select = $(eventElement);
         var _title = select.data('title');
@@ -227,7 +227,7 @@
         var podCIDR = _spec.podCIDR;
         var unschedulable = _spec.taints != null?
             _spec.taints.filter(
-                function(item) { return item.key == 'node-role.kubernetes.io/master' && item.effect != 'NoSchedule'; }).length > 0 : false;
+                function(item) { return item.key === 'node-role.kubernetes.io/master' && item.effect !== 'NoSchedule'; }).length > 0 : false;
 
         // get datum : system info
         var nodeInfo = _status.nodeInfo;
@@ -243,10 +243,10 @@
         var architecture = nodeInfo.architecture;
 
         $('#node_name').html(name);
-        $('#node_labels').html(createSpans(labels, "false"));
+        $('#node_labels').html(createSpans(labels, "true"));
         $('#node_annotations').html(createSpans(annotations, "true"));
         $('#node_created_at').html(createdAt);
-        $('#node_addresses').html(createSpans(addresses, "false"));
+        $('#node_addresses').html(createSpans(addresses, "true"));
         $('#node_pod_cidr').html(podCIDR);
         $('#node_unschedulable').html(unschedulable.toString());
 

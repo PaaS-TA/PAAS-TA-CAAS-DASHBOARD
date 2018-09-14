@@ -61,7 +61,7 @@
 <script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>
 
-<script>
+<script type="text/javascript">
     var callbackGetNodeSummary = function (data) {
         viewLoading('show');
 
