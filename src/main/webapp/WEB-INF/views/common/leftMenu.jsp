@@ -9,7 +9,6 @@
 <nav style="height: 90%;">
     <div class="scroll_style">
         <ul class="nav_1d caas_nav">
-            <%--<li class="cur">--%>
             <li id="left-menu-intro" onclick="procMovePage('<%= Constants.CAAS_INIT_URI %>');">
                 <dl>
                     <dt>
@@ -23,7 +22,6 @@
                     </dd>
                 </dl>
             </li>
-            <%--<li onclick="location.href='caas_workloads.html'">--%>
             <li id="left-menu-workloads" onclick="procMovePage('<%= Constants.URI_WORKLOAD_OVERVIEW %>');">
                 <dl>
                     <dt>
@@ -38,7 +36,6 @@
                     </dd>
                 </dl>
             </li>
-            <%--<li onclick="location.href='caas_services.html'">--%>
             <li id="left-menu-services" onclick="procMovePage('<%= Constants.URI_SERVICES %>');">
                 <dl>
                     <dt>
@@ -53,32 +50,6 @@
                     </dd>
                 </dl>
             </li>
-            <!--li>
-                <dl>
-                    <dt>
-                        <div id="lnbimg19" class="">
-                        </div>
-                    </dt>
-                    <dd>
-                        <p>
-                            Config
-                        </p>
-                    </dd>
-                </dl>
-            </li>
-            <li>
-                <dl>
-                    <dt>
-                        <div id="lnbimg20" class="">
-                        </div>
-                    </dt>
-                    <dd>
-                        <p>
-                            Storage
-                        </p>
-                    </dd>
-                </dl>
-            </li-->
         </ul>
     </div>
 </nav>

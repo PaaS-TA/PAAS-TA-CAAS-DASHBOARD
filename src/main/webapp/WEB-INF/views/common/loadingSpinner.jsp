@@ -13,7 +13,6 @@
 
 <script type="text/javascript">
     // ON LOAD
-    // $(window).bind("load", function () {
     $(document.body).ready(function () {
         viewLoading('show');
     });
