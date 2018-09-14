@@ -267,7 +267,8 @@
 
     // GET DETAIL
     var getDetail = function() {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.API_WORKLOAD %>/namespaces/" + NAME_SPACE + "/pods/" + G_POD_NAME;
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_DETAIL %>"
+            .replace("{namespace:.+}", NAME_SPACE).replace("{podName:.+}", G_POD_NAME);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
 
@@ -296,7 +297,7 @@
         }
 
         if(data.spec.nodeName != null) {
-            document.getElementById("node").innerHTML =  "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/clusters/nodes/" + data.spec.nodeName + "/summary\");'>"+
+            document.getElementById("node").innerHTML =  "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + data.spec.nodeName + "/summary\");'>"+
                 data.spec.nodeName +
                 '</a>';
         }

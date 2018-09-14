@@ -93,7 +93,7 @@
             return "Running";
         } else {
             // ex : Waiting: ImagePullBackOff
-            var statusStr = notRunningState.substring(0, 1).toUpperCase() + notRunningState.substring(1, notRunningState.length);
+            var statusStr = notRunningState.charAt(0).toUpperCase() + notRunningState.substring(1);
             var reason = procIfDataIsNull(containerStatuses[notRunningIndex].state[notRunningState]["reason"], null, "Unknown");
             return (statusStr + ": " + reason);
         }

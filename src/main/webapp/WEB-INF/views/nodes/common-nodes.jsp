@@ -15,7 +15,7 @@
     var G_NODE_NAME = '<c:out value="${nodeName}"/>';
 
     var getNode = function (nodeName, callbackFunc) {
-        var reqUrl = "<%= Constants.API_URL %>/nodes/" + nodeName;
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_NODES_LIST %>".replace("{nodeName:.+}", nodeName);
         procCallAjax(reqUrl, "GET", null, null, callbackFunc);
     }
 
@@ -25,7 +25,6 @@
             alertMessage("노드 이름을 찾을 수 없습니다.", false);
             return;
         }
-
         $("#cluster_node_name").html('<span class="green2"><i class="fas fa-check-circle"></i></span> ' + G_NODE_NAME);
         viewLoading('hide');
     });

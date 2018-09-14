@@ -6,22 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-// TODO :: REMOVE
-//import org.apache.http.client.HttpClient;
-//import javax.servlet.http.HttpServletResponse;
-
-
 /**
- * CLUSTER Service
+ * Pods Service
  *
  * @author 최윤석
+ * @author Hyungu Cho
  * @version 1.0
  * @since 2018.8.01 최초작성
  */
 @Service
 public class PodsService {
-    private static final String REQ_URL = "workloads/namespaces/{namespace}/pods";
-
     private final RestTemplateService restTemplateService;
 
     /**
@@ -30,55 +24,57 @@ public class PodsService {
      * @param restTemplateService the rest template service
      */
     @Autowired
-    public PodsService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
-
-    /**
-     * Gets pod list using label selector.
-     *
-     * @param namespace
-     * @param selector
-     * @return
-     */
-    PodsList getPodListBySelector (String namespace, String selector ) {
-        String reqUrl = REQ_URL.replace( "{namespace}", namespace) + "/resource/" + selector;
-        return restTemplateService.send( Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, PodsList.class );
+    public PodsService(RestTemplateService restTemplateService) {
+        this.restTemplateService = restTemplateService;
     }
 
-    // TODO :: REMOVE
     /**
-     * Gets pod list for all namespaces.
+     * Gets pod list by resource name
      *
+     * @param namespace the namespace
+     * @param selector  the selector
      * @return the pod list
      */
-    PodsList getPodList () {
-        return getPodList( "_all" );
+    PodsList getPodListBySelector(String namespace, String selector) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_PODS_LIST_BY_SELECTOR
+                        .replace("{namespace:.+}", namespace).replace("{selector:.+}", selector)
+                , HttpMethod.GET, null, PodsList.class);
     }
 
     /**
-     * Get pod list in namespace
-     * @param namespace
-     * @return
+     * Get pod list
+     *
+     * @param namespace the namespace
+     * @return the pod list
      */
-    PodsList getPodList (String namespace ) {
-        String reqURL = REQ_URL.replace( "{namespace}", namespace );
-        System.out.println("집에 가고 싶다 " + reqURL);
-        return restTemplateService.send( Constants.TARGET_CAAS_API, reqURL, HttpMethod.GET, null, PodsList.class );
-    }
-
-    PodsList getPodListNamespaceByNode(String namespace, String nodeName ) {
-        String reqURL = REQ_URL.replace( "{namespace}", namespace ) + "/node/" + nodeName;
-        return restTemplateService.send( Constants.TARGET_CAAS_API, reqURL, HttpMethod.GET, null, PodsList.class );
+    PodsList getPodList(String namespace) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_PODS_LIST
+                .replace("{namespace:.+}", namespace), HttpMethod.GET, null, PodsList.class);
     }
 
     /**
-     * Get pod in namespace.
-     * @param namespace
-     * @param podName
-     * @return
+     * Gets pod list by node name
+     *
+     * @param namespace the namespace
+     * @param nodeName  the node name
+     * @return the pod list
      */
-    Pods getPod (String namespace, String podName ) {
-        // TODO :: remove "detail" path or add "selector" path.
-        String reqURL = REQ_URL.replace( "{namespace}", namespace ) + "/" + podName;
-        return restTemplateService.send( Constants.TARGET_CAAS_API, reqURL, HttpMethod.GET, null, Pods.class );
+    PodsList getPodListNamespaceByNode(String namespace, String nodeName) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_PODS_LIST_BY_NODE
+                        .replace("{namespace:.+}", namespace).replace("{nodeName:.+}", nodeName),
+                HttpMethod.GET, null, PodsList.class);
+    }
+
+    /**
+     * Get pod
+     *
+     * @param namespace the namespace
+     * @param podName   the pod name
+     * @return the pod
+     */
+    Pods getPod(String namespace, String podName) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_PODS_DETAIL
+                        .replace("{namespace:.+}", namespace).replace("{podName:.+}", podName),
+                HttpMethod.GET, null, Pods.class);
     }
 }
