@@ -114,10 +114,16 @@
             var count = itemList.count;
             var fristTimestamp = itemList.firstTimestamp;
             var lastTimestamp = itemList.lastTimestamp;
+            var subObjectObject = "";
+            if(!subObject) {
+                subObjectObject += "<td>" + nvl(subObject, "-") + "</td>";
+            } else {
+                subObjectObject += "<td data-toggle='tooltip' title='"+ subObject +"'>" + subObject + "</td>";
+            }
             resultArea.append("<tr>"
-                                + "<td>" + message + "</td>"
-                                + "<td>" + source + "</td>"
-                                + "<td>" + nvl(subObject, "-") + "</td>"
+                                + "<td  data-toggle='tooltip' title='"+message+"'>" + message + "</td>"
+                                + "<td data-toggle='tooltip' title='"+source+"'>" + source + "</td>"
+                                + subObjectObject +  "</td>"
                                 + "<td>" + count + "</td>"
                                 + "<td>" + fristTimestamp + "</td>"
                                 + "<td>" + lastTimestamp + "</td>"

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-check-circle"></i></span> <span id="title"></span></h1>
+    <h1 class="view-title"><span class="green2"><i class="fas fa-file-alt"></i></span> <span id="title"></span></h1>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view">

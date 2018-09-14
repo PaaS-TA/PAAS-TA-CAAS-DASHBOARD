@@ -164,10 +164,10 @@
                                         statusMessageHtml +
                                     '</td>' +
                                     "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
-                                    '<td>' + createSpans(labels, "true") + '</td>' +
+                                    '<td  data-toggle=\'tooltip\' title=\'' + JSON.stringify(labels).replace(/["{}]/g, '').replace(/=/g, ':') +'\'>' + createSpans(labels, "true") + '</td>' +
                                     '<td>' + runningPods +" / " + totalPods + '</td>' +
                                     '<td>' + creationTimestamp + '</td>' +
-                                    '<td>' + images.join("</br>") + '</td>' +
+                                    "<td data-toggle='tooltip' title='" + images + "'>" + images.join("</br>") + "</td>" +
                                 '</td>');
         });
 

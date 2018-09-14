@@ -15,7 +15,7 @@
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
-            <li class="cluster_second_box">
+            <li class="cluster_first_box">
                 <div class="sortable_wrap">
                     <div class="sortable_top">
                         <p>Details</p>
@@ -355,14 +355,15 @@
 
             resultArea.append('<tr>' +
                                     '<td>' +
-                                        "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + replicasetName + "\");'>"+
-                                            '<span class="green2"><i class="fas fa-check-circle"></i></span> ' + replicasetName +
+                                        '<span class="green2"><i class="fas fa-check-circle"></i></span> ' +
+                                        "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + replicasetName + "\");' data-toggle='tooltip' title='"+replicasetName+"' >"+
+                                            replicasetName +
                                         '</a>' +
                                     '</td>' +
                                     "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
-                                    '<td>' + createSpans(labels, "true") + '</td>' +
+                                    '<td  data-toggle=\'tooltip\' title=\'' + JSON.stringify(labels).replace(/["{}]/g, '').replace(/=/g, ':') +'\'>' + createSpans(labels, "true") + '</td>' +
                                     '<td>' + availableReplicas + " / " + replicas + '</td>' +
-                                    "<td data-toggle='tooltip' title='" + images.join('</br>') + "'>" + images.join("</br>") + "</td>" +
+                                    "<td data-toggle='tooltip' title='" + images + "'>" + images.join("</br>") + "</td>" +
                                     '<td>' + creationTimestamp + '</td>' +
                                 '</tr>' );
 
@@ -416,7 +417,7 @@
             }
 
             if(spec.nodeName != null) {
-                nodeLink += "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + nodeName + "/summary\");'>"+
+                nodeLink += "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/clusters/nodes/" + nodeName + "/summary\");'>"+
                                 nodeName +
                             '</a>';
             }
@@ -449,12 +450,12 @@
             resultArea.append('<tr>' +
                                 '<td>' +
                                     statusIconHtml +
-                                    "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_PODS %>/" + podName + "\");'>" + podName + "</a>" +
+                                    "<a href='javascript:void(0);' data-toggle='tooltip' title='"+podName +"'+ onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_PODS %>/" + podName + "\");'>" + podName + "</a>" +
                                     statusMessageHtml +
                                 '</td>' +
                                 "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
                                 '<td>' + nodeLink + '</td>' +
-                                '<td>' + podStatus + '</td>' +
+                                "<td data-toggle='tooltip' title='"+podStatus+"'>" + podStatus + '</td>' +
                                 '<td>' + restartCount + '</td>' +
                                 '<td>' + creationTimestamp + '</td>' +
                             '</tr>');
