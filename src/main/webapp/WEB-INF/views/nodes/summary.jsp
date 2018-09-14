@@ -67,17 +67,19 @@
 
         // check data validation
         var podNotFound = $('#podNotFound');
+        var podsTableHeader = $('#podsTableHeader');
         var conditionsNotFound = $('#conditionsNotFound');
+        var conditionsTableHeader = $('#conditionsTableHeader');
         if (false === procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage("Node 정보를 가져오지 못했습니다.", false);
             podNotFound.children().html("Node의 정보를 가져오지 못했습니다.");
             podNotFound.show();
-            $('#podsTableHeader').hide();
+            podsTableHeader.hide();
 
             conditionsNotFound.children().html("Node의 정보를 가져오지 못했습니다.");
             conditionsNotFound.show();
-            $('#conditionsTableHeader').hide();
+            conditionsTableHeader.hide();
             return;
         }
 
@@ -89,7 +91,8 @@
         });
 
         // get pods, conditions
-        var podListReqUrl = "<%= Constants.API_URL %>/workloads/namespaces/" + NAME_SPACE + "/pods/node/" + nodeName;
+        var podListReqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_NODE %>"
+            .replace("{namespace:.+}", NAME_SPACE).replace("{nodeName:.+}", nodeName);
         getPodListUsingRequestURL(podListReqUrl);
 
         // set conditions
@@ -110,7 +113,7 @@
         } else {
             conditionsNotFound.children().html("Node의 Condition 목록을 가져오지 못했습니다.");
             conditionsNotFound.show();
-            $('#conditionsTableHeader').hide();
+            conditionsTableHeader.hide();
         }
 
         viewLoading('hide');

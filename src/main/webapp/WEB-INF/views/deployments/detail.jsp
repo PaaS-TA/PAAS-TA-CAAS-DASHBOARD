@@ -117,9 +117,6 @@
                 </div>
             </li>
             <!-- Pods 시작 -->
-<%--            <li class="cluster_third_box">
-                <jsp:include page="../pods/list.jsp" flush="true"/>
-            </li>--%>
             <li class="cluster_sixth_box maB50">
                 <div class="sortable_wrap">
                     <div class="sortable_top">
@@ -282,7 +279,7 @@
         document.getElementById("status").textContent = replicaStatus;
 
         procCallAjax("/api/namespaces/" + NAME_SPACE + "/replicasets/resource/" + replaceLabels(selector), "GET", null, null, callbackGetReplicasetList);
-        procCallAjax("/api/workloads/namespaces/" + NAME_SPACE + "/pods/resource/" + replaceLabels(selector), "GET", null, null, callbackGetPodsList);
+        procCallAjax("<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>".replace("{namespace:.+}", NAME_SPACE).replace("{selector:.+}", replaceLabels(selector)), "GET", null, null, callbackGetPodsList);
     }
 
 
@@ -420,7 +417,7 @@
             }
 
             if(spec.nodeName != null) {
-                nodeLink += "<a href='javascript:void(0);' data-toggle='tooltip' title='" + nodeName + "' onclick='procMovePage(\"/caas/clusters/nodes/" + nodeName + "/summary\");'>"+
+                nodeLink += "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/clusters/nodes/" + nodeName + "/summary\");'>"+
                                 nodeName +
                             '</a>';
             }
@@ -453,7 +450,7 @@
             resultArea.append('<tr>' +
                                 '<td>' +
                                     statusIconHtml +
-                                    "<a href='javascript:void(0);' data-toggle='tooltip' title='"+podName+"' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/workloads/pods/" + podName + "\");'>" + podName + "</a>" +
+                                    "<a href='javascript:void(0);' data-toggle='tooltip' title='"+podName +"'+ onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_PODS %>/" + podName + "\");'>" + podName + "</a>" +
                                     statusMessageHtml +
                                 '</td>' +
                                 "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +

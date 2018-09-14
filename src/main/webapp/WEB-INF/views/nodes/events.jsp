@@ -58,12 +58,14 @@
     var callbackGetNodeEvent = function (data) {
         viewLoading('show');
 
+        var nodeEventsNotFound = $('#nodeEventsnotFound');
+        var nodeEventsTableHeader = $('#nodeEventsTableHeader');
         if (false === procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage("Node의 Event 목록을 가져오지 못했습니다.", false);
-            $('#nodeEventsnotFound').children().html("Node의 Event 목록을 가져오지 못했습니다.");
-            $('#nodeEventsnotFound').show();
-            $('#nodeEventsTableHeader').hide();
+            nodeEventsNotFound.children().html("Node의 Event 목록을 가져오지 못했습니다.");
+            nodeEventsNotFound.show();
+            nodeEventsTableHeader.hide();
             return;
         }
 
@@ -112,8 +114,8 @@
             // write event list into tbody
             $('#events_table_in_node > tbody').html(contents);
         } else {
-            $('#nodeEventsnotFound').show();
-            $('#nodeEventsTableHeader').hide();
+            nodeEventsNotFound.show();
+            nodeEventsTableHeader.hide();
         }
 
         viewLoading('hide');
@@ -132,18 +134,16 @@
         };
     };
 
-    var getEventsListByNode = function(namespace, nodeName, callbackFunc) {
-        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/events/node/" + nodeName;
+    var getEventsListByNode = function(namespace, nodeName) {
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST_BY_NODE %>"
+            .replace("{namespace:.+}", namespace).replace("{nodeName:.+}", nodeName);
 
-        if (null == callbackFunc)
-            callbackFunc = callbackGetNodeEvent;
-
-        procCallAjax(reqUrl, "GET", null, null, callbackFunc);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetNodeEvent);
     };
 
     $(document.body).ready(function () {
         viewLoading('show');
-        getEventsListByNode(NAME_SPACE, G_NODE_NAME, callbackGetNodeEvent);
+        getEventsListByNode(NAME_SPACE, G_NODE_NAME);
         viewLoading('hide');
     });
 </script>

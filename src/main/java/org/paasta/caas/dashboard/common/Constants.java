@@ -66,14 +66,18 @@ public class Constants {
     public static final String URI_API_ENDPOINTS_DETAIL = "/namespaces/{namespace:.+}/endpoints/{serviceName:.+}";
 
     // API URI :: EVENTS
-    public static final String URI_API_EVENTS_LIST = "/namespaces/{namespace:.+}/events/resource/{resourceName:.+}";
+    public static final String URI_API_EVENTS_LIST         = "/namespaces/{namespace:.+}/events/resource/{resourceName:.+}";
+    public static final String URI_API_EVENTS_LIST_BY_NODE = "/namespaces/{namespace:.+}/events/node/{nodeName:.+}";
 
-    // TODO :: MODIFY URI >> "/namespaces/{namespace:.+}/pods/service/{serviceName:.+}/{selector:.+}"
     // API URI :: PODS
-    public static final String URI_API_PODS_LIST_BY_SELECTOR = "/workloads/namespaces/{namespace:.+}/pods/service/{serviceName:.+}/{selector:.+}";
-    public static final String URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE = "/workloads/namespaces/{namespace:.+}/pods/service/{serviceName:.+}/{selector:.+}";
+    public static final String URI_API_PODS_LIST                          = "/namespaces/{namespace:.+}/pods";
+    public static final String URI_API_PODS_DETAIL                        = "/namespaces/{namespace:.+}/pods/{podName:.+}";
+    public static final String URI_API_PODS_LIST_BY_SELECTOR              = "/namespaces/{namespace:.+}/pods/resource/{selector:.+}";
+    public static final String URI_API_PODS_LIST_BY_NODE                  = "/namespaces/{namespace:.+}/pods/node/{nodeName:.+}";
+    public static final String URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE = "/namespaces/{namespace:.+}/pods/service/{serviceName:.+}/{selector:.+}";
 
-    public static final String URI_API_PODS_RESOURCES = "/workloads/namespaces/{namespace:.+}/pods/resource/{selector:.+}";
+    // API URI :: NODES
+    public static final String URI_API_NODES_LIST = "/nodes/{nodeName:.+}";
 
     // API URI :: ROLES
     public static final String URI_API_ROLES_DETAIL = "/roles/namespaces/{namespace:.+}/roles/{rolesName:.+}";
