@@ -228,7 +228,7 @@
             resultArea.append('<tr>' +
                                 '<td>' +
                                     statusIconHtml +
-                                    "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/deployments/" + deployName + "\");'>" + deployName + '</a>' +
+                                    "<a href='javascript:void(0);' data-toggle='tooltip' title='"+deployName+"' onclick='procMovePage(\"/caas/workloads/deployments/" + deployName + "\");'>" + deployName + '</a>' +
                                     statusMessageHtml +
                                 '</td>' +
                                 "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
@@ -301,9 +301,11 @@
             replicaSetAvailableReplicasCnt += itemList.status.availableReplicas;
             var images = new Array;
 
+            var imageTags = "";
             var containers = itemList.spec.template.spec.containers;
             for(var i=0; i < containers.length; i++){
-                images.push(containers[i].image);
+                //images.push(containers[i].image);
+                imageTags += '<p class="custom-content-overflow" data-toggle="tooltip" title="' + containers[i].image + '">' + containers[i].image + '</p>';
             }
 
             //이벤트 관련 추가 START
@@ -331,6 +333,13 @@
             }
             //이벤트 관련 추가 END
 
+            var labelObject ="";
+            if(!labels) {
+                labelObject += "<td>" + nvl(labels, "-") + "</td>";
+            } else {
+                labelObject += '<td  data-toggle=\'tooltip\' title=\'' + JSON.stringify(labels).replace(/["{}]/g, '').replace(/=/g, ':') +'\'>' + createSpans(labels, "LB") + '</td>'
+            }
+
             resultArea.append(
                     "<tr>"
                     + "<td>"+statusIconHtml
@@ -338,10 +347,11 @@
                     + statusMessageHtml
                     + "</td>"
                     + "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
-                    + "<td>" + createSpans(labels, "LB") + "</td>"
+                    + labelObject
                     + "<td>" + pods + "</td>"
                     + "<td>" + creationTimestamp+"</td>"
-                    + "<td>" + images.join("</br>") + "</td>"
+                    + "<td>" + imageTags+ "</td>"
+//                    <!--images.join("</br>")-->
                     + "</tr>");
         });
 
@@ -358,7 +368,8 @@
             $('.headerSortFalse > td').unbind();
         }
 
-        procSetToolTipForTableTd('resultAreaForReplicaSet');
+        //procSetToolTipForTableTd('resultAreaForReplicaSet');
+        $('[data-toggle="tooltip"]').tooltip();
         viewLoading('hide');
 
     };
