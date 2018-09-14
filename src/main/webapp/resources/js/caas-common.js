@@ -434,11 +434,13 @@ var procSetToolTipForTableTd = function (tableObjectString) {
     tableObject.each(function () {
         var tdTags = $(this).find('td');
         var pTags,
-            aTags;
+            aTags,
+            spanTags;
 
         if (tdTags != null) {
             pTags = $(this).find('p');
             aTags = $(this).find('a');
+            spanTags = $(this).find('span');
 
             pTags.each(function () {
                 if (nvl(pTags) !== '') {
@@ -448,6 +450,12 @@ var procSetToolTipForTableTd = function (tableObjectString) {
 
             aTags.each(function () {
                 if (nvl(aTags) !== '') {
+                    procSetToolTipAttributes($(this));
+                }
+            });
+
+            spanTags.each(function () {
+                if (nvl(spanTags) !== '') {
                     procSetToolTipAttributes($(this));
                 }
             });
