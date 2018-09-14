@@ -117,41 +117,8 @@
                 </div>
             </li>
             <!-- Pods 시작 -->
-            <li class="cluster_sixth_box maB50">
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Pods</p>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL" id="podsResultTable">
-                            <colgroup>
-                                <col style='width:auto;'>
-                                <col style='width:15%;'>
-                                <col style='width:15%;'>
-                                <col style='width:8%;'>
-                                <col style='width:8%;'>
-                                <col style='width:20%;'>
-                            </colgroup>
-                            <thead>
-                            <tr id="noPodsResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Pods가 없습니다.</p></td></tr>
-                            <tr id="podsResultHeaderArea" class="headerSortFalse">
-                                <td>Name
-                                    <button class="sort-arrow" onclick="procSetSortList('podsResultTable', this, '0')"><i class="fas fa-caret-down"></i></button>
-                                </td>
-                                <td>Namespace</td>
-                                <td>Node</td>
-                                <td>Status</td>
-                                <td>Restarts</td>
-                                <td>Created on
-                                    <button class="sort-arrow" onclick="procSetSortList('podsResultTable', this, '5')"><i class="fas fa-caret-down"></i></button>
-                                </td>
-                            </tr>
-                            </thead>
-                            <tbody id="podsListTable">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <li class="cluster_third_box">
+                <jsp:include page="../pods/list.jsp" flush="true"/>
             </li>
             <!-- Pods 끝 -->
         </ul>
@@ -279,8 +246,15 @@
         document.getElementById("status").textContent = replicaStatus;
 
         procCallAjax("/api/namespaces/" + NAME_SPACE + "/replicasets/resource/" + replaceLabels(selector), "GET", null, null, callbackGetReplicasetList);
-        procCallAjax("<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>".replace("{namespace:.+}", NAME_SPACE).replace("{selector:.+}", replaceLabels(selector)), "GET", null, null, callbackGetPodsList);
+        getDetailForPodsList(replaceLabels(selector));
+
     }
+
+    // GET DETAIL FOR PODS LIST
+    var getDetailForPodsList = function(selector) {
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>".replace("{namespace:.+}", NAME_SPACE).replace("{selector:.+}", selector);
+        getPodListUsingRequestURL(reqUrl);
+    };
 
 
     var replaceLabels = function (data) {
@@ -381,102 +355,9 @@
             $('.headerSortFalse > td').unbind();
         }
 
+        procSetToolTipForTableTd('replicasetsResultTable');
+
     };
-
-
-    var callbackGetPodsList = function (data) {
-        if (RESULT_STATUS_FAIL === data.resultCode) {
-            $('#podsListTable').html(
-                "ResultStatus :: " + data.resultCode + " <br><br>"
-                + "ResultMessage :: " + data.resultMessage + " <br><br>");
-            return false;
-        }
-
-        console.log("CONSOLE DEBUG PRINT :: ", data);
-
-        var resultArea = $('#podsListTable');
-        var resultHeaderArea = $('#podsResultHeaderArea');
-        var noResultArea = $('#noPodsResultArea');
-        var resultTable = $('#podsResultTable');
-        var listLength = data.items.length;
-        var podNameList = [];
-
-        $.each(data.items, function (index, itemList) {
-            // get data
-            var metadata = itemList.metadata;
-            var spec = itemList.spec;
-            var status = itemList.status;
-
-            var podName = metadata.name;
-            var namespace = NAME_SPACE;
-            var nodeName = spec.nodeName;
-            var nodeLink = "";
-            if(spec.nodeName == null) {
-                nodeLink += "-";
-            }
-
-            if(spec.nodeName != null) {
-                nodeLink += "<a href='javascript:void(0);' data-toggle='tooltip' title='"+nodeName+"' onclick='procMovePage(\"/caas/clusters/nodes/" + nodeName + "/summary\");'>"+
-                                nodeName +
-                            '</a>';
-            }
-
-            var podStatus = status.phase;
-            var restartCount = procIfDataIsNull(status.containerStatuses,
-                function (data) {
-                    return data.reduce(function (a, b) {
-                        return {restartCount: a.restartCount + b.restartCount};
-                    }, {restartCount: 0}).restartCount;
-                }, 0);
-
-            var creationTimestamp = metadata.creationTimestamp;
-
-            addPodsEvent(itemList, metadata.labels);
-
-            var statusIconHtml;
-            var statusMessageHtml = [];
-
-            if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
-                statusIconHtml    = "<span class='red2'><i class='fas fa-exclamation-circle'></i> </span>";
-                $.each(itemList.message , function (index, eventMessage) {
-                    statusMessageHtml += "<p class='red2 custom-content-overflow' data-toggle='tooltip' title='" + eventMessage + "'>" + eventMessage + "</p>";
-                });
-
-            }else{
-                statusIconHtml    = "<span class='green2'><i class='fas fa-check-circle'></i> </span>";
-            }
-
-            resultArea.append('<tr>' +
-                                '<td>' +
-                                    statusIconHtml +
-                                    "<a href='javascript:void(0);' data-toggle='tooltip' title='"+podName +"'+ onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_PODS %>/" + podName + "\");'>" + podName + "</a>" +
-                                    statusMessageHtml +
-                                '</td>' +
-                                "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
-                                "<td>" + nodeLink + '</td>' +
-                                "<td data-toggle='tooltip' title='"+podStatus+"'>" + podStatus + '</td>' +
-                                '<td>' + restartCount + '</td>' +
-                                '<td>' + creationTimestamp + '</td>' +
-                            '</tr>');
-
-        });
-
-        if (listLength < 1) {
-            resultHeaderArea.hide();
-            resultArea.hide();
-            noResultArea.show();
-        } else {
-            noResultArea.hide();
-            resultHeaderArea.show();
-            resultArea.show();
-            resultTable.tablesorter();
-            resultTable.trigger("update");
-            $('.headerSortFalse > td').unbind();
-        }
-
-        procSetEventStatusForPods(podNameList);
-    };
-
 
     //3개 일때는 동작하지 않는드아!
     var createAnnotations = function (annotations) {

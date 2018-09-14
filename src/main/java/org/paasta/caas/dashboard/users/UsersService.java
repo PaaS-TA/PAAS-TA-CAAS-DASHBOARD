@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -167,6 +168,17 @@ public class UsersService {
      * @return the Users
      */
     public Users deleteUserByServiceInstanceId(Users user) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+
+        // Security User 객체
+        User accessUser = (User)session.getAttribute("custom_user_role");
+
+        // 현재 접속되어 있는 사람과 삭제되는 사람이 일치할 경우 세션 지우기.
+        if(accessUser.getUsername().equals(user.getUserId())){
+            SecurityContextHolder.clearContext();
+        }
+
         // Todo.. 나중에 어디서든 삭제하다 에러가 날 시 rollback 을 어떻게 할 지 로직 수정해야 함.
 
         String userName = user.getUserId();
