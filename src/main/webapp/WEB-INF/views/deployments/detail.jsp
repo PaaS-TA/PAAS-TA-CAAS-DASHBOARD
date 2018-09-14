@@ -37,7 +37,7 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td class="labels_wrap" id="labels"></td>
+                                <td id="labels"></td>
                             </tr>
 
                             <tr>
