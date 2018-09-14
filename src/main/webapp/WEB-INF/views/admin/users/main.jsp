@@ -342,11 +342,18 @@
     // CALLBACK USER ROLE
     var callbackUpdateRoleOfUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        //alert("권한이 수정되었습니다.");
-        alertMessage("권한이 수정되었습니다.", true);
-        setTimeout(reload, 2000);
+//        alertMessage("권한이 수정되었습니다.", true);
+//        setTimeout(reload, 2000);
+        var code = "<p class='account_modal_p'>Role 이 변경되었습니다.</p>";
+        $(".roleUpdateComplete").html(code);
+        $("#layerpop-single-button1").modal("show");
     };
 
+
+    // BIND (CLICK ROLE SAVE COMPLETE BUTTON)
+    $(document).on("click", "#okBtnUpdate", function () {
+        location.reload(true);
+    });
 
     // BIND (DELETE USER MODAL)
     $(document).on("click", "span[name=deleteUser]", function () {
@@ -380,11 +387,17 @@
     // CALLBACK DELETE USER
     var callbackDeleteUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        //console.log("result message 는?" + JSON.stringify(data));
-        //alert("사용자가 삭제되었습니다.");
-        alertMessage("사용자가 삭제되었습니다.", true);
-        setTimeout(reload, 2000);
+//        alertMessage("사용자가 삭제되었습니다.", true);
+//        setTimeout(reload, 2000);
+        var code = "<p class='account_modal_p'>사용자가 삭제되었습니다.</p>";
+        $(".deleteUserComplete").html(code);
+        $("#layerpop-single-button2").modal("show");
     };
+
+    // BIND (CLICK USER DELETE COMPLETE BUTTON)
+    $(document).on("click", "#okBtnDelete", function () {
+        location.reload(true);
+    });
 
     // page reload
     var reload = function () {

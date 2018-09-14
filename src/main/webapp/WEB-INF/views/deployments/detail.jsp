@@ -37,7 +37,7 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td class="labels_wrap" id="labels"></td>
+                                <td id="labels"></td>
                             </tr>
 
                             <tr>
@@ -334,7 +334,7 @@
                                         '</a>' +
                                     '</td>' +
                                     "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
-                                    '<td  data-toggle=\'tooltip\' title=\'' + JSON.stringify(labels).replace(/["{}]/g, '').replace(/=/g, ':') +'\'>' + createSpans(labels, "true") + '</td>' +
+                                    '<td>' + createSpans(labels, "true") + '</td>' +
                                     '<td>' + availableReplicas + " / " + replicas + '</td>' +
                                     "<td>" + imageTags + "</td>" +
                                     '<td>' + creationTimestamp + '</td>' +
