@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="green2"><i class="fas fa-file-alt"></i></span> <span id="title"></span></h1>
+    <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <span id="title"></span></h1>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <!-- Events 시작-->
     <div class="cluster_content02 row two_line two_view harf_view custom_display_block">
