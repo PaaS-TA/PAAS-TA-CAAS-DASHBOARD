@@ -174,7 +174,7 @@ public class UsersService {
         // Security User 객체
         User accessUser = (User)session.getAttribute("custom_user_role");
 
-        // 현재 접속되어 있는 사람과 권한 바꾸는 사람이 일치할 경우 세션 지우기.
+        // 현재 접속되어 있는 사람과 삭제되는 사람이 일치할 경우 세션 지우기.
         if(accessUser.getUsername().equals(user.getUserId())){
             SecurityContextHolder.clearContext();
         }
