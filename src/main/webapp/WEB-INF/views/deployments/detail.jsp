@@ -416,7 +416,7 @@
             }
 
             if(spec.nodeName != null) {
-                nodeLink += "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/clusters/nodes/" + nodeName + "/summary\");'>"+
+                nodeLink += "<a href='javascript:void(0);' data-toggle='tooltip' title='"+nodeName+"' onclick='procMovePage(\"/caas/clusters/nodes/" + nodeName + "/summary\");'>"+
                                 nodeName +
                             '</a>';
             }
@@ -453,7 +453,7 @@
                                     statusMessageHtml +
                                 '</td>' +
                                 "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
-                                '<td>' + nodeLink + '</td>' +
+                                "<td>" + nodeLink + '</td>' +
                                 "<td data-toggle='tooltip' title='"+podStatus+"'>" + podStatus + '</td>' +
                                 '<td>' + restartCount + '</td>' +
                                 '<td>' + creationTimestamp + '</td>' +
