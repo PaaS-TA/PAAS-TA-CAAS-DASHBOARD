@@ -165,9 +165,6 @@
         var data = inputData.replace(/=/g, ':').split(/,\s/);
         var spanHtml = "";
 
-        // data-target="#layerpop" data-toggle="modal"
-        // onclick -> layerpop에 데이터 세팅
-
         $.each(data, function (index, item) {
             if (type === "true" && index > 0)
                 spanHtml += '<br>';
