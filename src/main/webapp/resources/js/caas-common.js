@@ -466,6 +466,9 @@ var procSetToolTipForTableTd = function (tableObjectString) {
 
 // PROC SET TOOL TIP ATTRIBUTES
 var procSetToolTipAttributes = function (tagObject) {
-    tagObject.addClass('custom-content-overflow');
-    tagObject.attr('data-toggle', 'tooltip').attr('title', tagObject.html()).attr('style', 'margin: 0;');
+    var tagObjectHtml = tagObject.html();
+    if (!tagObject.hasClass('tableTdToolTipFalse') && tagObjectHtml !== '' && tagObjectHtml !== '-') {
+        tagObject.addClass('custom-content-overflow');
+        tagObject.attr('data-toggle', 'tooltip').attr('title', tagObjectHtml).attr('style', 'margin: 0;');
+    }
 };

@@ -57,7 +57,7 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Internal endpoints</th>
-                                <td id="InternalEndpointsArea"> - </td>
+                                <td id="resultInternalEndpointsArea"> - </td>
                             </tr>
                             </tbody>
                         </table>
@@ -126,23 +126,26 @@
         }
 
         var selector,
+            endpointsPreString,
             specPortsList,
-            specPortsListLength;
+            specPortsListLength,
+            selectorString;
 
         var serviceName = data.metadata.name;
         var namespace = data.metadata.namespace;
-        var namespaceHtml = "<a href='javascript:void(0);'data-toggle='tooltip' title='" + namespace + "' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + namespace + "\");'>" + namespace  + "</a>";
-        var endpointsPreString = serviceName + "." + namespace + ":";
+        var namespaceHtml = "<a href='javascript:void(0);'data-toggle='tooltip' title='" + namespace + "' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + namespace + "\");'>" + namespace + "</a>";
         var nodePort = data.spec.ports.nodePort;
         var endpoints = "";
-        var selectorString;
+        var labelSelectorObject = $('#resultLabelSelector');
 
-        if (nodePort === undefined) {
+        if (nvl(nodePort) === '') {
             nodePort = "0";
         }
 
         specPortsList = data.spec.ports;
         specPortsListLength = specPortsList.length;
+        endpointsPreString = (namespace === 'default') ? serviceName : serviceName + "." + namespace;
+        endpointsPreString += ":";
 
         for (var i = 0; i < specPortsListLength; i++) {
             endpoints += '<p>' + endpointsPreString + specPortsList[i].port + " " + specPortsList[i].protocol + '</p>'
@@ -154,16 +157,17 @@
 
         if (selector === false) {
             selectorString = '-';
+            labelSelectorObject.removeClass('bg_gray');
         }
 
         $('.resultServiceName').html(serviceName);
         $('#resultNamespace').html(namespaceHtml);
         $('#resultCreationTimestamp').html(data.metadata.creationTimestamp);
-        $('#resultLabelSelector').html(selectorString);
+        labelSelectorObject.html(selectorString);
         $('#resultType').html(data.spec.type);
         $('#resultSessionAffinity').html(data.spec.sessionAffinity);
         $('#resultClusterIp').html(data.spec.clusterIP);
-        $('#InternalEndpointsArea').html(endpoints);
+        $('#resultInternalEndpointsArea').html(endpoints);
 
         viewLoading('hide');
 
@@ -195,9 +199,9 @@
             return false;
         }
 
-        var addresses,
+        var endpointsList,
             ports,
-            addressesListLength,
+            endpointsListLength,
             portsListLength,
             nodeName;
 
@@ -206,6 +210,7 @@
         var portsString = '';
         var separatorString = ", ";
         var checkCount = 0;
+        var nodeNameHtml = '-';
         var nodeNameList = [];
         var htmlString = [];
 
@@ -220,17 +225,21 @@
         }
 
         for (var i = 0; i < subsetsListLength; i++) {
-            addresses = items[i].addresses;
+            endpointsList = items[i].addresses;
             ports = items[i].ports;
 
-            if (addresses === null || ports === null ) {
+            if (endpointsList === null) {
+                endpointsList = items[i].notReadyAddresses;
+            }
+
+            if (ports === null) {
                 checkCount++;
             } else {
-                addressesListLength = addresses.length;
+                endpointsListLength = endpointsList.length;
                 portsListLength = ports.length;
 
-                for (var j = 0; j < addressesListLength; j++) {
-                    nodeName = nvl(addresses[j].nodeName, '-');
+                for (var j = 0; j < endpointsListLength; j++) {
+                    nodeName = nvl(endpointsList[j].nodeName, '-');
 
                     for (var k = 0; k < portsListLength; k++) {
                         var portName =  ports[k].name;
@@ -243,21 +252,20 @@
                         portsString += '<p>' + portNameString + separatorString + ports[k].port + separatorString + ports[k].protocol + '</p>';
                     }
 
+                    if (nodeName !== '-') {
+                        nodeNameHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + nodeName + "/summary\");'>" + nodeName + "</a>"
+                        nodeNameList.push(nodeName);
+                    }
+
                     htmlString.push(
                         "<tr>"
-                        + "<td><p>" + addresses[j].ip + "</p></td>"
+                        + "<td><p>" + endpointsList[j].ip + "</p></td>"
                         + "<td>" + portsString + "</td>"
-                        + "<td>"
-                        + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + nodeName + "/summary\");'>" + nodeName + "</a>"
-                        + "</td>"
-                        + "<td><p class='" + nodeName + "'>true</p></td>"
+                        + "<td>" + nodeNameHtml + "</td>"
+                        + "<td><p class='tableTdToolTipFalse " + nodeName + "'>true</p></td>"
                         + "</tr>");
 
                     portsString = '';
-
-                    if (nodeName !== '-') {
-                        nodeNameList.push(nodeName)
-                    }
                 }
             }
         }

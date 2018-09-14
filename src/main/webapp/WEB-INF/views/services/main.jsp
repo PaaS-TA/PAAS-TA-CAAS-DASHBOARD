@@ -95,6 +95,7 @@
 
         var serviceName,
             selector,
+            namespace,
             endpointsPreString,
             nodePort,
             specType,
@@ -122,10 +123,12 @@
 
             if ((nvl(searchKeyword) === "") || serviceName.indexOf(searchKeyword) > -1) {
                 selector = procSetSelector(items[i].spec.selector);
-                endpointsPreString = serviceName + "." + items[i].metadata.namespace + ":";
+                namespace = items[i].metadata.namespace;
+                endpointsPreString = (namespace === 'default') ? serviceName : serviceName + "." + namespace;
+                endpointsPreString += ":";
                 nodePort = items[i].spec.ports.nodePort;
 
-                if (nodePort === undefined) {
+                if (nvl(nodePort) === '') {
                     nodePort = "0";
                 }
 
@@ -151,8 +154,8 @@
                     + "<td><p>" + specType + "</p></td>"
                     + "<td><p>" + clusterIp + "</p></td>"
                     + "<td>" + endpoints + "</td>"
-                    + "<td><p id='" + serviceName + "'>0 / 0</p></td>"
-                    + "<td><p>" + items[i].metadata.creationTimestamp + "<p></td>"
+                    + "<td><p id='" + serviceName + "' class='tableTdToolTipFalse'>0 / 0</p></td>"
+                    + "<td>" + items[i].metadata.creationTimestamp + "</td>"
                     + "</tr>");
 
                 if (selector !== 'false') {
