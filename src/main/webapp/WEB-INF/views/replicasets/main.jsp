@@ -98,12 +98,19 @@
             var creationTimestamp = itemList.metadata.creationTimestamp;
             var pods = itemList.status.availableReplicas +" / "+ itemList.spec.replicas;  // current / desired
             //var selector = procSetSelector(items[i].spec.selector);
-            var images = new Array;
+            //var images = new Array;
 
+            var imageTags = "";
             var containers = itemList.spec.template.spec.containers;
             for(var i=0; i < containers.length; i++){
-                images.push(containers[i].image);
+                //images.push(containers[i].image);
+                imageTags += '<p class="custom-content-overflow" data-toggle="tooltip" title="' + containers[i].image + '">' + containers[i].image + '</p>';
             }
+
+//            var containers = itemList.spec.template.spec.containers;
+//            for(var i=0; i < containers.length; i++){
+//                images.push(containers[i].image);
+//            }
 
             //이벤트 관련 추가 START
             addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
@@ -129,10 +136,11 @@
                     + statusMessageHtml
                     + "</td>"
                     + "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
+                    //+ labelObject
                     + "<td>" + createSpans(labels, "LB") + "</td>"
                     + "<td>" + pods + "</td>"
                     + "<td>" + creationTimestamp+"</td>"
-                    + "<td>" + images.join("</br>") + "</td>"
+                    + "<td>" + imageTags + "</td>"
                     + "</tr>");
         });
 

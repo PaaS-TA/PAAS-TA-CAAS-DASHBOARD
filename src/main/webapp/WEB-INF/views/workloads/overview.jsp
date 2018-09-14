@@ -333,13 +333,6 @@
             }
             //이벤트 관련 추가 END
 
-            var labelObject ="";
-            if(!labels) {
-                labelObject += "<td>" + nvl(labels, "-") + "</td>";
-            } else {
-                labelObject += '<td  data-toggle=\'tooltip\' title=\'' + JSON.stringify(labels).replace(/["{}]/g, '').replace(/=/g, ':') +'\'>' + createSpans(labels, "LB") + '</td>'
-            }
-
             resultArea.append(
                     "<tr>"
                     + "<td>"+statusIconHtml
@@ -347,7 +340,7 @@
                     + statusMessageHtml
                     + "</td>"
                     + "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
-                    + labelObject
+                    + "<td>" + createSpans(labels, "LB") + "</td>"
                     + "<td>" + pods + "</td>"
                     + "<td>" + creationTimestamp+"</td>"
                     + "<td>" + imageTags+ "</td>"
