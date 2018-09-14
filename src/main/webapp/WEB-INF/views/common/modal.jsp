@@ -45,7 +45,7 @@
                     <!-- 닫기(x) 버튼 -->
                     <button type="button" class="close" data-dismiss="modal">×</button>
                     <!-- header title -->
-                    <h4 class="modal-title">Member 삭제</h4>
+                    <h4 class="modal-title">사용자 삭제</h4>
                 </div>
                 <!-- body -->
                 <div class="modal-body deleteUser">
@@ -64,25 +64,51 @@
 </div>
 
 <%--FOR USERS--%>
-<div class="modal fade in" id="layerpop-single-button">
+<div class="modal fade in" id="layerpop-single-button1">
     <div class="vertical-alignment-helper">
         <div class="modal-dialog vertical-align-center">
             <div class="modal-content">
                 <!-- header -->
                 <div class="modal-header">
                     <!-- 닫기(x) 버튼 -->
-                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <button type="button" class="close" data-dismiss="modal"></button>
                     <!-- header title -->
                     <h4 class="modal-title">Role 변경 완료</h4>
                 </div>
                 <!-- body -->
-                <div class="modal-body roleUpdate">
+                <div class="modal-body roleUpdateComplete">
                     <%-- <p class="account_modal_p"><span>hong@test.com</span> 님을 <span>Administrator</span>로 Role을 변경하시겠습니까?
                      </p>--%>
                 </div>
                 <!-- Footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btns2 colors4" data-dismiss="modal" id="okBtn">확인</button>
+                    <button type="button" class="btns2 colors4" data-dismiss="modal" id="okBtnUpdate">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--FOR USERS--%>
+<div class="modal fade in" id="layerpop-single-button2">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <!-- header -->
+                <div class="modal-header">
+                    <!-- 닫기(x) 버튼 -->
+                    <button type="button" class="close" data-dismiss="modal"></button>
+                    <!-- header title -->
+                    <h4 class="modal-title">사용자 삭제 완료</h4>
+                </div>
+                <!-- body -->
+                <div class="modal-body deleteUserComplete">
+                    <%-- <p class="account_modal_p"><span>hong@test.com</span> 님을 <span>Administrator</span>로 Role을 변경하시겠습니까?
+                     </p>--%>
+                </div>
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btns2 colors4" data-dismiss="modal" id="okBtnDelete">확인</button>
                 </div>
             </div>
         </div>
@@ -98,7 +124,7 @@
                 <!-- header -->
                 <div class="modal-header">
                     <!-- 닫기(x) 버튼 -->
-                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <button type="button" class="close" data-dismiss="modal"></button>
                     <!-- header title -->
                     <h4 class="modal-title">kubectl.kubernetes.io/last-applied-configuration</h4>
                 </div>
