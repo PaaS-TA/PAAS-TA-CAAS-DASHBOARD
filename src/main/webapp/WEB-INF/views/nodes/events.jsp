@@ -23,7 +23,7 @@
                         <p>Events</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table id="events_table_in_node" class="table_event condition alignL">
+                        <table id="events_table_in_node" class="table_event condition alignL service-lh">
                             <colgroup>
                                 <col style=".">
                                 <col style=".">
@@ -33,7 +33,7 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr id="nodeEventsnotFound" style="display:none;"><td colspan="6" style="text-align:center;">Node의 Event가 없습니다.</td></tr>
+                            <tr id="nodeEventsnotFound" style="display:none;"><td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td></tr>
                             <tr id="nodeEventsTableHeader">
                                 <td>Message</td>
                                 <td>Source</td>
@@ -43,9 +43,8 @@
                                 <td>Last seen</td>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="nodeEventsResultArea">
                             </tbody>
-                            <!--tfoot></tfoot-->
                         </table>
                     </div>
                 </div>
@@ -55,92 +54,96 @@
 </div>
 
 <script type="text/javascript">
-    var callbackGetNodeEvent = function (data) {
-        viewLoading('show');
-
-        var nodeEventsNotFound = $('#nodeEventsnotFound');
-        var nodeEventsTableHeader = $('#nodeEventsTableHeader');
-        if (false === procCheckValidData(data)) {
-            viewLoading('hide');
-            alertMessage("Node의 Event 목록을 가져오지 못했습니다.", false);
-            nodeEventsNotFound.children().html("Node의 Event 목록을 가져오지 못했습니다.");
-            nodeEventsNotFound.show();
-            nodeEventsTableHeader.hide();
-            return;
-        }
-
-        var filterItems = data.items.filter(function(item, index) {
-           return item["involvedObject"] != null && item["involvedObject"]["kind"] == "Node";
-        });
-
-        // pre-sort : last seen (last timestamp)
-        filterItems.sort(function(itemA, itemB) {
-            var _compareA = itemA.lastTimestamp;
-            var _compareB = itemB.lastTimestamp;
-            var _ascending = false;
-            var _reverseNumber = (_ascending)? 1 : -1;
-            if (_compareA === _compareB)
+    // PARSE EVENT FROM DATA
+    var getEventList = function(items) {
+        return items.map(function(data) {
+            var tmpSource = data.source.component + (nvl(data.source.host)? ' ' + nvl(data.source.host) : '');
+            var tmpSubObject = nvl(data.involvedObject.fieldPath, '-');
+            return {
+                message: data.message,
+                source: tmpSource,
+                subObject: tmpSubObject,
+                count: data.count,
+                firstSeen: data.firstTimestamp,
+                lastSeen: data.lastTimestamp
+            };
+        }).sort(function(eventA, eventB) {
+            // sort : first seen
+            var firstA = eventA.firstSeen;
+            var firstB = eventB.firstSeen;
+            var _ascending = true;
+            var _reverseNumber = (_ascending) ? 1 : -1;
+            if (firstA === firstB)
                 return 0;
             else {
-                if (_compareA == null)
+                if (firstA == null)
                     return -1 * _reverseNumber;
-                else if (_compareB == null)
+                else if (firstB == null)
                     return _reverseNumber;
-                else if (_compareA > _compareB)
+                else if (firstA > firstB)
                     return _reverseNumber;
                 else
                     return -1 * _reverseNumber;
             }
         });
+    };
 
-        var contents = [];
-        $.each(filterItems, function (index, eventItem) {
-            // message, source, sub-object, count, first-seen, last-seen
-            // message is including error message
-            var _event = getEvent(eventItem);
-            var messageHtml = $('<span data-toggle="tooltip"></span>').attr('title', _event.message).html(_event.message)[0].outerHTML;
-            if (0 === _event.message.indexOf("Error")) {
-                messageHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span> ' + $(messageHtml).addClass("red2")[0].outerHTML;
-            }
+    var callbackGetNodeEvent = function (data) {
+        viewLoading('show');
 
-            var eventRowHtml = '<tr>'
-                + '<td>' + messageHtml + '</td>'
-                + '<td data-toggle="tooltip" title="' + _event.source + '">' + _event.source + '</td>'
-                + '<td data-toggle="tooltip" title="' + _event.subObject + '">' + _event.subObject + '</td>'
-                + '<td>' + _event.count + '</td>'
-                + '<td>' + _event.firstSeen + '</td>'
-                + '<td>' + _event.lastSeen + '</td>'
-                + '</tr>';
-            contents.push(eventRowHtml);
-        });
-
-        if (contents.length > 0) {
-            // write event list into tbody
-            $('#events_table_in_node > tbody').html(contents);
-        } else {
+        var nodeEventsNotFound = $('#nodeEventsnotFound');
+        var nodeEventsTableHeader = $('#nodeEventsTableHeader');
+        var nodeEventsResultArea = $('#nodeEventsResultArea');
+        if (false === procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage("Node의 Event 목록을 가져오지 못했습니다.", false);
             nodeEventsNotFound.show();
             nodeEventsTableHeader.hide();
+            nodeEventsResultArea.hide();
+            return;
         }
+
+        var eventList = getEventList(data.items);
+        var listLength = eventList.length;
+
+        $.each(eventList, function (index, event) {
+            var messageHtml;
+            if (0 === event.message.indexOf("Error")) {
+                messageHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span> <span class="red2" data-toggle="tooltip">';
+            } else {
+                messageHtml = '<span data-toggle="tooltip">';
+            }
+            messageHtml = $(messageHtml + event.message + '</span>').attr('title', event.message)[0].outerHTML;
+            nodeEventsResultArea.append("<tr>"
+                + "<td>" + messageHtml + "</td>"
+                + "<td><p>" + event.source + "</p></td>"
+                + "<td><p>" + event.subObject + "</p></td>"
+                + "<td>" + event.count + "</td>"
+                + "<td>" + event.firstSeen + "</td>"
+                + "<td>" + event.lastSeen + "</td>"
+                + "</tr>");
+        });
+
+        if (listLength < 1) {
+            nodeEventsNotFound.show();
+            nodeEventsTableHeader.hide();
+            nodeEventsResultArea.hide();
+        } else {
+            nodeEventsNotFound.hide();
+            nodeEventsTableHeader.show();
+            nodeEventsResultArea.show();
+        }
+
+        // TOOL TIP
+        procSetToolTipForTableTd('resultArea');
+        $('[data-toggle="tooltip"]').tooltip();
 
         viewLoading('hide');
     };
 
-    var getEvent = function(data) {
-        // message, source, sub-object, count, first-seen, last-seen
-        // message is including error message
-        return {
-            message: data.message,
-            source: (data.source.host + ": " + data.source.component),
-            subObject: (data.involvedObject != null)? (data.involvedObject.kind + ": " + data.involvedObject.name) : "-",
-            count: data.count,
-            firstSeen: data.firstTimestamp,
-            lastSeen: data.lastTimestamp
-        };
-    };
-
     var getEventsListByNode = function(namespace, nodeName) {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST_BY_NODE %>"
-            .replace("{namespace:.+}", namespace).replace("{nodeName:.+}", nodeName);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
+            .replace("{namespace:.+}", namespace).replace("{resourceName:.+}", nodeName);
 
         procCallAjax(reqUrl, "GET", null, null, callbackGetNodeEvent);
     };
