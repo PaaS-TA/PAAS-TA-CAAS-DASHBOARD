@@ -69,9 +69,13 @@
                             <c:when test="${pathArray[1] eq 'services'}" >
                                 <%-- service는 탭메뉴 없음. 1 depth만 표시 --%>
                             </c:when>
-                            <c:when test="${ (pathArray[2] eq 'namespaces') || (pathArray[2] eq 'nodes')}" >
-                                <%-- namespaces, nodes main : Detail --%>
+                            <c:when test="${pathArray[2] eq 'namespaces'}" >
+                                <%-- namespaces main : Detail --%>
                                 <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}/${pathArray[3]}');"> ${cfn:camelCaseParser(path)}</a></li>
+                            </c:when>
+                            <c:when test="${pathArray[2] eq 'nodes'}" >
+                                <%-- nodes main : summary --%>
+                                <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}/${pathArray[3]}/summary');"> ${cfn:camelCaseParser(path)}</a></li>
                             </c:when>
                             <c:otherwise>
                                 <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${cfn:camelCaseParser(path)}</a></li>

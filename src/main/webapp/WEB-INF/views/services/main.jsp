@@ -97,6 +97,8 @@
             selector,
             endpointsPreString,
             nodePort,
+            specType,
+            clusterIp,
             specPortsList,
             specPortsListLength,
             endpointWithSpecPort,
@@ -127,6 +129,8 @@
                     nodePort = "0";
                 }
 
+                specType = items[i].spec.type;
+                clusterIp = items[i].spec.clusterIP;
                 specPortsList = items[i].spec.ports;
                 specPortsListLength = specPortsList.length;
 
@@ -135,21 +139,21 @@
                     endpointWithSpecPort = endpointsPreString + specPortsList[j].port + " " + endpointProtocol;
                     endpointWithNodePort = endpointsPreString + nodePort + " " + endpointProtocol;
 
-                    endpoints += '<p class="custom-content-overflow" data-toggle="tooltip" title="' + endpointWithSpecPort + '">' + endpointWithSpecPort + '</p>'
-                            + '<p class="custom-content-overflow" data-toggle="tooltip" title="' + endpointWithNodePort + '">' + endpointWithNodePort + '</p>';
+                    endpoints += '<p>' + endpointWithSpecPort + '</p>'
+                        + '<p>' + endpointWithNodePort + '</p>';
                 }
 
                 htmlString.push(
                     "<tr>"
-                        + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                        + "<a href='javascript:void(0); 'data-toggle='tooltip' title='" + serviceName + "' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/" + serviceName + "\");'>" + serviceName + "</a>"
-                        + "</td>"
-                        + "<td>" + items[i].spec.type + "</td>"
-                        + "<td>" + items[i].spec.clusterIP + "</td>"
-                        + "<td>" + endpoints + "</td>"
-                        + "<td>" + "<span id='" + serviceName + "'>0 / 0</span></td>"
-                        + "<td>" + items[i].metadata.creationTimestamp + "</td>"
-                        + "</tr>");
+                    + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
+                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/" + serviceName + "\");'>" + serviceName + "</a>"
+                    + "</td>"
+                    + "<td><p>" + specType + "</p></td>"
+                    + "<td><p>" + clusterIp + "</p></td>"
+                    + "<td>" + endpoints + "</td>"
+                    + "<td><p id='" + serviceName + "'>0 / 0</p></td>"
+                    + "<td><p>" + items[i].metadata.creationTimestamp + "<p></td>"
+                    + "</tr>");
 
                 if (selector !== 'false') {
                     selectorList.push(selector + "," + serviceName);
@@ -174,6 +178,7 @@
             $('.headerSortFalse > td').unbind();
         }
 
+        procSetToolTipForTableTd('resultArea');
         viewLoading('hide');
         getDetailForPods(selectorList);
     };
@@ -220,6 +225,7 @@
 
         $('#' + data.serviceName).html(runningSum + " / " + totalSum);
 
+        procSetToolTipForTableTd('resultArea');
         viewLoading('hide');
     };
 
