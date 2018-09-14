@@ -35,11 +35,11 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td id="node_labels"></td>
+                                <td id="node_labels" class="labels_wrap"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Annotations</th>
-                                <td id="node_annotations"></td>
+                                <td id="node_annotations" class="labels_wrap"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Creation Time</th>
@@ -47,7 +47,7 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Addresses</th>
-                                <td id="node_addresses"></td>
+                                <td id="node_addresses" class="labels_wrap"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Pod CIDR</th>
@@ -243,10 +243,10 @@
         var architecture = nodeInfo.architecture;
 
         $('#node_name').html(name);
-        $('#node_labels').html(createSpans(labels, "true"));
-        $('#node_annotations').html(createSpans(annotations, "true"));
+        $('#node_labels').html(createSpans(labels, "false"));
+        $('#node_annotations').html(createSpans(annotations, "false"));
         $('#node_created_at').html(createdAt);
-        $('#node_addresses').html(createSpans(addresses, "true"));
+        $('#node_addresses').html(createSpans(addresses, "false"));
         $('#node_pod_cidr').html(podCIDR);
         $('#node_unschedulable').html(unschedulable.toString());
 

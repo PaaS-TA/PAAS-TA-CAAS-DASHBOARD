@@ -33,7 +33,7 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td id="labels"></td>
+                                <td id="labels" class="labels_wrap"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Creation Time</th>
@@ -286,7 +286,7 @@
         // var selector = stringifyJSON(data.spec.selector).replace(/matchLabels=/g, '');
 
         document.getElementById("name").textContent = data.metadata.name;
-        document.getElementById("labels").innerHTML = createSpans(labels, "true");
+        document.getElementById("labels").innerHTML = createSpans(labels, "false");
         document.getElementById("creationTime").textContent = data.metadata.creationTimestamp;
         document.getElementById("status").innerHTML = data.status.phase;
         document.getElementById("qosClass").textContent = data.status.qosClass; //qosClass
