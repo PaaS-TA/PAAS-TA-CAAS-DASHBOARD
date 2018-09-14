@@ -342,11 +342,10 @@
     // CALLBACK USER ROLE
     var callbackUpdateRoleOfUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        alert("권한이 수정되었습니다.");
-        location.reload(true);
+        //alert("권한이 수정되었습니다.");
+        alertMessage("권한이 수정되었습니다.", true);
+        setTimeout(reload, 2000);
     };
-
-
 
 
     // BIND (DELETE USER MODAL)
@@ -382,7 +381,13 @@
     var callbackDeleteUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
         //console.log("result message 는?" + JSON.stringify(data));
-        alert("사용자가 삭제되었습니다.");
+        //alert("사용자가 삭제되었습니다.");
+        alertMessage("사용자가 삭제되었습니다.", true);
+        setTimeout(reload, 2000);
+    };
+
+    // page reload
+    var reload = function () {
         location.reload(true);
     };
 
