@@ -161,7 +161,7 @@
             if(!labels) {
                 labelObject += "<td>" + nvl(labels, "-") + "</td>";
             } else {
-                labelObject += '<td  data-toggle=\'tooltip\' title=\'' + JSON.stringify(labels).replace(/["{}]/g, '').replace(/=/g, ':') +'\'>' + createSpans(labels, "true") + '</td>'
+                labelObject += '<td>' + createSpans(labels, "true") + '</td>'
             }
 
             resultArea.append('<tr>' +
@@ -190,6 +190,8 @@
             resultTable.trigger("update");
             $('.headerSortFalse > td').unbind();
         }
+
+        procSetToolTipForTableTd('resultTable');
 
 
     };
