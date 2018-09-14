@@ -453,7 +453,7 @@
                                     statusMessageHtml +
                                 '</td>' +
                                 "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
-                                '<td>' + nodeLink + '</td>' +
+                                "<td data-toggle='tooltip' title='"+nodeLink+"'>" + nodeLink + '</td>' +
                                 "<td data-toggle='tooltip' title='"+podStatus+"'>" + podStatus + '</td>' +
                                 '<td>' + restartCount + '</td>' +
                                 '<td>' + creationTimestamp + '</td>' +
