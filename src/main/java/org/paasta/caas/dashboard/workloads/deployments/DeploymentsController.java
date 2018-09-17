@@ -33,7 +33,7 @@ public class DeploymentsController {
 
     /**
      * Deployments 메인페이지 (리스트 페이지) 로 이동한다.
-     *
+     * @param httpServletRequest the http servlet request
      * @return ModelAndView(Spring 클래스)
      */
     // TODO :: MODIFY
@@ -44,7 +44,8 @@ public class DeploymentsController {
 
     /**
      * Deployments detail 페이지로 이동한다.
-     *
+     * @param httpServletRequest the http servlet request
+     * @param deploymentsName deployments name
      * @return ModelAndView(Spring 클래스)
      */
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}")
@@ -54,7 +55,8 @@ public class DeploymentsController {
 
     /**
      * Deployments detail events 페이지로 이동한다.
-     *
+     * @param httpServletRequest the http servlet request
+     * @param deploymentsName deployments name
      * @return ModelAndView(Spring 클래스)
      */
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/events")
@@ -64,7 +66,8 @@ public class DeploymentsController {
 
     /**
      * Deployments detail yaml 페이지로 이동한다.
-     *
+     * @param httpServletRequest the http servlet request
+     * @param deploymentsName deployments name
      * @return ModelAndView(Spring 클래스)
      */
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/yaml")
@@ -76,7 +79,7 @@ public class DeploymentsController {
      * 지정한 네임스페이스에 있는 deployment의 목록을 서비스를 통해 호출하여 받은 결과값을 반환한다.
      *
      * @param namespace namespace
-     * @return List of deployment (specific namespace)
+     * @return List of deployments (specific namespace)
      */
     @GetMapping( "/namespaces/{namespace:.+}/deployments" )
     public DeploymentsList getDeploymentsList(@PathVariable String namespace) {
@@ -87,7 +90,7 @@ public class DeploymentsController {
      * 지정한 네임스페이스에 있는 특정한 deployment의 상세 내역을 서비스를 통해 호출하여 받은 결과값을 반환한다.
      *
      * @param namespace request namespace
-     * @param params request parameters
+     * @param deploymentName request deploymentName
      * @return Deployments's detail content (specific namespace and deployment)
      */
     @GetMapping( "/namespaces/{namespace}/deployments/{deploymentName:.+}")
@@ -100,7 +103,7 @@ public class DeploymentsController {
      *
      * @param namespace the namespace
      * @param selector  the selector for filter
-     * @return the custom services list
+     * @return List of deployments
      */
     @GetMapping(value = "/api/namespaces/{namespace}/deployments/resource/{selector}")
     @ResponseBody
