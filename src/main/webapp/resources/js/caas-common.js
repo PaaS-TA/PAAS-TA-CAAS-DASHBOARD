@@ -183,56 +183,32 @@ var procIfDataIsNull = function (data, procCallback, defaultValue) {
 };
 
 var procConvertByte = function(capacity) {
-    var _multipleSize;
+    var multipleSize;
     if (capacity.match("Ki").index !== -1) {
-        _multipleSize = 1024;
+        multipleSize = 1024;
     } else if (capacity.match("Mi").index !== -1) {
-        _multipleSize = 1024 * 1024;
+        multipleSize = 1024 * 1024;
     } else if (capacity.match("Gi").index !== -1) {
-        _multipleSize = 1024 * 1024 * 1024;
+        multipleSize = 1024 * 1024 * 1024;
     } else {
-        _multipleSize = 1;
+        multipleSize = 1;
     }
 
-    return capacity.substring(0, capacity.length - 2) * _multipleSize;
+    return capacity.substring(0, capacity.length - 2) * multipleSize;
 };
 
 var procFormatCapacity = function(capacity, unit) {
-    var _unitSize;
+    var unitSize;
     if (null == unit || "" === unit)
-        _unitSize = 1;
+        unitSize = 1;
     else {
-        if (unit === "Ki")    _unitSize = 1024
-        if (unit === "Mi")    _unitSize = Math.pow(1024, 2);
-        if (unit === "Gi")    _unitSize = Math.pow(1024, 3);
+        if (unit === "Ki")    unitSize = 1024
+        if (unit === "Mi")    unitSize = Math.pow(1024, 2);
+        if (unit === "Gi")    unitSize = Math.pow(1024, 3);
     }
 
-    return ((capacity / _unitSize).toFixed(2) + ' ' + unit);
+    return ((capacity / unitSize).toFixed(2) + ' ' + unit);
 };
-
-var procGetURLInfo = function () {
-    // ex) slices = [ "workloads", "pods", "<pod-name>", "events"]
-    // ex) slices = [ "clusters", "nodes", "<node-name>", "summary"]
-    var _urlSplits = window.location.href.replace(/\?.*/, '').split('/');
-    var _slices = _urlSplits.splice(_urlSplits.indexOf("caas") + 1, _urlSplits.length - _urlSplits.indexOf("caas"));
-
-    var _valueFrame = {
-        category: _slices[0],
-        page: _slices[1]
-    };
-
-    // resource is resource name (ex: node name, pod name, deployment name, et al.)
-    if (_slices.length > 2)
-        _valueFrame['resource'] = _slices[2];
-
-    if (_slices.length > 3)
-        _valueFrame['tab'] = _slices[3];
-    else
-        _valueFrame['tab'] = '_default';
-
-    return _valueFrame;
-};
-
 
 var stringifyJSON = function (obj) {
     return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
@@ -339,7 +315,7 @@ var callbackSetEventStatusForPods = function(data) {
     var items = data.items;
     var listLength = items.length;
     var itemStatusIconHtml = "<span class='green2'><i class='fas fa-check-circle'></i></span>";
-    var itemNameLinkHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"" + URI_WORKLOADS_PODS + "/" + podName + "\");' data-toggle='tooltip' title='" + podName + "'> " + podName + "</a>" ;
+    var itemNameLinkHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"" + URI_WORKLOADS_PODS + "/" + podName + "\");'>" + podName + "</a>" ;
     var itemMessageHtml;
     var itemMessageList = [];
 
@@ -348,7 +324,7 @@ var callbackSetEventStatusForPods = function(data) {
         if (items[i].type === 'Warning') {
             itemStatusIconHtml = "<span class='failed2'><i class='fas fas fa-exclamation-circle'></i></span> ";
             itemMessageList.push(
-                $('<p class="failed2 custom-content-overflow" data-toggle="tooltip">' + items[i].message + '</p>').attr('title', items[i].message)[0].outerHTML
+                $('<p class="failed2 custom-content-overflow" data-toggle="tooltip">' + items[i].message + '</p>').attr('title', items[i].message).wrapAll("<div/>").parent().html()
             );
             warningCount++;
         }
@@ -356,7 +332,7 @@ var callbackSetEventStatusForPods = function(data) {
 
     if (warningCount > 0) {
         itemMessageHtml = itemMessageList.join("");
-        $('#' + podName).html(itemStatusIconHtml + itemNameLinkHtml + itemMessageHtml);
+        $('#' + podName).html(itemStatusIconHtml + ' ' + itemNameLinkHtml + itemMessageHtml);
     }
 
     viewLoading('hide');

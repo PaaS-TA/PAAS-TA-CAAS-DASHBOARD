@@ -11,7 +11,7 @@
 <div class="content">
     <jsp:include page="commonPods.jsp"/>
 
-    <%-- NODES HEADER INCLUDE --%>
+    <%-- TAB INCLUDE --%>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
 
     <!-- Services YAML 시작-->
@@ -60,7 +60,7 @@
 
 <script type="text/javascript">
     // ON LOAD
-    $(document.body).ready(function () {
+    $(document.body).ready(function() {
         viewLoading('show');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_DETAIL %>"
@@ -70,7 +70,7 @@
         viewLoading('hide');
     });
 
-    var callbackGetPods = function (data) {
+    var callbackGetPods = function(data) {
         viewLoading('show');
 
         if (false === procCheckValidData(data)) {
@@ -80,7 +80,7 @@
             $('#resultYamlArea').hide();
             return;
         } else {
-            var yaml = nvl(data.sourceTypeYaml, '')
+            var yaml = nvl(data.sourceTypeYaml, '');
             if ('' === yaml) {
                 $('#noResultYamlArea').show();
                 $('#resultYamlArea').hide();

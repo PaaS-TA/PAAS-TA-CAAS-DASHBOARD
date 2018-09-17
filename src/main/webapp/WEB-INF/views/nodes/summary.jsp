@@ -13,7 +13,7 @@
 <div class="content">
     <jsp:include page="commonNodes.jsp"/>
 
-    <%-- NODES HEADER INCLUDE --%>
+    <%-- TAB INCLUDE --%>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
 
     <div class="cluster_content01 row two_line two_view harf_view">
@@ -27,7 +27,7 @@
                         <p>Conditions</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table id="conditions_in_node" class="table_event condition alignL">
+                        <table class="table_event condition alignL">
                             <colgroup>
                                 <col style=".">
                                 <col style=".">
@@ -47,7 +47,7 @@
                                 <td>Message</td>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="conditionResultArea">
                             </tbody>
                             <!--tfoot></tfoot-->
                         </table>
@@ -57,12 +57,11 @@
         </ul>
     </div>
 </div>
-
 <script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>
-
 <script type="text/javascript">
-    var callbackGetNodeSummary = function (data) {
+    // CALLBACK GET NODE SUMMARY
+    var callbackGetNodeSummary = function(data) {
         viewLoading('show');
 
         // check data validation
@@ -85,9 +84,9 @@
 
         var nodeName = data.metadata.name;
         var conditions = data.status.conditions;
-        $.each(conditions, function (index, condition) {
-            condition.lastHeartbeatTime = condition.lastHeartbeatTime.replace(/T/g, " ").replace(/Z.+/g, "");
-            condition.lastTransitionTime = condition.lastTransitionTime.replace(/T/g, " ").replace(/Z.+/g, "");
+        $.each(conditions, function(index, condition) {
+            condition.lastHeartbeatTime = condition.lastHeartbeatTime.replace(/T/g, " ").replace(/Z$/g, "");
+            condition.lastTransitionTime = condition.lastTransitionTime.replace(/T/g, " ").replace(/Z$/g, "");
         });
 
         // get pods, conditions
@@ -97,30 +96,34 @@
 
         // set conditions
         var contents = [];
-        $.each(conditions, function (index, condition) {
+        $.each(conditions, function(index, condition) {
             contents.push('<tr>'
-                + '<td class="custom-content-overflow" data-toggle="tooltip" title="' + condition.type + '">' + condition.type + '</td>'
+                + '<td><p>' + condition.type + '</p></td>'
                 + '<td>' + condition.status + '</td>'
                 + '<td>' + condition.lastHeartbeatTime + '</td>'
                 + '<td>' + condition.lastTransitionTime + '</td>'
-                + '<td class="custom-content-overflow" data-toggle="tooltip" title="' + condition.reason + '">' + condition.reason + '</td>'
-                + '<td class="custom-content-overflow" data-toggle="tooltip" title="' + condition.message + '">' + condition.message + '</td></tr>');
+                + '<td><p>' + condition.reason + '</p></td>'
+                + '<td><p>' + condition.message + '</p></td></tr>');
         });
 
         if (contents.length > 0) {
             // append conditions tbody
-            $('#conditions_in_node > tbody').html(contents);
+            $('#conditionResultArea').html(contents);
         } else {
             conditionsNotFound.children().html("Node의 Condition 목록을 가져오지 못했습니다.");
             conditionsNotFound.show();
             conditionsTableHeader.hide();
         }
 
+        // TOOL TIP
+        procSetToolTipForTableTd('conditionResultArea');
+        $('[data-toggle="tooltip"]').tooltip();
+
         viewLoading('hide');
     };
 
     // ON LOAD
-    $(document.body).ready(function () {
+    $(document.body).ready(function() {
         viewLoading('show');
         getNode(G_NODE_NAME, callbackGetNodeSummary);
         viewLoading('hide');

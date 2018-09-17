@@ -14,12 +14,14 @@
 <script type="text/javascript">
     var G_NODE_NAME = '<c:out value="${nodeName}"/>';
 
-    var getNode = function (nodeName, callbackFunc) {
+    // GET NODE
+    var getNode = function(nodeName, callbackFunc) {
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_NODES_LIST %>".replace("{nodeName:.+}", nodeName);
         procCallAjax(reqUrl, "GET", null, null, callbackFunc);
     };
 
-    $(document.body).ready(function () {
+    // ON LOAD
+    $(document.body).ready(function() {
         viewLoading('show');
         if ("" === nvl(G_NODE_NAME)) {
             alertMessage("노드 이름을 찾을 수 없습니다.", false);
