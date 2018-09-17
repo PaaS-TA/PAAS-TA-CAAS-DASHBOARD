@@ -184,21 +184,25 @@
             if (type === "true" && index > 0)
                 spanHtml += '<br>';
 
-            if (item.length > 40) {
-                var _kv = item.split(': ');
-                if (_kv.length > 1) {
-                    var _title = _kv[0];
-                    var _content = _kv.reduce(function (prev, cur, idx) {
-                        if (idx <= 1) return cur; else return prev + ':' + cur
-                    });
-                    var template = '<span class="bg_blue" data-target="#layerpop3" data-toggle="modal" onclick="setLayerpop(this)">';
-                    spanHtml += ( $(template).html('<a>' + _title + '</a>').attr('data-title', _title).attr('data-content', _content)[0].outerHTML + ' ' );
-                } else {
-                    spanHtml += '<span class="bg_gray">' + item.replace(': ', ':') + '</span> ';
-                }
-            } else {
-                spanHtml += '<span class="bg_gray">' + item.replace(': ', ':') + '</span> ';
+            var htmlString = null;
+            var separatorIndex = item.indexOf(": ");
+            if (separatorIndex > 0) {
+                var _title = item.substring(0, separatorIndex);
+                var _content = item.substring(separatorIndex + 2);
+                try {
+                    var test = JSON.parse(_content);    // JSON object test only
+                    if (test instanceof Object || test instanceof Array) {
+                        htmlString = $('<span class="bg_blue" onclick="setLayerpop(this)" data-target="#layerpop3" data-toggle="modal" '
+                            + 'data-title="' + _title + '"><a>' + _title + '</a></span> ')
+                            .attr('data-content', _content).wrapAll("<div/>").parent().html();
+                    }
+                } catch(e) { };
             }
+
+            if (null == htmlString)
+                htmlString = '<span class="bg_gray">' + item.replace(": ", ":") + '</span>';
+
+            spanHtml += (htmlString +  ' ');
         });
 
         return spanHtml;
