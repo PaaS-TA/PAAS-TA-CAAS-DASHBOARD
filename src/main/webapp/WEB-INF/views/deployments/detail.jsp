@@ -37,12 +37,12 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td id="labels"></td>
+                                <td id="labels" class="labels_wrap"></td>
                             </tr>
 
                             <tr>
                                 <th><i class="cWrapDot"></i> Annotations</th>
-                                <td id="annotations">
+                                <td id="annotations" class="labels_wrap">
                                 </td>
                             </tr>
                             <tr>
@@ -150,26 +150,24 @@
 <!-- SyntexHighlighter -->
 
 <script type="text/javascript">
-    // ON LOAD
-    $(document.body).ready(function () {
-/*        createChart("current", "cpu");
-        createChart("current", "mem");
-        createChart("current", "disk");*/
-    });
-</script>
-
-<script type="text/javascript">
-    var deployName = '<c:out value="${deploymentsName}"/>';
-    $(document.body).ready(function () {
-        viewLoading('show');
-        getDetail();
-    });
 
     var getDetail = function() {
         var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_DETAIL %>".replace("{namespace:.+}", NAME_SPACE)
-                                                                    .replace("{deploymentName:.+}", deployName);
+                                                                    .replace("{deploymentName:.+}", document.getElementById('requestDeploymentsName').value);
 
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeployment);
+    };
+
+    var getReplicaSetsList = function (selector) {
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICASETS_RESOURCES %>".replace("{namespace:.+}", NAME_SPACE)
+            .replace("{selector:.+}", selector);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetReplicasetList);
+    }
+
+    // GET DETAIL FOR PODS LIST
+    var getDetailForPodsList = function(selector) {
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>".replace("{namespace:.+}", NAME_SPACE).replace("{selector:.+}", selector);
+        getPodListUsingRequestURL(reqUrl);
     };
 
     var stringifyJSON = function (obj) {
@@ -245,17 +243,10 @@
         document.getElementById("rollingUpdateStrategy").textContent = rollingUpdateStrategy;
         document.getElementById("status").textContent = replicaStatus;
 
-        procCallAjax("/api/namespaces/" + NAME_SPACE + "/replicasets/resource/" + replaceLabels(selector), "GET", null, null, callbackGetReplicasetList);
+        getReplicaSetsList(replaceLabels(selector));
         getDetailForPodsList(replaceLabels(selector));
 
     }
-
-    // GET DETAIL FOR PODS LIST
-    var getDetailForPodsList = function(selector) {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>".replace("{namespace:.+}", NAME_SPACE).replace("{selector:.+}", selector);
-        getPodListUsingRequestURL(reqUrl);
-    };
-
 
     var replaceLabels = function (data) {
         return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
@@ -374,5 +365,14 @@
         });
         return tempStr;
     };
+
+    $(document.body).ready(function () {
+        /* 차트 주석
+        createChart("current", "cpu");
+        createChart("current", "mem");
+        createChart("current", "disk");*/
+        viewLoading('show');
+        getDetail();
+    });
 
 </script>
