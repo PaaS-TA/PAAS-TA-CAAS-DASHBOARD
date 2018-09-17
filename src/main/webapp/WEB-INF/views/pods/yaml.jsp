@@ -22,12 +22,22 @@
                     <div class="sortable_top">
                         <p>YAML</p>
                     </div>
-                    <div class="paA30">
+                    <div id="resultYamlArea" class="paA30">
                         <div class="yaml">
                         <pre class="brush: yaml" id="resultArea">
                         </pre>
                         </div>
                     </div>
+                    <div id="noResultYamlArea" class="view_table_wrap" style="display:none;">
+                        <table class="table_event condition alignL service-lh">
+                            <thead>
+                            <tr>
+                                <td colspan='6'><p class='service_p'>조회 된 YAML이 없습니다.</p></td>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </li>
         </ul>
     </div>
@@ -66,11 +76,18 @@
         if (false === procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage("Pod 정보를 가져오지 못했습니다.", false);
+            $('#noResultYamlArea').show();
+            $('#resultYamlArea').hide();
             return;
+        } else {
+            var yaml = nvl(data.sourceTypeYaml, '')
+            if ('' === yaml) {
+                $('#noResultYamlArea').show();
+                $('#resultYamlArea').hide();
+            } else {
+                $('#resultArea').html('---\n' + data.sourceTypeYaml);
+            }
         }
-
-        $('#resultArea').html('---\n' + data.sourceTypeYaml);
-
         viewLoading('hide');
-    }
+    };
 </script>

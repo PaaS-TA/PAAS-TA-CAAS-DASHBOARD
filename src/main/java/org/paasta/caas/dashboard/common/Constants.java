@@ -67,7 +67,6 @@ public class Constants {
 
     // API URI :: EVENTS
     public static final String URI_API_EVENTS_LIST         = "/namespaces/{namespace:.+}/events/resource/{resourceName:.+}";
-    public static final String URI_API_EVENTS_LIST_BY_NODE = "/namespaces/{namespace:.+}/events/node/{nodeName:.+}";
 
     // API URI :: PODS
     public static final String URI_API_PODS_LIST                          = "/namespaces/{namespace:.+}/pods";

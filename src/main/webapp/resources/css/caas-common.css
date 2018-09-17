@@ -162,3 +162,7 @@
 .labels_wrap {
     white-space: normal;
 }
+
+.labels_wrap > span {
+    white-space: pre;
+}

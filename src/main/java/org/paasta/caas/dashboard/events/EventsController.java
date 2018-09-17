@@ -44,17 +44,4 @@ public class EventsController {
         resultList.setResourceName(resourceName);
         return resultList;
     }
-
-    /**
-     * Get Event List with filtering node's name.
-     *
-     * @param namespace the namespace
-     * @param nodeName  the node name
-     * @return the event list
-     */
-    @GetMapping(value = Constants.API_URL + Constants.URI_API_EVENTS_LIST_BY_NODE)
-    @ResponseBody
-    EventsList getEventListByNode(@PathVariable("namespace") String namespace, @PathVariable("nodeName") String nodeName) {
-        return eventsService.getEventListByNode(namespace, nodeName);
-    }
 }

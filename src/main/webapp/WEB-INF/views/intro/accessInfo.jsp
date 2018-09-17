@@ -62,12 +62,12 @@
             </div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>\$ export CAAS-SERVICE-CLUSTER-NAME="<span id="caasClusterName"></span>"</p>
-                    <p>\$ export CAAS-SERVICE-CLUSTER-SERVER="<span id="caasClusterServer"></span>"</p>
-                    <p>\$ export CAAS-SERVICE-USER-NAME="<span id="caasUserName"></span>"</p>
-                    <p>\$ export CAAS-SERVICE-CONTEXT-NAME="<span id="caasContextName"></span>"</p>
-                    <p>\$ export CAAS-SERVICE-NAMESPACE-NAME="<span id="caasNamespace"></span>"</p>
-                    <p>\$ export CAAS-SERVICE-CREDENTIALS-TOKEN="<span id="caasCredentialsToken"></span>"</p>
+                    <p>\$ export CAAS_SERVICE_CLUSTER_NAME="<span id="caasClusterName"></span>"</p>
+                    <p>\$ export CAAS_SERVICE_CLUSTER_SERVER="<span id="caasClusterServer"></span>"</p>
+                    <p>\$ export CAAS_SERVICE_USER_NAME="<span id="caasUserName"></span>"</p>
+                    <p>\$ export CAAS_SERVICE_CONTEXT_NAME="<span id="caasContextName"></span>"</p>
+                    <p>\$ export CAAS_SERVICE_NAMESPACE_NAME="<span id="caasNamespace"></span>"</p>
+                    <p>\$ export CAAS_SERVICE_CREDENTIALS_TOKEN="<span id="caasCredentialsToken"></span>"</p>
                 </div>
             </div>
         </div>
@@ -84,7 +84,7 @@
             <div class="clearfix"></div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>\$ kubectl config set-cluster \${CAAS-SERVICE-CLUSTER-NAME} --embed-certs=true --server=\${CAAS-SERVICE-CLUSTER-SERVER} --certificate-authority=[DOWNLOADED FILE PATH]</p>
+                    <p>\$ kubectl config set-cluster \${CAAS_SERVICE_CLUSTER_NAME} --embed-certs=true --server=\${CAAS_SERVICE_CLUSTER_SERVER} --certificate-authority=[DOWNLOADED FILE PATH]</p>
                 </div>
             </div>
         </div>
@@ -101,7 +101,7 @@
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
                     <p >## 토큰을 응용 프로그램과 공유 할 때 주의 하십시오. 공용 코드 저장소에 사용자 토큰을 게시하지 마십시오.</p>
-                    <p>\$ kubectl config set-credentials \${CAAS-SERVICE-USER-NAME} --token=\${CAAS-SERVICE-CREDENTIALS-TOKEN}</p>
+                    <p>\$ kubectl config set-credentials \${CAAS_SERVICE_USER_NAME} --token=\${CAAS_SERVICE_CREDENTIALS_TOKEN}</p>
                 </div>
             </div>
         </div>
@@ -111,7 +111,7 @@
             </div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>\$ kubectl config set-context \${CAAS-SERVICE-CONTEXT-NAME} --user=\${CAAS-SERVICE-USER-NAME} --namespace=\${CAAS-SERVICE-NAMESPACE-NAME} --cluster=\${CAAS-SERVICE-CLUSTER-NAME}</p>
+                    <p>\$ kubectl config set-context \${CAAS_SERVICE_CONTEXT_NAME} --user=\${CAAS_SERVICE_USER_NAME} --namespace=\${CAAS_SERVICE_NAMESPACE_NAME} --cluster=\${CAAS_SERVICE_CLUSTER_NAME}</p>
                 </div>
             </div>
         </div>
@@ -121,7 +121,7 @@
             </div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>\$ kubectl config use-context \${CAAS-SERVICE-CONTEXT-NAME}</p>
+                    <p>\$ kubectl config use-context \${CAAS_SERVICE_CONTEXT_NAME}</p>
                 </div>
             </div>
         </div>

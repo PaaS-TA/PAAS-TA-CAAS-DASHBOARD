@@ -62,61 +62,90 @@
         viewLoading('hide');
     });
 
+    // PARSE EVENT FROM DATA
+    var getEventList = function(items) {
+        return items.map(function(data) {
+            var tmpSource = data.source.component + (nvl(data.source.host)? ' ' + nvl(data.source.host) : '');
+            var tmpSubObject = nvl(data.involvedObject.fieldPath, '-');
+            return {
+                message: data.message,
+                source: tmpSource,
+                subObject: tmpSubObject,
+                count: data.count,
+                firstSeen: data.firstTimestamp,
+                lastSeen: data.lastTimestamp
+            };
+        }).sort(function(eventA, eventB) {
+            // sort : first seen
+            var firstA = eventA.firstSeen;
+            var firstB = eventB.firstSeen;
+            var _ascending = true;
+            var _reverseNumber = (_ascending) ? 1 : -1;
+            if (firstA === firstB)
+                return 0;
+            else {
+                if (firstA == null)
+                    return -1 * _reverseNumber;
+                else if (firstB == null)
+                    return _reverseNumber;
+                else if (firstA > firstB)
+                    return _reverseNumber;
+                else
+                    return -1 * _reverseNumber;
+            }
+        });
+    };
+
     // CALLBACK
     var callbackGetList = function (data) {
         viewLoading('show');
 
+        var noResultArea = $('#noResultArea');
+        var resultHeaderArea = $('#resultHeaderArea');
+        var resultArea = $('#resultArea');
         if (false === procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage("Pod 정보를 가져오지 못했습니다.", false);
-            $('#noResultArea').children().html("Pod의 Event 목록을 가져오지 못했습니다.");
-            $('#noResultArea').show();
-            $('#resultHeaderArea').hide();
+            noResultArea.show();
+            resultHeaderArea.hide();
+            resultArea.hide();
             return;
         }
 
-        console.log("CONSOLE DEBUG PRINT :: " + data);
+        var eventList = getEventList(data.items);
+        var listLength = eventList.length;
 
-        var listLength = data.items.length;
-
-        var resultArea = $('#resultArea');
-        var resultHeaderArea = $('#resultHeaderArea');
-        var noResultArea = $('#noResultArea');
-
-        $.each(data.items, function (index, itemList) {
-            var messageHtml = $('<span data-toggle="tooltip"></span>').attr('title', itemList.message).html(itemList.message)[0].outerHTML;
-            if (0 == itemList.message.indexOf("Error")) {
-                messageHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span> ' + $(messageHtml).addClass("red2")[0].outerHTML;
-            }
-            var source = (itemList.source.component + ': ' + itemList.source.host);
-            var subObject = "";
-            if ("Pod" === itemList.involvedObject.kind && G_POD_NAME === itemList.involvedObject.name) {
-                subObject = "-";
+        $.each(eventList, function (index, event) {
+            var messageHtml;
+            if (0 === event.message.indexOf("Error")) {
+                messageHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span> <span class="red2" data-toggle="tooltip">';
             } else {
-                subObject = (itemList.involvedObject != null)? (itemList.involvedObject.kind + ': ' + itemList.involvedObject.name) : '-';
+                messageHtml = '<span data-toggle="tooltip">';
             }
-            var count = itemList.count;
-            var fristTimestamp = itemList.firstTimestamp;
-            var lastTimestamp = itemList.lastTimestamp;
+            messageHtml = $(messageHtml + event.message + '</span>').attr('title', event.message)[0].outerHTML;
             resultArea.append("<tr>"
                 + "<td>" + messageHtml + "</td>"
-                + "<td data-toggle='tooltip' title='" + source + "'>" + source + "</td>"
-                + "<td data-toggle='tooltip' title='" + subObject + "'>" + subObject + "</td>"
-                + "<td>" + count + "</td>"
-                + "<td>" + fristTimestamp + "</td>"
-                + "<td>" + lastTimestamp + "</td>"
+                + "<td><p>" + event.source + "</p></td>"
+                + "<td><p>" + event.subObject + "</p></td>"
+                + "<td>" + event.count + "</td>"
+                + "<td>" + event.firstSeen + "</td>"
+                + "<td>" + event.lastSeen + "</td>"
                 + "</tr>");
         });
 
         if (listLength < 1) {
+            noResultArea.show();
             resultHeaderArea.hide();
             resultArea.hide();
-            noResultArea.show();
         } else {
             noResultArea.hide();
             resultHeaderArea.show();
             resultArea.show();
         }
+
+        // TOOL TIP
+        procSetToolTipForTableTd('resultArea');
+        $('[data-toggle="tooltip"]').tooltip();
 
         viewLoading('hide');
     };
