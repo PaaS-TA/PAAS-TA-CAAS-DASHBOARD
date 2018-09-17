@@ -77,7 +77,7 @@
             <!-- modal 끝 TODO :: 사용확인 후 삭제 -->
 
             <!-- Pods 시작 -->
-            <li class="cluster_second_box">
+            <li class="cluster_third_box">
                 <jsp:include page="../pods/list.jsp" flush="true"/>
             </li>
             <!-- Pods 끝 -->

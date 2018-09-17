@@ -30,39 +30,36 @@
                 <col style='width:20%;'>
             </colgroup>
             <thead>
-            <tr id="noResultArea" style="display: none;">
+            <tr id="noPodListResultArea" style="display: none;">
                 <td colspan='6'><p class='service_p'>실행 중인 Pods가 없습니다.</p></td>
             </tr>
-            <tr id="resultHeaderArea" class="headerSortFalse">
-                <td>Name
-                    <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '0')">
-                        <i class="fas fa-caret-down"></i></button>
-                </td>
+            <tr id="podListResultHeaderArea" class="headerSortFalse">
+                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                 <td>Namespace</td>
                 <td>Node</td>
                 <td>Status</td>
                 <td>Restarts</td>
-                <td>Created on
-                    <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '5')">
-                        <i class="fas fa-caret-down"></i></button>
-                </td>
+                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '5')"><i class="fas fa-caret-down"></i></button></td>
             </tr>
             </thead>
-            <tbody id="resultArea">
+            <tbody id="podListResultArea">
             </tbody>
         </table>
     </div>
 </div>
 <script type="text/javascript">
-    var getPodListUsingRequestURL = function (reqUrl) {
+    // GET POD LIST USING REQUEST URL
+    var getPodListUsingRequestURL = function(reqUrl) {
         procCallAjax(reqUrl, "GET", null, null, callbackGetPodList);
     };
 
-    var disableSearchPodList = function () {
+    // DISABLE SEARCH FORM
+    var disableSearchPodList = function() {
         $('#pod-list-search-form').remove();
     };
 
-    var getPodStatus = function (podStatus) {
+    // GET POD STATUS FROM POD'S STATUS DATA
+    var getPodStatus = function(podStatus) {
         /*
         1. Pod's status is succeeded -> return this.
         1. count of pod's containers is less than 0 -> return pod's status
@@ -80,7 +77,7 @@
 
         var notRunningIndex = -1;
         var notRunningState = "";
-        containerStatuses.map(function (item, index) {
+        containerStatuses.map(function(item, index) {
             var state = Object.keys(item.state)[0];
             // terminated state : highest order
             if ("running" !== state && "terminated" !== notRunningState) {
@@ -99,24 +96,26 @@
         }
     };
 
-    var getPodErrorMessage = function (namespace, podName) {
+    // GET POD ERROR MESSAGE
+    var getPodErrorMessage = function(namespace, podName) {
         var reqUrl = "<%= Constants.URI_API_EVENTS_LIST %>"
             .replace('{namespace:.+}', namespace).replace('{resourceName:.+}', podName);
-        procCallAjax(reqUrl, "GET", null, null, function (data) {
+        procCallAjax(reqUrl, "GET", null, null, function(data) {
 
         });
     };
 
-    var getPod = function (podItem) {
+    // GET POD DATA
+    var getPod = function(podItem) {
         // required : name, namespace, node, status, restart(count), created on
-        var _metadata = podItem.metadata;
-        var _spec = podItem.spec;
-        var _containerStatuses = podItem.status.containerStatuses;
+        var metadata = podItem.metadata;
+        var spec = podItem.spec;
+        var containerStatuses = podItem.status.containerStatuses;
 
         var status = getPodStatus(podItem.status);
         var errorMsg;
         if (status !== "Running" && status !== "Succeeded") {
-            var findConditions = podItem.status.conditions.filter(function (item) {
+            var findConditions = podItem.status.conditions.filter(function(item) {
                 return item.reason != null && item.message != null
             });
             if (findConditions.length > 0)
@@ -127,22 +126,23 @@
 
         // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
         return {
-            name: _metadata.name,
-            namespace: _metadata.namespace,
-            nodeName: nvl(_spec.nodeName, "-"),
+            name: metadata.name,
+            namespace: metadata.namespace,
+            nodeName: nvl(spec.nodeName, "-"),
             podStatus: status,
             podErrorMsg: errorMsg,
             restartCount: procIfDataIsNull(
-                _containerStatuses, function (data) {
-                    return data.reduce(function (a, b) {
+                containerStatuses, function(data) {
+                    return data.reduce(function(a, b) {
                         return {restartCount: a.restartCount + b.restartCount};
                     }, {restartCount: 0}).restartCount;
                 }, 0),
-            creationTimestamp: _metadata.creationTimestamp
+            creationTimestamp: metadata.creationTimestamp
         };
     };
 
-    var getPodStatusStyleClass = function (statusString) {
+    // GET POD STATUS STYLE CLASS
+    var getPodStatusStyleClass = function(statusString) {
         var styleClassSet;
         if (statusString.includes("Pending")) {
             styleClassSet = {span: "pending2", i: "fas fa-exclamation-triangle"};
@@ -162,15 +162,23 @@
         return styleClassSet;
     };
 
-    var createAnchorTag = function (movePageUrl, content, isTooltip) {
-        var anchorTag = "<a href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>"
+    // CREATE ANCHOR TAG FUNCTION
+    var createAnchorTag = function(movePageUrl, content, isTooltip) {
+        var anchorTag = "<a href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>";
         if (isTooltip)
-            return $(anchorTag).attr('data-toggle', 'tooltip').attr('title', content)[0].outerHTML;
+            return $(anchorTag).wrapAll("<div/>").parent().html();
         else
             return anchorTag;
     };
 
-    var setPodTable = function (podList) {
+    // SET POD LIST TABLE
+    var setPodTable = function(podList) {
+        // set data into a table
+        var resultArea = $('#podListResultArea');
+        var resultHeaderArea = $('#podListResultHeaderArea');
+        var noResultArea = $('#noPodListResultArea');
+        var resultTable = $('#resultTableForPod');
+
         var listLength = podList.length;
         var htmlString = [];
 
@@ -179,39 +187,28 @@
             var styleClassSet = getPodStatusStyleClass(pod.podStatus);
 
             var podNameHtml = "<span class='" + styleClassSet.span + "'><i class='" + styleClassSet.i + "'></i></span> "
-                //+ "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_PODS %>/" + pod.name + "\");'>" + pod.name + "</a>";
                 + createAnchorTag("<%= Constants.URI_WORKLOAD_PODS %>/" + pod.name, pod.name, true);
             if (null != pod.podErrorMsg && "" !== pod.podErrorMsg) {
-                podNameHtml += $("<br><span class='red2 custom-content-overflow' data-toggle='tooltip'>" + pod.podErrorMsg + "</span>").attr('title', pod.podErrorMsg)[0].outerHTML;
+                podNameHtml += ("<br><span>" + pod.podErrorMsg + "</span>");
             }
 
             var nodeNameHtml;
             if (pod.nodeName !== "-")
-            //nodeNameHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + pod.nodeName + "/summary\");'>" + pod.nodeName + "</a>";
                 nodeNameHtml = createAnchorTag("<%= Constants.URI_CLUSTER_NODES %>/" + pod.nodeName + "/summary", pod.nodeName, true);
             else
                 nodeNameHtml = "-";
 
-            //var namespaceHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + pod.namespace + "\");'>" + pod.namespace + "</a>";
             var namespaceHtml = createAnchorTag("<%= Constants.URI_CLUSTER_NAMESPACES %>/" + pod.namespace, pod.namespace, true);
 
-            var statusHtml = "<span data-toggle='tooltip' title='" + pod.podStatus + "'>" + pod.podStatus + "</span>"
-
-            htmlString.push("<tr name='podRow' id='row-" + pod.name + "'>"
+            htmlString.push("<tr name='podRow'>"
                 + "<td id='" + pod.name + "'>" + podNameHtml + "</td>"
                 + "<td>" + namespaceHtml + "</td>"
                 + "<td>" + nodeNameHtml + "</td>"
-                + "<td>" + statusHtml + "</td>"
+                + "<td><span>" + pod.podStatus + "</span></td>"
                 + "<td>" + pod.restartCount + "</td>"
                 + "<td>" + pod.creationTimestamp + "</td>"
                 + "</tr>");
         }
-
-        // set data into a table
-        var resultArea = $('#resultArea');
-        var resultHeaderArea = $('#resultHeaderArea');
-        var noResultArea = $('#noResultArea');
-        var resultTable = $('#resultTable');
 
         if (htmlString.length < 1) {
             noResultArea.show();
@@ -228,12 +225,12 @@
         }
     };
 
-    // filter pod list by pod name
-    var setPodsListWithFilter = function (findValue) {
+    // FILTER POD LIST BY POD NAME
+    var setPodsListWithFilter = function(findValue) {
         viewLoading('show');
 
-        var podsTableHeader = $("#resultHeaderArea");
-        var podNotFound = $("#noResultArea");
+        var podsTableHeader = $("#podListResultHeaderArea");
+        var podNotFound = $("#noPodListResultArea");
         var podRows = $("tr[name=podRow]");
 
         if (podRows.length > 0) {
@@ -244,7 +241,7 @@
                 podRows.show();
             } else {
                 var showCount = 0;
-                $.each(podRows, function (index, row) {
+                $.each(podRows, function(index, row) {
                     var row = $(row);
                     if (row.attr("id").includes(findValue)) {
                         row.show();
@@ -256,7 +253,7 @@
 
                 if (showCount <= 0) {
                     // html into tr > td > p
-                    podNotFound.children().children().html("Pod 이름으로 찾지 못했습니다.");
+                    podNotFound.find('p').html("Pod 이름으로 찾지 못했습니다.");
                     podNotFound.show();
                     podsTableHeader.hide();
                 } else {
@@ -269,6 +266,7 @@
         viewLoading('hide');
     };
 
+    // DEFAULT POD STATUS FUNCTION
     var getPodStatuses = function() {
         // 기본값 추가
         return [{
@@ -278,41 +276,42 @@
     };
 
     // CALLBACK POD LIST
-    var callbackGetPodList = function (data) {
+    var callbackGetPodList = function(data) {
         viewLoading('show');
 
         if (false == procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage("Node의 Pod 목록을 가져오지 못했습니다.", false);
-            $('#noResultArea > td > p').html("Node의 Pod 목록을 가져오지 못했습니다.");
-            $('#noResultArea').show();
-            $('#resultArea').hide();
-            $('#resultHeaderArea').hide();
+            $('#noPodListResultArea').find('p').html("Node의 Pod 목록을 가져오지 못했습니다.");
+            $('#noPodListResultArea').show();
+            $('#podListResultArea').hide();
+            $('#podListResultHeaderArea').hide();
             return;
         }
 
         var podList = [];
         var podStatusList = [];
         var podNameList = [];
-        $.each(data.items, function (index, item) {
-            var _pod = getPod(item);
-            var _status;
-            switch (_pod.podStatus) {
+        $.each(data.items, function(index, item) {
+            var pod = getPod(item);
+            var statusValue;
+            switch (pod.podStatus) {
                 case "Pending":
                 case "Running":
                 case "Succeeded":
-                    _status = _pod.podStatus;
+                    statusValue = pod.podStatus;
                     break;
                 default:
-                    _status = "Failed";
+                    statusValue = "Failed";
                     break;
             }
 
-            podList.push(_pod);
-            podStatusList.push({ name: _pod.name, status: _status });
-            podNameList.push(_pod.name);
+            podList.push(pod);
+            podStatusList.push({name: pod.name, status: statusValue});
+            podNameList.push(pod.name);
         });
 
+        // setting getPodStatuses function and data
         getPodStatuses = function() {
             return podStatusList;
         };
@@ -321,6 +320,7 @@
         procSetEventStatusForPods(podNameList);
 
         // TOOL TIP
+        procSetToolTipForTableTd('podListResultArea');
         $('[data-toggle="tooltip"]').tooltip();
 
         viewLoading('hide');

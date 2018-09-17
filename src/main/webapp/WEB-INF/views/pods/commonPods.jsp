@@ -4,7 +4,6 @@
   @version 1.0
   @since 2018.09.03
 --%>
-<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -14,7 +13,8 @@
 <script type="text/javascript">
     var G_POD_NAME = '<c:out value="${podName}" default="" />';
 
-    var getPodStatus = function (podStatus) {
+    // GET POD STATUS
+    var getPodStatus = function(podStatus) {
         /*
         1. Pod's status is succeeded -> return this.
         1. count of pod's containers is less than 0 -> return pod's status
@@ -32,7 +32,7 @@
 
         var notRunningIndex = -1;
         var notRunningState = "";
-        containerStatuses.map(function (item, index) {
+        containerStatuses.map(function(item, index) {
             var state = Object.keys(item.state)[0];
             // terminated state : highest order
             if ("running" !== state && "terminated" !== notRunningState) {
@@ -51,12 +51,14 @@
         }
     };
 
+    // SET ICON NEXT TO POD'S NAME
     var setPodStatusIcon = function() {
         var podStatusIconHtml = '<span class="fa fa-file-alt" style="color:#2a6575;"></span> ';
-        $("#workload_pod_name").html( podStatusIconHtml + " " + G_POD_NAME);
+        $("#workload_pod_name").html(podStatusIconHtml + " " + G_POD_NAME);
     };
 
-    $(document.body).ready(function () {
+    // ON LOAD
+    $(document.body).ready(function() {
         viewLoading('show');
         if ("" === nvl(G_POD_NAME)) {
             viewLoading('hide');

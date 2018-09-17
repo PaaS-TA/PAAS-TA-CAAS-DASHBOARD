@@ -9,9 +9,9 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <jsp:include page="common-nodes.jsp"/>
+    <jsp:include page="commonNodes.jsp"/>
 
-    <%-- NODES HEADER INCLUDE --%>
+    <%-- TAB INCLUDE --%>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
 
     <!-- NodeEvents 시작-->
@@ -52,12 +52,11 @@
         </ul>
     </div>
 </div>
-
 <script type="text/javascript">
     // PARSE EVENT FROM DATA
     var getEventList = function(items) {
         return items.map(function(data) {
-            var tmpSource = data.source.component + (nvl(data.source.host)? ' ' + nvl(data.source.host) : '');
+            var tmpSource = data.source.component + (nvl(data.source.host) ? ' ' + nvl(data.source.host) : '');
             var tmpSubObject = nvl(data.involvedObject.fieldPath, '-');
             return {
                 message: data.message,
@@ -71,24 +70,25 @@
             // sort : first seen
             var firstA = eventA.firstSeen;
             var firstB = eventB.firstSeen;
-            var _ascending = true;
-            var _reverseNumber = (_ascending) ? 1 : -1;
+            var ascending = true;
+            var reverseNumber = (ascending) ? 1 : -1;
             if (firstA === firstB)
                 return 0;
             else {
                 if (firstA == null)
-                    return -1 * _reverseNumber;
+                    return -1 * reverseNumber;
                 else if (firstB == null)
-                    return _reverseNumber;
+                    return reverseNumber;
                 else if (firstA > firstB)
-                    return _reverseNumber;
+                    return reverseNumber;
                 else
-                    return -1 * _reverseNumber;
+                    return -1 * reverseNumber;
             }
         });
     };
 
-    var callbackGetNodeEvent = function (data) {
+    // CALLBACK GET NODE EVENT
+    var callbackGetNodeEvent = function(data) {
         viewLoading('show');
 
         var nodeEventsNotFound = $('#nodeEventsnotFound');
@@ -106,18 +106,18 @@
         var eventList = getEventList(data.items);
         var listLength = eventList.length;
 
-        $.each(eventList, function (index, event) {
+        $.each(eventList, function(index, event) {
             var messageHtml;
             if (0 === event.message.indexOf("Error")) {
-                messageHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span> <span class="red2" data-toggle="tooltip">';
+                messageHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span> <span class="red2">';
             } else {
-                messageHtml = '<span data-toggle="tooltip">';
+                messageHtml = '<span>';
             }
-            messageHtml = $(messageHtml + event.message + '</span>').attr('title', event.message)[0].outerHTML;
+            messageHtml = $(messageHtml + event.message + '</span>').attr('title', event.message).wrapAll("<div/>").parent().html();
             nodeEventsResultArea.append("<tr>"
                 + "<td>" + messageHtml + "</td>"
-                + "<td><p>" + event.source + "</p></td>"
-                + "<td><p>" + event.subObject + "</p></td>"
+                + "<td><span>" + event.source + "</span></td>"
+                + "<td><span>" + event.subObject + "</span></td>"
                 + "<td>" + event.count + "</td>"
                 + "<td>" + event.firstSeen + "</td>"
                 + "<td>" + event.lastSeen + "</td>"
@@ -135,12 +135,13 @@
         }
 
         // TOOL TIP
-        procSetToolTipForTableTd('resultArea');
+        procSetToolTipForTableTd('nodeEventsResultArea');
         $('[data-toggle="tooltip"]').tooltip();
 
         viewLoading('hide');
     };
 
+    // GET EVENTS LIST BY NODE
     var getEventsListByNode = function(namespace, nodeName) {
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
             .replace("{namespace:.+}", namespace).replace("{resourceName:.+}", nodeName);
@@ -148,7 +149,8 @@
         procCallAjax(reqUrl, "GET", null, null, callbackGetNodeEvent);
     };
 
-    $(document.body).ready(function () {
+    // ON LOAD
+    $(document.body).ready(function() {
         viewLoading('show');
         getEventsListByNode(NAME_SPACE, G_NODE_NAME);
         viewLoading('hide');
