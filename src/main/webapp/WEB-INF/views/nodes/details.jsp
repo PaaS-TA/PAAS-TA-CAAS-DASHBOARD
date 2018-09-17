@@ -121,26 +121,6 @@
             </li>
         </ul>
     </div>
-
-    <!-- modal -->
-    <div class="modal fade in" id="layerpop">
-        <%-- layerpop is used nodes' detail --%>
-        <div class="vertical-alignment-helper">
-            <div class="modal-dialog vertical-align-center nodes">
-                <div class="modal-content">
-                    <!-- header -->
-                    <div class="modal-header">
-                        <!-- 닫기(x) 버튼 -->
-                        <button type="button" class="close" data-dismiss="modal">×</button>
-                        <!-- header title -->
-                        <h4 class="modal-title"></h4>
-                    </div>
-                    <!-- body -->
-                    <div class="modal-body"></div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 <script type="text/javascript">
     var setLayerpop = function (eventElement) {
@@ -176,7 +156,7 @@
                     var _content = _kv.reduce(function (prev, cur, idx) {
                         if (idx <= 1) return cur; else return prev + ':' + cur
                     });
-                    var template = '<span class="bg_blue" data-target="#layerpop" data-toggle="modal" onclick="setLayerpop(this)">';
+                    var template = '<span class="bg_blue" data-target="#layerpop3" data-toggle="modal" onclick="setLayerpop(this)">';
                     spanHtml += ( $(template).html('<a>' + _title + '</a>').attr('data-title', _title).attr('data-content', _content)[0].outerHTML + ' ' );
                 } else {
                     spanHtml += '<span class="bg_gray">' + item.replace(': ', ':') + '</span> ';
@@ -261,16 +241,8 @@
         viewLoading('hide');
     };
 
-    var loadLayerpop = function () {
-        // MOVE LAYERPOP UNDER BODY ELEMENT
-        var _layerpop = $('#layerpop');
-        _layerpop.parent().find(_layerpop).remove();
-        $('body').append(_layerpop);
-    };
-
     $(document.body).ready(function () {
         viewLoading('show');
-        loadLayerpop();
         getNode(G_NODE_NAME, callbackGetNodeDetail);
         viewLoading('hide');
     });
