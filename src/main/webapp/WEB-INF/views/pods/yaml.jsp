@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="content">
-    <jsp:include page="common-pods.jsp" flush="true"/>
+    <jsp:include page="commonPods.jsp"/>
 
     <%-- NODES HEADER INCLUDE --%>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>

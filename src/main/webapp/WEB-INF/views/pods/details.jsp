@@ -7,7 +7,7 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div class="content">
-    <jsp:include page="common-pods.jsp" flush="true"/>
+    <jsp:include page="commonPods.jsp"/>
 
     <%-- NODES HEADER INCLUDE --%>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
