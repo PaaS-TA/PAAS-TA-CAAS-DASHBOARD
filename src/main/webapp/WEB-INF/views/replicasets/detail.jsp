@@ -36,13 +36,16 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td id="resultLabel"><span class="bg_gray"></span> <span class="bg_gray"></span></td>
+                                <td id="resultLabel" class="labels_wrap">
+                                    <%--<span class="bg_gray"></span> --%>
+                                    <%--<span class="bg_gray"></span>--%>
+                                </td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Annotations</th>
-                                <td id="resultAnnotation">
-                                    <span class="bg_gray"></span>
-                                    <span class="bg_blue"><a href="#" target="_blank"></a></span>
+                                <td id="resultAnnotation" class="labels_wrap">
+                                    <%--<span class="bg_gray"></span>--%>
+                                    <%--<span class="bg_blue"><a href="#" target="_blank"></a></span>--%>
                                 </td>
                             </tr>
                             <tr>
@@ -97,10 +100,10 @@
                             <tr id="noResultAreaForServices" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
                             <tr id="resultHeaderAreaForService">
                                 <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Service Type</td>
+                                <td>Labels</td>
                                 <td>Cluster IP</td>
-                                <td>Endpoints</td>
-                                <td>Pods</td>
+                                <td>Internal endpoints</td>
+                                <td>External endpoints</td>
                                 <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '5')"><i class="fas fa-caret-down"></i></button></td>
                             </tr>
                             </thead>
@@ -158,6 +161,9 @@
         //$('#resultPods').html(replicas);
         $('#resultPods').html(data.status.availableReplicas+" running");
         //$('#resultDeployment').html(deployment);
+
+//        $('#resultLabel').addClass('labels_wrap');
+//        $('#resultAnnotation').addClass('labels_wrap');
 
         getDeploymentsInfo(data.metadata.labels);
         getDetailForPodsList(selector);
@@ -251,10 +257,11 @@
 
         for (var i = 0; i < listLength; i++) {
             serviceName = items[i].metadata.name;
-
             selector = procSetSelector(items[i].spec.selector);
             endpointsPreString = serviceName + "." + items[i].metadata.namespace + ":";
             nodePort = items[i].spec.ports.nodePort;
+
+            var labels = procSetSelector(items[i].metadata.labels);
 
             if (nodePort === undefined) {
                 nodePort = "0";
@@ -268,15 +275,25 @@
                         + '<p>' + endpointsPreString + nodePort + " " + specPortsList[j].protocol + '</p>';
             }
 
+            //External Endpoints TODO :: xxx.xxx.xxx.xxx:1234  뒤에 port 표시 확인 필요
+            var externalEndpoints = [];
+            externalEndpoints = items[i].spec.externalIPs;
+
+            if( (externalEndpoints != null) && (externalEndpoints.length > 0) ){
+                externalEndpoints = externalEndpoints.join('</BR>')
+            }else{
+                externalEndpoints = "-";
+            }
+
             htmlString.push(
                     "<tr>"
                     + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
                     + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/" + serviceName + "\");'>" + serviceName + "</a>"
                     + "</td>"
-                    + "<td>" + items[i].spec.type + "</td>"
+                    + "<td>" + createSpans(labels, "LB") + "</td>"
                     + "<td>" + items[i].spec.clusterIP + "</td>"
                     + "<td>" + endpoints + "</td>"
-                    + "<td>" + "<span id='" + serviceName + "'></span></td>"
+                    + "<td>" + externalEndpoints + "</td>"
                     + "<td>" + items[i].metadata.creationTimestamp + "</td>"
                     + "</tr>");
 
@@ -298,48 +315,9 @@
             resultTable.trigger("update");
         }
 
-        getDetailForPods(selectorList);
+        procSetToolTipForTableTd('resultAreaForService');
+        viewLoading('hide');
 
-    };
-
-    // GET DETAIL FOR PODS
-    var getDetailForPods = function(selectorList) {
-        var listLength = selectorList.length;
-        var tempSelectorList;
-        var reqUrl;
-
-        for (var i = 0; i < listLength; i++) {
-            tempSelectorList = selectorList[i].split(",");
-            reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE %>"
-                    .replace("{namespace:.+}", NAME_SPACE)
-                    .replace("{serviceName:.+}", tempSelectorList[1])
-                    .replace("{selector:.+}", tempSelectorList[0]);
-
-            procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPods);
-        }
-    };
-
-
-    // CALLBACK
-    var callbackGetDetailForPods = function(data) {
-        if (!procCheckValidData(data)) {
-            viewLoading('hide');
-            return false;
-        }
-
-        var items = data.items;
-        var listLength = items.length;
-        var runningSum = 0;
-        var totalSum = 0;
-
-        for (var i = 0; i < listLength; i++) {
-            if (items[i].status.phase.toLowerCase() === "running") {
-                runningSum++
-            }
-            totalSum++;
-        }
-
-        $('#' + data.serviceName).html(runningSum + " / " + totalSum);
     };
 
     var createSpans = function (data, type) {
