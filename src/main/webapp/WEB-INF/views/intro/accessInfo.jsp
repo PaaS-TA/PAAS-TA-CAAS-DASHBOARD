@@ -207,7 +207,6 @@
     var callbackGetUser = function(data) {
         viewLoading('hide');
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        console.log("value", JSON.stringify(data));
         //$("#access-user-token").val(data.caasAccountTokenName);
 
         guideClusterName = data.caasClusterName;
