@@ -33,7 +33,7 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td id="labels"></td>
+                                <td id="labels" class="labels_wrap"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Creation Time</th>
@@ -255,8 +255,6 @@
         </div>
     </div>
 </div>
-
-
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function () {
@@ -286,7 +284,7 @@
         // var selector = stringifyJSON(data.spec.selector).replace(/matchLabels=/g, '');
 
         document.getElementById("name").textContent = data.metadata.name;
-        document.getElementById("labels").innerHTML = createSpans(labels, "true");
+        document.getElementById("labels").innerHTML = createSpans(labels, "false");
         document.getElementById("creationTime").textContent = data.metadata.creationTimestamp;
         document.getElementById("status").innerHTML = data.status.phase;
         document.getElementById("qosClass").textContent = data.status.qosClass; //qosClass
@@ -323,24 +321,32 @@
         return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D').replace(/, /g, '&');
     };
 
-    var createSpans = function (data, type) {
-        var datas = data.replace(/=/g, ':').split(',');
-        var spanTemplate = "";
+    var createSpans = function (inputData, type) {
+        var data = inputData.replace(/=/g, ':').split(/,\s/);
+        var spanHtml = "";
 
-        if (type === "true") {
-            $.each(datas, function (index, data) {
-                spanTemplate += '<span class="bg_gray">' + data + '</span>';
-                if (datas.length > 1) {
-                    spanTemplate += '<br>';
+        $.each(data, function (index, item) {
+            if (type === "true" && index > 0)
+                spanHtml += '<br>';
+
+            if (item.length > 40) {
+                var _kv = item.split(': ');
+                if (_kv.length > 1) {
+                    var _title = _kv[0];
+                    var _content = _kv.reduce(function (prev, cur, idx) {
+                        if (idx <= 1) return cur; else return prev + ':' + cur
+                    });
+                    var template = '<span class="bg_blue" data-target="#layerpop" data-toggle="modal" onclick="setLayerpop(this)">';
+                    spanHtml += ( $(template).html('<a>' + _title + '</a>').attr('data-title', _title).attr('data-content', _content)[0].outerHTML + ' ' );
+                } else {
+                    spanHtml += '<span class="bg_gray">' + item.replace(': ', ':') + '</span> ';
                 }
-            });
-        } else {
-            $.each(datas, function (index, data) {
-                spanTemplate += '<span class="bg_gray">' + data + '</span> ';
-            });
-        }
+            } else {
+                spanHtml += '<span class="bg_gray">' + item.replace(': ', ':') + '</span> ';
+            }
+        });
 
-        return spanTemplate;
+        return spanHtml;
     };
     
     var conditionParser = function (data) {

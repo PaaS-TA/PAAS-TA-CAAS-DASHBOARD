@@ -158,6 +158,8 @@
         if (selector === false) {
             selectorString = '-';
             labelSelectorObject.removeClass('bg_gray');
+        } else {
+            selectorString = selector.replace(/=/g, ':')
         }
 
         $('.resultServiceName').html(serviceName);
