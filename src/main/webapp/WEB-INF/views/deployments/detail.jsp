@@ -37,12 +37,12 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td id="labels"></td>
+                                <td id="labels" class="labels_wrap"></td>
                             </tr>
 
                             <tr>
                                 <th><i class="cWrapDot"></i> Annotations</th>
-                                <td id="annotations">
+                                <td id="annotations" class="labels_wrap">
                                 </td>
                             </tr>
                             <tr>
