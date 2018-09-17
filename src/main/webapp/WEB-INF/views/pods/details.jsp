@@ -374,17 +374,7 @@
         listLength = containers.length;
 
         $.each(containers, function (index, itemList) {
-            var containerStatusHtml = '';
             var _status = getContainerStatus(getContainer(containerStatuses, itemList.name), status.phase);
-            if (_status.includes("Running")) {
-                containerStatusHtml += '<span class="green2"><i class="fas fa-check-circle"></i></span>';
-            } else if (_status.includes("Waiting")) {
-                containerStatusHtml += '<span class="red2"><i class="fas fa-exclamation-circle"></i></span>';
-            } else {
-                containerStatusHtml += '<span><i class="fas fa-check-circle"></i></span>';
-            }
-            containerStatusHtml += (' ' + _status);
-
             var imageHtml = '<span data-toggle="tooltip" title="' + itemList.image + '">' + itemList.image + '</span>';
 
             resultArea.append('<tr>' +
@@ -393,7 +383,7 @@
                                         itemList.name +
                                     '</a>' +
                                 '</td>' +
-                                '<td>' + containerStatusHtml + '</td>' +
+                                '<td>' + _status + '</td>' +
                                 '<td>' + imageHtml + '</td>' +
                                 '<td>' + nvl(getContainer(containerStatuses, itemList.name).restartCount, "-") + '</td>' +
                               '</tr>' +
