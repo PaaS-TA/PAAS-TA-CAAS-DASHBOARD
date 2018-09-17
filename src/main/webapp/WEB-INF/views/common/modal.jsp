@@ -124,7 +124,7 @@
                 <!-- header -->
                 <div class="modal-header">
                     <!-- 닫기(x) 버튼 -->
-                    <button type="button" class="close" data-dismiss="modal"></button>
+                    <button type="button" class="close" data-dismiss="modal" ba>×</button>
                     <!-- header title -->
                     <h4 class="modal-title">kubectl.kubernetes.io/last-applied-configuration</h4>
                 </div>

@@ -9,9 +9,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-
-
-
 <div class="content">
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <!-- Deployments 시작 -->
@@ -81,10 +78,6 @@
 </style>
 
 <script type="text/javascript">
-    $(document.body).ready(function () {
-        viewLoading('show');
-        getList();
-    });
 
     var getList = function() {
         var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
@@ -219,5 +212,10 @@
 
         return spanTemplate;
     }
+
+    $(document.body).ready(function () {
+        viewLoading('show');
+        getList();
+    });
 
 </script>
