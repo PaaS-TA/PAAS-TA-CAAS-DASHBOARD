@@ -137,7 +137,7 @@
                     + "</td>"
                     + "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
                     //+ labelObject
-                    + "<td>" + createSpans(labels, "LB") + "</td>"
+                    + "<td>" + procCreateSpans(labels, "LB") + "</td>"
                     + "<td>" + pods + "</td>"
                     + "<td>" + creationTimestamp+"</td>"
                     + "<td>" + imageTags + "</td>"
@@ -161,27 +161,6 @@
         viewLoading('hide');
 
     };
-
-    // TODO :: 업데이트(복수값일시 레이어 링크 제공) 및 공통화 필요
-    var createSpans = function (data, type) {
-        var datas = data.replace(/=/g, ':').split(',');
-        var spanTemplate = "";
-
-        if (type === "LB") { // Line Break
-            $.each(datas, function (index, data) {
-                if (index != 0) {
-                    spanTemplate += '<br>';
-                }
-                spanTemplate += '<span class="bg_gray">' + data + '</span>';
-            });
-        } else {
-            $.each(datas, function (index, data) {
-                spanTemplate += '<span class="bg_gray">' + data + '</span> ';
-            });
-        }
-
-        return spanTemplate;
-    }
 
     // ON LOAD
     $(document.body).ready(function () {
