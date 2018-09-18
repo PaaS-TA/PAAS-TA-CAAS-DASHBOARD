@@ -188,36 +188,6 @@ var procIfDataIsNull = function (data, procCallback, defaultValue) {
     }
 };
 
-// TODO :: REMOVE AFTER CHECK
-// var procConvertByte = function(capacity) {
-//     var multipleSize;
-//     if (capacity.match("Ki").index !== -1) {
-//         multipleSize = 1024;
-//     } else if (capacity.match("Mi").index !== -1) {
-//         multipleSize = 1024 * 1024;
-//     } else if (capacity.match("Gi").index !== -1) {
-//         multipleSize = 1024 * 1024 * 1024;
-//     } else {
-//         multipleSize = 1;
-//     }
-//
-//     return capacity.substring(0, capacity.length - 2) * multipleSize;
-// };
-
-// var procFormatCapacity = function(capacity, unit) {
-//     var unitSize;
-//     if (null == unit || "" === unit)
-//         unitSize = 1;
-//     else {
-//         if (unit === "Ki")    unitSize = 1024
-//         if (unit === "Mi")    unitSize = Math.pow(1024, 2);
-//         if (unit === "Gi")    unitSize = Math.pow(1024, 3);
-//     }
-//
-//     return ((capacity / unitSize).toFixed(2) + ' ' + unit);
-// };
-
-
 // TODO :: REMOVE DUPLICATED
 var stringifyJSON = function (obj) {
     return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
@@ -321,7 +291,7 @@ var procSetEventStatusForPods = function(podNameList) {
 };
 
 
-// CALLBACK
+// CALLBACK SET EVENT(STATUS) FOR PODS AND RESOURCES RELATED PODS
 var callbackSetEventStatusForPods = function(data) {
     if (!procCheckValidData(data)) {
         viewLoading('hide');
@@ -333,7 +303,7 @@ var callbackSetEventStatusForPods = function(data) {
     var podName = data.resourceName;
     var items = data.items;
     var listLength = items.length;
-    var itemStatusIconHtml = "<span class='green2'><i class='fas fa-check-circle'></i></span>";
+    var itemStatusIconHtml = "<span class='failed2 tableTdToolTipFalse'><i class='fas fas fa-exclamation-circle'></i></span> ";
     var itemNameLinkHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"" + URI_WORKLOADS_PODS + "/" + podName + "\");'>" + podName + "</a>" ;
     var itemMessageHtml;
     var itemMessageList = [];
@@ -341,9 +311,9 @@ var callbackSetEventStatusForPods = function(data) {
     var warningCount = 0;
     for (var i = 0; i < listLength; i++) {
         if (items[i].type === 'Warning') {
-            itemStatusIconHtml = "<span class='failed2'><i class='fas fas fa-exclamation-circle'></i></span> ";
             itemMessageList.push(
-                $('<p class="failed2 custom-content-overflow" data-toggle="tooltip">' + items[i].message + '</p>').attr('title', items[i].message).wrapAll("<div/>").parent().html()
+                $('<p class="failed2 custom-content-overflow" data-toggle="tooltip">' + items[i].message + '</p>')
+                    .attr('title', items[i].message).wrapAll("<div/>").parent().html()
             );
             warningCount++;
         }
