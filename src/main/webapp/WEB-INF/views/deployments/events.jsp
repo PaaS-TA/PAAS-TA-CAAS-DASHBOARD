@@ -21,7 +21,7 @@
                            <p>Events</p>
                        </div>
                        <div class="view_table_wrap">
-                           <table class="table_event condition alignL service-lh">
+                           <table class="table_event condition alignL service-lh" >
                                <colgroup>
                                    <col style=".">
                                    <col style=".">
@@ -117,9 +117,9 @@
                 subObjectObject += "<td data-toggle='tooltip' title='"+ subObject +"'>" + subObject + "</td>";
             }
             resultArea.append("<tr>"
-                                + "<td  data-toggle='tooltip' title='"+message+"'>" + message + "</td>"
-                                + "<td data-toggle='tooltip' title='"+source+"'>" + source + "</td>"
-                                + subObjectObject +  "</td>"
+                                + "<td><p>" + message + "</p></td>"
+                                + "<td><p>" + source + "</p></td>"
+                                + "<td><p>" + subObjectObject +  "</p></td>"
                                 + "<td>" + count + "</td>"
                                 + "<td>" + fristTimestamp + "</td>"
                                 + "<td>" + lastTimestamp + "</td>"
@@ -135,6 +135,8 @@
             resultHeaderArea.show();
             resultArea.show();
         }
+
+        procSetToolTipForTableTd('resultArea');
     };
 
     $(document.body).ready(function () {

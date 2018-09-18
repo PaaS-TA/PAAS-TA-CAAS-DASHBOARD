@@ -290,17 +290,17 @@
             var containers = itemList.spec.template.spec.containers;
             var imageTags = "";
             for (var i = 0; i < containers.length; i++) {
-                imageTags += '<p class="custom-content-overflow" data-toggle="tooltip" title="' + containers[i].image + '">' + containers[i].image + '</p>';
+                imageTags += '<p>' + containers[i].image + '</p>';
             }
 
             resultArea.append('<tr>' +
                                     '<td>' +
                                         '<span class="green2"><i class="fas fa-check-circle"></i></span> ' +
-                                        "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + replicasetName + "\");' data-toggle='tooltip' title='"+replicasetName+"' >"+
+                                        "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + replicasetName + "\");'>"+
                                             replicasetName +
                                         '</a>' +
                                     '</td>' +
-                                    "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
+                                    "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
                                     '<td>' + procCreateSpans(labels, "LB") + '</td>' +
                                     '<td>' + availableReplicas + " / " + replicas + '</td>' +
                                     "<td>" + imageTags + "</td>" +

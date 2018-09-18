@@ -132,7 +132,7 @@
             var imageTags = "";
 
             for (var i = 0; i < containers.length; i++) {
-                imageTags += '<p class="custom-content-overflow" data-toggle="tooltip" title="' + containers[i].image + '">' + containers[i].image + '</p>';
+                imageTags += '<p>' + containers[i].image + '</p>';
             }
 
             addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
@@ -143,7 +143,7 @@
             if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
                 statusIconHtml    = "<span class='red2'><i class='fas fa-exclamation-circle'></i> </span>";
                 $.each(itemList.message , function (index, eventMessage) {
-                    statusMessageHtml += "<p class='red2 custom-content-overflow' data-toggle='tooltip' title='" + eventMessage + "'>" + eventMessage + "</p>";
+                    statusMessageHtml += "<p>" + eventMessage + "</p>";
                 });
 
             }else{
@@ -160,10 +160,10 @@
             resultArea.append('<tr>' +
                                     '<td>' +
                                         statusIconHtml +
-                                        "<a href='javascript:void(0);' data-toggle='tooltip' title='"+deployName+"' onclick='procMovePage(\"/caas/workloads/deployments/" + deployName + "\");'>" + deployName + '</a>' +
+                                        "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/" + deployName + "\");'>" + deployName + '</a>' +
                                         statusMessageHtml +
                                     '</td>' +
-                                    "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
+                                    "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
                                     labelObject +
                                     '<td>' + runningPods +" / " + totalPods + '</td>' +
                                     '<td>' + creationTimestamp + '</td>' +
