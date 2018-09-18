@@ -27,8 +27,9 @@ public class RestTemplateService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestTemplateService.class);
     private static final String AUTHORIZATION_HEADER_KEY = "Authorization";
     private static final String CONTENT_TYPE = "Content-Type";
-    private final String commonApiBase64Authorization;
     private final String caasApiBase64Authorization;
+    private final String caasCfApiBase64Authorization;
+    private final String commonApiBase64Authorization;
     private final RestTemplate restTemplate;
     private String base64Authorization;
     private String baseUrl;
@@ -39,30 +40,38 @@ public class RestTemplateService {
      * Instantiates a new Rest template service.
      *
      * @param restTemplate                   the rest template
-     * @param commonApiAuthorizationId       the common api authorization id
-     * @param commonApiAuthorizationPassword the common api authorization password
      * @param caasApiAuthorizationId         the caas api authorization id
      * @param caasApiAuthorizationPassword   the caas api authorization password
+     * @param caasCfApiAuthorizationId       the caas cf api authorization id
+     * @param caasCfApiAuthorizationPassword the caas cf api authorization password
+     * @param commonApiAuthorizationId       the common api authorization id
+     * @param commonApiAuthorizationPassword the common api authorization password
      * @param propertyService                the property service
      */
     @Autowired
     public RestTemplateService(RestTemplate restTemplate,
 //                               JpaAdminTokenRepository adminTokenRepository,
-                               @Value("${commonApi.authorization.id}") String commonApiAuthorizationId,
-                               @Value("${commonApi.authorization.password}") String commonApiAuthorizationPassword,
                                @Value("${caasApi.authorization.id}") String caasApiAuthorizationId,
                                @Value("${caasApi.authorization.password}") String caasApiAuthorizationPassword,
+                               @Value("${caasCfApi.authorization.id}") String caasCfApiAuthorizationId,
+                               @Value("${caasCfApi.authorization.password}") String caasCfApiAuthorizationPassword,
+                               @Value("${commonApi.authorization.id}") String commonApiAuthorizationId,
+                               @Value("${commonApi.authorization.password}") String commonApiAuthorizationPassword,
                                PropertyService propertyService) {
         this.restTemplate = restTemplate;
-//        this.adminTokenRepository = adminTokenRepository;
         this.propertyService = propertyService;
+        this.caasApiBase64Authorization = "Basic "
+                + Base64Utils.encodeToString(
+                (caasApiAuthorizationId + ":" + caasApiAuthorizationPassword).getBytes(StandardCharsets.UTF_8));
+
+        this.caasCfApiBase64Authorization = "Basic "
+                + Base64Utils.encodeToString(
+                (caasCfApiAuthorizationId + ":" + caasCfApiAuthorizationPassword).getBytes(StandardCharsets.UTF_8));
 
         this.commonApiBase64Authorization = "Basic "
                 + Base64Utils.encodeToString(
                 (commonApiAuthorizationId + ":" + commonApiAuthorizationPassword).getBytes(StandardCharsets.UTF_8));
-        this.caasApiBase64Authorization = "Basic "
-                + Base64Utils.encodeToString(
-                (caasApiAuthorizationId + ":" + caasApiAuthorizationPassword).getBytes(StandardCharsets.UTF_8));
+
     }
 
 
@@ -111,6 +120,7 @@ public class RestTemplateService {
         }
     }
 
+
     /**
      * Cf send t.
      *
@@ -142,56 +152,28 @@ public class RestTemplateService {
         return resEntity.getBody();
     }
 
-// TODO :: REMOVE AFTER CHECK
-//    public <T> T cubeSend(String url, String caas_adminValue, HttpMethod httpMethod, Class<T> responseType) {
-//        return cubeSend(url, null, caas_adminValue, httpMethod, responseType);
-//    }
-
-    /**
-     * kuber api와 통신하기 위한 메소드
-     * get의 경우 body가 필요 없기 때문에 yml로 get,delete의 유무판별하여 body를 넣고 안넣고를 정함.
-     * @author Hyerin
-     * @since 2018.08.22
-     */
-//    public <T> T cubeSend(String url, String yml, String caas_adminValue, HttpMethod httpMethod, Class<T> responseType) {
-//        LOGGER.info("cubeSend start~");
-//        LOGGER.info(caas_adminValue);
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Authorization", "Bearer " + caas_adminValue);
-//        headers.add("Accept", "application/json,application/yaml,text/html");
-//        headers.add("Content-Type", "application/yaml;charset=UTF-8");
-//
-//
-//        HttpEntity<String> reqEntity;
-//        if(yml == null) {  //null이면
-//            reqEntity = new HttpEntity<>(headers);
-//        } else { // null이 아니면
-//            reqEntity = new HttpEntity<>(yml, headers);
-//        }
-//        ResponseEntity<T> resEntity = restTemplate.exchange(url, httpMethod, reqEntity, responseType);
-//        if (resEntity.getBody() != null) {
-//            LOGGER.info("Response Type: {}", resEntity.getBody().getClass());
-//        }
-//
-//        return resEntity.getBody();
-//    }
 
     private void setApiUrlAuthorization(String reqApi) {
 
         String apiUrl = "";
         String authorization = "";
 
-        // COMMON API
-        if (Constants.TARGET_COMMON_API.equals(reqApi)) {
-            apiUrl = propertyService.getCommonApiUrl();
-            authorization = commonApiBase64Authorization;
-        }
-
         // CAAS API
         if (Constants.TARGET_CAAS_API.equals(reqApi)) {
             apiUrl = propertyService.getCaasApiUrl();
             authorization = caasApiBase64Authorization;
+        }
+
+        // CAAS CF API
+        if (Constants.TARGET_CAAS_CF_API.equals(reqApi)) {
+            apiUrl = propertyService.getCaasCfApiUrl();
+            authorization = caasCfApiBase64Authorization;
+        }
+
+        // COMMON API
+        if (Constants.TARGET_COMMON_API.equals(reqApi)) {
+            apiUrl = propertyService.getCommonApiUrl();
+            authorization = commonApiBase64Authorization;
         }
 
         this.base64Authorization = authorization;
