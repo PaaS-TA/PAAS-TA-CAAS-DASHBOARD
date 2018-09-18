@@ -353,15 +353,13 @@
     //3개 일때는 동작하지 않는드아!
     var createAnnotations = function (annotations) {
         var tempStr = "";
-        var index = 0;
         Object.keys(annotations).forEach(function (key) {
-            if(index == 0) {
-                tempStr += createSpans(key + ":"+ annotations[key]);
-            } else {
+            if(typeof JSON.parse(annotations[key]) == 'object') {
                 tempStr += '<span class="bg_blue"><a href="#" data-target="#layerpop3" data-toggle="modal">' + key + '</a></span>';
                 $("#modal-body").innerHTML = '<p>' + annotations[key] + '</p> ';
+            } else {
+                tempStr += createSpans(key + ":"+ annotations[key]);
             }
-            index ++;
         });
         return tempStr;
     };
