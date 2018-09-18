@@ -83,8 +83,8 @@
     });
 
     var getDetail = function() {
-        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_RESOURCES %>".replace("{namespace:.+}", NAME_SPACE)
-                                                                        .replace("{requestDeploymentsName:.+}", document.getElementById('requestDeploymentsName').value);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE)
+                                                                                    .replace("{resourceName:.+}", document.getElementById('requestDeploymentsName').value);
 
         procCallAjax(reqUrl, "GET", null, null, callbackGetList);
     };

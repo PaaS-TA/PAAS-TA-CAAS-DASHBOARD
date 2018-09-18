@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DeploymentsService {
-    private static final Logger LOGGER = LoggerFactory.getLogger( DeploymentsService.class );
 
     private final RestTemplateService restTemplateService;
 
@@ -48,8 +47,7 @@ public class DeploymentsService {
     public Deployments getDeployments (String namespace, String deploymentName ) {
         String urlWithDeploymentName = Constants.URI_API_DEPLOYMENTS_DETAIL.replace( "{namespace:.+}", namespace )
                                                                             .replace( "{deploymentName:.+}", deploymentName );
-        return restTemplateService.send(
-                Constants.TARGET_CAAS_API, urlWithDeploymentName, HttpMethod.GET, null, Deployments.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, urlWithDeploymentName, HttpMethod.GET, null, Deployments.class);
     }
 
     /**

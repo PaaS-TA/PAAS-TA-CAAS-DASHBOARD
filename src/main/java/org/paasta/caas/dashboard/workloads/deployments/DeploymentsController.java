@@ -3,12 +3,10 @@ package org.paasta.caas.dashboard.workloads.deployments;
 import org.paasta.caas.dashboard.common.CommonService;
 import org.paasta.caas.dashboard.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * Deployments 관련 Caas API 를 호출 하는 컨트롤러이다.
@@ -81,7 +79,7 @@ public class DeploymentsController {
      * @param namespace namespace
      * @return List of deployments (specific namespace)
      */
-    @GetMapping( "/namespaces/{namespace:.+}/deployments" )
+    @GetMapping( Constants.URI_API_DEPLOYMENTS_LIST )
     public DeploymentsList getDeploymentsList(@PathVariable String namespace) {
         return deploymentsService.getDeploymentsList(namespace);
     }
@@ -93,7 +91,7 @@ public class DeploymentsController {
      * @param deploymentName request deploymentName
      * @return Deployments's detail content (specific namespace and deployment)
      */
-    @GetMapping( "/namespaces/{namespace}/deployments/{deploymentName:.+}")
+    @GetMapping( Constants.URI_API_DEPLOYMENTS_DETAIL )
     public Deployments getDeployments(@PathVariable String namespace, @PathVariable String deploymentName) {
         return deploymentsService.getDeployments(namespace, deploymentName);
     }
@@ -105,7 +103,7 @@ public class DeploymentsController {
      * @param selector  the selector for filter
      * @return List of deployments
      */
-    @GetMapping(value = "/api/namespaces/{namespace}/deployments/resource/{selector}")
+    @GetMapping( Constants.URI_API_DEPLOYMENTS_RESOURCES )
     @ResponseBody
     public DeploymentsList getDeploymentsListLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector) {
         return deploymentsService.getDeploymentsListLabelSelector(namespace, selector);
