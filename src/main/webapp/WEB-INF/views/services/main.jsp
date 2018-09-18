@@ -19,7 +19,7 @@
                         <p>Services</p>
                         <ul class="colright_btn">
                             <li>
-                                <input type="text" id="table-search-01" name="" class="table-search" placeholder="search" onkeypress="if(event.keyCode===13) {setList(this.value);}" />
+                                <input type="text" id="table-search-01" name="" class="table-search" placeholder="search" onkeypress="if(event.keyCode===13) {setList(this.value);}" maxlength="100" />
                                 <button name="button" class="btn table-search-on" type="button">
                                     <i class="fas fa-search"></i>
                                 </button>
@@ -71,6 +71,7 @@
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_LIST %>"
             .replace("{namespace:.+}", NAME_SPACE);
+
         procCallAjax(reqUrl, "GET", null, null, callbackGetList);
     };
 
@@ -93,7 +94,14 @@
     var setList = function (searchKeyword) {
         viewLoading('show');
 
-        var serviceName,
+        var resultArea = $('#resultArea');
+        var resultHeaderArea = $('#resultHeaderArea');
+        var noResultArea = $('#noResultArea');
+        var resultTable = $('#resultTable');
+
+        var itemsMetadata,
+            itemsSpec,
+            serviceName,
             selector,
             namespace,
             endpointsPreString,
@@ -106,11 +114,6 @@
             endpointWithNodePort,
             endpointProtocol;
 
-        var resultArea = $('#resultArea');
-        var resultHeaderArea = $('#resultHeaderArea');
-        var noResultArea = $('#noResultArea');
-        var resultTable = $('#resultTable');
-
         var items = G_SERVICE_LIST.items;
         var listLength = items.length;
         var endpoints = "";
@@ -119,22 +122,24 @@
         var htmlString = [];
 
         for (var i = 0; i < listLength; i++) {
-            serviceName = items[i].metadata.name;
+            itemsMetadata = items[i].metadata;
+            itemsSpec = items[i].spec;
+            serviceName = itemsMetadata.name;
 
             if ((nvl(searchKeyword) === "") || serviceName.indexOf(searchKeyword) > -1) {
-                selector = procSetSelector(items[i].spec.selector);
-                namespace = items[i].metadata.namespace;
+                selector = procSetSelector(itemsSpec.selector);
+                namespace = itemsMetadata.namespace;
                 endpointsPreString = (namespace === 'default') ? serviceName : serviceName + "." + namespace;
                 endpointsPreString += ":";
-                nodePort = items[i].spec.ports.nodePort;
+                nodePort = itemsSpec.ports.nodePort;
 
                 if (nvl(nodePort) === '') {
                     nodePort = "0";
                 }
 
-                specType = items[i].spec.type;
-                clusterIp = items[i].spec.clusterIP;
-                specPortsList = items[i].spec.ports;
+                specType = itemsSpec.type;
+                clusterIp = itemsSpec.clusterIP;
+                specPortsList = itemsSpec.ports;
                 specPortsListLength = specPortsList.length;
 
                 for (var j = 0; j < specPortsListLength; j++) {
@@ -142,20 +147,20 @@
                     endpointWithSpecPort = endpointsPreString + specPortsList[j].port + " " + endpointProtocol;
                     endpointWithNodePort = endpointsPreString + nodePort + " " + endpointProtocol;
 
-                    endpoints += '<p>' + endpointWithSpecPort + '</p>'
-                        + '<p>' + endpointWithNodePort + '</p>';
+                    endpoints += '<p>' + endpointWithSpecPort + '</p>' + '<p>' + endpointWithNodePort + '</p>';
                 }
 
                 htmlString.push(
                     "<tr>"
                     + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/" + serviceName + "\");'>" + serviceName + "</a>"
+                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/"
+                    + serviceName + "\");'>" + serviceName + "</a>"
                     + "</td>"
                     + "<td><p>" + specType + "</p></td>"
                     + "<td><p>" + clusterIp + "</p></td>"
                     + "<td>" + endpoints + "</td>"
                     + "<td><p id='" + serviceName + "' class='tableTdToolTipFalse'>0 / 0</p></td>"
-                    + "<td>" + items[i].metadata.creationTimestamp + "</td>"
+                    + "<td>" + itemsMetadata.creationTimestamp + "</td>"
                     + "</tr>");
 
                 if (selector !== 'false') {
@@ -190,8 +195,8 @@
     // GET DETAIL FOR PODS
     var getDetailForPods = function (selectorList) {
         var listLength = selectorList.length;
-        var tempSelectorList;
-        var reqUrl;
+        var tempSelectorList,
+            reqUrl;
 
         for (var i = 0; i < listLength; i++) {
             viewLoading('show');

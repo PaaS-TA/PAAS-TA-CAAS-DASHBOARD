@@ -103,7 +103,6 @@ public class DeploymentsController {
      * @param selector  the selector for filter
      * @return List of deployments
      */
-    // TODO :: CHECK URI
     @GetMapping( Constants.URI_API_DEPLOYMENTS_RESOURCES )
     @ResponseBody
     public DeploymentsList getDeploymentsListLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector) {

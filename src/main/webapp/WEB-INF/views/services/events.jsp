@@ -66,6 +66,7 @@
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
             .replace("{namespace:.+}", NAME_SPACE)
             .replace("{resourceName:.+}", document.getElementById('requestServiceName').value);
+
         procCallAjax(reqUrl, "GET", null, null, callbackGetList);
     };
 
@@ -74,6 +75,7 @@
     var callbackGetList = function (data) {
         if (!procCheckValidData(data)) {
             viewLoading('hide');
+            alertMessage();
             return false;
         }
 

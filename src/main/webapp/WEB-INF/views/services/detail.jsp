@@ -114,6 +114,7 @@
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_DETAIL %>"
             .replace("{namespace:.+}", NAME_SPACE)
             .replace("{serviceName:.+}", document.getElementById('requestServiceName').value);
+
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
 
@@ -122,19 +123,25 @@
     var callbackGetDetail = function(data) {
         if (!procCheckValidData(data)) {
             viewLoading('hide');
+            alertMessage();
             return false;
         }
 
         var selector,
             endpointsPreString,
-            specPortsList,
-            specPortsListLength,
             selectorString;
 
-        var serviceName = data.metadata.name;
-        var namespace = data.metadata.namespace;
-        var namespaceHtml = "<a href='javascript:void(0);'data-toggle='tooltip' title='" + namespace + "' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + namespace + "\");'>" + namespace + "</a>";
-        var nodePort = data.spec.ports.nodePort;
+        var dataMetadata = data.metadata;
+        var dataSpec = data.spec;
+        var specPortsList = dataSpec.ports;
+        var specPortsListLength = specPortsList.length;
+
+        var serviceName = dataMetadata.name;
+        var namespace = dataMetadata.namespace;
+        var namespaceHtml = "<a href='javascript:void(0);'data-toggle='tooltip' title='"
+            + namespace + "' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/"
+            + namespace + "\");'>" + namespace + "</a>";
+        var nodePort = dataSpec.ports.nodePort;
         var endpoints = "";
         var labelSelectorObject = $('#resultLabelSelector');
 
@@ -142,8 +149,6 @@
             nodePort = "0";
         }
 
-        specPortsList = data.spec.ports;
-        specPortsListLength = specPortsList.length;
         endpointsPreString = (namespace === 'default') ? serviceName : serviceName + "." + namespace;
         endpointsPreString += ":";
 
@@ -152,7 +157,7 @@
                 + '<p>' + endpointsPreString + nodePort + " " + specPortsList[i].protocol + '</p>';
         }
 
-        selector = procSetSelector(data.spec.selector);
+        selector = procSetSelector(dataSpec.selector);
         selectorString = selector;
 
         if (selector === false) {
@@ -164,11 +169,11 @@
 
         $('.resultServiceName').html(serviceName);
         $('#resultNamespace').html(namespaceHtml);
-        $('#resultCreationTimestamp').html(data.metadata.creationTimestamp);
+        $('#resultCreationTimestamp').html(dataMetadata.creationTimestamp);
         labelSelectorObject.html(selectorString);
-        $('#resultType').html(data.spec.type);
-        $('#resultSessionAffinity').html(data.spec.sessionAffinity);
-        $('#resultClusterIp').html(data.spec.clusterIP);
+        $('#resultType').html(dataSpec.type);
+        $('#resultSessionAffinity').html(dataSpec.sessionAffinity);
+        $('#resultClusterIp').html(dataSpec.clusterIP);
         $('#resultInternalEndpointsArea').html(endpoints);
 
         viewLoading('hide');
@@ -190,6 +195,7 @@
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_ENDPOINTS_DETAIL %>"
             .replace("{namespace:.+}", NAME_SPACE)
             .replace("{serviceName:.+}", document.getElementById('requestServiceName').value);
+
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForEndpoints);
     };
 
@@ -201,13 +207,17 @@
             return false;
         }
 
+        var resultArea = $('#resultAreaForEndpoints');
+        var resultHeaderArea = $('#resultHeaderAreaForEndpoints');
+        var noResultArea = $('#noResultAreaForEndpoints');
+
         var endpointsList,
             ports,
             endpointsListLength,
             portsListLength,
             nodeName;
 
-        var items = data.subsets;
+        var dataSubsets = data.subsets;
         var subsetsListLength = 0;
         var portsString = '';
         var separatorString = ", ";
@@ -216,22 +226,18 @@
         var nodeNameList = [];
         var htmlString = [];
 
-        var resultArea = $('#resultAreaForEndpoints');
-        var resultHeaderArea = $('#resultHeaderAreaForEndpoints');
-        var noResultArea = $('#noResultAreaForEndpoints');
-
-        if (items === null) {
+        if (dataSubsets === null) {
             checkCount++;
         } else {
-            subsetsListLength = items.length;
+            subsetsListLength = dataSubsets.length;
         }
 
         for (var i = 0; i < subsetsListLength; i++) {
-            endpointsList = items[i].addresses;
-            ports = items[i].ports;
+            endpointsList = dataSubsets[i].addresses;
+            ports = dataSubsets[i].ports;
 
             if (endpointsList === null) {
-                endpointsList = items[i].notReadyAddresses;
+                endpointsList = dataSubsets[i].notReadyAddresses;
             }
 
             if (ports === null) {
@@ -255,7 +261,8 @@
                     }
 
                     if (nodeName !== '-') {
-                        nodeNameHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + nodeName + "/summary\");'>" + nodeName + "</a>"
+                        nodeNameHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/"
+                            + nodeName + "/summary\");'>" + nodeName + "</a>";
                         nodeNameList.push(nodeName);
                     }
 
@@ -300,6 +307,7 @@
 
                 reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_NODES_LIST %>"
                     .replace('{nodeName:.+}', nodeNameList[i]);
+
                 procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForNodes);
             }
         }

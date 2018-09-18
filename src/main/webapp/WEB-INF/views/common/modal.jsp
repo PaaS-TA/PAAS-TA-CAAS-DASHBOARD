@@ -21,6 +21,7 @@
                 </div>
                 <!-- body -->
                 <div class="modal-body roleUpdate">
+                    <%--TODO :: REMOVE COMMENTS--%>
                     <%-- <p class="account_modal_p"><span>hong@test.com</span> 님을 <span>Administrator</span>로 Role을 변경하시겠습니까?
                      </p>--%>
                 </div>
@@ -49,6 +50,7 @@
                 </div>
                 <!-- body -->
                 <div class="modal-body deleteUser">
+                    <%--TODO :: REMOVE COMMENTS--%>
                     <%--<p class="account_modal_p"><span>user</span> 님을 삭제하시겠습니까?<br>
                         사용자를 삭제하면 복구할 수 없습니다.
                     </p>--%>
@@ -77,6 +79,7 @@
                 </div>
                 <!-- body -->
                 <div class="modal-body roleUpdateComplete">
+                    <%--TODO :: REMOVE COMMENTS--%>
                     <%-- <p class="account_modal_p"><span>hong@test.com</span> 님을 <span>Administrator</span>로 Role을 변경하시겠습니까?
                      </p>--%>
                 </div>
@@ -103,6 +106,7 @@
                 </div>
                 <!-- body -->
                 <div class="modal-body deleteUserComplete">
+                    <%--TODO :: REMOVE COMMENTS--%>
                     <%-- <p class="account_modal_p"><span>hong@test.com</span> 님을 <span>Administrator</span>로 Role을 변경하시겠습니까?
                      </p>--%>
                 </div>

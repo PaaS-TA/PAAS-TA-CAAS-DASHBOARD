@@ -157,7 +157,7 @@ var procCheckValidData = function (data) {
         }
         return false;
     } else {
-        return true;
+        return null != data.resultCode;
     }
 };
 
@@ -265,7 +265,14 @@ var viewLoading = function(type) {
 
 
 var alertMessage = function(value, result) {
-    $(".alertLayer .in").html(value);
+    // TODO :: SEPARATE PROPERTY
+    var messageValue = '시스템 에러가 발생했습니다.';
+
+    if (nvl(value) !== '') {
+        messageValue = value;
+    }
+
+    $(".alertLayer .in").html(messageValue);
     if (result) {
         $(".alertLayer").css('border-left', '4px solid #3d10ef');
     } else {
