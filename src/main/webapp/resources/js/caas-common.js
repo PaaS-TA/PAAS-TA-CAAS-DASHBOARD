@@ -82,16 +82,6 @@ var procMovePage = function (pageUrl) {
 };
 
 
-// GET DASHBOARD URL
-var procGetDashboardUrl = function () {
-    var currentUrl = location.pathname;
-    var splitString = "/";
-    var splits = currentUrl.split(splitString);
-
-    return splitString + splits[1] + splitString + splits[2];
-};
-
-
 // SET SELECTOR
 var procSetSelector = function (requestMapString) {
     if (requestMapString === null || requestMapString.length < 1) {
@@ -182,38 +172,42 @@ var procIfDataIsNull = function (data, procCallback, defaultValue) {
     }
 };
 
-var procConvertByte = function(capacity) {
-    var multipleSize;
-    if (capacity.match("Ki").index !== -1) {
-        multipleSize = 1024;
-    } else if (capacity.match("Mi").index !== -1) {
-        multipleSize = 1024 * 1024;
-    } else if (capacity.match("Gi").index !== -1) {
-        multipleSize = 1024 * 1024 * 1024;
-    } else {
-        multipleSize = 1;
-    }
+// TODO :: REMOVE AFTER CHECK
+// var procConvertByte = function(capacity) {
+//     var multipleSize;
+//     if (capacity.match("Ki").index !== -1) {
+//         multipleSize = 1024;
+//     } else if (capacity.match("Mi").index !== -1) {
+//         multipleSize = 1024 * 1024;
+//     } else if (capacity.match("Gi").index !== -1) {
+//         multipleSize = 1024 * 1024 * 1024;
+//     } else {
+//         multipleSize = 1;
+//     }
+//
+//     return capacity.substring(0, capacity.length - 2) * multipleSize;
+// };
 
-    return capacity.substring(0, capacity.length - 2) * multipleSize;
-};
+// var procFormatCapacity = function(capacity, unit) {
+//     var unitSize;
+//     if (null == unit || "" === unit)
+//         unitSize = 1;
+//     else {
+//         if (unit === "Ki")    unitSize = 1024
+//         if (unit === "Mi")    unitSize = Math.pow(1024, 2);
+//         if (unit === "Gi")    unitSize = Math.pow(1024, 3);
+//     }
+//
+//     return ((capacity / unitSize).toFixed(2) + ' ' + unit);
+// };
 
-var procFormatCapacity = function(capacity, unit) {
-    var unitSize;
-    if (null == unit || "" === unit)
-        unitSize = 1;
-    else {
-        if (unit === "Ki")    unitSize = 1024
-        if (unit === "Mi")    unitSize = Math.pow(1024, 2);
-        if (unit === "Gi")    unitSize = Math.pow(1024, 3);
-    }
 
-    return ((capacity / unitSize).toFixed(2) + ' ' + unit);
-};
-
+// TODO :: REMOVE DUPLICATED
 var stringifyJSON = function (obj) {
     return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
 };
 
+// TODO :: REMOVE AFTER CHECK
 //TODO 이중에 골라서.
 //https://www.jqueryscript.net/demo/Fullscreen-Loading-Modal-Indicator-Plugin-For-jQuery-loadingModal/
 
@@ -251,7 +245,7 @@ var viewLoading = function(type) {
             loader.gSpinner("hide").hide();
         }, 1000);
     }
-
+    // TODO :: REMOVE AFTER CHECK
     // var dashboardWrap = $("#dashboardWrap");
     //
     // if (type === 'show') {
@@ -287,6 +281,7 @@ var alertMessage = function(value, result) {
 };
 
 
+// TODO :: REMOVE AFTER CHECK
 var isPodEventOverwrite = true;
 
 // SET EVENT STATUS FOR PODS

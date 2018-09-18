@@ -8,6 +8,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div class="alertLayer" role="alert">
     <div class="in">
-        Alert! PaasTA Alert Example!<span class="alertClose">x</span>
+        Alert<span class="alertClose">x</span>
     </div>
 </div>

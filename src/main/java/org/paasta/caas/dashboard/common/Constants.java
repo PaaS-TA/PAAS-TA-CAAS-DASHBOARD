@@ -21,6 +21,7 @@ public class Constants {
     // FOR SSO
     public static final String CAAS_INIT_URI = "/caas/intro/overview";
 
+    // TODO :: REMOVE UNUSED VARIABLES
     public static final String API_WORKLOAD = "/workloads";
 
     // VIEW URL - Clusters
