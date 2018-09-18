@@ -30,22 +30,17 @@ public class CommonStatus {
     @SerializedName("replicas")
     private int replicas;
 
-    // FOR POD :: BEGIN
+    @SerializedName("phase")
     private String phase;
-    private List containerStatuses;
-    // FOR POD :: END
 
-    // FOR NODE :: BEGIN
+    @SerializedName("containerStatuses")
+    private List containerStatuses;
+
     private List<CommonCondition> conditions;
-    // FOR NODE :: BEGIN
 
     @SerializedName("podIP")
     private String podIP;
 
     @SerializedName("qosClass")
     private String qosClass;
-
-    //@SerializedName("conditions")
-    //private List<ReplicaSetCondition> conditions;
-
 }

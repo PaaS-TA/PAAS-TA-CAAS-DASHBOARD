@@ -16,119 +16,94 @@ import java.util.Map;
 @Data
 public class CommonSpec {
 
-    @SerializedName( "minReadySeconds" )
+    @SerializedName("minReadySeconds")
     private int minReadySeconds;
 
-    @SerializedName( "replicas" )
+    @SerializedName("replicas")
     private int replicas;
 
-//    @SerializedName("selector")
-//    private CommonLabelSelector selector;
-
-    @SerializedName( "template" )
+    @SerializedName("template")
     private CommonPodTemplateSpec template;
 
-    @SerializedName( "activeDeadlineSeconds" )
+    @SerializedName("activeDeadlineSeconds")
     private long activeDeadlineSeconds;
 
-    @SerializedName( "automountServiceAccountToken" )
+    @SerializedName("automountServiceAccountToken")
     private boolean automountServiceAccountToken;
 
-    @SerializedName( "dnsPolicy" )
+    @SerializedName("dnsPolicy")
     private String dnsPolicy;
 
-    @SerializedName( "hostIPC" )
+    @SerializedName("hostIPC")
     private boolean hostIPC;
 
-    @SerializedName( "hostNetwork" )
+    @SerializedName("hostNetwork")
     private boolean hostNetwork;
 
-    @SerializedName( "hostPID" )
+    @SerializedName("hostPID")
     private boolean hostPID;
 
-    @SerializedName( "hostname" )
+    @SerializedName("hostname")
     private String hostname;
 
-    @SerializedName( "nodeName" )
+    @SerializedName("nodeName")
     private String nodeName;
 
-    @SerializedName( "nodeSelector" )
+    @SerializedName("nodeSelector")
     private Map<String, String> nodeSelector;
 
-    @SerializedName( "priority" )
+    @SerializedName("priority")
     private int priority;
 
-    @SerializedName( "priorityClassName" )
+    @SerializedName("priorityClassName")
     private String priorityClassName;
 
-    @SerializedName( "restartPolicy" )
+    @SerializedName("restartPolicy")
     private String restartPolicy;
 
-    @SerializedName( "schedulerName" )
+    @SerializedName("schedulerName")
     private String schedulerName;
 
-    @SerializedName( "serviceAccount" )
+    @SerializedName("serviceAccount")
     private String serviceAccount;
 
-    @SerializedName( "serviceAccountName" )
+    @SerializedName("serviceAccountName")
     private String serviceAccountName;
 
-    @SerializedName( "shareProcessNamespace" )
+    @SerializedName("shareProcessNamespace")
     private boolean shareProcessNamespace;
 
-    @SerializedName( "subdomain" )
+    @SerializedName("subdomain")
     private String subdomain;
 
-    @SerializedName( "terminationGracePeriodSeconds" )
+    @SerializedName("terminationGracePeriodSeconds")
     private long terminationGracePeriodSeconds;
 
-    // FOR SERVICE :: BEGIN
+    @SerializedName("type")
     private String type;
+
+    @SerializedName("clusterIP")
     private String clusterIP;
+
+    @SerializedName("ports")
     private List ports;
+
+    @SerializedName("sessionAffinity")
     private String sessionAffinity;
+
+    @SerializedName("selector")
     private Map selector;
-    // FOR SERVICE :: END
 
-
-//    @SerializedName("tolerations")
-//    private List<Toleration> tolerations;
-//
-    @SerializedName("volumes")
-    private List<Volume> volumes;
-//
-//    @SerializedName("affinity")
-//    private V1Affinity affinity;
-//
-//    @SerializedName("securityContext")
-//    private PodSecurityContext securityContext;
-//
-//    @SerializedName("imagePullSecrets")
-//    private List<V1LocalObjectReference> imagePullSecrets;
-//
-//    @SerializedName("initContainers")
-//    private List<V1Container> initContainers;
-//
-
-    // FOR TEMPLATE SPEC :: START
-    @SerializedName( "containers" )
     private List<CommonContainer> containers;
-    // FOR TEMPLATE SPEC :: END
 
-    // FOR NODES SPEC :: START
-    @SerializedName( "podCIDR" )
+    @SerializedName("podCIDR")
     private String podCIDR;
 
-    @SerializedName( "taints" )
+    @SerializedName("taints")
     private List<Map<String, Object>> taints;
-    // FOR NODES SPEC :: END
 
-//
-//    @SerializedName("dnsConfig")
-//    private PodDNSConfig dnsConfig;
-//
-//    @SerializedName("hostAliases")
-//    private List<HostAlias> hostAliases;
+    @SerializedName("volumes")
+    private List<Volume> volumes;
 
     @SerializedName("externalIPs")
     private List<String> externalIPs;
