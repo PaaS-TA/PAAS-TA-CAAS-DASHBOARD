@@ -61,6 +61,9 @@
                 </div>
             </div>
             <div class="custom-access-contents-wrap">
+                <div>
+                    <p style="color: red;">※ 아래 명령어는 Linux 용 변수 설정 예제임을 참고 바랍니다.</p>
+                </div>
                 <div class="custom-access-contents">
                     <p>\$ export CAAS_SERVICE_CLUSTER_NAME="<span id="caasClusterName"></span>"</p>
                     <p>\$ export CAAS_SERVICE_CLUSTER_SERVER="<span id="caasClusterServer"></span>"</p>

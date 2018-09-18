@@ -81,13 +81,13 @@ public class Constants {
     public static final String URI_API_NODES_LIST = "/nodes/{nodeName:.+}";
 
     // API URI :: ROLES
-    public static final String URI_API_ROLES_DETAIL = "/roles/namespaces/{namespace:.+}/roles/{rolesName:.+}";
+    public static final String URI_API_ROLES_DETAIL = "/namespaces/{namespace:.+}/roles/{roleName:.+}";
 
     // API URI :: ROLE BINDINGS
-    public static final String URI_API_ROLE_BINDINGS_DETAIL = "/roleBindings/namespaces/{namespace:.+}/rolebindings/{roleBindingsName:.+}";
+    public static final String URI_API_ROLE_BINDINGS_DETAIL = "/namespaces/{namespace:.+}/roleBindings/{roleBindingName:.+}";
 
     // API URI :: USERS(SERVICE ACCOUNT)
-    public static final String URI_API_SERVICE_ACCOUNT_DETAIL = "/users/namespaces/{namespace:.+}/serviceaccounts/{serviceAccounts:.+}";
+    public static final String URI_API_SERVICE_ACCOUNT_DETAIL = "/namespaces/{namespace:.+}/serviceAccounts/{caasAccountName:.+}";
 
     // COMMON API URI :: USERS
     public static final String URI_COMMON_API_USERS_LIST = "/users/serviceInstanceId/{serviceInstanceId:.+}/organizationGuid/{organizationGuid:.+}";

@@ -143,14 +143,14 @@ public class UsersService {
 
         resultCode = restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_ROLES_DETAIL
                 .replace("{namespace:.+}", user.getCaasNamespace())
-                .replace("{rolesName:.+}", rolesName) , HttpMethod.PUT, roleYml, String.class);
+                .replace("{roleName:.+}", rolesName) , HttpMethod.PUT, roleYml, String.class);
 
         // 2. 해당 role-binding 찾아서 바꿔 준 role-name 넣어줘서 rolebinding replace 해준다.
         roleBindingYml = templateService.convert("instance/create_roleBinding.ftl", model);
 
         resultCodeBinding = restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_ROLE_BINDINGS_DETAIL
                 .replace("{namespace:.+}", user.getCaasNamespace())
-                .replace("{roleBindingsName:.+}", roleBindingsName), HttpMethod.PUT, roleBindingYml, String.class);
+                .replace("{roleBindingName:.+}", roleBindingsName), HttpMethod.PUT, roleBindingYml, String.class);
 
 
         // 3. DB 의 role 변경
@@ -191,17 +191,17 @@ public class UsersService {
         // role binding 삭제
         String successRoleBinding = restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_ROLE_BINDINGS_DETAIL
                 .replace("{namespace:.+}", user.getCaasNamespace())
-                .replace("{roleBindingsName:.+}", roleBindingsName), HttpMethod.DELETE, null, String.class);
+                .replace("{roleBindingName:.+}", roleBindingsName), HttpMethod.DELETE, null, String.class);
 
         // role 삭제
         String successRole = restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_ROLES_DETAIL
                 .replace("{namespace:.+}", user.getCaasNamespace())
-                .replace("{rolesName:.+}", rolesName), HttpMethod.DELETE, null, String.class);
+                .replace("{roleName:.+}", rolesName), HttpMethod.DELETE, null, String.class);
 
         // service account 삭제
         String successServiceAccount = restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_SERVICE_ACCOUNT_DETAIL
                 .replace("{namespace:.+}", user.getCaasNamespace())
-                .replace("{serviceAccounts:.+}", user.getCaasAccountName()), HttpMethod.DELETE, null, String.class);
+                .replace("{caasAccountName:.+}", user.getCaasAccountName()), HttpMethod.DELETE, null, String.class);
 
         return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL, HttpMethod.DELETE, user, Users.class);
     }
