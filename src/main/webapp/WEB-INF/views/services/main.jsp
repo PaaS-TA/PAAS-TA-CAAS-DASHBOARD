@@ -226,7 +226,7 @@
 
         for (var i = 0; i < listLength; i++) {
             if (items[i].status.phase.toLowerCase() === "running") {
-                runningSum++
+                runningSum++;
             }
             totalSum++;
         }
