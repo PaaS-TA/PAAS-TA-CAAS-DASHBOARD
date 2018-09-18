@@ -1,7 +1,6 @@
 package org.paasta.caas.dashboard.common;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.paasta.caas.dashboard.clusters.namespaces.Namespaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
-import org.springframework.web.client.RequestCallback;
-import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
@@ -145,9 +142,10 @@ public class RestTemplateService {
         return resEntity.getBody();
     }
 
-    public <T> T cubeSend(String url, String caas_adminValue, HttpMethod httpMethod, Class<T> responseType) {
-        return cubeSend(url, null, caas_adminValue, httpMethod, responseType);
-    }
+// TODO :: REMOVE AFTER CHECK
+//    public <T> T cubeSend(String url, String caas_adminValue, HttpMethod httpMethod, Class<T> responseType) {
+//        return cubeSend(url, null, caas_adminValue, httpMethod, responseType);
+//    }
 
     /**
      * kuber api와 통신하기 위한 메소드
@@ -155,29 +153,29 @@ public class RestTemplateService {
      * @author Hyerin
      * @since 2018.08.22
      */
-    public <T> T cubeSend(String url, String yml, String caas_adminValue, HttpMethod httpMethod, Class<T> responseType) {
-        LOGGER.info("cubeSend start~");
-        LOGGER.info(caas_adminValue);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + caas_adminValue);
-        headers.add("Accept", "application/json,application/yaml,text/html");
-        headers.add("Content-Type", "application/yaml;charset=UTF-8");
-
-
-        HttpEntity<String> reqEntity;
-        if(yml == null) {  //null이면
-            reqEntity = new HttpEntity<>(headers);
-        } else { // null이 아니면
-            reqEntity = new HttpEntity<>(yml, headers);
-        }
-        ResponseEntity<T> resEntity = restTemplate.exchange(url, httpMethod, reqEntity, responseType);
-        if (resEntity.getBody() != null) {
-            LOGGER.info("Response Type: {}", resEntity.getBody().getClass());
-        }
-
-        return resEntity.getBody();
-    }
+//    public <T> T cubeSend(String url, String yml, String caas_adminValue, HttpMethod httpMethod, Class<T> responseType) {
+//        LOGGER.info("cubeSend start~");
+//        LOGGER.info(caas_adminValue);
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Authorization", "Bearer " + caas_adminValue);
+//        headers.add("Accept", "application/json,application/yaml,text/html");
+//        headers.add("Content-Type", "application/yaml;charset=UTF-8");
+//
+//
+//        HttpEntity<String> reqEntity;
+//        if(yml == null) {  //null이면
+//            reqEntity = new HttpEntity<>(headers);
+//        } else { // null이 아니면
+//            reqEntity = new HttpEntity<>(yml, headers);
+//        }
+//        ResponseEntity<T> resEntity = restTemplate.exchange(url, httpMethod, reqEntity, responseType);
+//        if (resEntity.getBody() != null) {
+//            LOGGER.info("Response Type: {}", resEntity.getBody().getClass());
+//        }
+//
+//        return resEntity.getBody();
+//    }
 
     private void setApiUrlAuthorization(String reqApi) {
 

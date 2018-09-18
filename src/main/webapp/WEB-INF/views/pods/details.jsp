@@ -7,9 +7,9 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div class="content">
-    <jsp:include page="common-pods.jsp" flush="true"/>
+    <jsp:include page="commonPods.jsp"/>
 
-    <%-- NODES HEADER INCLUDE --%>
+    <%-- TAB INCLUDE --%>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
 
     <!-- Details 시작-->
@@ -99,7 +99,7 @@
                                 <td>Restart count</td>
                             </tr>
                             </thead>
-                            <tbody id="resultArea">
+                            <tbody id="containersResultArea">
                             </tbody>
                         </table>
                     </div>
@@ -109,168 +109,53 @@
         </ul>
     </div>
     <!-- Details  끝 -->
-</div>
-
-<!-- modal -->
-<div class="modal fade dashboard" id="layerpop">
-    <div class="vertical-alignment-helper">
-        <div class="modal-dialog vertical-align-center">
-            <div class="modal-content">
-                <!-- header -->
-                <div class="modal-header">
-                    <!-- 닫기(x) 버튼 -->
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                    <!-- header title -->
-                    <h4 class="modal-title">Auto- Scaling  설정</h4>
-                </div>
-                <!-- body -->
-                <div class="modal-body">
-                    <div class="modal-bg">
-                        <span>
-                            앱 이름
-                        </span>
-                        <div class="pull-right">
-                            <input id="check1" checked="checked" type="checkbox" />
-                            <label for="check1">자동확장 시</label>
-                            <input id="check2" type="checkbox" />
-                            <label for="check2">자동축소 사용</label>
-                        </div>
-                    </div>
-                    <div class="">
-                        <table class="modal_t">
-                            <colgroup>
-                                <col style='width: 123px;'>
-                                <col style='width:40px;'>
-                                <col>
-                                <col style='width:50px;'>
-                                <col style='width:40px;'>
-                                <col>
-                                <col style='width:20px;'>
-                            </colgroup>
-                            <tbody>
-                            <tr>
-                                <th>인스턴스 수 설정
-                                </th>
-                                <td>최소</td>
-                                <td>
-                                    <div>
-                                        <input type="text" value="1" />
-                                        <button><i class="fas fa-sort-up"></i>
-                                        </button>
-                                        <button><i class="fas fa-sort-down"></i>
-                                        </button>
-                                    </div>
-                                <td><p>개</p>
-                                </td>
-                                </td>
-                                <td>최대</td>
-                                <td>
-                                    <div>
-                                        <input type="text" value="10" />
-                                        <button><i class="fas fa-sort-up"></i>
-                                        </button>
-                                        <button><i class="fas fa-sort-down"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td><p>개</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>CPU 임계 값 설정
-                                </th>
-                                <td>최소</td>
-                                <td>
-                                    <div>
-                                        <input type="text" value="20"/>
-                                        <button><i class="fas fa-sort-up"></i>
-                                        </button>
-                                        <button><i class="fas fa-sort-down"></i>
-                                        </button>
-                                    </div>
-                                <td><p>%</p>
-                                </td>
-                                </td>
-                                <td>최대</td>
-                                <td>
-                                    <div>
-                                        <input type="text" value="80" />
-                                        <button><i class="fas fa-sort-up"></i>
-                                        </button>
-                                        <button><i class="fas fa-sort-down"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td><p>%</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>메모리 사이즈 설정
-                                </th>
-                                <td>최소</td>
-                                <td>
-                                    <div>
-                                        <input type="text" value="256" />
-                                        <button><i class="fas fa-sort-up"></i>
-                                        </button>
-                                        <button><i class="fas fa-sort-down"></i>
-                                        </button>
-                                    </div>
-                                <td><p>MB</p>
-                                </td>
-                                </td>
-                                <td>최대</td>
-                                <td>
-                                    <div>
-                                        <input type="text" value="2048" />
-                                        <button><i class="fas fa-sort-up"></i>
-                                        </button>
-                                        <button><i class="fas fa-sort-down"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td><p>MB</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>시간 설정</th>
-                                <td> </td>
-                                <td>
-                                    <input class="time_left" type="text" value="10" />
-                                </td>
-                                <td> </td>
-                                <td> </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btns2 colors4 pull-left" data-dismiss="modal">삭제</button>
-                    <button type="button" class="btns2 colors4" data-dismiss="modal">변경</button>
-                    <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <%-- Container 정보에 대한 Table Form 시작 --%>
+    <table id="containerForm" class="table_detail alignL">
+        <colgroup>
+            <col style="*">
+            <col style="*">
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>Name</td>
+            <td name="cName"></td>
+        </tr>
+        <tr>
+            <td>Image</td>
+            <td name="cImage"></td>
+        </tr>
+        <tr>
+            <td>Environment variables</td>
+            <td name="cEnv"></td>
+        </tr>
+        <tr>
+            <td>Commands</td>
+            <td name="cCmd"></td>
+        </tr>
+        <tr>
+            <td>Args</td>
+            <td name="cArgs"></td>
+        </tr>
+        </tbody>
+    </table>
+    <%-- Container 정보에 대한 Table Form 끝 --%>
 </div>
 <script type="text/javascript">
     // ON LOAD
-    $(document.body).ready(function () {
+    $(document.body).ready(function() {
         viewLoading('show');
         getDetail();
         viewLoading('hide');
     });
 
-    // GET DETAIL
+    // GET POD'S DETAIL
     var getDetail = function() {
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_DETAIL %>"
             .replace("{namespace:.+}", NAME_SPACE).replace("{podName:.+}", G_POD_NAME);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
 
-    // CALLBACK
+    // CALLBACK GET POD'S DETAIL
     var callbackGetDetail = function(data) {
         viewLoading('show');
 
@@ -290,23 +175,23 @@
         document.getElementById("qosClass").textContent = data.status.qosClass; //qosClass
         document.getElementById("conditions").textContent = conditionParser(data.status.conditions);
 
-        if(data.spec.nodeName == null) {
-            document.getElementById("node").innerHTML =  "-";
+        if (data.spec.nodeName == null) {
+            document.getElementById("node").innerHTML = "-";
         }
 
-        if(data.spec.nodeName != null) {
-            document.getElementById("node").innerHTML =  "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + data.spec.nodeName + "/summary\");'>"+
+        if (data.spec.nodeName != null) {
+            document.getElementById("node").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + data.spec.nodeName + "/summary\");'>" +
                 data.spec.nodeName +
                 '</a>';
         }
 
-        document.getElementById("ip").textContent =  nvl(data.status.podIP, "-");
+        document.getElementById("ip").textContent = nvl(data.status.podIP, "-");
 
-        if(labels.match('job-name')) {
-            // jobs 기능이 구현되면 여기에 a링크 달 것
+        if (labels.match('job-name')) {
+            // A tag position for Jobs detail page
             document.getElementById("controllers").innerHTML = data.metadata.ownerReferences[0].name;
         } else {
-            document.getElementById("controllers").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>"+
+            document.getElementById("controllers").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>" +
                 data.metadata.ownerReferences[0].name +
                 '</a>';
         }
@@ -317,119 +202,115 @@
         viewLoading('hide');
     };
 
-    var replaceLabels = function (data) {
-        return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D').replace(/, /g, '&');
-    };
-
-    var createSpans = function (inputData, type) {
+    // CREATE SPANS FOR LABELS
+    var createSpans = function(inputData, type) {
         var data = inputData.replace(/=/g, ':').split(/,\s/);
         var spanHtml = "";
 
-        $.each(data, function (index, item) {
+        $.each(data, function(index, item) {
             if (type === "true" && index > 0)
                 spanHtml += '<br>';
 
-            if (item.length > 40) {
-                var _kv = item.split(': ');
-                if (_kv.length > 1) {
-                    var _title = _kv[0];
-                    var _content = _kv.reduce(function (prev, cur, idx) {
-                        if (idx <= 1) return cur; else return prev + ':' + cur
-                    });
-                    var template = '<span class="bg_blue" data-target="#layerpop" data-toggle="modal" onclick="setLayerpop(this)">';
-                    spanHtml += ( $(template).html('<a>' + _title + '</a>').attr('data-title', _title).attr('data-content', _content)[0].outerHTML + ' ' );
-                } else {
-                    spanHtml += '<span class="bg_gray">' + item.replace(': ', ':') + '</span> ';
+            var htmlString = null;
+            var separatorIndex = item.indexOf(": ");
+            if (separatorIndex > 0) {
+                var title = item.substring(0, separatorIndex);
+                var content = item.substring(separatorIndex + 2);
+                try {
+                    var test = JSON.parse(content);    // JSON object test only
+                    if (test instanceof Object || test instanceof Array) {
+                        htmlString = $('<span class="bg_blue" onclick="setLayerpop(this)" data-target="#layerpop3" data-toggle="modal" '
+                            + 'data-title="' + title + '"><a>' + title + '</a></span> ')
+                            .attr('data-content', content).wrapAll("<div/>").parent().html();
+                    }
+                } catch (e) {
                 }
-            } else {
-                spanHtml += '<span class="bg_gray">' + item.replace(': ', ':') + '</span> ';
             }
+
+            if (null == htmlString)
+                htmlString = '<span class="bg_gray">' + item.replace(": ", ":") + '</span>';
+
+            spanHtml += (htmlString + ' ');
         });
 
         return spanHtml;
     };
-    
-    var conditionParser = function (data) {
+
+    // PARSER OF POD'S CONDITIONS
+    var conditionParser = function(data) {
         var tempStr = "";
-        for ( var index in data) {
-            tempStr += data[index].type + ": " + data[index].status;
-            if((data.length -1) == index) {
-                break;
+
+        for (var i = 0; i < data.length; i++) {
+            if (i > 0) {
+                tempStr += ", ";
             }
-            tempStr += ", ";
+
+            tempStr += (data[i].type + ": " + data[i].status);
         }
         return tempStr;
     };
 
-    // 좀 더 좋은 로직 있으면 수정바람...
-    // statuses와 container 비교하는 구문..
-    var createContainerResultArea = function (status, containers) {
-        var resultArea = $('#resultArea');
+    // CREATE CONTAINER MAP (CONTAINER INFO + CONTAINER STATUS)
+    var getContainerMap = function(containers, containerStatuses, podPhase) {
+        var containerMap = {};
+        var tempArr;
+        containers.map(function(container) {
+            var name = nvl(container['name']);
+            if ("" !== name)
+                containerMap[name] = container;
+        });
+        containerStatuses.map(function(status) {
+            var name = nvl(status['name']);
+            if ("" === name) {
+                return;
+            }
+            tempArr = Object.keys(status['state']);
+            if (tempArr.length > 0)
+                containerMap[name]['state'] = tempArr[0].charAt(0).toUpperCase() + tempArr[0].substring(1);
+            else
+                containerMap[name]['state'] = podPhase.charAt(0).toUpperCase() + podPhase.substring(1);
+
+            containerMap[name]['restartCount'] = status.restartCount;
+            containerMap[name]['ready'] = status.ready;
+        });
+
+        return containerMap;
+    };
+
+    // CREATE CONTAINERS RESULT AREA CONTENT
+    var createContainerResultArea = function(status, containers) {
+        var resultArea = $('#containersResultArea');
         var resultHeaderArea = $('#containersResultHeaderArea');
         var noResultArea = $('#noContainersResultArea');
 
-        var listLength;
-        var containerStatuses = status.containerStatuses;
+        var containerMap = getContainerMap(containers, status.containerStatuses, status.phase);
+        var listLength = containers.length;
 
-        listLength = containers.length;
+        var detailForm = $('#containerForm').clone().removeAttr('id');
+        $('#containerForm').remove();
 
-        $.each(containers, function (index, itemList) {
-            var containerStatusHtml = '';
-            var _status = getContainerStatus(getContainer(containerStatuses, itemList.name), status.phase);
-            if (_status.includes("Running")) {
-                containerStatusHtml += '<span class="green2"><i class="fas fa-check-circle"></i></span>';
-            } else if (_status.includes("Waiting")) {
-                containerStatusHtml += '<span class="red2"><i class="fas fa-exclamation-circle"></i></span>';
-            } else {
-                containerStatusHtml += '<span><i class="fas fa-check-circle"></i></span>';
-            }
-            containerStatusHtml += (' ' + _status);
+        $.each(Object.keys(containerMap), function(index, item) {
+            var container = containerMap[item];
 
-            var imageHtml = '<span data-toggle="tooltip" title="' + itemList.image + '">' + itemList.image + '</span>';
+            var detailTable = detailForm.clone().wrapAll("<div/>");
+            detailTable.find('[name=cName]').html(container.name);
+            detailTable.find('[name=cImage]').html(container.image);
+            detailTable.find('[name=cEnv]').html(envParser(container));
+            detailTable.find('[name=cCmd]').html(nvl(container.command, "-"));
+            detailTable.find('[name=cArgs]').html(nvl(container.args, "-"));
 
-            resultArea.append('<tr>' +
-                                '<td>' +
-                                    "<a href='javascript:void(0);' onclick='showHide(" + index + ");\'>"+
-                                        itemList.name +
-                                    '</a>' +
-                                '</td>' +
-                                '<td>' + containerStatusHtml + '</td>' +
-                                '<td>' + imageHtml + '</td>' +
-                                '<td>' + nvl(getContainer(containerStatuses, itemList.name).restartCount, "-") + '</td>' +
-                              '</tr>' +
-                              '<tr style="display:none;" id="' + index +'">' +
-                                '<td colspan="4">' +
-                                    '<table class="table_detail alignL">' +
-                                        '<colgroup>' +
-                                            '<col style="*">' +
-                                            '<col style="*">' +
-                                        '</colgroup>' +
-                                        '<tbody>' +
-                                            '<tr>' +
-                                                '<td>Name</td>' +
-                                                '<td>' + itemList.name + '</td>' +
-                                            '</tr>' +
-                                            '<tr>' +
-                                                '<td>Image</td>' +
-                                                '<td>' + itemList.image + '</td>' +
-                                            '</tr>' +
-                                            '<tr>' +
-                                                '<td>Environment variables</td>' +
-                                                '<td>' + envParser(getContainer(containers, itemList.name)) + '</td>' +
-                                            '</tr>' +
-                                            '<tr>' +
-                                                '<td>Commands</td>' +
-                                                '<td>' + nvl(getContainer(containers, itemList.name).command, "-") + '</td>' +
-                                            '</tr>' +
-                                            '<tr>' +
-                                                '<td>Args</td>' +
-                                                '<td>' + nvl(getContainer(containers, itemList.name).args, "-")  + '</td>' +
-                                            '</tr>' +
-                                            '</tbody>' +
-                                    '</table>' +
-                                '</td>' +
-                              '</tr>');
-
+            resultArea.append(
+                // container short-info
+                '<tr>'
+                + '<td><a href="javascript:void(0);" onclick="showHide(\'container-' + index + '\');">' + container.name + '</a></td>'
+                + '<td><span>' + nvl(container.state, "Unknown") + '</span></td>'
+                + '<td><span>' + nvl(container.image, "-") + '</span></td>'
+                + '<td>' + nvl(container.restartCount, "-") + '</td>'
+                + '</tr>'
+                // container detail info
+                + '<tr style="display:none;" id="container-' + index + '"><td colspan="4">'
+                + detailTable.parent().html()
+                + '</td></tr>');
         });
 
         if (listLength < 1) {
@@ -440,64 +321,44 @@
             noResultArea.hide();
             resultHeaderArea.show();
             resultArea.show();
-            resultArea.tablesorter();
-            resultArea.trigger("update");
         }
+
+        // TOOL TIP
+        procSetToolTipForTableTd('containersResultArea');
+        $('[data-toggle="tooltip"]').tooltip();
     };
 
-    var getContainer = function (containerList, conatinerName) {
-        if(!containerList) {
-            return "";
+    // CONTAINER ENVIRONMENT VARIABLE PARSER
+    var envParser = function(container) {
+        if (container.env == null) {
+            return "-";
         }
-        var containerObject;
 
-        for(var index =0; index < containerList.length; index ++) {
-            if(containerList[index].name == conatinerName) {
-                containerObject = containerList[index];
-                return containerObject;
-            }
-        }
-    };
-
-    // 줄일 수 있으면 수정바라뮤ㅠㅠ 재귀를 쓸 타이밍인가;;
-    var envParser = function (container) {
-        var tempStr = "";
-        if(container.env == null) {
-            return tempStr = "-";
-        }
         var envs = container.env;
+        var tempStr = "";
 
-        for( var key in envs ) {
-            if(key != 0 ) {
+        for (var i = 0; i < envs.length; i++) {
+            if ("" !== tempStr) {
                 tempStr += '<br>';
             }
 
-            if(Object.keys(envs[key])[1] == 'valueFrom') {
-                var testObject = Object.values(envs[key])[1];
-                var fieldRef = Object.values(testObject)[0];
-                Object.keys(fieldRef).forEach(function (key) {
-                    tempStr += fieldRef[key] + " &nbsp;";
-                });
+            if (Object.keys(envs[i]).indexOf('valueFrom') > -1) {
+                var valueFrom = envs[i]['valueFrom'];
+                if (null == valueFrom['fieldRef']) {
+                    tempStr += (Object.values(envs[i])[0] + ":&nbsp;" + JSON.stringify(valueFrom));
+                } else {
+                    tempStr += (Object.values(envs[i])[0] + ":&nbsp;" + JSON.stringify(valueFrom['fieldRef']));
+                }
             } else {
-                tempStr +=  Object.values(envs[key])[0]  + ":&nbsp;" + Object.values(envs[key])[1];
+                tempStr += (Object.values(envs[i])[0] + ":&nbsp;" + Object.values(envs[i])[1]);
             }
         }
+
         return tempStr;
     };
 
-    // state를 가져오기 위함.. state정보는 statuses에 있는데.. run된 흔적이 없으면 이게 null로 들어옴...
-    var getContainerStatus = function (itemList, phase) {
-        var statusStr = "";
-        if( !itemList ) {
-            statusStr = phase;
-        } else {
-            statusStr = Object.keys(itemList.state)[0];
-        }
-
-        return statusStr.charAt(0).toUpperCase() + statusStr.substring(1);
-    };
-
-    var showHide = function (indexId) {
+    // SHOW/HIDE ACTION FOR CONTAINER TABLE
+    var showHide = function(indexId) {
         var tr = $('#' + indexId);
 
         if (tr.is(":visible")) {
@@ -505,5 +366,24 @@
         } else {
             tr.css('display', 'table-row');
         }
+    };
+
+    // CONTENT SETTING FOR POP-UP MODAL
+    var setLayerpop = function(eventElement) {
+        var select = $(eventElement);
+        var title = select.data('title');
+        if (title instanceof Object) {
+            title = JSON.stringify(title);
+        }
+
+        var content = select.data('content');
+        if (content instanceof Object) {
+            content = '<p>' + JSON.stringify(content) + '</p>';
+        } else {
+            content = '<p>' + content + '</p>';
+        }
+
+        $('.modal-title').html(title);
+        $('.modal-body').html(content);
     };
 </script>

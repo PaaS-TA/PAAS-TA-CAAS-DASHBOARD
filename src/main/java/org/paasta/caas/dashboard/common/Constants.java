@@ -40,10 +40,12 @@ public class Constants {
     public static final String URI_INTRO_OVERVIEW = "/caas/intro/overview";
     public static final String URI_INTRO_ACCESS_INFO = "/caas/intro/accessInfo";
 
+    // TODO :: REMOVE DUPLICATED VARIABLES
+    // URI_CONTROLLER_NAMESPACE >> URI_CLUSTER_NAMESPACES
+    // URI_CONTROLLER_REPLICASETS >> URI_WORKLOAD_REPLICASETS
     // CONTROLLER MAPPING URI
     public static final String URI_CONTROLLER_NAMESPACE      = "/caas/clusters/namespaces";
     public static final String URI_CONTROLLER_REPLICASETS    = "/caas/workloads/replicaSets";
-    public static final String URI_CONTROLLER_SERVICES       = "/caas/services";
 
     // API URI :: DEPLOYMENTS
     public static final String URI_API_DEPLOYMENTS_LIST         = "/namespaces/{namespace:.+}/deployments";

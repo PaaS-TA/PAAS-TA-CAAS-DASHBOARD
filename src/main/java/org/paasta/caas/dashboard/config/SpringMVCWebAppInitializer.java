@@ -8,35 +8,38 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 /**
- * The type Spring mvc web app initializer.
+ * Spring MVC Web App Initializer 클래스
+ *
+ * @author CISS
+ * @version 1.0
+ * @since 2018.07.31
  */
 public class SpringMVCWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-	@Override
-	protected Class<?>[] getRootConfigClasses() {
-		return null;
-	}
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return null;
+    }
 
 
-	@Override
-	protected Class<?>[] getServletConfigClasses() {
-		return null;
-	}
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return null;
+    }
 
-	@Override
-	protected String[] getServletMappings() {
-		return new String[] { "/" };
-	}
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{"/"};
+    }
 
-	@Override
-	public void onStartup(ServletContext servletContext) throws ServletException {
-		super.onStartup(servletContext);
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
 
-		FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encoding-filter", new CharacterEncodingFilter());
-		encodingFilter.setInitParameter("encoding", "UTF-8");
-		encodingFilter.setInitParameter("forceEncoding", "true");
-		encodingFilter.addMappingForUrlPatterns(null, true, "/*");
-	}
-
+        FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encoding-filter", new CharacterEncodingFilter());
+        encodingFilter.setInitParameter("encoding", "UTF-8");
+        encodingFilter.setInitParameter("forceEncoding", "true");
+        encodingFilter.addMappingForUrlPatterns(null, true, "/*");
+    }
 
 }

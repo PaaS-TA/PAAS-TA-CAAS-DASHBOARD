@@ -8,9 +8,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="content">
-    <jsp:include page="common-nodes.jsp"/>
+    <jsp:include page="commonNodes.jsp"/>
 
-    <%-- NODES HEADER INCLUDE --%>
+    <%-- TAB INCLUDE --%>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
 
     <!-- Nodes Details 시작-->
@@ -121,87 +121,84 @@
             </li>
         </ul>
     </div>
-
-    <!-- modal -->
-    <div class="modal fade in" id="layerpop">
-        <%-- layerpop is used nodes' detail --%>
-        <div class="vertical-alignment-helper">
-            <div class="modal-dialog vertical-align-center nodes">
-                <div class="modal-content">
-                    <!-- header -->
-                    <div class="modal-header">
-                        <!-- 닫기(x) 버튼 -->
-                        <button type="button" class="close" data-dismiss="modal">×</button>
-                        <!-- header title -->
-                        <h4 class="modal-title"></h4>
-                    </div>
-                    <!-- body -->
-                    <div class="modal-body"></div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 <script type="text/javascript">
-    var setLayerpop = function (eventElement) {
+    // SET CONTENT TO LAYER POP MODAL
+    var setLayerpop = function(eventElement) {
         var select = $(eventElement);
-        var _title = select.data('title');
-        if (_title instanceof Object) {
-            _title = JSON.stringify(_title);
+        var title = select.data('title');
+        if (title instanceof Object) {
+            title = JSON.stringify(title);
         }
 
-        var _content = select.data('content');
-        if (_content instanceof Object) {
-            _content = '<p>' + JSON.stringify(_content) + '</p>';
+        var content = select.data('content');
+        if (content instanceof Object) {
+            content = '<p>' + JSON.stringify(content) + '</p>';
         } else {
-            _content = '<p>' + _content + '</p>';
+            content = '<p>' + content + '</p>';
         }
 
-        $('.modal-title').html(_title);
-        $('.modal-body').html(_content);
+        $('.modal-title').html(title);
+        $('.modal-body').html(content);
     };
 
-    var createSpans = function (inputData, type) {
+    // CREATE SPANS FUNCTION FOR LABEL, ANNOTATION
+    var createSpans = function(inputData, type) {
         var data = inputData.replace(/=/g, ':').split(/,\s/);
         var spanHtml = "";
 
-        $.each(data, function (index, item) {
+        $.each(data, function(index, item) {
             if (type === "true" && index > 0)
                 spanHtml += '<br>';
 
-            if (item.length > 40) {
-                var _kv = item.split(': ');
-                if (_kv.length > 1) {
-                    var _title = _kv[0];
-                    var _content = _kv.reduce(function (prev, cur, idx) {
-                        if (idx <= 1) return cur; else return prev + ':' + cur
-                    });
-                    var template = '<span class="bg_blue" data-target="#layerpop" data-toggle="modal" onclick="setLayerpop(this)">';
-                    spanHtml += ( $(template).html('<a>' + _title + '</a>').attr('data-title', _title).attr('data-content', _content)[0].outerHTML + ' ' );
-                } else {
-                    spanHtml += '<span class="bg_gray">' + item.replace(': ', ':') + '</span> ';
+            var htmlString = null;
+            var separatorIndex = item.indexOf(": ");
+            if (separatorIndex > 0) {
+                var title = item.substring(0, separatorIndex);
+                var content = item.substring(separatorIndex + 2);
+                try {
+                    var test = JSON.parse(content);    // JSON object test only
+                    if (test instanceof Object || test instanceof Array) {
+                        htmlString = $('<span class="bg_blue" onclick="setLayerpop(this)" data-target="#layerpop3" data-toggle="modal" '
+                            + 'data-title="' + title + '"><a>' + title + '</a></span> ')
+                            .attr('data-content', content).wrapAll("<div/>").parent().html();
+                    }
+                } catch (e) {
                 }
-            } else {
-                spanHtml += '<span class="bg_gray">' + item.replace(': ', ':') + '</span> ';
             }
+
+            if (null == htmlString)
+                htmlString = '<span class="bg_gray">' + item.replace(": ", ":") + '</span>';
+
+            spanHtml += (htmlString + ' ');
         });
 
         return spanHtml;
     };
 
-    var stringifyKeyValue = function (data, mapFunc) {
+    // STRINGIFY KEY-VALUE FUNCTION
+    var stringifyKeyValue = function(data, mapFunc) {
         if (data instanceof Array) {
             if (null == mapFunc)
-                arrayFunc = function(index, item) { return item };
+                arrayFunc = function(index, item) {
+                    return item
+                };
 
-            return data.map(mapFunc).reduce(function(prevItem, item) { return prevItem + ", " + item; });
+            return data.map(mapFunc).reduce(function(prevItem, item) {
+                return prevItem + ", " + item;
+            });
         } else {
-            return Object.keys(data).map( function (key) { return key + ": " + data[key]; })
-                .reduce(function(prevItem, item) { return prevItem + ", " + item; });
+            return Object.keys(data).map(function(key) {
+                return key + ": " + data[key];
+            })
+                .reduce(function(prevItem, item) {
+                    return prevItem + ", " + item;
+                });
         }
     };
 
-    var callbackGetNodeDetail = function (data) {
+    // CALLBACK GET NODE DETAIL
+    var callbackGetNodeDetail = function(data) {
         viewLoading('show');
 
         if (false === procCheckValidData(data)) {
@@ -211,34 +208,29 @@
             return;
         }
 
-        var _metadata = data.metadata;
-        var _spec = data.spec;
-        var _status = data.status;
+        var metadata = data.metadata;
+        var spec = data.spec;
+        var status = data.status;
 
         // name, labels, annotations, created-at, addresses, pod-cidr, unschedulable
-        var name = _metadata.name;
-        var labels = stringifyKeyValue(_metadata.labels);
-        var annotations = stringifyKeyValue(_metadata.annotations);
-        var createdAt = _metadata.creationTimestamp;
-        var addresses = stringifyKeyValue(_status.addresses, function(item) { return item.type + ": " + item.address; });
-        var podCIDR = _spec.podCIDR;
-        var unschedulable = _spec.taints != null?
-            _spec.taints.filter(
-                function(item) { return item.key === 'node-role.kubernetes.io/master' && item.effect !== 'NoSchedule'; }).length > 0 : false;
+        var name = metadata.name;
+        var labels = stringifyKeyValue(metadata.labels);
+        var annotations = stringifyKeyValue(metadata.annotations);
+        var createdAt = metadata.creationTimestamp;
+        var addresses = stringifyKeyValue(status.addresses, function(item) {
+            return item.type + ": " + item.address;
+        });
+        var podCIDR = spec.podCIDR;
+        var unschedulable = spec.taints != null ?
+            spec.taints.filter(
+                function(item) {
+                    return item.key === 'node-role.kubernetes.io/master' && item.effect !== 'NoSchedule';
+                }).length > 0 : false;
 
         // get datum : system info
-        var nodeInfo = _status.nodeInfo;
-        var machineId = nodeInfo.machineID;
-        var systemUUID = nodeInfo.systemUUID;
-        var bootID = nodeInfo.bootID;
-        var kernalVersion = nodeInfo.kernelVersion;
-        var osImages = nodeInfo.osImage;
-        var containerRuntimeVersion = nodeInfo.containerRuntimeVersion;
-        var kubeletVersion = nodeInfo.kubeletVersion;
-        var kubeProxyVersion = nodeInfo.kubeProxyVersion;
-        var operatingSystem = nodeInfo.operatingSystem;
-        var architecture = nodeInfo.architecture;
+        var nodeInfo = status.nodeInfo;
 
+        // basic info
         $('#node_name').html(name);
         $('#node_labels').html(createSpans(labels, "false"));
         $('#node_annotations').html(createSpans(annotations, "false"));
@@ -247,30 +239,24 @@
         $('#node_pod_cidr').html(podCIDR);
         $('#node_unschedulable').html(unschedulable.toString());
 
-        $('#node_machine_id').html(machineId);
-        $('#node_system_uuid').html(systemUUID);
-        $('#node_boot_id').html(bootID);
-        $('#node_kernel_version').html(kernalVersion);
-        $('#node_images').html(osImages);
-        $('#node_container_version').html(containerRuntimeVersion);
-        $('#node_kubenet_version').html(kubeletVersion);
-        $('#node_kubeproxy_version').html(kubeProxyVersion);
-        $('#node_os_name').html(operatingSystem);
-        $('#node_architecture').html(architecture);
+        // system info
+        $('#node_machine_id').html(nodeInfo.machineID);
+        $('#node_system_uuid').html(nodeInfo.systemUUID);
+        $('#node_boot_id').html(nodeInfo.bootID);
+        $('#node_kernel_version').html(nodeInfo.kernelVersion);
+        $('#node_images').html(nodeInfo.osImage);
+        $('#node_container_version').html(nodeInfo.containerRuntimeVersion);
+        $('#node_kubenet_version').html(nodeInfo.kubeletVersion);
+        $('#node_kubeproxy_version').html(nodeInfo.kubeProxyVersion);
+        $('#node_os_name').html(nodeInfo.operatingSystem);
+        $('#node_architecture').html(nodeInfo.architecture);
 
         viewLoading('hide');
     };
 
-    var loadLayerpop = function () {
-        // MOVE LAYERPOP UNDER BODY ELEMENT
-        var _layerpop = $('#layerpop');
-        _layerpop.parent().find(_layerpop).remove();
-        $('body').append(_layerpop);
-    };
-
-    $(document.body).ready(function () {
+    // ON LOAD
+    $(document.body).ready(function() {
         viewLoading('show');
-        loadLayerpop();
         getNode(G_NODE_NAME, callbackGetNodeDetail);
         viewLoading('hide');
     });
