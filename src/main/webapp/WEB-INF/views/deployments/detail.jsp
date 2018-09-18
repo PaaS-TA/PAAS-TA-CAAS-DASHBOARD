@@ -233,10 +233,10 @@
 
         document.getElementById("name").textContent = deployName;
         document.getElementById("namespaceID").innerHTML = "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>";
-        document.getElementById("labels").innerHTML = createSpans(labels, "false");
+        document.getElementById("labels").innerHTML = procCreateSpans(labels);
         document.getElementById("annotations").innerHTML = createAnnotations(annotations);
         document.getElementById("creationTime").textContent = creationTimestamp;
-        document.getElementById("selector").innerHTML = createSpans(selector, "false");
+        document.getElementById("selector").innerHTML = procCreateSpans(selector);
         document.getElementById("strategy").textContent = strategy;
         document.getElementById("minReadySeconds").textContent = minReadySeconds;
         document.getElementById("revisionHistoryLimit").textContent = revisionHistoryLimit;
@@ -251,30 +251,6 @@
     var replaceLabels = function (data) {
         return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
     }
-
-    var createSpans = function (data, type) {
-        if( !data || data == "null") {
-            return "-";
-        }
-        var datas = data.replace(/=/g, ':').split(',');
-        var spanTemplate = "";
-
-        if (type === "true") {
-            $.each(datas, function (index, data) {
-                spanTemplate += '<span class="bg_gray">' + data + '</span>';
-                if (datas.length > 1) {
-                    spanTemplate += '<br>';
-                }
-            });
-        } else {
-            $.each(datas, function (index, data) {
-                spanTemplate += '<span class="bg_gray">' + data + '</span> ';
-            });
-        }
-
-        return spanTemplate;
-    }
-
 
     // CALLBACK
     var callbackGetReplicasetList = function (data) {
@@ -325,7 +301,7 @@
                                         '</a>' +
                                     '</td>' +
                                     "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
-                                    '<td>' + createSpans(labels, "true") + '</td>' +
+                                    '<td>' + procCreateSpans(labels, "LB") + '</td>' +
                                     '<td>' + availableReplicas + " / " + replicas + '</td>' +
                                     "<td>" + imageTags + "</td>" +
                                     '<td>' + creationTimestamp + '</td>' +
@@ -356,9 +332,11 @@
         Object.keys(annotations).forEach(function (key) {
             if(typeof JSON.parse(annotations[key]) == 'object') {
                 tempStr += '<span class="bg_blue"><a href="#" data-target="#layerpop3" data-toggle="modal">' + key + '</a></span>';
-                $("#modal-body").innerHTML = '<p>' + annotations[key] + '</p> ';
+                $('.modal-title').html(key);
+                $(".modal-body").html('<p>' + annotations[key] + '</p>');
+
             } else {
-                tempStr += createSpans(key + ":"+ annotations[key]);
+                tempStr += procCreateSpans(key + ":"+ annotations[key]);
             }
         });
         return tempStr;

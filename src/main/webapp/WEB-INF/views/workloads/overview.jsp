@@ -222,7 +222,7 @@
             if(!labels) {
                 labelObject += "<td>" + nvl(labels, "-") + "</td>";
             } else {
-                labelObject += '<td>' + createSpans(labels, "true") + '</td>'
+                labelObject += '<td>' + procCreateSpans(labels, "LB") + '</td>'
             }
 
             resultArea.append('<tr>' +
@@ -342,7 +342,7 @@
                     + statusMessageHtml
                     + "</td>"
                     + "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
-                    + "<td>" + createSpans(labels, "LB") + "</td>"
+                    + "<td>" + procCreateSpans(labels, "LB") + "</td>"
                     + "<td>" + pods + "</td>"
                     + "<td>" + creationTimestamp+"</td>"
                     + "<td>" + imageTags+ "</td>"
@@ -368,30 +368,6 @@
         viewLoading('hide');
 
     };
-
-    // TODO :: 업데이트(복수값일시 레이어 링크 제공) 및 공통화 필요
-    var createSpans = function (data, type) {
-        if( !data ) {
-            return "-";
-        }
-        var datas = data.replace(/=/g, ':').split(',');
-        var spanTemplate = "";
-
-        if (type === "LB") { // Line Break
-            $.each(datas, function (index, data) {
-                if (index != 0) {
-                    spanTemplate += '<br>';
-                }
-                spanTemplate += '<span class="bg_gray">' + data + '</span>';
-            });
-        } else {
-            $.each(datas, function (index, data) {
-                spanTemplate += '<span class="bg_gray">' + data + '</span> ';
-            });
-        }
-
-        return spanTemplate;
-    }
 
     // ON LOAD
     $(window).bind("load", function () {

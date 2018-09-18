@@ -77,10 +77,6 @@
 <!-- SyntexHighlighter -->
 
 <script type="text/javascript">
-    $(document.body).ready(function () {
-        viewLoading('show');
-        getDetail();
-    });
 
     var getDetail = function() {
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE)
@@ -140,5 +136,10 @@
             resultArea.show();
         }
     };
+
+    $(document.body).ready(function () {
+        viewLoading('show');
+        getDetail();
+    });
 
 </script>

@@ -153,10 +153,10 @@
 
         $('#resultResourceName').html(replicaSetName);
         $('#resultNamespace').html(namespace);
-        $('#resultLabel').html(createSpans(labels));
-        $('#resultAnnotation').html(createSpans(annotations));
+        $('#resultLabel').html(procCreateSpans(labels));
+        $('#resultAnnotation').html(procCreateSpans(annotations));
         $('#resultCreationTimestamp').html(creationTimestamp);
-        $('#resultSelector').html(createSpans(selector));
+        $('#resultSelector').html(procCreateSpans(selector));
         $('#resultImage').html(images.join("<br>"));
         //$('#resultPods').html(replicas);
         $('#resultPods').html(data.status.availableReplicas+" running");
@@ -290,7 +290,7 @@
                     + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
                     + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/" + serviceName + "\");'>" + serviceName + "</a>"
                     + "</td>"
-                    + "<td>" + createSpans(labels, "LB") + "</td>"
+                    + "<td>" + procCreateSpans(labels, "LB") + "</td>"
                     + "<td>" + items[i].spec.clusterIP + "</td>"
                     + "<td>" + endpoints + "</td>"
                     + "<td>" + externalEndpoints + "</td>"
@@ -319,26 +319,6 @@
         viewLoading('hide');
 
     };
-
-    var createSpans = function (data, type) {
-        var datas = data.replace(/=/g, ':').split(',');
-        var spanTemplate = "";
-
-        if (type === "LB") { // Line Break
-            $.each(datas, function (index, data) {
-                if (index != 0) {
-                    spanTemplate += '<br>';
-                }
-                spanTemplate += '<span class="bg_gray">' + data + '</span>';
-            });
-        } else {
-            $.each(datas, function (index, data) {
-                spanTemplate += '<span class="bg_gray">' + data + '</span> ';
-            });
-        }
-
-        return spanTemplate;
-    }
 
     // ON LOAD
     $(document.body).ready(function () {

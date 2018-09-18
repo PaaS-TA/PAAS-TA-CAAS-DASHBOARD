@@ -154,7 +154,7 @@
             if(!labels) {
                 labelObject += "<td>" + nvl(labels, "-") + "</td>";
             } else {
-                labelObject += '<td>' + createSpans(labels, "true") + '</td>'
+                labelObject += '<td>' + procCreateSpans(labels, "LB") + '</td>'
             }
 
             resultArea.append('<tr>' +
@@ -188,30 +188,6 @@
 
 
     };
-
-    var createSpans = function (data, type) {
-        if( !data ) {
-            return "-";
-        }
-
-        var datas = data.replace(/=/g, ':').split(',');
-        var spanTemplate = "";
-
-        if (type === "true") {
-            $.each(datas, function (index, data) {
-                spanTemplate += '<span class="bg_gray">' + data + '</span>';
-                if (datas.length > 1) {
-                    spanTemplate += '<br>';
-                }
-            });
-        } else {
-            $.each(datas, function (index, data) {
-                spanTemplate += '<span class="bg_gray">' + data + '</span> ';
-            });
-        }
-
-        return spanTemplate;
-    }
 
     $(document.body).ready(function () {
         viewLoading('show');

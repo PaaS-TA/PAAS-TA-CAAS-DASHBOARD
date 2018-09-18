@@ -443,3 +443,26 @@ var procSetToolTipAttributes = function (tagObject) {
         tagObject.attr('data-toggle', 'tooltip').attr('title', tagObjectHtml).attr('style', 'margin: 0;');
     }
 };
+
+
+var procCreateSpans = function (data, type) {
+    if( !data || data == "null") {
+        return "-";
+    }
+    var datas = data.replace(/=/g, ':').split(',');
+    var spanTemplate = "";
+
+    if (type === "LB") { // Line Break
+        $.each(datas, function (index, data) {
+            if (index != 0) {
+                spanTemplate += '<br>';
+            }
+            spanTemplate += '<span class="bg_gray">' + data + '</span>';
+        });
+    } else {
+        $.each(datas, function (index, data) {
+            spanTemplate += '<span class="bg_gray">' + data + '</span> ';
+        });
+    }
+    return spanTemplate;
+}
