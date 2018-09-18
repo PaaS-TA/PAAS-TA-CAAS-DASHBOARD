@@ -158,6 +158,9 @@
             // included "Unknown" status
             styleClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"};
         }
+        
+        // disable tooltip to icon
+        styleClassSet.span += " tableTdToolTipFalse";
 
         return styleClassSet;
     };

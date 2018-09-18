@@ -118,11 +118,11 @@
         $.each(eventList, function(index, event) {
             var messageHtml;
             if (0 === event.message.indexOf("Error")) {
-                messageHtml = '<span class="red2"><i class="fas fa-exclamation-circle"></i></span> <span class="red2">';
+                messageHtml = '<span class="red2 tableTdToolTipFalse"><i class="fas fa-exclamation-circle"></i></span> <span class="red2">';
             } else {
                 messageHtml = '<span>';
             }
-            messageHtml = $(messageHtml + event.message + '</span>').attr('title', event.message).wrapAll("<div/>").parent().html();
+            messageHtml = $(messageHtml + event.message + '</span>').wrapAll("<div/>").parent().html();
             resultArea.append("<tr>"
                 + "<td>" + messageHtml + "</td>"
                 + "<td><span>" + event.source + "</span></td>"
