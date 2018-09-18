@@ -1,7 +1,5 @@
 package org.paasta.caas.dashboard.common;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,8 +16,6 @@ import java.util.Map;
  */
 @Service
 public class CommonService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommonService.class);
 
     /**
      * Sets path variables.
@@ -61,18 +57,11 @@ public class CommonService {
         return mv;
     }
 
+
     /**
      * The enum Path variables list.
      */
     enum PathVariablesList {
-        /**
-         * Path variables service instance id path variables list.
-         */
-        PATH_VARIABLES_SERVICE_INSTANCE_ID("serviceInstancesId"),
-        /**
-         * Path variables service name path variables list.
-         */
-        PATH_VARIABLES_SERVICE_NAME("serviceInstancesId"),
         /**
          * Path service name path variables list.
          */
@@ -88,6 +77,7 @@ public class CommonService {
             this.actualValue = actualValue;
         }
     }
+
 
     /**
      * The enum Parameters list.
@@ -120,4 +110,5 @@ public class CommonService {
             this.actualValue = actualValue;
         }
     }
+
 }
