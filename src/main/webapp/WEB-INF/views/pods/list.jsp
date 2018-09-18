@@ -158,6 +158,9 @@
             // included "Unknown" status
             styleClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"};
         }
+        
+        // disable tooltip to icon
+        styleClassSet.span += " tableTdToolTipFalse";
 
         return styleClassSet;
     };
@@ -281,8 +284,9 @@
 
         if (false == procCheckValidData(data)) {
             viewLoading('hide');
-            alertMessage("Node의 Pod 목록을 가져오지 못했습니다.", false);
-            $('#noPodListResultArea').find('p').html("Node의 Pod 목록을 가져오지 못했습니다.");
+            var message = nvl(data.resultMessage, "Pod 목록을 가져오지 못했습니다.");
+            alertMessage(message, false);
+            $('#noPodListResultArea').find('p').html(message);
             $('#noPodListResultArea').show();
             $('#podListResultArea').hide();
             $('#podListResultHeaderArea').hide();

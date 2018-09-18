@@ -37,7 +37,7 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr id="conditionsNotFound" style="display:none;"><td colspan="6" style="text-align:center;">Node의 Condition 정보가 없습니다.</td></tr>
+                            <tr id="conditionsNotFound" style="display:none;"><td colspan="6"><p class='service_p'>Node의 Condition 정보가 없습니다.</p></td></tr>
                             <tr id="conditionsTableHeader">
                                 <td>Type</td>
                                 <td>Status</td>
@@ -49,7 +49,6 @@
                             </thead>
                             <tbody id="conditionResultArea">
                             </tbody>
-                            <!--tfoot></tfoot-->
                         </table>
                     </div>
                 </div>
@@ -65,18 +64,21 @@
         viewLoading('show');
 
         // check data validation
-        var podNotFound = $('#podNotFound');
-        var podsTableHeader = $('#podsTableHeader');
+        var podNotFound = $('#noPodListResultArea');
+        var podsTableHeader = $('#podListResultHeaderArea');
         var conditionsNotFound = $('#conditionsNotFound');
         var conditionsTableHeader = $('#conditionsTableHeader');
         if (false === procCheckValidData(data)) {
             viewLoading('hide');
-            alertMessage("Node 정보를 가져오지 못했습니다.", false);
-            podNotFound.children().html("Node의 정보를 가져오지 못했습니다.");
+            var podNotFoundMessage = nvl(data.resultMessage, "Node의 Pod 정보를 가져오지 못했습니다.");
+            alertMessage(podNotFoundMessage, false);
+            podNotFound.find('p').html(podNotFoundMessage);
             podNotFound.show();
             podsTableHeader.hide();
 
-            conditionsNotFound.children().html("Node의 정보를 가져오지 못했습니다.");
+            var conditionsNotFoundMessage = nvl(data.resultMessage, "Node의 정보를 가져오지 못했습니다.");
+            alertMessage(conditionsNotFoundMessage, false);
+            conditionsNotFound.find('p').html(conditionsNotFoundMessage);
             conditionsNotFound.show();
             conditionsTableHeader.hide();
             return;
@@ -110,7 +112,7 @@
             // append conditions tbody
             $('#conditionResultArea').html(contents);
         } else {
-            conditionsNotFound.children().html("Node의 Condition 목록을 가져오지 못했습니다.");
+            conditionsNotFound.find('p').html("Node의 Condition 목록을 가져오지 못했습니다.");
             conditionsNotFound.show();
             conditionsTableHeader.hide();
         }

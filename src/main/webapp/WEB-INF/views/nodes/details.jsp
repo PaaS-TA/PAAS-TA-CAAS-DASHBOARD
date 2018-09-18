@@ -203,7 +203,7 @@
 
         if (false === procCheckValidData(data)) {
             viewLoading('hide');
-            alertMessage("Node 정보를 가져오지 못했습니다.", false);
+            alertMessage(nvl(data.resultMessage, "Node 정보를 가져오지 못했습니다."), false);
             $("#nodeDetailNotFound").show();
             return;
         }
