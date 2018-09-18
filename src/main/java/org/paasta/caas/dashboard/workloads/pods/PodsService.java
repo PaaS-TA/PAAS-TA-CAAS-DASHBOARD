@@ -73,4 +73,16 @@ public class PodsService {
         return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_PODS_DETAIL
                 .replace("{namespace:.+}", namespace).replace("{podName:.+}", podName), HttpMethod.GET, null, Pods.class);
     }
+
+    /**
+     * Pods YAML을 조회한다.
+     *
+     * @param namespace the namespace
+     * @param podName   the pods name
+     * @return the pods
+     */
+    Pods getPodYaml(String namespace, String podName) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_PODS_YAML
+                .replace("{namespace:.+}", namespace).replace("{podName:.+}", podName), HttpMethod.GET, null, Pods.class);
+    }
 }

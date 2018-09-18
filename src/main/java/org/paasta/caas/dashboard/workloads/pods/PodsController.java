@@ -108,6 +108,19 @@ public class PodsController {
     }
 
     /**
+     * Pods YAML을 조회한다.
+     *
+     * @param namespace the namespace
+     * @param podName   the pods name
+     * @return the pods
+     */
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_PODS_DETAIL)
+    public Pods getPodYaml(@PathVariable(value = "namespace") String namespace,
+                           @PathVariable(value = "podName") String podName) {
+        return podsService.getPodYaml(namespace, podName);
+    }
+
+    /**
      * Selector를 이용해 Pods 목록을 조회한다.
      *
      * @param namespace the namespace

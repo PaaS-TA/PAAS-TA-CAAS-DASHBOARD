@@ -75,6 +75,7 @@ public class Constants {
     // API URI :: PODS
     public static final String URI_API_PODS_LIST                          = "/namespaces/{namespace:.+}/pods";
     public static final String URI_API_PODS_DETAIL                        = "/namespaces/{namespace:.+}/pods/{podName:.+}";
+    public static final String URI_API_PODS_YAML                          = "/namespaces/{namespace:.+}/pods/{podName:.+}/yaml";
     public static final String URI_API_PODS_LIST_BY_SELECTOR              = "/namespaces/{namespace:.+}/pods/resource/{selector:.+}";
     public static final String URI_API_PODS_LIST_BY_NODE                  = "/namespaces/{namespace:.+}/pods/node/{nodeName:.+}";
     public static final String URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE = "/namespaces/{namespace:.+}/pods/service/{serviceName:.+}/{selector:.+}";
