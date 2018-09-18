@@ -96,7 +96,7 @@
         var nodeEventsResultArea = $('#nodeEventsResultArea');
         if (false === procCheckValidData(data)) {
             viewLoading('hide');
-            alertMessage("Node의 Event 목록을 가져오지 못했습니다.", false);
+            alertMessage(nvl(data.resultMessage, "Node의 Event 목록을 가져오지 못했습니다."), false);
             nodeEventsNotFound.show();
             nodeEventsTableHeader.hide();
             nodeEventsResultArea.hide();

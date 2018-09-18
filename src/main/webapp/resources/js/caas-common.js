@@ -148,13 +148,29 @@ var procSetSortList = function(resultTableString, buttonObject, key) {
 };
 
 
-var procCheckValidData = function (data) {
-    var ensureData = procIfDataIsNull(data, null, { resultCode: RESULT_STATUS_FAIL });
-    if (RESULT_STATUS_FAIL === ensureData.resultCode) {
-        console.debug("ResultStatus :: " + ensureData.resultCode);
-        if (null != ensureData.resultMessage) {
-            console.debug("ResultMessage :: " + ensureData.resultMessage);
+var procCheckValidData = function (data, checkFunc) {
+    var validCheckFunc = procIfDataIsNull(checkFunc, null, function(data) {
+        var isNull;
+        if (null == data) {
+            isNull = true;
+        } else if ("" == nvl(data['resultCode'])) {
+            isNull = true;
+        } else {
+            isNull = false;
         }
+
+        if (isNull) {
+            // forced 'NOT FOUND' page.
+            viewLoading('show');
+            procMovePage('/caas');
+            data.resultCode = RESULT_STATUS_FAIL;
+        }
+
+        return data;
+    });
+
+    var ensureData = procIfDataIsNull(data, validCheckFunc, { resultCode: RESULT_STATUS_FAIL });
+    if (RESULT_STATUS_FAIL === ensureData.resultCode) {
         return false;
     } else {
         return null != data.resultCode;
@@ -309,6 +325,7 @@ var procSetEventStatusForPods = function(podNameList) {
 var callbackSetEventStatusForPods = function(data) {
     if (!procCheckValidData(data)) {
         viewLoading('hide');
+        alertMessage(nvl(data.resultMessage, "Event를 가져올 수 없습니다."), false);
         return false;
     }
 

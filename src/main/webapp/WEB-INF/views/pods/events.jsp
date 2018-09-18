@@ -105,7 +105,7 @@
         var resultArea = $('#resultArea');
         if (false === procCheckValidData(data)) {
             viewLoading('hide');
-            alertMessage("Pod 정보를 가져오지 못했습니다.", false);
+            alertMessage(nvl(data.resultMessage, "Pod 정보를 가져오지 못했습니다."), false);
             noResultArea.show();
             resultHeaderArea.hide();
             resultArea.hide();
