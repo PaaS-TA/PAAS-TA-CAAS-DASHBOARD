@@ -42,9 +42,12 @@
 
     // GET DETAIL
     var getDetail = function () {
+        viewLoading('show');
+
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_YAML %>"
             .replace("{namespace:.+}", NAME_SPACE)
             .replace("{serviceName:.+}", document.getElementById('requestServiceName').value);
+
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
 
@@ -53,6 +56,7 @@
     var callbackGetDetail = function (data) {
         if (!procCheckValidData(data)) {
             viewLoading('hide');
+            alertMessage();
             return false;
         }
 
@@ -63,7 +67,6 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        viewLoading('show');
         getDetail();
     });
 
