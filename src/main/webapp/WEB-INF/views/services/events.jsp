@@ -93,9 +93,9 @@
                 + "<td><p>" + items[i].message + "</p></td>"
                 + "<td><p>" + items[i].source.component + " " + nvl(items[i].source.host) + "</p></td>"
                 + "<td><p>" + nvl(items[i].involvedObject.fieldPath, "-") + "</p></td>"
-                + "<td><p>" + items[i].count + "</p></td>"
-                + "<td><p>" + items[i].firstTimestamp + "</p></td>"
-                + "<td><p>" + items[i].lastTimestamp + "</p></td>"
+                + "<td>" + items[i].count + "</td>"
+                + "<td>" + items[i].firstTimestamp + "</td>"
+                + "<td>" + items[i].lastTimestamp + "</td>"
                 + "</tr>");
         }
 
