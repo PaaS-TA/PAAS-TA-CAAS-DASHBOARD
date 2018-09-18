@@ -143,7 +143,7 @@
             if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
                 statusIconHtml    = "<span class='red2'><i class='fas fa-exclamation-circle'></i> </span>";
                 $.each(itemList.message , function (index, eventMessage) {
-                    statusMessageHtml += "<p>" + eventMessage + "</p>";
+                    statusMessageHtml += "<p class='red2 custom-content-overflow'>" + eventMessage + "</p>";
                 });
 
             }else{
