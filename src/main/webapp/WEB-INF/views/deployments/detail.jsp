@@ -296,7 +296,7 @@
             resultArea.append('<tr>' +
                                     '<td>' +
                                         '<span class="green2"><i class="fas fa-check-circle"></i></span> ' +
-                                        "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + replicasetName + "\");'>"+
+                                        "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_REPLICASETS %>/" + replicasetName + "\");'>"+
                                             replicasetName +
                                         '</a>' +
                                     '</td>' +
