@@ -7,10 +7,10 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="content">
-    <jsp:include page="commonPods.jsp"/>
+    <jsp:include page="commonPods.jsp" flush="true"/>
 
-    <%-- TAB INCLUDE --%>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
 
     <!-- Services YAML 시작-->

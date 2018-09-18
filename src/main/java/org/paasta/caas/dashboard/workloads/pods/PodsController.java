@@ -114,7 +114,7 @@ public class PodsController {
      * @param podName   the pods name
      * @return the pods
      */
-    @GetMapping(value = Constants.API_URL + Constants.URI_API_PODS_DETAIL)
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_PODS_YAML)
     public Pods getPodYaml(@PathVariable(value = "namespace") String namespace,
                            @PathVariable(value = "podName") String podName) {
         return podsService.getPodYaml(namespace, podName);
