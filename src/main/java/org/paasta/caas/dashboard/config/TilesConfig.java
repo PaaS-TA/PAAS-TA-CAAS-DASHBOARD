@@ -16,6 +16,11 @@ import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 @Configuration
 public class TilesConfig {
 
+    /**
+     * Tiles configurer tiles configurer.
+     *
+     * @return the tiles configurer
+     */
     @Bean
     public TilesConfigurer tilesConfigurer() {
         final TilesConfigurer configurer = new TilesConfigurer();
@@ -24,10 +29,17 @@ public class TilesConfig {
         return configurer;
     }
 
+
+    /**
+     * Tiles view resolver tiles view resolver.
+     *
+     * @return the tiles view resolver
+     */
     @Bean
     public TilesViewResolver tilesViewResolver() {
         final TilesViewResolver resolver = new TilesViewResolver();
         resolver.setViewClass(TilesView.class);
         return resolver;
     }
+
 }

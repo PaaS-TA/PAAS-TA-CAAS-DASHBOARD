@@ -27,7 +27,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCacheControl(CacheControl.maxAge(86400, TimeUnit.SECONDS));
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
         registry.addResourceHandler("/resources/css/fonts/**").addResourceLocations("/resources/css/fonts/").setCacheControl(CacheControl.maxAge(86400, TimeUnit.SECONDS));
     }
@@ -46,6 +45,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return viewResolver;
     }
 
+    /**
+     * Custom interceptor custom interceptor.
+     *
+     * @return the custom interceptor
+     */
     @Bean
     CustomInterceptor customInterceptor() {
         return new CustomInterceptor();
@@ -55,4 +59,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(customInterceptor());
     }
+
 }
