@@ -39,7 +39,7 @@ public class CustomServicesController {
 
 
     /**
-     * Gets custom services main.
+     * Services main 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
      * @return the custom services main
@@ -51,7 +51,7 @@ public class CustomServicesController {
 
 
     /**
-     * Gets custom services detail.
+     * Services detail 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
      * @return the custom services detail
@@ -63,7 +63,7 @@ public class CustomServicesController {
 
 
     /**
-     * Gets custom services detail events.
+     * Services events 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
      * @return the custom services detail events
@@ -75,7 +75,7 @@ public class CustomServicesController {
 
 
     /**
-     * Gets custom services detail yaml.
+     * Services yaml 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
      * @return the custom services detail yaml
@@ -114,7 +114,7 @@ public class CustomServicesController {
 
 
     /**
-     * Services YAML을 조회한다.
+     * Services YAML 정보를 조회한다.
      *
      * @param namespace   the namespace
      * @param serviceName the service name
