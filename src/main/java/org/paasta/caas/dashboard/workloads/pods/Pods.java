@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Pods Model 클래스
  *
- * @author REX
+ * @author Hyungu Cho
  * @version 1.0
  * @since 2018.08.13
  */
@@ -24,7 +24,6 @@ class Pods {
     private CommonSpec spec;
     private CommonStatus status;
 
-    // FOR DASHBOARD
     private String selector;
     private String serviceName;
 

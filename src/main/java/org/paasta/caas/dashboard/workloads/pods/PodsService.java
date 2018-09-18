@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service;
 /**
  * Pods Service
  *
- * @author 최윤석
  * @author Hyungu Cho
  * @version 1.0
- * @since 2018.8.01 최초작성
+ * @since 2018.08.01
  */
 @Service
 public class PodsService {
@@ -29,23 +28,22 @@ public class PodsService {
     }
 
     /**
-     * Gets pod list by resource name
+     * Selector를 이용해 Pods 목록을 조회한다.
      *
      * @param namespace the namespace
      * @param selector  the selector
-     * @return the pod list
+     * @return the pods list
      */
     PodsList getPodListBySelector(String namespace, String selector) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_PODS_LIST_BY_SELECTOR
-                        .replace("{namespace:.+}", namespace).replace("{selector:.+}", selector)
-                , HttpMethod.GET, null, PodsList.class);
+                .replace("{namespace:.+}", namespace).replace("{selector:.+}", selector), HttpMethod.GET, null, PodsList.class);
     }
 
     /**
-     * Get pod list
+     * Pods 목록을 조회한다. (특정 네임스페이스)
      *
      * @param namespace the namespace
-     * @return the pod list
+     * @return the pods list
      */
     PodsList getPodList(String namespace) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_PODS_LIST
@@ -53,28 +51,26 @@ public class PodsService {
     }
 
     /**
-     * Gets pod list by node name
+     * Node 이름을 이용해 Pods 목록을 조회한다.
      *
      * @param namespace the namespace
      * @param nodeName  the node name
-     * @return the pod list
+     * @return the pods list
      */
     PodsList getPodListNamespaceByNode(String namespace, String nodeName) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_PODS_LIST_BY_NODE
-                        .replace("{namespace:.+}", namespace).replace("{nodeName:.+}", nodeName),
-                HttpMethod.GET, null, PodsList.class);
+                .replace("{namespace:.+}", namespace).replace("{nodeName:.+}", nodeName), HttpMethod.GET, null, PodsList.class);
     }
 
     /**
-     * Get pod
+     * Pods 상세 정보를 조회한다.
      *
      * @param namespace the namespace
-     * @param podName   the pod name
-     * @return the pod
+     * @param podName   the pods name
+     * @return the pods
      */
     Pods getPod(String namespace, String podName) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_PODS_DETAIL
-                        .replace("{namespace:.+}", namespace).replace("{podName:.+}", podName),
-                HttpMethod.GET, null, Pods.class);
+                .replace("{namespace:.+}", namespace).replace("{podName:.+}", podName), HttpMethod.GET, null, Pods.class);
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 /**
  * Nodes Service 클래스
  *
- * @author REX
  * @author Hyungu Cho
  * @version 1.0
  * @since 2018.08.13
@@ -30,7 +29,7 @@ public class NodesService {
 
 
     /**
-     * Gets node.
+     * Nodes 상세 정보를 조회한다.
      *
      * @param nodeName the node name
      * @return the node

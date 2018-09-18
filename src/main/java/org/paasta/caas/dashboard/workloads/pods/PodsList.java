@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Pods List Model 클래스
  *
- * @author REX
+ * @author Hyungu Cho
  * @version 1.0
  * @since 2018.8.13
  */
@@ -19,7 +19,6 @@ class PodsList {
 
     private List<Pods> items;
 
-    // FOR DASHBOARD
     private String selector;
     private String serviceName;
 }

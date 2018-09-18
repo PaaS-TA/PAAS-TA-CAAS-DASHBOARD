@@ -14,10 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Pods 관련 Caas API 를 호출 하는 컨트롤러이다.
  *
- * @author 최윤석
  * @author Hyungu Cho
  * @version 1.0
- * @since 2018.08.06 최초작성
+ * @since 2018.08.06
  */
 @RestController
 public class PodsController {
@@ -28,7 +27,8 @@ public class PodsController {
     /**
      * Instantiates a new Pods controller.
      *
-     * @param podsService the pod service
+     * @param commonService the common service
+     * @param podsService the pods service
      */
     @Autowired
     public PodsController(CommonService commonService, PodsService podsService) {
@@ -37,10 +37,10 @@ public class PodsController {
     }
 
     /**
-     * Gets pod list
+     * Pods main 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
-     * @return the pod list main
+     * @return the pods main
      */
     @GetMapping(value = Constants.URI_WORKLOAD_PODS)
     public ModelAndView getPodList(HttpServletRequest httpServletRequest) {
@@ -48,11 +48,11 @@ public class PodsController {
     }
 
     /**
-     * Gets pod details
+     * Pods details 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
-     * @param podName            the pod name
-     * @return the pod details
+     * @param podName            the pods name
+     * @return the pods details
      */
     @GetMapping(value = Constants.URI_WORKLOAD_PODS + "/{podName:.+}")
     public ModelAndView getPodDetails(HttpServletRequest httpServletRequest, @PathVariable(value = "podName") String podName) {
@@ -60,11 +60,11 @@ public class PodsController {
     }
 
     /**
-     * Gets pod events
+     * Pods events 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
-     * @param podName            the pod name
-     * @return the pod events
+     * @param podName            the pods name
+     * @return the pods events
      */
     @GetMapping(value = Constants.URI_WORKLOAD_PODS + "/{podName:.+}/events")
     public ModelAndView getPodEvents(HttpServletRequest httpServletRequest, @PathVariable(value = "podName") String podName) {
@@ -72,11 +72,11 @@ public class PodsController {
     }
 
     /**
-     * Gets pod yaml
+     * Pods yaml 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
-     * @param podName            the pod name
-     * @return the pod yaml
+     * @param podName            the pods name
+     * @return the pods yaml
      */
     @GetMapping(value = Constants.URI_WORKLOAD_PODS + "/{podName:.+}/yaml")
     public ModelAndView getPodYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "podName") String podName) {
@@ -84,10 +84,10 @@ public class PodsController {
     }
 
     /**
-     * Gets pod list using namespace (_all is All namespaces)
+     * Pods 목록을 조회한다.
      *
      * @param namespace the namespace
-     * @return the pod list
+     * @return the pods list
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_PODS_LIST)
     public PodsList getPodList(@PathVariable(value = "namespace") String namespace) {
@@ -95,11 +95,11 @@ public class PodsController {
     }
 
     /**
-     * Gets pod using namespace and pod's name
+     * Pods 상세 정보를 조회한다.
      *
      * @param namespace the namespace
-     * @param podName   the pod name
-     * @return the pod
+     * @param podName   the pods name
+     * @return the pods
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_PODS_DETAIL)
     public Pods getPod(@PathVariable(value = "namespace") String namespace,
@@ -108,11 +108,11 @@ public class PodsController {
     }
 
     /**
-     * Gets pod list.
+     * Selector를 이용해 Pods 목록을 조회한다.
      *
      * @param namespace the namespace
      * @param selector  the selector
-     * @return the pod list
+     * @return the pods list
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_PODS_LIST_BY_SELECTOR)
     @ResponseBody
@@ -123,12 +123,12 @@ public class PodsController {
 
 
     /**
-     * Gets pod list by selector as service name.
+     * Selector와 Service 이름을 이용해 Pods 목록을 조회한다.
      *
      * @param namespace   the namespace
      * @param serviceName the service name
      * @param selector    the selector
-     * @return the pod list
+     * @return the pods list
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE)
     @ResponseBody
@@ -143,11 +143,11 @@ public class PodsController {
     }
 
     /**
-     * Gets pod list by node.
+     * Node 이름을 이용해 Pods 목록을 조회한다.
      *
      * @param namespace the namespace
      * @param nodeName  the node name
-     * @return
+     * @return the pods list
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_PODS_LIST_BY_NODE)
     @ResponseBody

@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Nodes Controller 클래스
  *
- * @author REX
  * @author Hyungu Cho
  * @version 1.0
  * @since 2018.08.13
@@ -28,7 +27,7 @@ public class NodesController {
      * Instantiates a new Nodes controller.
      *
      * @param commonService the common service
-     * @param nodesService  the node service
+     * @param nodesService  the nodes service
      */
     @Autowired
     public NodesController(CommonService commonService, NodesService nodesService) {
@@ -37,11 +36,11 @@ public class NodesController {
     }
 
     /**
-     * Gets node detail
+     * Nodes detail 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
-     * @param nodeName           the node name
-     * @return the node details
+     * @param nodeName           the nodes name
+     * @return the nodes details
      */
     @GetMapping(value = Constants.URI_CLUSTER_NODES + "/{nodeName:.+}")
     public ModelAndView getNodeDetails(HttpServletRequest httpServletRequest, @PathVariable(value = "nodeName") String nodeName) {
@@ -49,11 +48,11 @@ public class NodesController {
     }
 
     /**
-     * Gets node summary
+     * Nodes summary 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
-     * @param nodeName           the node name
-     * @return the node summary
+     * @param nodeName           the nodes name
+     * @return the nodes summary
      */
     @GetMapping(value = Constants.URI_CLUSTER_NODES + "/{nodeName:.+}/summary")
     public ModelAndView getNodeSummary(HttpServletRequest httpServletRequest, @PathVariable("nodeName") String nodeName) {
@@ -61,11 +60,11 @@ public class NodesController {
     }
 
     /**
-     * Gets node event
+     * Nodes event 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
-     * @param nodeName           the node name
-     * @return the node events
+     * @param nodeName           the nodes name
+     * @return the nodes events
      */
     @GetMapping(value = Constants.URI_CLUSTER_NODES + "/{nodeName:.+}/events")
     public ModelAndView getNodeEvents(HttpServletRequest httpServletRequest, @PathVariable("nodeName") String nodeName) {
@@ -73,10 +72,10 @@ public class NodesController {
     }
 
     /**
-     * Gets node.
+     * Nodes 상세 정보를 조회한다.
      *
-     * @param nodeName the node name
-     * @return the node
+     * @param nodeName the nodes name
+     * @return the nodes
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_NODES_LIST)
     public Nodes getNode(@PathVariable("nodeName") String nodeName) {

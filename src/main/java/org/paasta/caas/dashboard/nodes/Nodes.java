@@ -8,7 +8,7 @@ import org.paasta.caas.dashboard.nodes.support.NodesStatus;
 /**
  * Nodes Model 클래스
  *
- * @author REX
+ * @author Hyungu Cho
  * @version 1.0
  * @since 2018.08.13
  */
