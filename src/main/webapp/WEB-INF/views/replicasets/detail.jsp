@@ -179,7 +179,8 @@
 
         selector = procSetSelector(selector);
 
-        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/deployments/resource/" + selector;
+        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_RESOURCES %>".replace("{namespace:.+}", namespace)
+                                                                        .replace("{selector:.+}", selector);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsInfo);
     };
 

@@ -51,9 +51,7 @@ public class Constants {
     // API URI :: DEPLOYMENTS
     public static final String URI_API_DEPLOYMENTS_LIST         = "/namespaces/{namespace:.+}/deployments";
     public static final String URI_API_DEPLOYMENTS_DETAIL       = "/namespaces/{namespace:.+}/deployments/{deploymentName:.+}";
-
-    // TODO :: CHECK URI
-    public static final String URI_API_DEPLOYMENTS_RESOURCES    = "/api/namespaces/{namespace:.+}/deployments/resource/{requestDeploymentsName:.+}";
+    public static final String URI_API_DEPLOYMENTS_RESOURCES    = "/namespaces/{namespace:.+}/deployments/resource/{selector:.+}";
 
     // API URI :: REPLICA SETS
     public static final String URI_API_REPLICASETS_LIST      = "/namespaces/{namespace:.+}/replicasets";
