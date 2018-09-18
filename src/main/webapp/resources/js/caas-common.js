@@ -162,7 +162,7 @@ var procCheckValidData = function (data, checkFunc) {
         if (isNull) {
             // If data is null, it transfers 'NOT FOUND' page forced.
             viewLoading('show');
-            procMovePage('/caas');
+            procMovePage('/caas/resource/notFound');
             data.resultCode = RESULT_STATUS_FAIL;
         }
 
