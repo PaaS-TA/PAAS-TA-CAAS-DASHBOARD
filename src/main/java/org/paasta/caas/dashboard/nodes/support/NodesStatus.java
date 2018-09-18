@@ -18,10 +18,6 @@ public class NodesStatus {
     private Map<String, Object> allocatable;
 
     private List<Map<String, Object>> conditions;
-    private List<Map<String, Object>> addresses;
-    private Map<String, Object> nodeInfo;
-
-//    private List<Map<String, Object>> addresses;
-//    private Map<String, Object> daemonEndpoints;
-//    private Map<String, Object> images;
+    private List<NodesAddress> addresses;
+    private NodesSystemInfo nodeInfo;
 }
