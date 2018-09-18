@@ -51,15 +51,14 @@
 </div>
 <script type="text/javascript">
 
-    var namespace = NAME_SPACE;
-
-    var replicaSetName = '<c:out value="${replicaSetName}"/>';
-
     // GET LIST
     var getList = function() {
         viewLoading('show');
 
-        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/events/resource/" + replicaSetName;
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
+                .replace("{namespace:.+}", NAME_SPACE)
+                .replace("{resourceName:.+}", '<c:out value="${replicaSetName}"/>');
+
         procCallAjax(reqUrl, "GET", null, null, callbackGetList);
     };
 
@@ -68,6 +67,7 @@
     var callbackGetList = function(data) {
         if (!procCheckValidData(data)) {
             viewLoading('hide');
+            alertMessage();
             return false;
         }
 
@@ -102,6 +102,7 @@
             resultArea.html(htmlString);
         }
 
+        procSetToolTipForTableTd('resultArea');
         viewLoading('hide');
     };
 

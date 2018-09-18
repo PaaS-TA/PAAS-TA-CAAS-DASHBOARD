@@ -30,7 +30,7 @@ public class ReplicaSetsController {
      * Instantiates a new ReplicaSets controller.
      *
      * @param commonService      the common service
-     * @param replicaSetsService the replicaset service
+     * @param replicaSetsService the replicaSet service
      */
     @Autowired
     public ReplicaSetsController(CommonService commonService, ReplicaSetsService replicaSetsService) {
@@ -44,8 +44,8 @@ public class ReplicaSetsController {
      * @param httpServletRequest the http servlet request
      * @return the custom service main
      */
-    @GetMapping(value = Constants.URI_CONTROLLER_REPLICASETS)
-    public ModelAndView getReplicaSetMain(HttpServletRequest httpServletRequest) {
+    @GetMapping(value = Constants.URI_WORKLOAD_REPLICA_SETS)
+    public ModelAndView getReplicaSetsMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/main", new ModelAndView());
     }
 
@@ -56,8 +56,8 @@ public class ReplicaSetsController {
      * @param httpServletRequest the http servlet request
      * @return the custom services detail
      */
-    @GetMapping(value = Constants.URI_CONTROLLER_REPLICASETS + "/{replicaSetName:.+}")
-    public ModelAndView getReplicaSetDetail(HttpServletRequest httpServletRequest, @PathVariable("replicaSetName") String replicaSetName) {
+    @GetMapping(value = Constants.URI_WORKLOAD_REPLICA_SETS + "/{replicaSetName:.+}")
+    public ModelAndView getReplicaSetsDetail(HttpServletRequest httpServletRequest, @PathVariable("replicaSetName") String replicaSetName) {
         return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/detail", new ModelAndView());
     }
 
@@ -68,8 +68,8 @@ public class ReplicaSetsController {
      * @param httpServletRequest the http servlet request
      * @return the custom services detail events
      */
-    @GetMapping(value = Constants.URI_CONTROLLER_REPLICASETS + "/{replicaSetName:.+}/events")
-    public ModelAndView getReplicaSetDetailEvents(HttpServletRequest httpServletRequest, @PathVariable("replicaSetName") String replicaSetName) {
+    @GetMapping(value = Constants.URI_WORKLOAD_REPLICA_SETS + "/{replicaSetName:.+}/events")
+    public ModelAndView getReplicaSetsDetailEvents(HttpServletRequest httpServletRequest, @PathVariable("replicaSetName") String replicaSetName) {
         return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/events", new ModelAndView());
     }
 
@@ -80,8 +80,8 @@ public class ReplicaSetsController {
      * @param httpServletRequest the http servlet request
      * @return the custom services detail events
      */
-    @GetMapping(value = Constants.URI_CONTROLLER_REPLICASETS + "/{replicaSetName:.+}/yaml")
-    public ModelAndView getReplicaSetDetailYaml(HttpServletRequest httpServletRequest, @PathVariable("replicaSetName") String replicaSetName) {
+    @GetMapping(value = Constants.URI_WORKLOAD_REPLICA_SETS + "/{replicaSetName:.+}/yaml")
+    public ModelAndView getReplicaSetsDetailYaml(HttpServletRequest httpServletRequest, @PathVariable("replicaSetName") String replicaSetName) {
         return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/yaml", new ModelAndView());
     }
 
@@ -92,9 +92,9 @@ public class ReplicaSetsController {
      * @param namespace the namespace
      * @return the replicaSet list
      */
-    @GetMapping(value = Constants.API_URL + Constants.URI_API_REPLICASETS_LIST)
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_REPLICA_SETS_LIST)
     @ResponseBody
-    public ReplicaSetsList getReplicaSetList(@PathVariable("namespace") String namespace){
+    public ReplicaSetsList getReplicaSetsList(@PathVariable("namespace") String namespace){
         return replicaSetService.getReplicasetList(namespace);
     }
 
@@ -103,12 +103,12 @@ public class ReplicaSetsController {
      * Gets replicaSet.
      *
      * @param namespace the namespace
-     * @param replicaSetName the replicaset name
+     * @param replicaSetName the replicaSet name
      * @return the replicaSet
      */
-    @GetMapping(value = Constants.API_URL + Constants.URI_API_REPLICASETS_DETAIL)
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_REPLICA_SETS_DETAIL)
     @ResponseBody
-    public ReplicaSets getReplicaSet(@PathVariable("namespace") String namespace, @PathVariable("replicaSetName") String replicaSetName ){
+    public ReplicaSets getReplicaSets(@PathVariable("namespace") String namespace, @PathVariable("replicaSetName") String replicaSetName ){
         return replicaSetService.getReplicaset(namespace, replicaSetName);
     }
 
@@ -120,10 +120,10 @@ public class ReplicaSetsController {
      * @param replicaSetName the replicaSetName name
      * @return the replicaSet
      */
-    @GetMapping(value = Constants.API_URL + Constants.URI_API_REPLICASETS_YAML)
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_REPLICA_SETS_YAML)
     @ResponseBody
-    public ReplicaSets getReplicaSetYaml(@PathVariable("namespace") String namespace, @PathVariable("replicaSetName") String replicaSetName ){
-        return replicaSetService.getReplicasetYaml(namespace, replicaSetName);
+    public ReplicaSets getReplicaSetsYaml(@PathVariable("namespace") String namespace, @PathVariable("replicaSetName") String replicaSetName ){
+        return replicaSetService.getReplicaSetYaml(namespace, replicaSetName);
     }
 
 
@@ -134,9 +134,9 @@ public class ReplicaSetsController {
      * @param selector the selector for filter
      * @return ReplicaSetList
      */
-    @GetMapping(value = Constants.API_URL + Constants.URI_API_REPLICASETS_RESOURCES)
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_REPLICA_SETS_RESOURCES)
     @ResponseBody
-    public ReplicaSetsList getReplicaSetLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector ){
+    public ReplicaSetsList getReplicaSetsLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector ){
         return replicaSetService.getReplicasetListLabelSelector(namespace, selector);
     }
 

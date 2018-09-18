@@ -119,18 +119,13 @@
 </div>
 <script type="text/javascript">
 
-    var namespace = NAME_SPACE;
-    //namespace = 'default';
-
-    var selector = "";
-    var replicaSetName = '<c:out value="${replicaSetName}"/>';
-
     // GET DETAIL
     var getDetail = function() {
-        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/replicasets/" + replicaSetName;
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICA_SETS_DETAIL%>"
+                .replace("{namespace:.+}", NAME_SPACE)
+                .replace("{replicaSetName:.+}", '<c:out value="${replicaSetName}"/>');
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
-
 
     // CALLBACK
     var callbackGetDetail = function(data) {
@@ -142,9 +137,7 @@
         var annotations         = JSON.stringify(data.metadata.annotations).replace(/["{}]/g, '').replace(/:/g, '=');
         var creationTimestamp   = data.metadata.creationTimestamp;
         var selector            = procSetSelector(data.spec.selector.matchLabels);
-        //var replicas            = data.status.replicas+" / "+data.status.replicas;   //  TOBE ::  current / desired
-        var images              = new Array;
-        //var deployment          = "";
+        var images              = [];
 
         var containers = data.spec.template.spec.containers;
         for(var i=0; i < containers.length; i++){
@@ -158,12 +151,7 @@
         $('#resultCreationTimestamp').html(creationTimestamp);
         $('#resultSelector').html(procCreateSpans(selector));
         $('#resultImage').html(images.join("<br>"));
-        //$('#resultPods').html(replicas);
         $('#resultPods').html(data.status.availableReplicas+" running");
-        //$('#resultDeployment').html(deployment);
-
-//        $('#resultLabel').addClass('labels_wrap');
-//        $('#resultAnnotation').addClass('labels_wrap');
 
         getDeploymentsInfo(data.metadata.labels);
         getDetailForPodsList(selector);
@@ -179,8 +167,9 @@
 
         selector = procSetSelector(selector);
 
-        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_RESOURCES %>".replace("{namespace:.+}", namespace)
-                                                                        .replace("{selector:.+}", selector);
+        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_RESOURCES %>"
+                .replace("{namespace:.+}", NAME_SPACE)
+                .replace("{selector:.+}", selector);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsInfo);
     };
 
@@ -192,11 +181,9 @@
         var deploymentsInfo;
 
         if(data.items.length > 0){
-
             var deploymentsName = data.items[0].metadata.name;
 
-            console.log("deploymentsName:::"+deploymentsName);
-                deploymentsInfo = "<a href='/caas/workloads/deployments/"+deploymentsName+"'>"+deploymentsName+"</a>";
+            deploymentsInfo = "<a href='<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/"+deploymentsName+"'>"+deploymentsName+"</a>";
         }else{
             deploymentsInfo = "-";
         }
@@ -207,14 +194,14 @@
 
     // GET DETAIL FOR PODS LIST
     var getDetailForPodsList = function(selector) {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>".replace("{namespace:.+}", namespace).replace("{selector:.+}", selector);
-        //procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPodsList);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>"
+                .replace("{namespace:.+}", NAME_SPACE)
+                .replace("{selector:.+}", selector);
         getPodListUsingRequestURL(reqUrl);
     };
 
     // GET SERVICE LIST
     var getServices = function(selector) {
-
         /* Replicaset 생성시 추가되는 "pod-template-hash" 레이블은 service 레이블에 생성되지 않는다.
             - service, deployment 레이블 조회시 => 필터링 조건에서 "pod-template-hash" 레이블은 제외한다.
             - pods 레이블 조회시 =>  필터링 조건에서 "pod-template-hash" 레이블 포함함.
@@ -225,21 +212,26 @@
 
         selector = procSetSelector(selector);
 
-        var reqUrl = "<%= Constants.API_URL %>/namespaces/" + namespace + "/services/resource/" + selector;
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_RESOURCES %>"
+                .replace("{namespace:.+}", NAME_SPACE)
+                .replace("{selector:.+}", selector);
         procCallAjax(reqUrl, "GET", null, null, callbackGetServices);
     };
 
 
     // CALLBACK
     var callbackGetServices = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            return false;
+        }
 
         var serviceName,
-                selector,
-                endpointsPreString,
-                nodePort,
-                specPortsList,
-                specPortsListLength;
+            selector,
+            endpointsPreString,
+            nodePort,
+            specPortsList,
+            specPortsListLength;
 
         var resultArea       = $('#resultAreaForService');
         var resultHeaderArea = $('#resultHeaderAreaForService');
@@ -251,10 +243,6 @@
         var endpoints = "";
         var selectorList = [];
         var htmlString = [];
-
-        // REF
-        // service.namespace:port protocol
-        // service.namespace:nodePort protocol -> service.namespace:0 protocol
 
         for (var i = 0; i < listLength; i++) {
             serviceName = items[i].metadata.name;
@@ -276,7 +264,8 @@
                         + '<p>' + endpointsPreString + nodePort + " " + specPortsList[j].protocol + '</p>';
             }
 
-            //External Endpoints TODO :: xxx.xxx.xxx.xxx:1234  뒤에 port 표시 확인 필요
+            //External Endpoints
+            //TODO :: xxx.xxx.xxx.xxx:1234  뒤에 port 표시 확인 필요
             var externalEndpoints = [];
             externalEndpoints = items[i].spec.externalIPs;
 

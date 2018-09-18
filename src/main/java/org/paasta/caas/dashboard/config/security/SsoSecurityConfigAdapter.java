@@ -117,7 +117,7 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
                     .antMatchers("/caas/dashboard").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/caas/dashboard/**").authenticated()
                     .antMatchers("/caas/users").access("hasRole('ROLE_ADMIN')")
-                    .antMatchers("/workload/replicasets").access("hasRole('ROLE_ADMIN')")
+                    .antMatchers("/workload/replicaSets").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/common/**").permitAll()
                     .antMatchers("/resources/**").permitAll()
                     .and()

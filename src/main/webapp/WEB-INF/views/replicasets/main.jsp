@@ -59,7 +59,7 @@
     var getList = function() {
         viewLoading('show');
 
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICASETS_LIST %>"
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICA_SETS_LIST %>"
                 .replace("{namespace:.+}", NAME_SPACE);
         procCallAjax(reqUrl, "GET", null, null, callbackGetList);
     };
@@ -104,7 +104,7 @@
             var containers = itemList.spec.template.spec.containers;
             for(var i=0; i < containers.length; i++){
                 //images.push(containers[i].image);
-                imageTags += '<p class="custom-content-overflow" data-toggle="tooltip" title="' + containers[i].image + '">' + containers[i].image + '</p>';
+                imageTags += '<p class="custom-content-overflow">' + containers[i].image + '</p>';
             }
 
 //            var containers = itemList.spec.template.spec.containers;
@@ -121,7 +121,7 @@
             if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
                 statusIconHtml    = "<span class='red2'><i class='fas fa-exclamation-circle'></i> </span>";
                 $.each(itemList.message , function (index, eventMessage) {
-                    statusMessageHtml += "<p class='red2 custom-content-overflow' data-toggle='tooltip' title='" + eventMessage + "'>" + eventMessage + "</p>";
+                    statusMessageHtml += "<p class='red2 custom-content-overflow'>" + eventMessage + "</p>";
                 });
 
             }else{
@@ -132,7 +132,7 @@
             resultArea.append(
                     "<tr>"
                     + "<td>"+statusIconHtml
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_REPLICASETS %>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
+                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_REPLICA_SETS %>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
                     + statusMessageHtml
                     + "</td>"
                     + "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"

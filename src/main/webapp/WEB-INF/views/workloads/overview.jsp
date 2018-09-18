@@ -269,7 +269,7 @@
     // GET LIST
     var getReplicaSetList = function() {
         viewLoading('show');
-        procCallAjax("<%= Constants.API_URL %>/namespaces/" + NAME_SPACE + "/replicasets", "GET", null, null, callbackGetReplicaSetList);
+        procCallAjax("<%= Constants.API_URL %>/namespaces/" + NAME_SPACE + "/replicaSets", "GET", null, null, callbackGetReplicaSetList);
     };
 
     // CALLBACK
@@ -301,12 +301,10 @@
             var pods = itemList.status.availableReplicas +" / "+ itemList.spec.replicas;  // current / desired
             replicaSetReplicaTotalCtn += itemList.spec.replicas;
             replicaSetAvailableReplicasCnt += itemList.status.availableReplicas;
-            var images = new Array;
 
             var imageTags = "";
             var containers = itemList.spec.template.spec.containers;
             for(var i=0; i < containers.length; i++){
-                //images.push(containers[i].image);
                 imageTags += '<p class="custom-content-overflow" data-toggle="tooltip" title="' + containers[i].image + '">' + containers[i].image + '</p>';
             }
 
@@ -338,7 +336,7 @@
             resultArea.append(
                     "<tr>"
                     + "<td>"+statusIconHtml
-                    + "<a href='javascript:void(0);' data-toggle='tooltip' title='"+replicaSetName+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_REPLICASETS %>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
+                    + "<a href='javascript:void(0);' data-toggle='tooltip' title='"+replicaSetName+"' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_REPLICA_SETS%>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
                     + statusMessageHtml
                     + "</td>"
                     + "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"

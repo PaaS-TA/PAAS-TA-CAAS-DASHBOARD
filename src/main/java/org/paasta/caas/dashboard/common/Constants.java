@@ -33,7 +33,7 @@ public class Constants {
     public static final String URI_WORKLOAD_OVERVIEW        = "/caas/workloads/overview";
     public static final String URI_WORKLOAD_DEPLOYMENTS     = "/caas/workloads/deployments";
     public static final String URI_WORKLOAD_PODS            = "/caas/workloads/pods";
-    public static final String URI_WORKLOAD_REPLICASETS     = "/caas/workloads/replicaSets";
+    public static final String URI_WORKLOAD_REPLICA_SETS    = "/caas/workloads/replicaSets";
 
     // VIEW URL - services
     public static final String URI_SERVICES = "/caas/services";
@@ -44,10 +44,8 @@ public class Constants {
 
     // TODO :: REMOVE DUPLICATED VARIABLES
     // URI_CONTROLLER_NAMESPACE >> URI_CLUSTER_NAMESPACES
-    // URI_CONTROLLER_REPLICASETS >> URI_WORKLOAD_REPLICASETS
     // CONTROLLER MAPPING URI
     public static final String URI_CONTROLLER_NAMESPACE      = "/caas/clusters/namespaces";
-    public static final String URI_CONTROLLER_REPLICASETS    = "/caas/workloads/replicaSets";
 
     // API URI :: DEPLOYMENTS
     public static final String URI_API_DEPLOYMENTS_LIST         = "/namespaces/{namespace:.+}/deployments";
@@ -55,10 +53,10 @@ public class Constants {
     public static final String URI_API_DEPLOYMENTS_RESOURCES    = "/namespaces/{namespace:.+}/deployments/resource/{selector:.+}";
 
     // API URI :: REPLICA SETS
-    public static final String URI_API_REPLICASETS_LIST      = "/namespaces/{namespace:.+}/replicasets";
-    public static final String URI_API_REPLICASETS_DETAIL    = "/namespaces/{namespace:.+}/replicasets/{replicaSetName:.+}";
-    public static final String URI_API_REPLICASETS_YAML      = "/namespaces/{namespace:.+}/replicasets/{replicaSetName:.+}/yaml";
-    public static final String URI_API_REPLICASETS_RESOURCES = "/namespaces/{namespace:.+}/replicasets/resource/{selector:.+}";
+    public static final String URI_API_REPLICA_SETS_LIST      = "/namespaces/{namespace:.+}/replicaSets";
+    public static final String URI_API_REPLICA_SETS_DETAIL    = "/namespaces/{namespace:.+}/replicaSets/{replicaSetName:.+}";
+    public static final String URI_API_REPLICA_SETS_YAML      = "/namespaces/{namespace:.+}/replicaSets/{replicaSetName:.+}/yaml";
+    public static final String URI_API_REPLICA_SETS_RESOURCES = "/namespaces/{namespace:.+}/replicaSets/resource/{selector:.+}";
 
     // API URI :: SERVICES
     public static final String URI_API_SERVICES_LIST         = "/namespaces/{namespace:.+}/services";

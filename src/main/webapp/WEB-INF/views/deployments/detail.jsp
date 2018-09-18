@@ -86,7 +86,7 @@
                         <p>Replica Set</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL" id="replicasetsResultTable">
+                        <table class="table_event condition alignL" id="replicaSetsResultTable">
                             <colgroup>
                                 <col style='width:auto;'>
                                 <col style='width:10%;'>
@@ -97,16 +97,16 @@
                             </colgroup>
                             <thead>
                             <tr id="noReplicasetsResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 ReplicaSets가 없습니다.</p></td></tr>
-                            <tr id="replicasetsResultHeaderArea" class="headerSortFalse">
+                            <tr id="replicaSetsResultHeaderArea" class="headerSortFalse">
                                 <td>Name
-                                    <button class="sort-arrow" onclick="procSetSortList('replicasetsResultTable', this, '0')"><i class="fas fa-caret-down"></i></button>
+                                    <button class="sort-arrow" onclick="procSetSortList('replicaSetsResultTable', this, '0')"><i class="fas fa-caret-down"></i></button>
                                 </td>
                                 <td>Namespace</td>
                                 <td>Labels</td>
                                 <td id="replicaPods">Pods</td>
                                 <td id="replicaImages">Images</td>
                                 <td id="replicaCreationTime">Created on
-                                    <button class="sort-arrow" onclick="procSetSortList('replicasetsResultTable', this, '6')"><i class="fas fa-caret-down"></i></button>
+                                    <button class="sort-arrow" onclick="procSetSortList('replicaSetsResultTable', this, '6')"><i class="fas fa-caret-down"></i></button>
                                 </td>
                             </tr>
                             </thead>
@@ -159,9 +159,9 @@
     };
 
     var getReplicaSetsList = function (selector) {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICASETS_RESOURCES %>".replace("{namespace:.+}", NAME_SPACE)
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICA_SETS_RESOURCES %>".replace("{namespace:.+}", NAME_SPACE)
             .replace("{selector:.+}", selector);
-        procCallAjax(reqUrl, "GET", null, null, callbackGetReplicasetList);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetReplicaSetList);
     }
 
     // GET DETAIL FOR PODS LIST
@@ -253,14 +253,14 @@
     }
 
     // CALLBACK
-    var callbackGetReplicasetList = function (data) {
+    var callbackGetReplicaSetList = function (data) {
 
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
         var resultArea = $('#replicaSetTable');
-        var resultHeaderArea = $('#replicasetsResultHeaderArea');
+        var resultHeaderArea = $('#replicaSetsResultHeaderArea');
         var noResultArea = $('#noReplicasetsResultArea');
-        var resultTable = $('#replicasetsResultTable');
+        var resultTable = $('#replicaSetsResultTable');
 
         var listLength = data.items.length;
 
@@ -296,7 +296,7 @@
             resultArea.append('<tr>' +
                                     '<td>' +
                                         '<span class="green2"><i class="fas fa-check-circle"></i></span> ' +
-                                        "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_REPLICASETS %>/" + replicasetName + "\");'>"+
+                                        "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_REPLICA_SETS %>/" + replicasetName + "\");'>"+
                                             replicasetName +
                                         '</a>' +
                                     '</td>' +
@@ -322,7 +322,7 @@
             $('.headerSortFalse > td').unbind();
         }
 
-        procSetToolTipForTableTd('replicasetsResultTable');
+        procSetToolTipForTableTd('replicaSetsResultTable');
 
     };
 

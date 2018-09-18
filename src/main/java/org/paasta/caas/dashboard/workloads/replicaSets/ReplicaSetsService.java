@@ -28,26 +28,26 @@ public class ReplicaSetsService {
 
 
     /**
-     * Gets replicaset list.
+     * Gets replicaSet list.
      * @param namespace   the namespace
-     * @return the replicaset list
+     * @return the replicaSet list
      */
     ReplicaSetsList getReplicasetList(String namespace) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICASETS_LIST
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICA_SETS_LIST
                         .replace("{namespace:.+}", namespace),
                 HttpMethod.GET, null, ReplicaSetsList.class);
     }
 
 
     /**
-     * Gets replicaset.
+     * Gets replicaSet.
      *
      * @param namespace   the namespace
-     * @param replicaSetName the replicaset name
-     * @return the replicaset
+     * @param replicaSetName the replicaSet name
+     * @return the replicaSet
      */
     ReplicaSets getReplicaset(String namespace, String replicaSetName) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICASETS_DETAIL
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICA_SETS_DETAIL
                         .replace("{namespace:.+}", namespace)
                         .replace("{replicaSetName:.+}", replicaSetName)
                 , HttpMethod.GET, null, ReplicaSets.class);
@@ -55,14 +55,14 @@ public class ReplicaSetsService {
 
 
     /**
-     * Gets replicaset YAML.
+     * Gets replicaSet YAML.
      *
      * @param namespace   the namespace
      * @param replicaSetName the service name
      * @return the custom services yaml
      */
-    ReplicaSets getReplicasetYaml(String namespace, String replicaSetName) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICASETS_YAML
+    ReplicaSets getReplicaSetYaml(String namespace, String replicaSetName) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICA_SETS_YAML
                         .replace("{namespace:.+}", namespace)
                         .replace("{replicaSetName:.+}", replicaSetName),
                 HttpMethod.GET, null, ReplicaSets.class);
@@ -70,14 +70,14 @@ public class ReplicaSetsService {
 
 
     /**
-     * Gets replicaset(Label Selector).
+     * Gets replicaSet(Label Selector).
      *
      * @param namespace the namespace
      * @param selectors the selectors
-     * @return the replicaset
+     * @return the replicaSet
      */
     ReplicaSetsList getReplicasetListLabelSelector(String namespace, String selectors) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICASETS_RESOURCES
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICA_SETS_RESOURCES
                      .replace("{namespace:.+}", namespace)
                         .replace("{selector:.+}", selectors),
                 HttpMethod.GET, null, ReplicaSetsList.class);

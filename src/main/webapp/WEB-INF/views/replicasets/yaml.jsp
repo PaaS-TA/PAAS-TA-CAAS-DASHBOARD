@@ -33,55 +33,33 @@
     <!-- YAML 끝 -->
 
 </div>
-<!-- SyntexHighlighter -->
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushYaml.js"/>"></script>
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">
 
-<script type="text/javascript">
-    SyntaxHighlighter.defaults['quick-code'] = false;
-    SyntaxHighlighter.all();
-</script>
-
-<style>
-    .syntaxhighlighter .gutter .line{border-right-color:#ddd !important;}
-</style>
-<!-- SyntexHighlighter -->
-
-<script type="text/javascript">
-    // ON LOAD
-    $(document.body).ready(function () {
-        // createChart("current", "cpu");
-        // createChart("current", "mem");
-        // createChart("current", "disk");
-    });
-</script>
+<%--SyntexHighlighter--%>
+<jsp:include page="../common/syntaxHighlighter.jsp" flush="true"/>
 
 
 <script type="text/javascript">
-
-    var namespace = NAME_SPACE;
-
-    var replicaSetName = '<c:out value="${replicaSetName}"/>';
 
     // GET DETAIL
     var getDetail = function() {
         viewLoading('show');
 
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICASETS_YAML %>"
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICA_SETS_YAML %>"
                 .replace("{namespace:.+}", NAME_SPACE)
-                .replace("{replicaSetName:.+}", replicaSetName);
+                .replace("{replicaSetName:.+}", '<c:out value="${replicaSetName}"/>');
         procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
 
 
     // CALLBACK
     var callbackGetDetail = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
+            return false;
+        }
 
         $('#resultArea').html('---\n' + data.sourceTypeYaml);
-
         viewLoading('hide');
     };
 
