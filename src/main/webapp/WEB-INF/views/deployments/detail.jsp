@@ -94,21 +94,21 @@
     <!-- Details  끝 -->
 </div>
 
-
-<input type="hidden" id="requestDeploymentsName" name="requestDeploymentsName" value="<c:out value='${deploymentsName}' default='' />" />
-
 <script type="text/javascript">
 
     var getDetail = function() {
         viewLoading('show');
-        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_DETAIL %>".replace("{namespace:.+}", NAME_SPACE)
-                                                                    .replace("{deploymentsName:.+}", document.getElementById('requestDeploymentsName').value);
+        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_DETAIL %>"
+                .replace("{namespace:.+}", NAME_SPACE)
+                .replace("{deploymentsName:.+}", "<c:out value='${deploymentsName}'/>");
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeployments);
     };
 
     // GET DETAIL FOR PODS LIST
     var getDetailForPodsList = function(selector) {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>".replace("{namespace:.+}", NAME_SPACE).replace("{selector:.+}", selector);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>"
+                .replace("{namespace:.+}", NAME_SPACE)
+                .replace("{selector:.+}", selector);
         getPodListUsingRequestURL(reqUrl);
         viewLoading('hide');
     };
