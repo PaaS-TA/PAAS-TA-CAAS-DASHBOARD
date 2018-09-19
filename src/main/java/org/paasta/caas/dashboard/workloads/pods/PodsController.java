@@ -28,7 +28,7 @@ public class PodsController {
      * Instantiates a new Pods controller.
      *
      * @param commonService the common service
-     * @param podsService the pods service
+     * @param podsService   the pods service
      */
     @Autowired
     public PodsController(CommonService commonService, PodsService podsService) {
