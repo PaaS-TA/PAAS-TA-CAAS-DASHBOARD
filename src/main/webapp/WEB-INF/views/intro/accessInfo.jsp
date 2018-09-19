@@ -1,4 +1,4 @@
-<%--
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %><%--
   Intro accessInfo
   @author REX
   @version 1.0
@@ -283,7 +283,11 @@
 
     // user 의 token 값 가져오기
     var getAccessToken = function () {
-        procCallAjax(BASE_URL + "/accessInfo/namespace/" + NAME_SPACE + "/accessTokenName/" + userAccessToken, "GET", null, null, callbackGetAccessToken);
+        var reqUrl = "<%= Constants.CAAS_BASE_URL %><%= Constants.URI_API_SECRETS_DETAIL %>"
+            .replace("{namespace:.+}", NAME_SPACE)
+            .replace("{accessTokenName:.+}", userAccessToken);
+
+        procCallAjax(reqUrl, "GET", null, null, callbackGetAccessToken);
     };
 
     var callbackGetAccessToken = function (data) {
