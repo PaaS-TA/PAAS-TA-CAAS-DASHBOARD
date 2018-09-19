@@ -1,4 +1,4 @@
-package org.paasta.caas.dashboard.common.model;
+package org.paasta.caas.dashboard.workloads.pods.support;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
