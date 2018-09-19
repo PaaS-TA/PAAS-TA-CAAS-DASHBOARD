@@ -31,24 +31,9 @@
     </div>
     <!-- Services YAML 끝 -->
 </div>
-<%--TODO--%>
-<!-- modal -->
 
-<!-- SyntexHighlighter -->
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushYaml.js"/>"></script>
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">
-
-<script type="text/javascript">
-    SyntaxHighlighter.defaults['quick-code'] = false;
-    SyntaxHighlighter.all();
-</script>
-
-<style>
-    .syntaxhighlighter .gutter .line{border-right-color:#ddd !important;}
-</style>
-<!-- SyntexHighlighter -->
+<%--SyntexHighlighter--%>
+<jsp:include page="../common/syntaxHighlighter.jsp" flush="true"/>
 
 <script type="text/javascript">
     var deployName = '<c:out value="${deploymentsName}"/>';
