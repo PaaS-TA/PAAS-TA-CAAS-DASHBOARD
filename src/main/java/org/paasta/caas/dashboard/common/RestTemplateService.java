@@ -28,50 +28,38 @@ public class RestTemplateService {
     private static final String AUTHORIZATION_HEADER_KEY = "Authorization";
     private static final String CONTENT_TYPE = "Content-Type";
     private final String caasApiBase64Authorization;
-    private final String caasCfApiBase64Authorization;
     private final String commonApiBase64Authorization;
     private final RestTemplate restTemplate;
+    private final PropertyService propertyService;
     private String base64Authorization;
     private String baseUrl;
-
-    private final PropertyService propertyService;
 
     /**
      * Instantiates a new Rest template service.
      *
-     * @param restTemplate                   the rest template
      * @param caasApiAuthorizationId         the caas api authorization id
      * @param caasApiAuthorizationPassword   the caas api authorization password
-     * @param caasCfApiAuthorizationId       the caas cf api authorization id
-     * @param caasCfApiAuthorizationPassword the caas cf api authorization password
      * @param commonApiAuthorizationId       the common api authorization id
      * @param commonApiAuthorizationPassword the common api authorization password
+     * @param restTemplate                   the rest template
      * @param propertyService                the property service
      */
     @Autowired
-    public RestTemplateService(RestTemplate restTemplate,
-//                               JpaAdminTokenRepository adminTokenRepository,
-                               @Value("${caasApi.authorization.id}") String caasApiAuthorizationId,
+    public RestTemplateService(@Value("${caasApi.authorization.id}") String caasApiAuthorizationId,
                                @Value("${caasApi.authorization.password}") String caasApiAuthorizationPassword,
-                               @Value("${caasCfApi.authorization.id}") String caasCfApiAuthorizationId,
-                               @Value("${caasCfApi.authorization.password}") String caasCfApiAuthorizationPassword,
                                @Value("${commonApi.authorization.id}") String commonApiAuthorizationId,
                                @Value("${commonApi.authorization.password}") String commonApiAuthorizationPassword,
+                               RestTemplate restTemplate,
                                PropertyService propertyService) {
         this.restTemplate = restTemplate;
         this.propertyService = propertyService;
+
         this.caasApiBase64Authorization = "Basic "
                 + Base64Utils.encodeToString(
                 (caasApiAuthorizationId + ":" + caasApiAuthorizationPassword).getBytes(StandardCharsets.UTF_8));
-
-        this.caasCfApiBase64Authorization = "Basic "
-                + Base64Utils.encodeToString(
-                (caasCfApiAuthorizationId + ":" + caasCfApiAuthorizationPassword).getBytes(StandardCharsets.UTF_8));
-
         this.commonApiBase64Authorization = "Basic "
                 + Base64Utils.encodeToString(
                 (commonApiAuthorizationId + ":" + commonApiAuthorizationPassword).getBytes(StandardCharsets.UTF_8));
-
     }
 
 
@@ -112,14 +100,13 @@ public class RestTemplateService {
             e.printStackTrace();
 
             Map<String, Object> resultMap = new HashMap();
-            resultMap.put("resultCode" , "500");
+            resultMap.put("resultCode", "500");
             ObjectMapper mapper = new ObjectMapper();
             LOGGER.info(mapper.convertValue(resultMap, responseType).toString());
 
             return mapper.convertValue(resultMap, responseType);
         }
     }
-
 
     /**
      * Cf send t.
@@ -162,12 +149,6 @@ public class RestTemplateService {
         if (Constants.TARGET_CAAS_API.equals(reqApi)) {
             apiUrl = propertyService.getCaasApiUrl();
             authorization = caasApiBase64Authorization;
-        }
-
-        // CAAS CF API
-        if (Constants.TARGET_CAAS_CF_API.equals(reqApi)) {
-            apiUrl = propertyService.getCaasCfApiUrl();
-            authorization = caasCfApiBase64Authorization;
         }
 
         // COMMON API

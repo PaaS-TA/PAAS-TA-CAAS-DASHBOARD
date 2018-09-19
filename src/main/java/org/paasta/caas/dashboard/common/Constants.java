@@ -13,7 +13,6 @@ public class Constants {
     public static final String RESULT_STATUS_FAIL    = "FAIL";
 
     public static final String TARGET_CAAS_API      = "caasApi";
-    public static final String TARGET_CAAS_CF_API   = "caasCfApi";
     public static final String TARGET_COMMON_API    = "commonApi";
 
     public static final String API_URL = "/api";

@@ -164,7 +164,7 @@
 
         var deployName = metadata.name;
         var namespace = NAME_SPACE;
-        var labels = procSetSelector(metadata.labels);  //.replace(/=/g, ':')
+        var labels = procSetSelector(metadata.labels);
         var annotations = metadata.annotations;
         var creationTimestamp = metadata.creationTimestamp;
 
@@ -272,7 +272,7 @@
         procSetToolTipForTableTd('replicaSetsResultTable');
     };
 
-    //3개 일때는 동작하지 않는드아!
+    //3개 일때는 동작하지 않을 수 있음.
     var createAnnotations = function (annotations) {
         var tempStr = "";
         Object.keys(annotations).forEach(function (key) {
