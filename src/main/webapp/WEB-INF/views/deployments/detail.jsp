@@ -10,7 +10,7 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${deploymentsName}"/></h1>
+    <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <c:out value="${deploymentsName}"/></h1>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
@@ -129,98 +129,51 @@
 
 <input type="hidden" id="requestDeploymentsName" name="requestDeploymentsName" value="<c:out value='${deploymentsName}' default='' />" />
 
-<!-- SyntexHighlighter -->
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCpp.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCSharp.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushPython.js"/>"></script>
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">
-
-<script type="text/javascript">
-    SyntaxHighlighter.defaults['quick-code'] = false;
-    SyntaxHighlighter.all();
-</script>
-
-<style>
-    .syntaxhighlighter .gutter .line {
-        border-right-color: #ddd !important;
-    }
-</style>
-<!-- SyntexHighlighter -->
-
 <script type="text/javascript">
 
     var getDetail = function() {
+        viewLoading('show');
         var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_DETAIL %>".replace("{namespace:.+}", NAME_SPACE)
-                                                                    .replace("{deploymentName:.+}", document.getElementById('requestDeploymentsName').value);
-
-        procCallAjax(reqUrl, "GET", null, null, callbackGetDeployment);
+                                                                    .replace("{deploymentsName:.+}", document.getElementById('requestDeploymentsName').value);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDeployments);
     };
 
     var getReplicaSetsList = function (selector) {
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICA_SETS_RESOURCES %>".replace("{namespace:.+}", NAME_SPACE)
-            .replace("{selector:.+}", selector);
-        procCallAjax(reqUrl, "GET", null, null, callbackGetReplicaSetList);
+                                                                                                .replace("{selector:.+}", selector);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetReplicaSetsList);
     }
 
     // GET DETAIL FOR PODS LIST
     var getDetailForPodsList = function(selector) {
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>".replace("{namespace:.+}", NAME_SPACE).replace("{selector:.+}", selector);
         getPodListUsingRequestURL(reqUrl);
+        viewLoading('hide');
     };
 
-    var stringifyJSON = function (obj) {
-        return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
-    }
-
-    var callbackGetDeployment = function (data) {
-        viewLoading('hide');
-        if (RESULT_STATUS_FAIL === data.resultCode) {
-            $('#resultArea').html(
-                "ResultStatus :: " + data.resultCode + " <br><br>"
-                + "ResultMessage :: " + data.resultMessage + " <br><br>");
+    var callbackGetDeployments = function (data) {
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
             return false;
         }
 
-        console.log("CONSOLE DEBUG PRINT :: " + data);
-
-        var htmlString = [];
-        htmlString.push("DEPLOYMENTS LIST :: <br><br>");
-        htmlString.push("ResultCode :: " + data.resultCode + " || "
-            + "Message :: " + data.resultMessage + " <br><br>");
-
-        // get data
         var metadata = data.metadata;
         var spec = data.spec;
         var status = data.status;
 
-        /* Deployment detail is under...
-         * - name
-         * - namespace
-         * - labels
-         * - annotations
-         * - creation time
-         * - selector
-         * - strategy (Pod deploy strategy)
-         * - min ready seconds
-         * - revision history limit
-         * - Rolling update strategy detail (maxSurge, maxUnavailable)
-         * - Replica status (updated, total, available, unavailable)
-         */
         var deployName = metadata.name;
         var namespace = NAME_SPACE;
-        var labels = stringifyJSON(metadata.labels).replace(/,/g, ', ');  //.replace(/=/g, ':')
+        var labels = procSetSelector(metadata.labels);  //.replace(/=/g, ':')
         var annotations = metadata.annotations;
         var creationTimestamp = metadata.creationTimestamp;
 
-        var selector = stringifyJSON(spec.selector).replace(/matchLabels=/g, '');;
+        var selector = procSetSelector(spec.selector).replace(/matchLabels=/g, '');
         var strategy = spec.strategy.type;
         var minReadySeconds = spec.minReadySeconds;
         var revisionHistoryLimit = spec.revisionHistoryLimit;
-        var rollingUpdateStrategy =
-            "Max surge: " + spec.strategy.rollingUpdate.maxSurge + ", "
-            + "Max unavailable: " + spec.strategy.rollingUpdate.maxUnavailable;
+        var rollingUpdateStrategy = "Max surge: " + spec.strategy.rollingUpdate.maxSurge + ", "
+                                    + "Max unavailable: " + spec.strategy.rollingUpdate.maxUnavailable;
 
         var updatedReplicas = status.updatedReplicas;
         var totalReplicas = status.replicas;
@@ -253,10 +206,13 @@
     }
 
     // CALLBACK
-    var callbackGetReplicaSetList = function (data) {
+    var callbackGetReplicaSetsList = function (data) {
 
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
+            return false;
+        }
         var resultArea = $('#replicaSetTable');
         var resultHeaderArea = $('#replicaSetsResultHeaderArea');
         var noResultArea = $('#noReplicasetsResultArea');
@@ -264,20 +220,11 @@
 
         var listLength = data.items.length;
 
-        //-- Replica Set List
-        //items
-        //metadata.name
-        //metadata.namespace
-        //metadata.labels
-        //status.replicas
-        //metadata.creationTimestamp
-        //spec.containers.image
-
         $.each(data.items, function (index, itemList) {
 
-            var replicasetName = itemList.metadata.name;
+            var replicasetsName = itemList.metadata.name;
             var namespace = NAME_SPACE;
-            var labels = JSON.stringify(itemList.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
+            var labels = procSetSelector(itemList.metadata.labels);
             var creationTimestamp = itemList.metadata.creationTimestamp;
             var replicas = itemList.status.replicas;   //  TOBE ::  current / desired
             var availableReplicas;
@@ -296,8 +243,8 @@
             resultArea.append('<tr>' +
                                     '<td>' +
                                         '<span class="green2"><i class="fas fa-check-circle"></i></span> ' +
-                                        "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_REPLICA_SETS %>/" + replicasetName + "\");'>"+
-                                            replicasetName +
+                                        "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_REPLICA_SETS %>/" + replicasetsName + "\");'>"+
+                                            replicasetsName +
                                         '</a>' +
                                     '</td>' +
                                     "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
@@ -323,7 +270,6 @@
         }
 
         procSetToolTipForTableTd('replicaSetsResultTable');
-
     };
 
     //3개 일때는 동작하지 않는드아!
@@ -343,11 +289,6 @@
     };
 
     $(document.body).ready(function () {
-        /* 차트 주석
-        createChart("current", "cpu");
-        createChart("current", "mem");
-        createChart("current", "disk");*/
-        viewLoading('show');
         getDetail();
     });
 
