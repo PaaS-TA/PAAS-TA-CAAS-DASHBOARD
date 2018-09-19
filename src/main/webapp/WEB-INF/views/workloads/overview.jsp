@@ -145,7 +145,6 @@
     // GET LIST
     var getDevList = function() {
         viewLoading('show');
-        // procCallAjax("/workloads/deployments/" + NAME_SPACE, "GET", null, null, callbackGetDevList);
         var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDevList);
     };
@@ -178,8 +177,8 @@
 
             var deployName = metadata.name;
             var namespace = metadata.namespace;
-            var labels = stringifyJSON(metadata.labels).replace(/,/g, ', ');
-            if (labels == null || labels == "null") {
+            var labels = procSetSelector(metadata.labels);
+            if (labels == "null") {
                 labels = null;
             }
 
@@ -188,7 +187,6 @@
             // Set replicas and total Pods are same.
             var totalPods = spec.replicas;
             var runningPods = totalPods - status.unavailableReplicas;
-            // var failPods = _status.unavailableReplicas;
             var containers = spec.template.spec.containers;
             var imageTags = "";
             for (var i = 0; i < containers.length; i++) {
