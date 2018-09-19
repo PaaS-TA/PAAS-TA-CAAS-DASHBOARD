@@ -58,47 +58,21 @@
     </div>
 </div>
 
-<!-- SyntexHighlighter -->
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCpp.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushCSharp.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushPython.js"/>"></script>
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">
-
-<script type="text/javascript">
-    SyntaxHighlighter.defaults['quick-code'] = false;
-    SyntaxHighlighter.all();
-</script>
-
-<style>
-    .syntaxhighlighter .gutter .line {
-        border-right-color: #ddd !important;
-    }
-</style>
-
 <script type="text/javascript">
 
     var getList = function() {
+        viewLoading('show');
         var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
         procCallAjax(reqUrl, "GET", null, null, callbackGetList);
     };
 
-    var stringifyJSON = function (obj) {
-        return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
-    }
-
     // CALLBACK
     var callbackGetList = function (data) {
-        viewLoading('hide');
-        if (RESULT_STATUS_FAIL === data.resultCode) {
-            $('#deploymentsListArea').html(
-                "ResultStatus :: " + data.resultCode + " <br><br>"
-                + "ResultMessage :: " + data.resultMessage + " <br><br>");
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
             return false;
         }
-
-        console.log("CONSOLE DEBUG PRINT :: " + data);
 
         var listLength = data.items.length;
 
@@ -109,7 +83,6 @@
 
 
         $.each(data.items, function (index, itemList) {
-            // get data
             var metadata = itemList.metadata;
             var spec = itemList.spec;
             var status = itemList.status;
@@ -117,8 +90,8 @@
             var deployName = metadata.name;
             var namespace = metadata.namespace;
             // 라벨이 없는 경우도 있음.
-            var labels = stringifyJSON(metadata.labels).replace(/,/g, ', ');
-            if (labels == null || labels == "null") {
+            var labels = procSetSelector(metadata.labels);//.replace(/,/g, ', ')
+            if (labels == "null") {
                 labels = null;
             }
 
@@ -127,7 +100,6 @@
             // Set replicas and total Pods are same.
             var totalPods = spec.replicas;
             var runningPods = totalPods - status.unavailableReplicas;
-            // var failPods = _status.unavailableReplicas;
             var containers = itemList.spec.template.spec.containers;
             var imageTags = "";
 
@@ -185,12 +157,11 @@
         }
 
         procSetToolTipForTableTd('resultTable');
-
+        viewLoading('hide');
 
     };
 
     $(document.body).ready(function () {
-        viewLoading('show');
         getList();
     });
 
