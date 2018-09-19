@@ -276,13 +276,14 @@
     var createAnnotations = function (annotations) {
         var tempStr = "";
         Object.keys(annotations).forEach(function (key) {
-            if(typeof JSON.parse(annotations[key]) == 'object') {
+            var annotation = annotations[key];
+            if(typeof JSON.parse(annotation) == 'object') {
                 tempStr += '<span class="bg_blue"><a href="#" data-target="#layerpop3" data-toggle="modal">' + key + '</a></span>';
                 $('.modal-title').html(key);
-                $(".modal-body").html('<p>' + annotations[key] + '</p>');
+                $(".modal-body").html('<p>' + annotation + '</p>');
 
             } else {
-                tempStr += procCreateSpans(key + ":"+ annotations[key]);
+                tempStr += procCreateSpans(key + ":"+ annotation);
             }
         });
         return tempStr;
