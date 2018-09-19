@@ -81,41 +81,9 @@
             <!-- Details 끝 -->
             <!-- Replica Set 시작 -->
             <li class="cluster_third_box">
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Replica Set</p>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL" id="replicaSetsResultTable">
-                            <colgroup>
-                                <col style='width:auto;'>
-                                <col style='width:10%;'>
-                                <col style='width:15%;'>
-                                <col style='width:5%;'>
-                                <col style='width:15%;'>
-                                <col style='width:20%;'>
-                            </colgroup>
-                            <thead>
-                            <tr id="noReplicasetsResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 ReplicaSets가 없습니다.</p></td></tr>
-                            <tr id="replicaSetsResultHeaderArea" class="headerSortFalse">
-                                <td>Name
-                                    <button class="sort-arrow" onclick="procSetSortList('replicaSetsResultTable', this, '0')"><i class="fas fa-caret-down"></i></button>
-                                </td>
-                                <td>Namespace</td>
-                                <td>Labels</td>
-                                <td id="replicaPods">Pods</td>
-                                <td id="replicaImages">Images</td>
-                                <td id="replicaCreationTime">Created on
-                                    <button class="sort-arrow" onclick="procSetSortList('replicaSetsResultTable', this, '6')"><i class="fas fa-caret-down"></i></button>
-                                </td>
-                            </tr>
-                            </thead>
-                            <tbody id="replicaSetTable">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <jsp:include page="../replicasets/list.jsp" flush="true"/>
             </li>
+            <!-- Replica Set 끝 -->
             <!-- Pods 시작 -->
             <li class="cluster_third_box">
                 <jsp:include page="../pods/list.jsp" flush="true"/>
@@ -157,12 +125,6 @@
 
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeployment);
     };
-
-    var getReplicaSetsList = function (selector) {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICA_SETS_RESOURCES %>".replace("{namespace:.+}", NAME_SPACE)
-            .replace("{selector:.+}", selector);
-        procCallAjax(reqUrl, "GET", null, null, callbackGetReplicaSetList);
-    }
 
     // GET DETAIL FOR PODS LIST
     var getDetailForPodsList = function(selector) {
@@ -251,80 +213,6 @@
     var replaceLabels = function (data) {
         return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
     }
-
-    // CALLBACK
-    var callbackGetReplicaSetList = function (data) {
-
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-
-        var resultArea = $('#replicaSetTable');
-        var resultHeaderArea = $('#replicaSetsResultHeaderArea');
-        var noResultArea = $('#noReplicasetsResultArea');
-        var resultTable = $('#replicaSetsResultTable');
-
-        var listLength = data.items.length;
-
-        //-- Replica Set List
-        //items
-        //metadata.name
-        //metadata.namespace
-        //metadata.labels
-        //status.replicas
-        //metadata.creationTimestamp
-        //spec.containers.image
-
-        $.each(data.items, function (index, itemList) {
-
-            var replicasetName = itemList.metadata.name;
-            var namespace = NAME_SPACE;
-            var labels = JSON.stringify(itemList.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
-            var creationTimestamp = itemList.metadata.creationTimestamp;
-            var replicas = itemList.status.replicas;   //  TOBE ::  current / desired
-            var availableReplicas;
-            if ( !itemList.status.availableReplicas ) {
-                availableReplicas = 0;
-            } else {
-                availableReplicas = itemList.status.availableReplicas;
-            }
-
-            var containers = itemList.spec.template.spec.containers;
-            var imageTags = "";
-            for (var i = 0; i < containers.length; i++) {
-                imageTags += '<p>' + containers[i].image + '</p>';
-            }
-
-            resultArea.append('<tr>' +
-                                    '<td>' +
-                                        '<span class="green2"><i class="fas fa-check-circle"></i></span> ' +
-                                        "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_REPLICA_SETS %>/" + replicasetName + "\");'>"+
-                                            replicasetName +
-                                        '</a>' +
-                                    '</td>' +
-                                    "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
-                                    '<td>' + procCreateSpans(labels, "LB") + '</td>' +
-                                    '<td>' + availableReplicas + " / " + replicas + '</td>' +
-                                    "<td>" + imageTags + "</td>" +
-                                    '<td>' + creationTimestamp + '</td>' +
-                                '</tr>' );
-
-        });
-
-        if (listLength < 1) {
-            resultHeaderArea.hide();
-            resultArea.hide();
-            noResultArea.show();
-        } else {
-            noResultArea.hide();
-            resultHeaderArea.show();
-            resultArea.show();
-            resultTable.tablesorter();
-            resultTable.trigger("update");
-            $('.headerSortFalse > td').unbind();
-        }
-
-        procSetToolTipForTableTd('replicaSetsResultTable');
-
-    };
 
     //3개 일때는 동작하지 않는드아!
     var createAnnotations = function (annotations) {

@@ -84,38 +84,7 @@
 
             <!-- Replica Sets 시작 -->
             <li class="cluster_fourth_box maB50">
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Replica Sets</p>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL" id="resultTableForReplicaSet">
-                            <colgroup>
-                                <col style='width:auto;'>
-                                <col style='width:10%;'>
-                                <col style='width:15%;'>
-                                <col style='width:5%;'>
-                                <col style='width:15%;'>
-                                <col style='width:25%;'>
-                            </colgroup>
-                            <thead>
-                            <tr id="resultHeaderAreaForReplicaSet" class="headerSortFalse" style="display: none;">
-                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTableForReplicaSet', this, '0')"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Namespace</td>
-                                <td>Labels</td>
-                                <td>Pods</td>
-                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTableForReplicaSet', this, '4')"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Images</td>
-                            </tr>
-                            <tr id="noResultAreaForReplicaSet" style="display: none;">
-                                <td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td>
-                            </tr>
-                            </thead>
-                            <tbody id="resultAreaForReplicaSet">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <jsp:include page="../replicasets/list.jsp" flush="true"/>
             </li>
             <!-- Replica Sets 끝 -->
         </ul>
@@ -127,7 +96,7 @@
 <script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
 <script type="text/javascript">
     var gDevList; // For Deployment List
-    var gReplicaSetList; // For ReplicaSet List
+    //var gReplicaSetList; // For ReplicaSet List
 
     var devChartRunningCnt = 0;
     var devChartFailedCnt = 0;
@@ -136,6 +105,7 @@
 
     var replicaSetReplicaTotalCtn = 0;
     var replicaSetAvailableReplicasCnt = 0;
+
     var repsChartRunningCnt = 0;
     var repsChartFailedCnt = 0;
     var repsChartSucceededCnt= 0;
@@ -265,107 +235,6 @@
         viewLoading('hide');
     };
 
-    // ***** For ReplicaSet *****
-    // GET LIST
-    var getReplicaSetList = function() {
-        viewLoading('show');
-        procCallAjax("<%= Constants.API_URL %>/namespaces/" + NAME_SPACE + "/replicaSets", "GET", null, null, callbackGetReplicaSetList);
-    };
-
-    // CALLBACK
-    var callbackGetReplicaSetList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-
-        gReplicaSetList = data;
-        setReplicaSetList();
-        viewLoading('hide');
-    };
-
-
-    // SET LIST
-    var setReplicaSetList = function() {
-
-        var resultArea       = $('#resultAreaForReplicaSet');
-        var resultHeaderArea = $('#resultHeaderAreaForReplicaSet');
-        var noResultArea     = $('#noResultAreaForReplicaSet');
-        var resultTable      = $('#resultTableForReplicaSet');
-
-        var items = gReplicaSetList.items;
-        var listLength = items.length;
-
-        $.each(items, function (index, itemList) {
-            var replicaSetName = itemList.metadata.name;
-            var namespace = itemList.metadata.namespace;
-            var labels = procSetSelector(itemList.metadata.labels);
-            var creationTimestamp = itemList.metadata.creationTimestamp;
-            var pods = itemList.status.availableReplicas +" / "+ itemList.spec.replicas;  // current / desired
-            replicaSetReplicaTotalCtn += itemList.spec.replicas;
-            replicaSetAvailableReplicasCnt += itemList.status.availableReplicas;
-
-            var imageTags = "";
-            var containers = itemList.spec.template.spec.containers;
-            for(var i=0; i < containers.length; i++){
-                imageTags += '<p class="custom-content-overflow" data-toggle="tooltip" title="' + containers[i].image + '">' + containers[i].image + '</p>';
-            }
-
-            //이벤트 관련 추가 START
-            addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
-
-            if(itemList.type == "normal") {
-                repsChartRunningCnt += 1;
-            } else if(itemList.type == "Warning") {
-                repsChartFailedCnt += 1;
-            } else {
-                repsChartFailedCnt += 1;
-            }
-
-            var statusIconHtml;
-            var statusMessageHtml = [];
-
-            if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
-                statusIconHtml    = "<span class='red2'><i class='fas fa-exclamation-circle'></i> </span>";
-                $.each(itemList.message , function (index, eventMessage) {
-                    statusMessageHtml += "<p class='red2 custom-content-overflow' data-toggle='tooltip' title='" + eventMessage + "'>" + eventMessage + "</p>";
-                });
-
-            }else{
-                statusIconHtml    = "<span class='green2'><i class='fas fa-check-circle'></i> </span>";
-            }
-            //이벤트 관련 추가 END
-
-            resultArea.append(
-                    "<tr>"
-                    + "<td>"+statusIconHtml
-                    + "<a href='javascript:void(0);' data-toggle='tooltip' title='"+replicaSetName+"' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_REPLICA_SETS%>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
-                    + statusMessageHtml
-                    + "</td>"
-                    + "<td><a href='javascript:void(0);' data-toggle='tooltip' title='"+namespace+"' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
-                    + "<td>" + procCreateSpans(labels, "LB") + "</td>"
-                    + "<td>" + pods + "</td>"
-                    + "<td>" + creationTimestamp+"</td>"
-                    + "<td>" + imageTags+ "</td>"
-//                    <!--images.join("</br>")-->
-                    + "</tr>");
-        });
-
-        if (listLength < 1) {
-            resultHeaderArea.hide();
-            resultArea.hide();
-            noResultArea.show();
-        } else {
-            noResultArea.hide();
-            resultHeaderArea.show();
-            resultArea.show();
-            resultTable.tablesorter();
-            resultTable.trigger("update");
-            $('.headerSortFalse > td').unbind();
-        }
-
-        procSetToolTipForTableTd('resultTableForReplicaSet');
-        $('[data-toggle="tooltip"]').tooltip();
-        viewLoading('hide');
-
-    };
 
     // ON LOAD
     $(window).bind("load", function () {
@@ -374,7 +243,7 @@
     //     viewLoading('show');
         getDevList();
         getPodsList();
-        getReplicaSetList();
+        getReplicaSetsList();
         createChart();
         // viewLoading('hide');
     });
@@ -388,7 +257,6 @@
         var podStatuses = getPodStatuses();
         var podsListLength = podStatuses.length;
         var devListLength = gDevList.items.length;
-        var repsListLength = gReplicaSetList.items.length;
 
         $.each(podStatuses, function (index, item) {
             if(item.status.indexOf("Running") > -1) {
@@ -411,11 +279,11 @@
         var devChartFailedPer = devChartFailedCnt / devListLength * 100;
         var devChartPenddingPer = devChartPenddingCnt / devListLength * 100;
         var devChartSucceededPer = devChartSucceededCnt / devListLength * 100;
-
-        var repsChartRunningPer = repsChartRunningCnt / repsListLength * 100;
-        var repsChartFailedPer = repsChartFailedCnt / repsListLength * 100;
-        var repsChartPenddingPer = repsChartPenddingCnt / repsListLength * 100;
-        var repsChartSucceededPer = repsChartSucceededCnt / repsListLength * 100;
+        // ReplicaSets Statistics
+        var repsChartRunningPer   = G_REPLICA_SETS_CHART_RUNNING_CNT   / G_REPLICA_SETS_LIST_LENGTH * 100;
+        var repsChartFailedPer    = G_REPLICA_SETS_CHART_FAILED_CNT    / G_REPLICA_SETS_LIST_LENGTH * 100;
+        var repsChartPenddingPer  = G_REPLICA_SETS_CHART_PENDDING_CNT  / G_REPLICA_SETS_LIST_LENGTH * 100;
+        var repsChartSucceededPer = G_REPLICA_SETS_CHART_SUCCEEDED_CNT / G_REPLICA_SETS_LIST_LENGTH * 100;
 
         // 도넛차트
         var pieColors = ['#3076b2', '#85c014', '#f01108' , '#333440'];
