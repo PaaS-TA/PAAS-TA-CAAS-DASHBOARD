@@ -3,7 +3,6 @@ package org.paasta.caas.dashboard.common.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
-import org.paasta.caas.dashboard.workloads.pods.support.OwnerReferences;
 
 import java.util.List;
 import java.util.Map;
@@ -65,5 +64,5 @@ public class CommonMetaData {
     private String selfLink;
 
     @SerializedName("ownerReferences")
-    private List<OwnerReferences> ownerReferences;
+    private List<CommonOwnerReferences> ownerReferences;
 }
