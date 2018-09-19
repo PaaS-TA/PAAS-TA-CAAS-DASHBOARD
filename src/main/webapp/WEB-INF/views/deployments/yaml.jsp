@@ -34,10 +34,6 @@
 <%--TODO--%>
 <!-- modal -->
 
-
-<input type="hidden" id="requestDeploymentsName" name="requestDeploymentsName" value="<c:out value='${deploymentsName}' default='' />" />
-
-
 <!-- SyntexHighlighter -->
 <script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushYaml.js"/>"></script>
@@ -59,34 +55,25 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        viewLoading('show');
         getDetail();
     });
 
     var getDetail = function() {
-        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_DETAIL %>".replace("{namespace:.+}", NAME_SPACE)
-                                                                    .replace("{deploymentName:.+}", deployName);
+        viewLoading('show');
+        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_YAML %>".replace("{namespace:.+}", NAME_SPACE)
+                                                                    .replace("{deploymentsName:.+}", deployName);
 
-        procCallAjax(reqUrl, "GET", null, null, callbackGetDeployment);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDeployments);
     };
 
-</script>
-
-
-<script type="text/javascript">
-
-    var callbackGetDeployment = function (data) {
-        viewLoading('hide');
-        if (RESULT_STATUS_FAIL === data.resultCode) {
-            $('#resultArea').html(
-                "ResultStatus :: " + data.resultCode + " <br><br>"
-                + "ResultMessage :: " + data.resultMessage + " <br><br>");
+    var callbackGetDeployments = function (data) {
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
             return false;
         }
-
-        console.log("CONSOLE DEBUG PRINT :: " + data);
-
         $('#resultArea').html('---\n' + data.sourceTypeYaml);
+        viewLoading('hide');
     }
 
 </script>
