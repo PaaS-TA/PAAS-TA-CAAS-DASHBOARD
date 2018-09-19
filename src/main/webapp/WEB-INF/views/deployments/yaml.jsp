@@ -22,8 +22,8 @@
                     </div>
                     <div class="paA30">
                         <div class="yaml">
-                        <pre class="brush: yaml" id="resultArea">
-                        </pre>
+                            <pre class="brush: yaml" id="resultArea"></pre>
+                        </div>
                     </div>
                 </div>
             </li>
@@ -37,11 +37,6 @@
 
 <script type="text/javascript">
     var deployName = '<c:out value="${deploymentsName}"/>';
-
-    // ON LOAD
-    $(document.body).ready(function () {
-        getDetail();
-    });
 
     var getDetail = function() {
         viewLoading('show');
@@ -60,5 +55,10 @@
         $('#resultArea').html('---\n' + data.sourceTypeYaml);
         viewLoading('hide');
     }
+
+    // ON LOAD
+    $(document.body).ready(function () {
+        getDetail();
+    });
 
 </script>

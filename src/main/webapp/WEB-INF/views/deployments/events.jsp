@@ -17,40 +17,39 @@
         <ul class="maT30">
             <li class="cluster_first_box">
                <div class="sortable_wrap">
-                       <div class="sortable_top">
-                           <p>Events</p>
-                       </div>
-                       <div class="view_table_wrap">
-                           <table class="table_event condition alignL service-lh" >
-                               <colgroup>
-                                   <col style=".">
-                                   <col style=".">
-                                   <col style=".">
-                                   <col style=".">
-                                   <col style=".">
-                                   <col style=".">
-                               </colgroup>
-                               <thead>
-                               <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td></tr>
-                               <tr id="resultHeaderArea">
-                                   <td>Message</td>
-                                   <td>Source</td>
-                                   <td>Sub-object</td>
-                                   <td>Count</td>
-                                   <td>First seen</td>
-                                   <td>Last seen</td>
-                               </tr>
-                               </thead>
-                               <tbody id="resultArea">
-                               </tbody>
-                           </table>
-                       </div>
+                   <div class="sortable_top">
+                       <p>Events</p>
                    </div>
+                   <div class="view_table_wrap">
+                       <table class="table_event condition alignL service-lh" >
+                           <colgroup>
+                               <col style=".">
+                               <col style=".">
+                               <col style=".">
+                               <col style=".">
+                               <col style=".">
+                               <col style=".">
+                           </colgroup>
+                           <thead>
+                           <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td></tr>
+                           <tr id="resultHeaderArea">
+                               <td>Message</td>
+                               <td>Source</td>
+                               <td>Sub-object</td>
+                               <td>Count</td>
+                               <td>First seen</td>
+                               <td>Last seen</td>
+                           </tr>
+                           </thead>
+                           <tbody id="resultArea">
+                           </tbody>
+                       </table>
+                   </div>
+               </div>
             </li>
         </ul>
     </div>
     <!-- Events 끝 -->
-
 </div>
 
 <input type="hidden" id="requestDeploymentsName" name="requestDeploymentsName" value="<c:out value='${deploymentsName}' default='' />" />
@@ -61,7 +60,6 @@
         viewLoading('show');
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE)
                                                                                     .replace("{resourceName:.+}", document.getElementById('requestDeploymentsName').value);
-
         procCallAjax(reqUrl, "GET", null, null, callbackGetList);
     };
 
