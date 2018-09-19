@@ -46,6 +46,12 @@
     var G_DEV_CHART_SUCCEEDEDCNT = 0;
     var G_DEV_CHART_PENDDING_CNT = 0;
 
+    var getDeploymentsList = function() {
+        viewLoading('show');
+        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsList);
+    };
+
     // CALLBACK
     var callbackGetDeploymentsList = function (data) {
         if (!procCheckValidData(data)) {
@@ -146,5 +152,9 @@
         procSetToolTipForTableTd('resultDeploymentsTable');
         viewLoading('hide');
     };
+
+    $(document.body).ready(function () {
+        getDeploymentsList();
+    });
 
 </script>

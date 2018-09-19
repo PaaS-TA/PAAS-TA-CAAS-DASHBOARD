@@ -22,16 +22,3 @@
     <!-- Deployments 끝 -->
 </div>
 
-<script type="text/javascript">
-
-    var getDeploymentsList = function() {
-        viewLoading('show');
-        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
-        procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsList);
-    };
-
-    $(document.body).ready(function () {
-        getDeploymentsList();
-    });
-
-</script>

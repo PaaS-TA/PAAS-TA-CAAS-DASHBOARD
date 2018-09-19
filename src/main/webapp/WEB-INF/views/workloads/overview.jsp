@@ -67,15 +67,6 @@
 <script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
 <script type="text/javascript">
 
-    // ***** For Deployment *****
-    // GET LIST
-    var getDevList = function() {
-        viewLoading('show');
-        // procCallAjax("/workloads/deployments/" + NAME_SPACE, "GET", null, null, callbackGetDevList);
-        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
-        procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsList);
-    };
-
     // ***** For Pods *****
     // GET LIST
     var getPodsList = function() {
@@ -92,9 +83,7 @@
         // TODO :: REMOVE AFTER CHECK
     // $(document.body).ready(function () {
     //     viewLoading('show');
-        getDevList();
         getPodsList();
-        getReplicaSetsList();
         createChart();
         // viewLoading('hide');
     });
