@@ -72,7 +72,7 @@
             var namespace = metadata.namespace;
             // 라벨이 없는 경우도 있음.
             var labels = procSetSelector(metadata.labels);
-            if (labels == "null") {
+            if (labels === "null") {
                 labels = null;
             }
 
