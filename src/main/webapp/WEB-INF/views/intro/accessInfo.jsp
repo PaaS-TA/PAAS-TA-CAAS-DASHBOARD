@@ -5,7 +5,7 @@
   @since 2018.09.10
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <div class="content">
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <div class="cluster_tabs clearfix"></div>
@@ -62,15 +62,26 @@
             </div>
             <div class="custom-access-contents-wrap">
                 <div>
-                    <p style="color: red;">※ 아래 명령어는 Linux 용 변수 설정 예제임을 참고 바랍니다.</p>
+                    <p>※ For Linux</p>
                 </div>
                 <div class="custom-access-contents">
-                    <p>\$ export CAAS_SERVICE_CLUSTER_NAME="<span id="caasClusterName"></span>"</p>
-                    <p>\$ export CAAS_SERVICE_CLUSTER_SERVER="<span id="caasClusterServer"></span>"</p>
-                    <p>\$ export CAAS_SERVICE_USER_NAME="<span id="caasUserName"></span>"</p>
-                    <p>\$ export CAAS_SERVICE_CONTEXT_NAME="<span id="caasContextName"></span>"</p>
-                    <p>\$ export CAAS_SERVICE_NAMESPACE_NAME="<span id="caasNamespace"></span>"</p>
-                    <p>\$ export CAAS_SERVICE_CREDENTIALS_TOKEN="<span id="caasCredentialsToken"></span>"</p>
+                    <p>export CAAS_SERVICE_CLUSTER_NAME="<span class="caasClusterName"></span>"</p>
+                    <p>export CAAS_SERVICE_CLUSTER_SERVER="<span class="caasClusterServer"></span>"</p>
+                    <p>export CAAS_SERVICE_USER_NAME="<span class="caasUserName"></span>"</p>
+                    <p>export CAAS_SERVICE_CONTEXT_NAME="<span class="caasContextName"></span>"</p>
+                    <p>export CAAS_SERVICE_NAMESPACE_NAME="<span class="caasNamespace"></span>"</p>
+                    <p>export CAAS_SERVICE_CREDENTIALS_TOKEN="<span class="caasCredentialsToken"></span>"</p>
+                </div>
+                <div class="maT10">
+                    <p>※ For Windows</p>
+                </div>
+                <div class="custom-access-contents">
+                    <p>set CAAS_SERVICE_CLUSTER_NAME="<span class="caasClusterName"></span>"</p>
+                    <p>set CAAS_SERVICE_CLUSTER_SERVER="<span class="caasClusterServer"></span>"</p>
+                    <p>set CAAS_SERVICE_USER_NAME="<span class="caasUserName"></span>"</p>
+                    <p>set CAAS_SERVICE_CONTEXT_NAME="<span class="caasContextName"></span>"</p>
+                    <p>set CAAS_SERVICE_NAMESPACE_NAME="<span class="caasNamespace"></span>"</p>
+                    <p>set CAAS_SERVICE_CREDENTIALS_TOKEN="<span class="caasCredentialsToken"></span>"</p>
                 </div>
             </div>
         </div>
@@ -81,13 +92,21 @@
                 </div>
                 <div class="custom-access-title-right" style="float: right;">
                     <button type="button" class="btns colors4" onclick="return downloadCrtToken();">Download certificate file</button>
-                    <%--<a id="download" href="javascript:void(0);"><button id="btnTest" class="btns colors4">Download certificate file</button></a>--%>
                 </div>
             </div>
             <div class="clearfix"></div>
             <div class="custom-access-contents-wrap">
+                <div>
+                    <p>※ For Linux</p>
+                </div>
                 <div class="custom-access-contents">
-                    <p>\$ kubectl config set-cluster \${CAAS_SERVICE_CLUSTER_NAME} --embed-certs=true --server=\${CAAS_SERVICE_CLUSTER_SERVER} --certificate-authority=[DOWNLOADED FILE PATH]</p>
+                    <p>kubectl config set-cluster \${CAAS_SERVICE_CLUSTER_NAME} --embed-certs=true --server=\${CAAS_SERVICE_CLUSTER_SERVER} --certificate-authority=[DOWNLOADED FILE PATH]</p>
+                </div>
+                <div class="maT10">
+                    <p>※ For Windows</p>
+                </div>
+                <div class="custom-access-contents">
+                    <p>kubectl config set-cluster %CAAS_SERVICE_CLUSTER_NAME% --embed-certs=true --server=%CAAS_SERVICE_CLUSTER_SERVER% --certificate-authority=[DOWNLOADED FILE PATH]</p>
                 </div>
             </div>
         </div>
@@ -102,9 +121,20 @@
             </div>
             <div class="clearfix"></div>
             <div class="custom-access-contents-wrap">
+                <div>
+                    <p style="color: red;"><i class="fas fa-info-circle"></i> 토큰을 응용 프로그램과 공유 할 때 주의 하십시오. 공용 코드 저장소에 사용자 토큰을 게시하지 마십시오.</p>
+                </div>
+                <div class="maT10">
+                    <p>※ For Linux</p>
+                </div>
                 <div class="custom-access-contents">
-                    <p >## 토큰을 응용 프로그램과 공유 할 때 주의 하십시오. 공용 코드 저장소에 사용자 토큰을 게시하지 마십시오.</p>
-                    <p>\$ kubectl config set-credentials \${CAAS_SERVICE_USER_NAME} --token=\${CAAS_SERVICE_CREDENTIALS_TOKEN}</p>
+                    <p>kubectl config set-credentials \%CAAS_SERVICE_USER_NAME} --token=\${CAAS_SERVICE_CREDENTIALS_TOKEN}</p>
+                </div>
+                <div class="maT10">
+                    <p>※ For Windows</p>
+                </div>
+                <div class="custom-access-contents">
+                    <p>kubectl config set-credentials %CAAS_SERVICE_USER_NAME% --token=%CAAS_SERVICE_CREDENTIALS_TOKEN%</p>
                 </div>
             </div>
         </div>
@@ -113,8 +143,17 @@
                 <p>5. Context 설정</p>
             </div>
             <div class="custom-access-contents-wrap">
+                <div>
+                    <p>※ For Linux</p>
+                </div>
                 <div class="custom-access-contents">
-                    <p>\$ kubectl config set-context \${CAAS_SERVICE_CONTEXT_NAME} --user=\${CAAS_SERVICE_USER_NAME} --namespace=\${CAAS_SERVICE_NAMESPACE_NAME} --cluster=\${CAAS_SERVICE_CLUSTER_NAME}</p>
+                    <p>kubectl config set-context \${CAAS_SERVICE_CONTEXT_NAME} --user=\${CAAS_SERVICE_USER_NAME} --namespace=\${CAAS_SERVICE_NAMESPACE_NAME} --cluster=\${CAAS_SERVICE_CLUSTER_NAME}</p>
+                </div>
+                <div class="maT10">
+                    <p>※ For Windows</p>
+                </div>
+                <div class="custom-access-contents">
+                    <p>kubectl config set-context %CAAS_SERVICE_CONTEXT_NAME% --user=%CAAS_SERVICE_USER_NAME% --namespace=%CAAS_SERVICE_NAMESPACE_NAME% --cluster=%CAAS_SERVICE_CLUSTER_NAME%</p>
                 </div>
             </div>
         </div>
@@ -123,8 +162,17 @@
                 <p>6. Context 사용 설정</p>
             </div>
             <div class="custom-access-contents-wrap">
+                <div>
+                    <p>※ For Linux</p>
+                </div>
                 <div class="custom-access-contents">
-                    <p>\$ kubectl config use-context \${CAAS_SERVICE_CONTEXT_NAME}</p>
+                    <p>kubectl config use-context \${CAAS_SERVICE_CONTEXT_NAME}</p>
+                </div>
+                <div class="maT10">
+                    <p>※ For Windows</p>
+                </div>
+                <div class="custom-access-contents">
+                    <p>kubectl config use-context %CAAS_SERVICE_CONTEXT_NAME%</p>
                 </div>
             </div>
         </div>
@@ -134,7 +182,7 @@
             </div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>\$ kubectl config view</p>
+                    <p>kubectl config view</p>
                 </div>
             </div>
         </div>
@@ -144,7 +192,7 @@
             </div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>\$ kubectl get all</p>
+                    <p>kubectl get all</p>
                 </div>
             </div>
         </div>
@@ -235,7 +283,11 @@
 
     // user 의 token 값 가져오기
     var getAccessToken = function () {
-        procCallAjax(BASE_URL + "/accessInfo/namespace/" + NAME_SPACE + "/accessTokenName/" + userAccessToken, "GET", null, null, callbackGetAccessToken);
+        var reqUrl = "<%= Constants.CAAS_BASE_URL %><%= Constants.URI_API_SECRETS_DETAIL %>"
+            .replace("{namespace:.+}", NAME_SPACE)
+            .replace("{accessTokenName:.+}", userAccessToken);
+
+        procCallAjax(reqUrl, "GET", null, null, callbackGetAccessToken);
     };
 
     var callbackGetAccessToken = function (data) {
@@ -270,11 +322,11 @@
         var namespace = guideNamespace;
         var credentialsToken = userAccessToken;
 
-        $('#caasClusterName').html(clusterName);
-        $('#caasClusterServer').html(clusterServer);
-        $('#caasUserName').html(userName);
-        $('#caasContextName').html(contextName);
-        $('#caasNamespace').html(namespace);
-        $('#caasCredentialsToken').html(credentialsToken);
+        $('.caasClusterName').html(clusterName);
+        $('.caasClusterServer').html(clusterServer);
+        $('.caasUserName').html(userName);
+        $('.caasContextName').html(contextName);
+        $('.caasNamespace').html(namespace);
+        $('.caasCredentialsToken').html(credentialsToken);
     });
 </script>

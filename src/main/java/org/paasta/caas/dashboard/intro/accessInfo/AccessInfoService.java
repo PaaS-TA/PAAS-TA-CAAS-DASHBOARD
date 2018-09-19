@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccessInfoService {
 
-    private static final String TARGET_ACCESS_INFO_IN_NAMESPACE = "/accessInfo/namespaces/{namespace}/secrets/{accessTokenName}";
     private final RestTemplateService restTemplateService;
-
 
     /**
      * Instantiates a new Access info service.
@@ -30,16 +28,17 @@ public class AccessInfoService {
 
 
     /**
-     * Secret을 조회한다.
+     * Secret 을 조회한다.
      *
      * @param namespace       the namespace
      * @param accessTokenName the access token name
      * @return the token
      */
     AccessInfo getToken(String namespace, String accessTokenName) {
-        String urlWithAccessTokenName = TARGET_ACCESS_INFO_IN_NAMESPACE.replace("{namespace}", namespace).replace("{accessTokenName}", accessTokenName);
-
-        return restTemplateService.send(Constants.TARGET_CAAS_API, urlWithAccessTokenName, HttpMethod.GET, null, AccessInfo.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_SECRETS_DETAIL
+                .replace("{namespace:.+}", namespace)
+                .replace("{accessTokenName:.+}", accessTokenName),
+            HttpMethod.GET, null, AccessInfo.class);
     }
 
 }

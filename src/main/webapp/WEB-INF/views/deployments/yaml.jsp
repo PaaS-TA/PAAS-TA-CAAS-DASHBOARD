@@ -10,7 +10,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="fa fa-file-alt" style="color:#2a6575;"></span> <c:out value="${deploymentsName}"/></h1>
+    <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <c:out value="${deploymentsName}"/></h1>
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
     <!-- Services YAML 시작-->
     <div class="cluster_content03 row two_line two_view harf_view custom_display_block">
@@ -22,8 +22,8 @@
                     </div>
                     <div class="paA30">
                         <div class="yaml">
-                        <pre class="brush: yaml" id="resultArea">
-                        </pre>
+                            <pre class="brush: yaml" id="resultArea"></pre>
+                        </div>
                     </div>
                 </div>
             </li>
@@ -31,62 +31,34 @@
     </div>
     <!-- Services YAML 끝 -->
 </div>
-<%--TODO--%>
-<!-- modal -->
 
-
-<input type="hidden" id="requestDeploymentsName" name="requestDeploymentsName" value="<c:out value='${deploymentsName}' default='' />" />
-
-
-<!-- SyntexHighlighter -->
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shCore.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yaml/scripts/shBrushYaml.js"/>"></script>
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shCore.css"/>">
-<link type="text/css" rel="stylesheet" href="<c:url value="/resources/yaml/styles/shThemeDefault.css"/>">
-
-<script type="text/javascript">
-    SyntaxHighlighter.defaults['quick-code'] = false;
-    SyntaxHighlighter.all();
-</script>
-
-<style>
-    .syntaxhighlighter .gutter .line{border-right-color:#ddd !important;}
-</style>
-<!-- SyntexHighlighter -->
+<%--SyntexHighlighter--%>
+<jsp:include page="../common/syntaxHighlighter.jsp" flush="true"/>
 
 <script type="text/javascript">
     var deployName = '<c:out value="${deploymentsName}"/>';
 
-    // ON LOAD
-    $(document.body).ready(function () {
-        viewLoading('show');
-        getDetail();
-    });
-
     var getDetail = function() {
-        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_DETAIL %>".replace("{namespace:.+}", NAME_SPACE)
-                                                                    .replace("{deploymentName:.+}", deployName);
+        viewLoading('show');
+        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_YAML %>".replace("{namespace:.+}", NAME_SPACE)
+                                                                    .replace("{deploymentsName:.+}", deployName);
 
-        procCallAjax(reqUrl, "GET", null, null, callbackGetDeployment);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDeployments);
     };
 
-</script>
-
-
-<script type="text/javascript">
-
-    var callbackGetDeployment = function (data) {
-        viewLoading('hide');
-        if (RESULT_STATUS_FAIL === data.resultCode) {
-            $('#resultArea').html(
-                "ResultStatus :: " + data.resultCode + " <br><br>"
-                + "ResultMessage :: " + data.resultMessage + " <br><br>");
+    var callbackGetDeployments = function (data) {
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
             return false;
         }
-
-        console.log("CONSOLE DEBUG PRINT :: " + data);
-
         $('#resultArea').html('---\n' + data.sourceTypeYaml);
+        viewLoading('hide');
     }
+
+    // ON LOAD
+    $(document.body).ready(function () {
+        getDetail();
+    });
 
 </script>

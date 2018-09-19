@@ -74,7 +74,7 @@ public class DeploymentsController {
     }
 
     /**
-     * 지정한 네임스페이스에 있는 deployment의 목록을 서비스를 통해 호출하여 받은 결과값을 반환한다.
+     * 지정한 네임스페이스에 있는 deployments의 목록을 서비스를 통해 호출하여 받은 결과값을 반환한다.
      *
      * @param namespace namespace
      * @return List of deployments (specific namespace)
@@ -88,12 +88,25 @@ public class DeploymentsController {
      * 지정한 네임스페이스에 있는 특정한 deployment의 상세 내역을 서비스를 통해 호출하여 받은 결과값을 반환한다.
      *
      * @param namespace request namespace
-     * @param deploymentName request deploymentName
-     * @return Deployments's detail content (specific namespace and deployment)
+     * @param deploymentsName request deploymentsName
+     * @return Deployments's detail content (specific namespace and deployments)
      */
     @GetMapping( Constants.URI_API_DEPLOYMENTS_DETAIL )
-    public Deployments getDeployments(@PathVariable String namespace, @PathVariable String deploymentName) {
-        return deploymentsService.getDeployments(namespace, deploymentName);
+    public Deployments getDeployments(@PathVariable String namespace, @PathVariable String deploymentsName) {
+        return deploymentsService.getDeployments(namespace, deploymentsName);
+    }
+
+    /**
+     * Services YAML 정보를 조회한다.
+     *
+     * @param namespace   the namespace
+     * @param deploymentsName the deploymentsName
+     * @return the custom services yaml
+     */
+    @GetMapping(value = Constants.URI_API_DEPLOYMENTS_YAML)
+    @ResponseBody
+    public Deployments getCustomServicesYaml(@PathVariable(value = "namespace") String namespace, @PathVariable("deploymentsName") String deploymentsName) {
+        return deploymentsService.getDeploymentsYaml(namespace, deploymentsName);
     }
 
     /**

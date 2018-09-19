@@ -13,7 +13,6 @@ public class Constants {
     public static final String RESULT_STATUS_FAIL    = "FAIL";
 
     public static final String TARGET_CAAS_API      = "caasApi";
-    public static final String TARGET_CAAS_CF_API   = "caasCfApi";
     public static final String TARGET_COMMON_API    = "commonApi";
 
     public static final String API_URL = "/api";
@@ -49,7 +48,8 @@ public class Constants {
 
     // API URI :: DEPLOYMENTS
     public static final String URI_API_DEPLOYMENTS_LIST         = "/namespaces/{namespace:.+}/deployments";
-    public static final String URI_API_DEPLOYMENTS_DETAIL       = "/namespaces/{namespace:.+}/deployments/{deploymentName:.+}";
+    public static final String URI_API_DEPLOYMENTS_DETAIL       = "/namespaces/{namespace:.+}/deployments/{deploymentsName:.+}";
+    public static final String URI_API_DEPLOYMENTS_YAML        = "/namespaces/{namespace:.+}/deployments/{deploymentsName:.+}/yaml";
     public static final String URI_API_DEPLOYMENTS_RESOURCES    = "/namespaces/{namespace:.+}/deployments/resource/{selector:.+}";
 
     // API URI :: REPLICA SETS
@@ -89,6 +89,9 @@ public class Constants {
 
     // API URI :: USERS(SERVICE ACCOUNT)
     public static final String URI_API_SERVICE_ACCOUNT_DETAIL = "/namespaces/{namespace:.+}/serviceAccounts/{caasAccountName:.+}";
+
+    // API URI :: SECRETS
+    public static final String URI_API_SECRETS_DETAIL = "/namespaces/{namespace:.+}/secrets/{accessTokenName:.+}";
 
     // COMMON API URI :: USERS
     public static final String URI_COMMON_API_USERS_LIST = "/users/serviceInstanceId/{serviceInstanceId:.+}/organizationGuid/{organizationGuid:.+}";
