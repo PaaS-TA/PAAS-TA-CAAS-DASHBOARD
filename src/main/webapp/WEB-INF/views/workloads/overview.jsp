@@ -33,37 +33,8 @@
             </li>
             <!-- 그래프 끝 -->
             <!-- Deployments 시작 -->
-            <li class="cluster_second_box">
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>Deployments</p>
-                    </div>
-                    <div class="view_table_wrap">
-                        <table class="table_event condition alignL" id="resultTableForDev">
-                            <colgroup>
-                                <col style='width:auto;'>
-                                <col style='width:10%;'>
-                                <col style='width:15%;'>
-                                <col style='width:5%;'>
-                                <col style='width:15%;'>
-                                <col style='width:25%;'>
-                            </colgroup>
-                            <thead>
-                            <tr id="noResultAreaForDev" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Deployments가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderAreaForDev">
-                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTableForDev', this, '0')"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Namespace</td>
-                                <td>Labels</td>
-                                <td>Pods</td>
-                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTableForDev', this, '4')"><i class="fas fa-caret-down"></i></button></td>
-                                <td>Images</td>
-                            </tr>
-                            </thead>
-                            <tbody id="deploymentsListArea">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <li class="cluster_third_box">
+                <jsp:include page="../deployments/list.jsp" flush="true"/>
             </li>
             <!-- Deployments 끝 -->
 
@@ -126,13 +97,7 @@
 
 <script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
 <script type="text/javascript">
-    var gDevList; // For Deployment List
     var gReplicaSetList; // For ReplicaSet List
-
-    var devChartRunningCnt = 0;
-    var devChartFailedCnt = 0;
-    var devChartSucceededCnt= 0;
-    var devChartPenddingCnt = 0;
 
     var replicaSetReplicaTotalCtn = 0;
     var replicaSetAvailableReplicasCnt = 0;
@@ -146,111 +111,7 @@
     var getDevList = function() {
         viewLoading('show');
         var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
-        procCallAjax(reqUrl, "GET", null, null, callbackGetDevList);
-    };
-
-
-    // CALLBACK
-    var callbackGetDevList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-
-        gDevList = data;
-        setDevList();
-        viewLoading('hide');
-    };
-
-
-    // SET LIST
-    var setDevList = function() {
-
-        var listLength       = gDevList.items.length;
-        var resultArea       = $('#deploymentsListArea');
-        var resultHeaderArea = $('#resultHeaderAreaForDev');
-        var noResultArea     = $('#noResultAreaForDev');
-        var resultTable      = $('#resultTableForDev');
-
-        $.each(gDevList.items, function (index, itemList) {
-            // get data
-            var metadata = itemList.metadata;
-            var spec = itemList.spec;
-            var status = itemList.status;
-
-            var deployName = metadata.name;
-            var namespace = metadata.namespace;
-            var labels = procSetSelector(metadata.labels);
-            if (labels == "null") {
-                labels = null;
-            }
-
-            var creationTimestamp = metadata.creationTimestamp;
-
-            // Set replicas and total Pods are same.
-            var totalPods = spec.replicas;
-            var runningPods = totalPods - status.unavailableReplicas;
-            var containers = spec.template.spec.containers;
-            var imageTags = "";
-            for (var i = 0; i < containers.length; i++) {
-                imageTags += '<p>' + containers[i].image + '</p>';
-            }
-
-            addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가
-
-            var statusIconHtml;
-            var statusMessageHtml = [];
-
-            if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
-                statusIconHtml    = "<span class='red2'><i class='fas fa-exclamation-circle'></i> </span>";
-                $.each(itemList.message , function (index, eventMessage) {
-                    statusMessageHtml += "<p class='red2 custom-content-overflow'>" + eventMessage + "</p>";
-                });
-
-            }else{
-                statusIconHtml    = "<span class='green2'><i class='fas fa-check-circle'></i> </span>";
-            }
-
-            if(itemList.type == "normal") {
-                devChartRunningCnt += 1;
-            } else if(itemList.type == "Warning") {
-                devChartFailedCnt += 1;
-            } else {
-                devChartFailedCnt += 1;
-            }
-
-            var labelObject ="";
-            if(!labels) {
-                labelObject += "<td>" + nvl(labels, "-") + "</td>";
-            } else {
-                labelObject += '<td>' + procCreateSpans(labels, "LB") + '</td>'
-            }
-
-            resultArea.append('<tr>' +
-                                '<td>' +
-                                    statusIconHtml +
-                                    "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/deployments/" + deployName + "\");'>" + deployName + '</a>' +
-                                    statusMessageHtml +
-                                '</td>' +
-                                "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
-                                labelObject +
-                                '<td>' + runningPods +" / " + totalPods + '</td>' +
-                                '<td>' + creationTimestamp + '</td>' +
-                                "<td>" + imageTags + "</td>" +
-                                '</td>');
-        });
-
-        if (listLength < 1) {
-            resultHeaderArea.hide();
-            resultArea.hide();
-            noResultArea.show();
-        } else {
-            noResultArea.hide();
-            resultHeaderArea.show();
-            resultArea.show();
-            resultTable.tablesorter();
-            resultTable.trigger("update");
-        }
-
-        procSetToolTipForTableTd('resultTableForDev');
-
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsList);
     };
 
     // ***** For Pods *****
@@ -342,7 +203,6 @@
                     + "<td>" + pods + "</td>"
                     + "<td>" + creationTimestamp+"</td>"
                     + "<td>" + imageTags+ "</td>"
-//                    <!--images.join("</br>")-->
                     + "</tr>");
         });
 
@@ -385,7 +245,7 @@
 
         var podStatuses = getPodStatuses();
         var podsListLength = podStatuses.length;
-        var devListLength = gDevList.items.length;
+        var devListLength = G_DEPLOYMENTS_LIST_LENGTH;
         var repsListLength = gReplicaSetList.items.length;
 
         $.each(podStatuses, function (index, item) {
@@ -405,10 +265,10 @@
         var podsChartPenddingPer = podsChartPenddingCnt / podsListLength * 100;
         var podsChartSucceededPer = podsChartSucceededCnt / podsListLength * 100;
 
-        var devChartRunningPer = devChartRunningCnt / devListLength * 100;
-        var devChartFailedPer = devChartFailedCnt / devListLength * 100;
-        var devChartPenddingPer = devChartPenddingCnt / devListLength * 100;
-        var devChartSucceededPer = devChartSucceededCnt / devListLength * 100;
+        var devChartRunningPer = G_DEV_CAHRT_RUNNING_CNT / devListLength * 100;
+        var devChartFailedPer = G_DEV_CHART_FAILED_CNT / devListLength * 100;
+        var devChartPenddingPer = G_DEV_CHART_PENDDING_CNT / devListLength * 100;
+        var devChartSucceededPer = G_DEV_CHART_SUCCEEDEDCNT / devListLength * 100;
 
         var repsChartRunningPer = repsChartRunningCnt / repsListLength * 100;
         var repsChartFailedPer = repsChartFailedCnt / repsListLength * 100;
