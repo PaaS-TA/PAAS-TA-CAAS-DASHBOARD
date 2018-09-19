@@ -281,7 +281,6 @@
                 tempStr += '<span class="bg_blue"><a href="#" data-target="#layerpop3" data-toggle="modal">' + key + '</a></span>';
                 $('.modal-title').html(key);
                 $(".modal-body").html('<p>' + annotation + '</p>');
-
             } else {
                 tempStr += procCreateSpans(key + ":"+ annotation);
             }

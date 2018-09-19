@@ -32,8 +32,7 @@
                 <td>Images</td>
             </tr>
             </thead>
-            <tbody id="deploymentsListArea">
-            </tbody>
+            <tbody id="deploymentsListArea"></tbody>
         </table>
     </div>
 </div>
@@ -119,9 +118,9 @@
 
             resultArea.append('<tr>' +
                                 '<td>' +
-                                statusIconHtml +
-                                "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/" + deployName + "\");'>" + deployName + '</a>' +
-                                statusMessageHtml +
+                                    statusIconHtml +
+                                    "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/" + deployName + "\");'>" + deployName + '</a>' +
+                                    statusMessageHtml +
                                 '</td>' +
                                 "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
                                 labelObject +
