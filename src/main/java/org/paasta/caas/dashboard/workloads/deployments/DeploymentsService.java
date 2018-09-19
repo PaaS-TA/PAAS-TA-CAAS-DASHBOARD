@@ -66,7 +66,7 @@ public class DeploymentsService {
 
 
     /**
-     * get deployments by selector.
+     * selector를 이용해 Deployment List를 조회한다
      *
      * @param namespace request namespace
      * @param selectors fitter selector
