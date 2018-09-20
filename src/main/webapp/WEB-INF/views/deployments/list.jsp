@@ -182,8 +182,4 @@
 
     }
 
-    $(document.body).ready(function () {
-        getDeploymentsList();
-    });
-
 </script>

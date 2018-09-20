@@ -22,3 +22,8 @@
     <!-- Deployments 끝 -->
 </div>
 
+<script type="text/javascript">
+    $(document.body).ready(function () {
+        getDeploymentsList();
+    });
+</script>
