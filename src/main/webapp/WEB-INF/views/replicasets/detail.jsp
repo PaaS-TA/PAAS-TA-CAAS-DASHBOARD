@@ -1,4 +1,5 @@
-<%@ page import="org.paasta.caas.dashboard.common.Constants" %><%--
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
+<%--
   Replicaset main
   @author CISS
   @version 1.0
@@ -37,15 +38,11 @@
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
                                 <td id="resultLabel" class="labels_wrap">
-                                    <%--<span class="bg_gray"></span> --%>
-                                    <%--<span class="bg_gray"></span>--%>
                                 </td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Annotations</th>
                                 <td id="resultAnnotation" class="labels_wrap">
-                                    <%--<span class="bg_gray"></span>--%>
-                                    <%--<span class="bg_blue"><a href="#" target="_blank"></a></span>--%>
                                 </td>
                             </tr>
                             <tr>
@@ -67,7 +64,7 @@
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Managing deployment</th>
-                                <td id="resultDeployment"><a href="#"></a></td><!-- heapster-v1.5.2 -->
+                                <td id="resultDeployment"><a href="#"></a></td>
                             </tr>
                             </tbody>
                         </table>
@@ -129,12 +126,18 @@
 
     // CALLBACK
     var callbackGetDetail = function(data) {
+        //아래의 소스로 변경 필요
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        /* 아래의 소스
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            return false;
+        }*/
 
         var replicaSetName      = data.metadata.name;
         var namespace           = data.metadata.namespace;
-        var labels              = JSON.stringify(data.metadata.labels).replace(/["{}]/g, '').replace(/:/g, '=');
-        var annotations         = JSON.stringify(data.metadata.annotations).replace(/["{}]/g, '').replace(/:/g, '=');
+        var labels              = procSetSelector(data.metadata.labels);
+        var annotations         = procSetSelector(data.metadata.annotations);
         var creationTimestamp   = data.metadata.creationTimestamp;
         var selector            = procSetSelector(data.spec.selector.matchLabels);
         var images              = [];
@@ -175,8 +178,14 @@
 
     // CALLBACK
     var callbackGetDeploymentsInfo = function(data) {
-
+        //아래의 소스로 변경 필요
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+
+        /*아래의 소스
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            return false;
+        }*/
 
         var deploymentsInfo;
 
