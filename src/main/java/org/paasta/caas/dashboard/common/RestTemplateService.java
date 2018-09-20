@@ -100,7 +100,7 @@ public class RestTemplateService {
             e.printStackTrace();
 
             Map<String, Object> resultMap = new HashMap();
-            resultMap.put("resultCode", "500");
+            resultMap.put("resultCode", "FAIL");
             ObjectMapper mapper = new ObjectMapper();
             LOGGER.info(mapper.convertValue(resultMap, responseType).toString());
 
