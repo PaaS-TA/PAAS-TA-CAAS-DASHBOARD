@@ -61,7 +61,9 @@
     };
 
     var callbackGetEventList = function(data) {
-        if (RESULT_STATUS_FAIL === data.resultCode) return false;
+        if (!procCheckValidData(data)) {
+            return false;
+        }
 
         var htmlString = [];
 

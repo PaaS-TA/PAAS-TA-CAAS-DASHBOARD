@@ -126,7 +126,7 @@
         var noResultAreaForNameSpaceDetails = $("#noResultAreaForNameSpaceDetails");
         var resultAreaForNameSpaceDetails = $("#resultAreaForNameSpaceDetails");
 
-        if (data.resultCode === "500") {
+        if (!procCheckValidData(data)) {
             noResultAreaForNameSpaceDetails.show();
             viewLoading('hide');
             alertMessage('Get NameSpaces Fail~', false);
@@ -164,7 +164,7 @@
     var callbackGetResourceQuotaList = function(data) {
         var html = $("#quota-template").html();
 
-        if (data.resultCode === "500") {
+        if (!procCheckValidData(data)) {
             html = html.replace("<tbody>", "<tbody><tr><p class=service_p'>조회 된 ResourceQuota가 없습니다.</p></tr>");
 
             $("#detailTab").append(html);
