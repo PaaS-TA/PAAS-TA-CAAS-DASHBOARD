@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class NamespacesController {
 
-    private static final String BASE_URL = "/namespaces";
+    private static final String VIEW_URL = "/namespaces";
 
     private final CommonService commonService;
     private final NamespacesService namespacesService;
@@ -36,59 +36,46 @@ public class NamespacesController {
     }
 
     /**
-     * Gets Namespaces main.
-     *
-     * @param httpServletRequest the http servlet request
-     * @return the namespaces main
-     */
-    @GetMapping(value = Constants.URI_CLUSTER_NAMESPACES)
-    public ModelAndView getNamespaceMain(HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
-    }
-
-    /**
-     * Gets Namespaces detail.
+     * Namespaces detail 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
      * @return the namespaces detail
      */
     @GetMapping(value = Constants.URI_CLUSTER_NAMESPACES + "/{namespace:.+}")
     public ModelAndView getNamespaceDetail(HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/detail", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/detail", new ModelAndView());
     }
 
     /**
-     * Gets Namespaces.
+     * Namespaces 상세 정보를 조회한다.
      *
      * @param namespace the namespaces
      * @return the Namespaces
      */
-//    @GetMapping(value = Constants.API_URL + Constants.URI_API_NAME_SPACES_DETAIL)
-
-    @GetMapping(value = Constants.URI_CLUSTER_NAMESPACES + "/{namespace:.+}/getDetail")
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_NAME_SPACES_DETAIL)
     public Namespaces getNamespaces(@PathVariable String namespace) {
         return namespacesService.getNamespaces(namespace);
     }
 
     /**
-     * Gets ResourceQuotaList.
+     * Namespaces ResourceQuota 정보를 조회한다.
      *
      * @param namespace the namespaces
      * @return the ResourceQuotaList
      */
-    @GetMapping(value = Constants.URI_CLUSTER_NAMESPACES + "/{namespace:.+}/getResourceQuotaList")
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_NAME_SPACES_RESOURCE_QUOTAS)
     public ResourceQuotaList getResourceQuotaList(@PathVariable String namespace) {
         return namespacesService.getResourceQuotaList(namespace);
     }
 
     /**
-     * Gets Namespace events.
+     * Namespaces events 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
      * @return the namespaces events
      */
     @GetMapping(value = Constants.URI_CLUSTER_NAMESPACES + "/{namespace:.+}/events")
     public ModelAndView getNamespaceEvents(HttpServletRequest httpServletRequest, @PathVariable String namespace) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/events", new ModelAndView());
     }
 }

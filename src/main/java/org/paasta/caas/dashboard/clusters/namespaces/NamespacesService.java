@@ -27,22 +27,24 @@ public class NamespacesService {
     public NamespacesService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
 
     /**
-     * Gets Namespaces.
+     * Namespaces 상세 정보를 조회한다.
      *
      * @param namespace the namespaces
      * @return the Namespaces
      */
     Namespaces getNamespaces(String namespace) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/"+namespace, HttpMethod.GET, null, Namespaces.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_NAME_SPACES_DETAIL
+                .replace("{namespace:.+}", namespace), HttpMethod.GET, null, Namespaces.class);
     }
 
     /**
-     * Gets ResourceQuotaList.
+     * Namespaces ResourceQuota 정보를 조회한다.
      *
      * @param namespace the namespaces
      * @return the ResourceQuotaList
      */
     ResourceQuotaList getResourceQuotaList(String namespace) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/"+namespace+"/resourceQuotas", HttpMethod.GET, null, ResourceQuotaList.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_NAME_SPACES_RESOURCE_QUOTAS
+                .replace("{namespace:.+}", namespace), HttpMethod.GET, null, ResourceQuotaList.class);
     }
 }
