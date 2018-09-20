@@ -15,8 +15,7 @@ import java.util.Map;
  * @since 2018.08.13
  */
 @Data
-class Pods {
-
+public class Pods {
     private String resultCode;
     private String resultMessage;
 
@@ -29,5 +28,4 @@ class Pods {
 
     private Map<String, Object> source;
     private String sourceTypeYaml;
-
 }
