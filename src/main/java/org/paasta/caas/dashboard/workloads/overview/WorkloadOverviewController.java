@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class WorkloadOverviewController {
 
-    private static final String BASE_URL = "/workloads";
+    private static final String VIEW_URL = "/workloads";
     private final CommonService commonService;
 
     /**
@@ -32,14 +32,14 @@ public class WorkloadOverviewController {
 
 
     /**
-     * Gets workload overview.
+     * Workload Overview 페이지로 이동한다.
      *
      * @param httpServletRequest the http servlet request
      * @return the workload overview
      */
-    @GetMapping(value = Constants.CAAS_BASE_URL + BASE_URL + "/overview")
+    @GetMapping(value = Constants.URI_WORKLOAD_OVERVIEW)
     public ModelAndView getWorkloadOverview(HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/overview", new ModelAndView());
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/overview", new ModelAndView());
     }
 
 }

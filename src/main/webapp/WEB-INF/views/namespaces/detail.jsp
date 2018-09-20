@@ -1,3 +1,4 @@
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <div class="content">
@@ -76,7 +77,10 @@
     var getDetail = function() {
         viewLoading('show');
 
-        procCallAjax("/caas/clusters/namespaces/"+NAME_SPACE+"/getDetail", "GET", null, null, callbackGetDetail);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_NAME_SPACES_DETAIL %>"
+            .replace("{namespace:.+}", NAME_SPACE);
+
+        procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
     };
 
     var callbackGetDetail = function(data) {
@@ -104,7 +108,10 @@
     var getResourceQuotaList = function(namespace) {
         viewLoading('show');
 
-        procCallAjax("/caas/clusters/namespaces/"+namespace+"/getResourceQuotaList", "GET", null, null, callbackGetResourceQuotaList);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_NAME_SPACES_RESOURCE_QUOTAS %>"
+            .replace("{namespace:.+}", NAME_SPACE);
+
+        procCallAjax(reqUrl, "GET", null, null, callbackGetResourceQuotaList);
     };
 
     var callbackGetResourceQuotaList = function(data) {

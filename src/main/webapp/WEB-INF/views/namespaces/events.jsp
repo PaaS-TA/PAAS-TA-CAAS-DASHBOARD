@@ -1,3 +1,4 @@
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
@@ -52,7 +53,11 @@
     var getEventList = function(namespace, replicasetName) {
         viewLoading('show');
 
-        procCallAjax("/api/namespaces/"+namespace+"/events/resource/"+replicasetName, "GET", null, null, callbackGetEventList);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
+            .replace("{namespace:.+}", namespace)
+            .replace("{resourceName:.+}", replicasetName);
+
+        procCallAjax(reqUrl, "GET", null, null, callbackGetEventList);
     };
 
     var callbackGetEventList = function(data) {
@@ -85,8 +90,6 @@
             );
         });
 
-        // var eventList = $("#eventList");
-        // var emptyEventList = $("#emptyEventList");
         var resultArea = $("#resultArea");
         var resultHeaderArea = $('#resultHeaderArea');
         var noResultArea = $('#noResultArea');
@@ -94,16 +97,11 @@
         resultArea.html("");
 
         if(data.items.length > 1) {
-            // resultArea.html(htmlString);
-            // emptyEventList.hide();
-            // eventList.show();
             resultArea.html(htmlString);
             noResultArea.hide();
             resultHeaderArea.show();
             resultArea.show();
         } else {
-            // eventList.hide();
-            // emptyEventList.show();
             resultHeaderArea.hide();
             resultArea.hide();
             noResultArea.show();
