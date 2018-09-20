@@ -15,18 +15,11 @@ import java.util.List;
 @Data
 public class DeploymentsStatus {
     private int availableReplicas;
-
     private int collisionCount;
-
     private List<CommonCondition> conditions;
-
     private long observedGeneration;
-
     private int readyReplicas;
-
     private int replicas;
-
     private int unavailableReplicas;
-
     private int updatedReplicas;
 }

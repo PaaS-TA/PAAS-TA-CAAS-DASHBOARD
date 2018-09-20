@@ -16,20 +16,12 @@ import java.util.Set;
 @Data
 public class DeploymentsSpec {
     private int minReadySeconds;
-
     private boolean paused;
-
     private int progressDeadlineSeconds;
-
     private int replicas;
-
     private int revisionHistoryLimit;
-
     private CommonLabelSelector selector;
-
     private DeploymentsStrategy strategy;
-
     private CommonPodTemplateSpec template;
-
     private Set<String> images;
 }
