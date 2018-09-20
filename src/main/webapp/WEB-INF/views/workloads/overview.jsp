@@ -79,12 +79,10 @@
 
     // ON LOAD
     $(window).bind("load", function () {
-        // TODO :: REMOVE AFTER CHECK
-    // $(document.body).ready(function () {
-    //     viewLoading('show');
+        getDeploymentsList();
         getPodsList();
+        getReplicaSetsList("");
         createChart();
-        // viewLoading('hide');
     });
 
     var createChart = function() {
@@ -261,9 +259,10 @@
                 enabled: false
             }
         });
-    }
+    };
+
     $(document.body).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
+
     });
 
 </script>

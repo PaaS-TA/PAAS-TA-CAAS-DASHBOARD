@@ -19,4 +19,8 @@
         </ul>
     </div>
 </div>
-
+<script type="text/javascript">
+    $(document.body).ready(function () {
+        getReplicaSetsList("");
+    });
+</script>

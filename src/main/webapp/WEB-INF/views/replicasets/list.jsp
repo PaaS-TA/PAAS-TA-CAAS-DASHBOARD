@@ -186,9 +186,4 @@
 
     };
 
-    // ON LOAD
-    $(document.body).ready(function () {
-        getReplicaSetsList("");
-    });
-
 </script>
