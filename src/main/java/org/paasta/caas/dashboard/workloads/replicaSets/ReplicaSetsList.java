@@ -17,5 +17,7 @@ public class ReplicaSetsList {
 
     private String resultCode;
     private String resultMessage;
+
     private List<ReplicaSets> items;
+
 }
