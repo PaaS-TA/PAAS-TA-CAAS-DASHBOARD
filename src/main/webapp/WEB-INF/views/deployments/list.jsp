@@ -84,8 +84,8 @@
         var noResultArea = $('#noResultDeploymentsArea');
         var resultTable = $('#resultDeploymentsTable');
 
+        var checkListCount = 0;
         var htmlString = [];
-
 
         $.each(G_DEPLOYMENTS_LIST.items, function (index, itemList) {
             var metadata = itemList.metadata;
@@ -102,7 +102,6 @@
                 }
 
                 var creationTimestamp = metadata.creationTimestamp;
-
                 // Set replicas and total Pods are same.
                 var totalPods = spec.replicas;
                 var runningPods = totalPods - status.unavailableReplicas;
@@ -154,10 +153,12 @@
                     '<td>' + creationTimestamp + '</td>' +
                     "<td>" + imageTags + "</td>" +
                     '</tr>');
+
+                checkListCount++;
             }
         });
 
-        if (G_DEPLOYMENTS_LIST_LENGTH < 1) {
+        if (G_DEPLOYMENTS_LIST_LENGTH < 1 || checkListCount < 1) {
             resultHeaderArea.hide();
             resultArea.hide();
             noResultArea.show();
