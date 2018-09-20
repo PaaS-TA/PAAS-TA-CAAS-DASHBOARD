@@ -167,7 +167,6 @@
         }
 
         var labels = stringifyJSON(data.metadata.labels).replace(/,/g, ', ');
-        // var selector = stringifyJSON(data.spec.selector).replace(/matchLabels=/g, '');
 
         document.getElementById("name").textContent = data.metadata.name;
         document.getElementById("labels").innerHTML = createSpans(labels, "false");
@@ -209,8 +208,9 @@
         var spanHtml = "";
 
         $.each(data, function(index, item) {
-            if (type === "true" && index > 0)
+            if (type === "true" && index > 0) {
                 spanHtml += '<br>';
+            }
 
             var htmlString = null;
             var separatorIndex = item.indexOf(": ");
@@ -228,8 +228,9 @@
                 }
             }
 
-            if (null == htmlString)
+            if (null == htmlString) {
                 htmlString = '<span class="bg_gray">' + item.replace(": ", ":") + '</span>';
+            }
 
             spanHtml += (htmlString + ' ');
         });
@@ -257,8 +258,9 @@
         var tempArr;
         containers.map(function(container) {
             var name = nvl(container['name']);
-            if ("" !== name)
+            if ("" !== name) {
                 containerMap[name] = container;
+            }
         });
         containerStatuses.map(function(status) {
             var name = nvl(status['name']);
@@ -266,10 +268,11 @@
                 return;
             }
             tempArr = Object.keys(status['state']);
-            if (tempArr.length > 0)
+            if (tempArr.length > 0) {
                 containerMap[name]['state'] = tempArr[0].charAt(0).toUpperCase() + tempArr[0].substring(1);
-            else
+            } else {
                 containerMap[name]['state'] = podPhase.charAt(0).toUpperCase() + podPhase.substring(1);
+            }
 
             containerMap[name]['restartCount'] = status.restartCount;
             containerMap[name]['ready'] = status.ready;
