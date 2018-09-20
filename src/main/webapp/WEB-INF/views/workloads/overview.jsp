@@ -261,8 +261,4 @@
         });
     };
 
-    $(document.body).ready(function () {
-
-    });
-
 </script>
