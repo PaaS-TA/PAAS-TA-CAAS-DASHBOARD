@@ -20,16 +20,18 @@
           2.1. all of pod's container statuses is "Running" -> return "Running"
           2.2. some of pod's container statuses isn't "Running" -> return these status, but "terminated" state is the highest order.
          */
-        if (podStatus.phase.includes("Succeeded"))
+        if (podStatus.phase.includes("Succeeded")) {
             return podStatus.phase;
+        }
 
         // default value is empty array, callback is none.
         var containerStatuses = procIfDataIsNull(podStatus["containerStatuses"], null, []);
-        if (containerStatuses instanceof Array && 0 === containerStatuses.length)
+        if (containerStatuses instanceof Array && 0 === containerStatuses.length) {
             return podStatus.phase;
+        }
 
         var notRunningIndex = -1;
-        var notRunningState = "";
+        var notRunningState = (podStatus.phase + '').toLowerCase();
         containerStatuses.map(function(item, index) {
             var state = Object.keys(item.state)[0];
             // terminated state : highest order

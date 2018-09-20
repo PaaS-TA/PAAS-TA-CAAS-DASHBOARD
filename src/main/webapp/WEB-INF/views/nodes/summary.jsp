@@ -1,5 +1,5 @@
 <%--
-  Deployments main
+  Nodes summary
   @author Hyungu Cho
   @version 1.0
   @since 2018.08.14
@@ -60,7 +60,6 @@
     var callbackGetNodeSummary = function(data) {
         viewLoading('show');
 
-        // check data validation
         var podNotFound = $('#noPodListResultArea');
         var podsTableHeader = $('#podListResultHeaderArea');
         var conditionsNotFound = $('#conditionsNotFound');
@@ -88,12 +87,10 @@
             condition.lastTransitionTime = condition.lastTransitionTime.replace(/T/g, " ").replace(/Z$/g, "");
         });
 
-        // get pods, conditions
         var podListReqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_NODE %>"
             .replace("{namespace:.+}", NAME_SPACE).replace("{nodeName:.+}", nodeName);
         getPodListUsingRequestURL(podListReqUrl);
 
-        // set conditions
         var contents = [];
         $.each(conditions, function(index, condition) {
             contents.push('<tr>'
@@ -106,7 +103,6 @@
         });
 
         if (contents.length > 0) {
-            // append conditions tbody
             $('#conditionResultArea').html(contents);
         } else {
             conditionsNotFound.find('p').html("Node의 Condition 목록을 가져오지 못했습니다.");
@@ -114,7 +110,6 @@
             conditionsTableHeader.hide();
         }
 
-        // TOOL TIP
         procSetToolTipForTableTd('conditionResultArea');
         $('[data-toggle="tooltip"]').tooltip();
 

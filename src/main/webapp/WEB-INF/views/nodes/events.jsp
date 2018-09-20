@@ -1,9 +1,10 @@
-<%@ page import="org.paasta.caas.dashboard.common.Constants" %><%--
-  Deployments main
+<%--
+  Nodes events
   @author Hyungu Cho
   @version 1.0
   @since 2018.08.14
 --%>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -70,17 +71,18 @@
             var firstB = eventB.firstSeen;
             var ascending = true;
             var reverseNumber = (ascending) ? 1 : -1;
-            if (firstA === firstB)
+            if (firstA === firstB) {
                 return 0;
-            else {
-                if (firstA == null)
+            } else {
+                if (firstA == null) {
                     return -1 * reverseNumber;
-                else if (firstB == null)
+                } else if (firstB == null) {
                     return reverseNumber;
-                else if (firstA > firstB)
+                } else if (firstA > firstB) {
                     return reverseNumber;
-                else
+                } else {
                     return -1 * reverseNumber;
+                }
             }
         });
     };
@@ -132,7 +134,6 @@
             nodeEventsResultArea.show();
         }
 
-        // TOOL TIP
         procSetToolTipForTableTd('nodeEventsResultArea');
         $('[data-toggle="tooltip"]').tooltip();
 
