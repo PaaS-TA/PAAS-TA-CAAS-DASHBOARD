@@ -128,8 +128,8 @@
     var deleteUserId;
 
     // SESSION VARIABLE
-    var rsUpdate = '<c:out value="${sessionScope.RS_USERMANAGEMENT_UPDATE}"/>';
-    var rsDelete = '<c:out value="${sessionScope.RS_USERMANAGEMENT_DELETE}"/>';
+    var rsUpdate = '<c:out value="${sessionScope.RS_USER_MANAGEMENT_UPDATE}"/>';
+    var rsDelete = '<c:out value="${sessionScope.RS_USER_MANAGEMENT_DELETE}"/>';
 
 
     // SELECTED ROLE VALUE
