@@ -11,11 +11,7 @@ import lombok.Data;
  */
 @Data
 public class CommonPort {
-
-    // FOR ENDPOINT :: BEGIN
-    private  String name;
-    private  String port;
-    private  String protocol;
-    // FOR ENDPOINT :: BEGIN
-
+    private String name;
+    private String port;
+    private String protocol;
 }
