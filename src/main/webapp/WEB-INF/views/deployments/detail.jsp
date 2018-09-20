@@ -161,11 +161,11 @@
         getReplicaSetsList(replaceLabels(selector));
         getDetailForPodsList(replaceLabels(selector));
 
-    }
+    };
 
     var replaceLabels = function (data) {
         return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
-    }
+    };
 
     //3개 일때는 동작하지 않을 수 있음.
     var createAnnotations = function (annotations) {
