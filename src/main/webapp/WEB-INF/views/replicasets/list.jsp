@@ -10,6 +10,14 @@
 <div class="sortable_wrap">
     <div class="sortable_top">
         <p>Replica Sets</p>
+        <ul class="colright_btn">
+            <li>
+                <input type="text" id="table-search-rs" name="" class="table-search" placeholder="search" onkeypress="if(event.keyCode===13) {setReplicaSetsList(this.value);}" maxlength="100" />
+                <button name="button" class="btn table-search-on" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </li>
+        </ul>
     </div>
     <div class="view_table_wrap">
         <table class="table_event condition alignL" id="resultTableForReplicaSets">
@@ -40,12 +48,16 @@
 
 <script type="text/javascript">
 
+    var G_REPLICA_SETS_LIST;
+
+    // Overview 통계용 데이터
     var G_REPLICA_SETS_LIST_LENGTH = 0;
     var G_REPLICA_SETS_TOTAL_CNT = 0;;
     var G_REPLICA_SETS_CHART_RUNNING_CNT =0;
     var G_REPLICA_SETS_CHART_FAILED_CNT = 0;
     var G_REPLICA_SETS_CHART_PENDDING_CNT = 0;
     var G_REPLICA_SETS_CHART_SUCCEEDED_CNT = 0;
+
     // GET LIST
     var getReplicaSetsList = function() {
         viewLoading('show');
@@ -54,8 +66,7 @@
                 .replace("{namespace:.+}", NAME_SPACE);
         procCallAjax(reqUrl, "GET", null, null, callbackGetReplicaSetsList);
     };
-
-
+    
     // CALLBACK
     var callbackGetReplicaSetsList = function(data) {
         if (!procCheckValidData(data)) {
@@ -63,13 +74,14 @@
             return false;
         }
 
+        G_REPLICA_SETS_LIST = data;
         viewLoading('hide');
 
-        setReplicaSetsList(data);
+        setReplicaSetsList("");
     };
 
     // SET LIST
-    var setReplicaSetsList = function(data) {
+    var setReplicaSetsList = function(searchKeyword) {
         viewLoading('show');
 
         var resultArea       = $('#resultAreaForReplicaSets');
@@ -77,65 +89,74 @@
         var noResultArea     = $('#noResultAreaForReplicaSets');
         var resultTable      = $('#resultTableForReplicaSets');
 
-        var items = data.items;
+        var items = G_REPLICA_SETS_LIST.items;
+        var checkListCount = 0;
         G_REPLICA_SETS_LIST_LENGTH = items.length;
+
+        resultArea.html("");
 
         $.each(items, function (index, itemList) {
 
             var replicaSetName = itemList.metadata.name;
-            var namespace = itemList.metadata.namespace;
-            var labels = procSetSelector(itemList.metadata.labels);
-            var creationTimestamp = itemList.metadata.creationTimestamp;
-            var pods = itemList.status.availableReplicas +" / "+ itemList.spec.replicas;  // current / desired
 
-            var imageTags = "";
-            var containers = itemList.spec.template.spec.containers;
-            for(var i=0; i < containers.length; i++){
-                imageTags += '<p class="custom-content-overflow">' + containers[i].image + '</p>';
-            }
+            if ((nvl(searchKeyword) === "") || replicaSetName.indexOf(searchKeyword) > -1) {
+                var namespace = itemList.metadata.namespace;
+                var labels = procSetSelector(itemList.metadata.labels);
+                var creationTimestamp = itemList.metadata.creationTimestamp;
+                var pods = itemList.status.availableReplicas +" / "+ itemList.spec.replicas;  // current / desired
 
-            //이벤트 관련 추가 START
-            addPodsEvent(itemList, itemList.spec.selector.matchLabels);
+                var imageTags = "";
+                var containers = itemList.spec.template.spec.containers;
+                for(var i=0; i < containers.length; i++){
+                    imageTags += '<p class="custom-content-overflow">' + containers[i].image + '</p>';
+                }
 
-            // Overview 통계용 전역 데이터 셋팅
-            if(itemList.type == "normal") {
-                G_REPLICA_SETS_CHART_RUNNING_CNT += 1;
-            } else if(itemList.type == "Warning") {
-                G_REPLICA_SETS_CHART_FAILED_CNT += 1;
-            } else {
-                G_REPLICA_SETS_CHART_FAILED_CNT += 1;
-            }
-            G_REPLICA_SETS_TOTAL_CNT += itemList.spec.replicas;
+                //이벤트 관련 추가 START
+                addPodsEvent(itemList, itemList.spec.selector.matchLabels);
 
-            var statusIconHtml;
-            var statusMessageHtml = [];
+                // Overview 통계용 전역 데이터 셋팅
+                if(itemList.type == "normal") {
+                    G_REPLICA_SETS_CHART_RUNNING_CNT += 1;
+                } else if(itemList.type == "Warning") {
+                    G_REPLICA_SETS_CHART_FAILED_CNT += 1;
+                } else {
+                    G_REPLICA_SETS_CHART_FAILED_CNT += 1;
+                }
+                G_REPLICA_SETS_TOTAL_CNT += itemList.spec.replicas;
 
-            if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
-                statusIconHtml    = "<span class='red2 tableTdToolTipFalse'><i class='fas fa-exclamation-circle'></i> </span>";
-                $.each(itemList.message , function (index, eventMessage) {
-                    statusMessageHtml += "<p class='red2 custom-content-overflow'>" + eventMessage + "</p>";
-                });
+                var statusIconHtml;
+                var statusMessageHtml = [];
 
-            }else{
-                statusIconHtml    = "<span class='green2 tableTdToolTipFalse'><i class='fas fa-check-circle'></i> </span>";
-            }
-            //이벤트 관련 추가 END
+                if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
+                    statusIconHtml    = "<span class='red2 tableTdToolTipFalse'><i class='fas fa-exclamation-circle'></i> </span>";
+                    $.each(itemList.message , function (index, eventMessage) {
+                        statusMessageHtml += "<p class='red2 custom-content-overflow'>" + eventMessage + "</p>";
+                    });
 
-            resultArea.append(
-                    "<tr>"
-                    + "<td>"+statusIconHtml
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_REPLICA_SETS %>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
-                    + statusMessageHtml
-                    + "</td>"
-                    + "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
-                    + "<td>" + procCreateSpans(labels, "LB") + "</td>"
-                    + "<td>" + pods + "</td>"
-                    + "<td>" + creationTimestamp+"</td>"
-                    + "<td>" + imageTags + "</td>"
-                    + "</tr>");
+                }else{
+                    statusIconHtml    = "<span class='green2 tableTdToolTipFalse'><i class='fas fa-check-circle'></i> </span>";
+                }
+                //이벤트 관련 추가 END
+
+                resultArea.append(
+                        "<tr>"
+                        + "<td>"+statusIconHtml
+                        + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_REPLICA_SETS %>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
+                        + statusMessageHtml
+                        + "</td>"
+                        + "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
+                        + "<td>" + procCreateSpans(labels, "LB") + "</td>"
+                        + "<td>" + pods + "</td>"
+                        + "<td>" + creationTimestamp+"</td>"
+                        + "<td>" + imageTags + "</td>"
+                        + "</tr>");
+
+                checkListCount++;
+
+            }  // if End
         });
 
-        if (G_REPLICA_SETS_LIST_LENGTH < 1) {
+        if (G_REPLICA_SETS_LIST_LENGTH < 1 || checkListCount < 1 ) {
             resultHeaderArea.hide();
             resultArea.hide();
             noResultArea.show();
@@ -143,7 +164,11 @@
             noResultArea.hide();
             resultHeaderArea.show();
             resultArea.show();
-            resultTable.tablesorter();
+
+            resultTable.tablesorter({
+                sortList: [[4, 1]] // 0 = ASC, 1 = DESC
+            });
+
             resultTable.trigger("update");
             $('.headerSortFalse > td').unbind();
         }
