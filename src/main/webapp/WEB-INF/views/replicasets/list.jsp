@@ -128,7 +128,6 @@
                     + statusMessageHtml
                     + "</td>"
                     + "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
-                    //+ labelObject
                     + "<td>" + procCreateSpans(labels, "LB") + "</td>"
                     + "<td>" + pods + "</td>"
                     + "<td>" + creationTimestamp+"</td>"

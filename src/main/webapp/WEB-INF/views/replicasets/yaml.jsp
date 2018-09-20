@@ -22,8 +22,8 @@
                     </div>
                     <div class="paA30">
                         <div class="yaml">
-                                    <pre class="brush: yaml" id="resultArea">
-                                    </pre>
+                            <pre class="brush: yaml" id="resultArea">
+                            </pre>
                         </div>
                     </div>
                 </div>
