@@ -390,8 +390,8 @@ var procSetToolTipForTableTd = function (tableObjectString) {
 var procSetToolTipAttributes = function (tagObject) {
     var tagObjectHtml = tagObject.html();
     if (!tagObject.hasClass('tableTdToolTipFalse') && tagObjectHtml !== '' && tagObjectHtml !== '-') {
-        tagObject.addClass('custom-content-overflow');
-        tagObject.attr('data-toggle', 'tooltip').attr('title', tagObjectHtml).attr('style', 'margin: 0;');
+        tagObject.addClass('custom-tag-content-overflow');
+        tagObject.attr('data-toggle', 'tooltip').attr('title', tagObjectHtml);
     }
 };
 

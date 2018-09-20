@@ -166,3 +166,8 @@
 .labels_wrap > span {
     white-space: pre;
 }
+
+.custom-tag-content-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
