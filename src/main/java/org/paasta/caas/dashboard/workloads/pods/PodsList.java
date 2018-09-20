@@ -12,8 +12,7 @@ import java.util.List;
  * @since 2018.8.13
  */
 @Data
-class PodsList {
-
+public class PodsList {
     private String resultCode;
     private String resultMessage;
 
