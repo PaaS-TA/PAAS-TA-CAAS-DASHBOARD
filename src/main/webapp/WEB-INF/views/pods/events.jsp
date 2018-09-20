@@ -82,17 +82,18 @@
             var firstB = eventB.firstSeen;
             var ascending = true;
             var reverseNumber = (ascending) ? 1 : -1;
-            if (firstA === firstB)
+            if (firstA === firstB) {
                 return 0;
-            else {
-                if (firstA == null)
+            } else {
+                if (firstA == null) {
                     return -1 * reverseNumber;
-                else if (firstB == null)
+                } else if (firstB == null) {
                     return reverseNumber;
-                else if (firstA > firstB)
+                } else if (firstA > firstB) {
                     return reverseNumber;
-                else
+                } else {
                     return -1 * reverseNumber;
+                }
             }
         });
     };

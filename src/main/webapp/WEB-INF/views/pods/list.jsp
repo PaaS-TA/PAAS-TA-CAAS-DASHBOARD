@@ -53,11 +53,6 @@
         procCallAjax(reqUrl, "GET", null, null, callbackGetPodList);
     };
 
-    // DISABLE SEARCH FORM
-    var disableSearchPodList = function() {
-        $('#pod-list-search-form').remove();
-    };
-
     // GET POD STATUS FROM POD'S STATUS DATA
     var getPodStatus = function(podStatus) {
         /*
@@ -67,13 +62,15 @@
           2.1. all of pod's container statuses is "Running" -> return "Running"
           2.2. some of pod's container statuses isn't "Running" -> return these status, but "terminated" state is the highest order.
          */
-        if (podStatus.phase.includes("Succeeded"))
+        if (podStatus.phase.includes("Succeeded")) {
             return podStatus.phase;
+        }
 
         // default value is empty array, callback is none.
         var containerStatuses = procIfDataIsNull(podStatus["containerStatuses"], null, []);
-        if (containerStatuses instanceof Array && 0 === containerStatuses.length)
+        if (containerStatuses instanceof Array && 0 === containerStatuses.length) {
             return podStatus.phase;
+        }
 
         var notRunningIndex = -1;
         var notRunningState = "";
@@ -118,10 +115,11 @@
             var findConditions = podItem.status.conditions.filter(function(item) {
                 return item.reason != null && item.message != null
             });
-            if (findConditions.length > 0)
+            if (findConditions.length > 0) {
                 errorMsg = findConditions[0].reason + " (" + findConditions[0].message + ")";
-            else
+            } else {
                 errorMsg = "Unknown Error";
+            }
         }
 
         // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
@@ -168,10 +166,11 @@
     // CREATE ANCHOR TAG FUNCTION
     var createAnchorTag = function(movePageUrl, content, isTooltip) {
         var anchorTag = "<a href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>";
-        if (isTooltip)
+        if (isTooltip) {
             return $(anchorTag).wrapAll("<div/>").parent().html();
-        else
+        } else {
             return anchorTag;
+        }
     };
 
     // SET POD LIST TABLE
@@ -196,14 +195,15 @@
             }
 
             var nodeNameHtml;
-            if (pod.nodeName !== "-")
+            if (pod.nodeName !== "-") {
                 nodeNameHtml = createAnchorTag("<%= Constants.URI_CLUSTER_NODES %>/" + pod.nodeName + "/summary", pod.nodeName, true);
-            else
+            } else {
                 nodeNameHtml = "-";
+            }
 
             var namespaceHtml = createAnchorTag("<%= Constants.URI_CLUSTER_NAMESPACES %>/" + pod.namespace, pod.namespace, true);
 
-            htmlString.push("<tr name='podRow'>"
+            htmlString.push("<tr name='podRow' data-search-key='" + pod.name + "'>"
                 + "<td id='" + pod.name + "'>" + podNameHtml + "</td>"
                 + "<td>" + namespaceHtml + "</td>"
                 + "<td>" + nodeNameHtml + "</td>"
@@ -222,7 +222,9 @@
             resultHeaderArea.show();
             resultArea.show();
             resultArea.html(htmlString);
-            resultTable.tablesorter();
+            resultTable.tablesorter({
+                sortList: [[0, 0]] // 0 = ASC, 1 = DESC
+            });
             resultTable.trigger("update");
             $('.headerSortFalse > td').unbind();
         }
@@ -238,25 +240,23 @@
 
         if (podRows.length > 0) {
             if (nvl(findValue) === "") {
-                // If input element's value is empty, show all rows.
                 podNotFound.hide();
                 podsTableHeader.show();
                 podRows.show();
             } else {
                 var showCount = 0;
-                $.each(podRows, function(index, row) {
-                    var row = $(row);
-                    if (row.attr("id").includes(findValue)) {
-                        row.show();
+                $.each(podRows, function(index, podRow) {
+                    var rowElement = $(podRow);
+                    if (rowElement.data("searchKey").includes(findValue)) {
+                        rowElement.show();
                         showCount++;
                     } else {
-                        row.hide();
+                        rowElement.hide();
                     }
                 });
 
                 if (showCount <= 0) {
                     // html into tr > td > p
-                    podNotFound.find('p').html("Pod 이름으로 찾지 못했습니다.");
                     podNotFound.show();
                     podsTableHeader.hide();
                 } else {
@@ -284,9 +284,7 @@
 
         if (false == procCheckValidData(data)) {
             viewLoading('hide');
-            var message = nvl(data.resultMessage, "Pod 목록을 가져오지 못했습니다.");
-            alertMessage(message, false);
-            $('#noPodListResultArea').find('p').html(message);
+            alertMessage();
             $('#noPodListResultArea').show();
             $('#podListResultArea').hide();
             $('#podListResultHeaderArea').hide();
@@ -323,7 +321,6 @@
         setPodTable(podList);
         procSetEventStatusForPods(podNameList);
 
-        // TOOL TIP
         procSetToolTipForTableTd('podListResultArea');
         $('[data-toggle="tooltip"]').tooltip();
 

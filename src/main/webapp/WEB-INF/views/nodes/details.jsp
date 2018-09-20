@@ -1,5 +1,5 @@
 <%--
-  Deployments main
+  Nodes detail
   @author Hyungu Cho
   @version 1.0
   @since 2018.08.14
@@ -147,8 +147,9 @@
         var spanHtml = "";
 
         $.each(data, function(index, item) {
-            if (type === "true" && index > 0)
+            if (type === "true" && index > 0) {
                 spanHtml += '<br>';
+            }
 
             var htmlString = null;
             var separatorIndex = item.indexOf(": ");
@@ -166,8 +167,9 @@
                 }
             }
 
-            if (null == htmlString)
+            if (null == htmlString) {
                 htmlString = '<span class="bg_gray">' + item.replace(": ", ":") + '</span>';
+            }
 
             spanHtml += (htmlString + ' ');
         });
@@ -178,10 +180,11 @@
     // STRINGIFY KEY-VALUE FUNCTION
     var stringifyKeyValue = function(data, mapFunc) {
         if (data instanceof Array) {
-            if (null == mapFunc)
+            if (null == mapFunc) {
                 arrayFunc = function(index, item) {
                     return item
                 };
+            }
 
             return data.map(mapFunc).reduce(function(prevItem, item) {
                 return prevItem + ", " + item;
@@ -211,7 +214,6 @@
         var spec = data.spec;
         var status = data.status;
 
-        // name, labels, annotations, created-at, addresses, pod-cidr, unschedulable
         var name = metadata.name;
         var labels = stringifyKeyValue(metadata.labels);
         var annotations = stringifyKeyValue(metadata.annotations);
@@ -226,10 +228,8 @@
                     return item.key === 'node-role.kubernetes.io/master' && item.effect !== 'NoSchedule';
                 }).length > 0 : false;
 
-        // get datum : system info
         var nodeInfo = status.nodeInfo;
 
-        // basic info
         $('#node_name').html(name);
         $('#node_labels').html(createSpans(labels, "false"));
         $('#node_annotations').html(createSpans(annotations, "false"));
@@ -238,7 +238,6 @@
         $('#node_pod_cidr').html(podCIDR);
         $('#node_unschedulable').html(unschedulable.toString());
 
-        // system info
         $('#node_machine_id').html(nodeInfo.machineID);
         $('#node_system_uuid').html(nodeInfo.systemUUID);
         $('#node_boot_id').html(nodeInfo.bootID);
