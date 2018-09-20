@@ -12,6 +12,5 @@ import lombok.Data;
 @Data
 public class RollingUpdateDeployments {
     private String maxSurge;
-
     private String maxUnavailable;
 }

@@ -1,6 +1,5 @@
 package org.paasta.caas.dashboard.common.model;
 
-import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 /**

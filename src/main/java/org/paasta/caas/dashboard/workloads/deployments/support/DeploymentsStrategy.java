@@ -12,6 +12,5 @@ import lombok.Data;
 @Data
 public class DeploymentsStrategy {
     private String type;
-
     private RollingUpdateDeployments rollingUpdate;
 }

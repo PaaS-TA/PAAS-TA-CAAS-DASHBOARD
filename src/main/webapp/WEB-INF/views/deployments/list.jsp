@@ -164,8 +164,13 @@
         } else {
             noResultArea.hide();
             resultHeaderArea.show();
-            resultArea.show();
             resultArea.html(htmlString);
+            resultArea.show();
+
+            resultTable.tablesorter({
+                sortList: [[4, 1]] // 0 = ASC, 1 = DESC
+            });
+
             resultTable.tablesorter();
             resultTable.trigger("update");
             $('.headerSortFalse > td').unbind();
