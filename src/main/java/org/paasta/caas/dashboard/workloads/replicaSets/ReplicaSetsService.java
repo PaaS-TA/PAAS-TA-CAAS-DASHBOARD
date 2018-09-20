@@ -7,7 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 /**
- * Replicaset Service 클래스
+ * ReplicaSets Service 클래스
  *
  * @author CISS
  * @version 1.0
@@ -19,7 +19,7 @@ public class ReplicaSetsService {
     private final RestTemplateService restTemplateService;
 
     /**
-     * Instantiates a new ReplicaSet service.
+     * Instantiates a new ReplicaSets service.
      *
      * @param restTemplateService the rest template service
      */
@@ -28,11 +28,11 @@ public class ReplicaSetsService {
 
 
     /**
-     * Gets replicaSet list.
+     * ReplicaSets 목록을 조회한다.
      * @param namespace   the namespace
-     * @return the replicaSet list
+     * @return the replicaSets list
      */
-    ReplicaSetsList getReplicasetList(String namespace) {
+    ReplicaSetsList getReplicaSetsList(String namespace) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICA_SETS_LIST
                         .replace("{namespace:.+}", namespace),
                 HttpMethod.GET, null, ReplicaSetsList.class);
@@ -40,13 +40,13 @@ public class ReplicaSetsService {
 
 
     /**
-     * Gets replicaSet.
+     * ReplicaSets 상세 정보를 조회한다.
      *
      * @param namespace   the namespace
      * @param replicaSetName the replicaSet name
-     * @return the replicaSet
+     * @return the replicaSets
      */
-    ReplicaSets getReplicaset(String namespace, String replicaSetName) {
+    ReplicaSets getReplicaSets(String namespace, String replicaSetName) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICA_SETS_DETAIL
                         .replace("{namespace:.+}", namespace)
                         .replace("{replicaSetName:.+}", replicaSetName)
@@ -55,13 +55,13 @@ public class ReplicaSetsService {
 
 
     /**
-     * Gets replicaSet YAML.
+     * ReplicaSets YAML을 조회한다.
      *
      * @param namespace   the namespace
      * @param replicaSetName the service name
-     * @return the custom services yaml
+     * @return the replicaSets yaml
      */
-    ReplicaSets getReplicaSetYaml(String namespace, String replicaSetName) {
+    ReplicaSets getReplicaSetsYaml(String namespace, String replicaSetName) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICA_SETS_YAML
                         .replace("{namespace:.+}", namespace)
                         .replace("{replicaSetName:.+}", replicaSetName),
@@ -70,13 +70,13 @@ public class ReplicaSetsService {
 
 
     /**
-     * Gets replicaSet(Label Selector).
+     * ReplicaSets 목록을 조회한다. (Label Selector)
      *
      * @param namespace the namespace
      * @param selectors the selectors
-     * @return the replicaSet
+     * @return the replicaSets list
      */
-    ReplicaSetsList getReplicasetListLabelSelector(String namespace, String selectors) {
+    ReplicaSetsList getReplicaSetsListLabelSelector(String namespace, String selectors) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_REPLICA_SETS_RESOURCES
                      .replace("{namespace:.+}", namespace)
                         .replace("{selector:.+}", selectors),
