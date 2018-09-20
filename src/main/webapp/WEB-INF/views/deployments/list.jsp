@@ -180,6 +180,6 @@
         procSetToolTipForTableTd('resultDeploymentsTable');
         viewLoading('hide');
 
-    }
+    };
 
 </script>

@@ -54,7 +54,7 @@
         }
         $('#resultArea').html('---\n' + data.sourceTypeYaml);
         viewLoading('hide');
-    }
+    };
 
     // ON LOAD
     $(document.body).ready(function () {
