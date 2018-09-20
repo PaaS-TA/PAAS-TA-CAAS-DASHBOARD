@@ -59,14 +59,22 @@
     var G_REPLICA_SETS_CHART_SUCCEEDED_CNT = 0;
 
     // GET LIST
-    var getReplicaSetsList = function() {
+    var getReplicaSetsList = function(selector) {
         viewLoading('show');
 
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICA_SETS_LIST %>"
-                .replace("{namespace:.+}", NAME_SPACE);
+        var reqUrl;
+
+        if(nvl(selector) != ""){
+            reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICA_SETS_RESOURCES %>"
+                    .replace("{namespace:.+}", NAME_SPACE)
+                    .replace("{selector:.+}", selector);
+        }else{
+            reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICA_SETS_LIST %>"
+                    .replace("{namespace:.+}", NAME_SPACE);
+        }
         procCallAjax(reqUrl, "GET", null, null, callbackGetReplicaSetsList);
     };
-    
+
     // CALLBACK
     var callbackGetReplicaSetsList = function(data) {
         if (!procCheckValidData(data)) {
@@ -180,7 +188,7 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        getReplicaSetsList();
+        getReplicaSetsList("");
     });
 
 </script>
