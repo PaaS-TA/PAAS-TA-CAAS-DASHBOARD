@@ -1,6 +1,7 @@
 package org.paasta.caas.dashboard.clusters.namespaces;
 
 import org.paasta.caas.dashboard.common.CommonService;
+import org.paasta.caas.dashboard.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018.08.28
  */
 @RestController
-@RequestMapping("/caas/clusters")
 public class NamespacesController {
 
     private static final String BASE_URL = "/namespaces";
@@ -41,7 +41,7 @@ public class NamespacesController {
      * @param httpServletRequest the http servlet request
      * @return the namespaces main
      */
-    @GetMapping(value = {"/namespaces"})
+    @GetMapping(value = Constants.URI_CLUSTER_NAMESPACES)
     public ModelAndView getNamespaceMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
     }
@@ -52,7 +52,7 @@ public class NamespacesController {
      * @param httpServletRequest the http servlet request
      * @return the namespaces detail
      */
-    @GetMapping(value = {"/namespaces/{namespace}"})
+    @GetMapping(value = Constants.URI_CLUSTER_NAMESPACES + "/{namespace:.+}")
     public ModelAndView getNamespaceDetail(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/detail", new ModelAndView());
     }
@@ -63,7 +63,9 @@ public class NamespacesController {
      * @param namespace the namespaces
      * @return the Namespaces
      */
-    @GetMapping(value = "/namespaces/{namespace}/getDetail")
+//    @GetMapping(value = Constants.API_URL + Constants.URI_API_NAME_SPACES_DETAIL)
+
+    @GetMapping(value = Constants.URI_CLUSTER_NAMESPACES + "/{namespace:.+}/getDetail")
     public Namespaces getNamespaces(@PathVariable String namespace) {
         return namespacesService.getNamespaces(namespace);
     }
@@ -74,7 +76,7 @@ public class NamespacesController {
      * @param namespace the namespaces
      * @return the ResourceQuotaList
      */
-    @GetMapping(value = "/namespaces/{namespace}/getResourceQuotaList")
+    @GetMapping(value = Constants.URI_CLUSTER_NAMESPACES + "/{namespace:.+}/getResourceQuotaList")
     public ResourceQuotaList getResourceQuotaList(@PathVariable String namespace) {
         return namespacesService.getResourceQuotaList(namespace);
     }
@@ -85,7 +87,7 @@ public class NamespacesController {
      * @param httpServletRequest the http servlet request
      * @return the namespaces events
      */
-    @GetMapping(value = {"/namespaces/{namespace}/events"})
+    @GetMapping(value = Constants.URI_CLUSTER_NAMESPACES + "/{namespace:.+}/events")
     public ModelAndView getNamespaceEvents(HttpServletRequest httpServletRequest, @PathVariable String namespace) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());
     }

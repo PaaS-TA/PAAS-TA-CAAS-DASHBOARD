@@ -47,6 +47,9 @@ public class Constants {
     // CONTROLLER MAPPING URI
     public static final String URI_CONTROLLER_NAMESPACE      = "/caas/clusters/namespaces";
 
+    // API URI :: NAME SPACES
+    public static final String URI_API_NAME_SPACES_DETAIL         = "/namespaces/{namespace:.+}";
+
     // API URI :: DEPLOYMENTS
     public static final String URI_API_DEPLOYMENTS_LIST         = "/namespaces/{namespace:.+}/deployments";
     public static final String URI_API_DEPLOYMENTS_DETAIL       = "/namespaces/{namespace:.+}/deployments/{deploymentName:.+}";

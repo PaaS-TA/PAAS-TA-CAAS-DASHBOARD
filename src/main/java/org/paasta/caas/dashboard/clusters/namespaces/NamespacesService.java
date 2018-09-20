@@ -33,7 +33,7 @@ public class NamespacesService {
      * @return the Namespaces
      */
     Namespaces getNamespaces(String namespace) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, "/clusters/namespaces/"+namespace, HttpMethod.GET, null, Namespaces.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/"+namespace, HttpMethod.GET, null, Namespaces.class);
     }
 
     /**
@@ -43,6 +43,6 @@ public class NamespacesService {
      * @return the ResourceQuotaList
      */
     ResourceQuotaList getResourceQuotaList(String namespace) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, "/clusters/namespaces/"+namespace+"/getResourceQuotaList", HttpMethod.GET, null, ResourceQuotaList.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/"+namespace+"/resourceQuotas", HttpMethod.GET, null, ResourceQuotaList.class);
     }
 }
