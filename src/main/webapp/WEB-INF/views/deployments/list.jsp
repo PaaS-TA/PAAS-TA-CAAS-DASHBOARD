@@ -10,6 +10,14 @@
 <div class="sortable_wrap">
     <div class="sortable_top">
         <p>Deployments</p>
+        <ul class="colright_btn">
+            <li>
+                <input type="text" id="table-search-01" name="" class="table-search" placeholder="search" onkeypress="if(event.keyCode===13) {setDeploymentsList(this.value);}" maxlength="100" />
+                <button name="button" class="btn table-search-on" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </li>
+        </ul>
     </div>
     <div class="view_table_wrap">
         <table class="table_event condition alignL" id="resultDeploymentsTable">
@@ -40,6 +48,7 @@
 
 <script type="text/javascript">
 
+    var G_DEPLOYMENTS_LIST;
     var G_DEPLOYMENTS_LIST_LENGTH;
     var G_DEV_CAHRT_RUNNING_CNT = 0;
     var G_DEV_CHART_FAILED_CNT = 0;
@@ -50,6 +59,7 @@
         viewLoading('show');
         var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsList);
+
     };
 
     // CALLBACK
@@ -60,80 +70,91 @@
             return false;
         }
 
+        G_DEPLOYMENTS_LIST = data;
         G_DEPLOYMENTS_LIST_LENGTH = data.items.length;
+        setDeploymentsList("");
+
+    };
+
+    var setDeploymentsList = function (searchKeyword) {
+        viewLoading('show');
 
         var resultArea = $('#deploymentsListArea');
         var resultHeaderArea = $('#resultDeploymentsHeaderArea');
         var noResultArea = $('#noResultDeploymentsArea');
         var resultTable = $('#resultDeploymentsTable');
 
+        var htmlString = [];
 
-        $.each(data.items, function (index, itemList) {
+
+        $.each(G_DEPLOYMENTS_LIST.items, function (index, itemList) {
             var metadata = itemList.metadata;
             var spec = itemList.spec;
             var status = itemList.status;
-
             var deployName = metadata.name;
-            var namespace = metadata.namespace;
-            // 라벨이 없는 경우도 있음.
-            var labels = procSetSelector(metadata.labels);
-            if (labels === "null") {
-                labels = null;
+
+            if ((nvl(searchKeyword) === "") || deployName.indexOf(searchKeyword) > -1) {
+                var namespace = metadata.namespace;
+                // 라벨이 없는 경우도 있음.
+                var labels = procSetSelector(metadata.labels);
+                if (labels === "null") {
+                    labels = null;
+                }
+
+                var creationTimestamp = metadata.creationTimestamp;
+
+                // Set replicas and total Pods are same.
+                var totalPods = spec.replicas;
+                var runningPods = totalPods - status.unavailableReplicas;
+                var containers = itemList.spec.template.spec.containers;
+                var imageTags = "";
+
+                for (var i = 0; i < containers.length; i++) {
+                    imageTags += '<p>' + containers[i].image + '</p>';
+                }
+
+                addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
+
+                var statusIconHtml;
+                var statusMessageHtml = [];
+
+                if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
+                    statusIconHtml    = "<span class='red2 tableTdToolTipFalse'><i class='fas fa-exclamation-circle'></i> </span>";
+                    $.each(itemList.message , function (index, eventMessage) {
+                        statusMessageHtml += "<p class='red2 custom-content-overflow'>" + eventMessage + "</p>";
+                    });
+                }else{
+                    statusIconHtml    = "<span class='green2 tableTdToolTipFalse'><i class='fas fa-check-circle'></i> </span>";
+                }
+
+                if(itemList.type == "normal") {
+                    G_DEV_CAHRT_RUNNING_CNT += 1;
+                } else if(itemList.type == "Warning") {
+                    G_DEV_CHART_FAILED_CNT += 1;
+                } else {
+                    G_DEV_CHART_FAILED_CNT += 1;
+                }
+
+                var labelObject ="";
+                if(!labels) {
+                    labelObject += "<td>" + nvl(labels, "-") + "</td>";
+                } else {
+                    labelObject += '<td>' + procCreateSpans(labels, "LB") + '</td>'
+                }
+
+                htmlString.push('<tr>' +
+                    '<td>' +
+                    statusIconHtml +
+                    "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/" + deployName + "\");'>" + deployName + '</a>' +
+                    statusMessageHtml +
+                    '</td>' +
+                    "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
+                    labelObject +
+                    '<td>' + runningPods +" / " + totalPods + '</td>' +
+                    '<td>' + creationTimestamp + '</td>' +
+                    "<td>" + imageTags + "</td>" +
+                    '</tr>');
             }
-
-            var creationTimestamp = metadata.creationTimestamp;
-
-            // Set replicas and total Pods are same.
-            var totalPods = spec.replicas;
-            var runningPods = totalPods - status.unavailableReplicas;
-            var containers = itemList.spec.template.spec.containers;
-            var imageTags = "";
-
-            for (var i = 0; i < containers.length; i++) {
-                imageTags += '<p>' + containers[i].image + '</p>';
-            }
-
-            addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
-
-            var statusIconHtml;
-            var statusMessageHtml = [];
-
-            if(itemList.type == 'Warning'){ // [Warning]과 [Warning] 외 두 가지 상태로 분류
-                statusIconHtml    = "<span class='red2 tableTdToolTipFalse'><i class='fas fa-exclamation-circle'></i> </span>";
-                $.each(itemList.message , function (index, eventMessage) {
-                    statusMessageHtml += "<p class='red2 custom-content-overflow'>" + eventMessage + "</p>";
-                });
-            }else{
-                statusIconHtml    = "<span class='green2 tableTdToolTipFalse'><i class='fas fa-check-circle'></i> </span>";
-            }
-
-            if(itemList.type == "normal") {
-                G_DEV_CAHRT_RUNNING_CNT += 1;
-            } else if(itemList.type == "Warning") {
-                G_DEV_CHART_FAILED_CNT += 1;
-            } else {
-                G_DEV_CHART_FAILED_CNT += 1;
-            }
-
-            var labelObject ="";
-            if(!labels) {
-                labelObject += "<td>" + nvl(labels, "-") + "</td>";
-            } else {
-                labelObject += '<td>' + procCreateSpans(labels, "LB") + '</td>'
-            }
-
-            resultArea.append('<tr>' +
-                                '<td>' +
-                                    statusIconHtml +
-                                    "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/" + deployName + "\");'>" + deployName + '</a>' +
-                                    statusMessageHtml +
-                                '</td>' +
-                                "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
-                                labelObject +
-                                '<td>' + runningPods +" / " + totalPods + '</td>' +
-                                '<td>' + creationTimestamp + '</td>' +
-                                "<td>" + imageTags + "</td>" +
-                            '</tr>');
         });
 
         if (G_DEPLOYMENTS_LIST_LENGTH < 1) {
@@ -144,6 +165,7 @@
             noResultArea.hide();
             resultHeaderArea.show();
             resultArea.show();
+            resultArea.html(htmlString);
             resultTable.tablesorter();
             resultTable.trigger("update");
             $('.headerSortFalse > td').unbind();
@@ -151,7 +173,8 @@
 
         procSetToolTipForTableTd('resultDeploymentsTable');
         viewLoading('hide');
-    };
+
+    }
 
     $(document.body).ready(function () {
         getDeploymentsList();

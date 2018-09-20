@@ -110,7 +110,6 @@
                 .replace("{namespace:.+}", NAME_SPACE)
                 .replace("{selector:.+}", selector);
         getPodListUsingRequestURL(reqUrl);
-        disableSearchPodList(); // Pods 검색창 제거
         viewLoading('hide');
     };
 
