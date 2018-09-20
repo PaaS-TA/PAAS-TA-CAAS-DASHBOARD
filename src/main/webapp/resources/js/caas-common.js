@@ -137,11 +137,12 @@ var procSetMenuCursor = function () {
 
 // SET SORT LIST
 var procSetSortList = function(resultTableString, buttonObject, key) {
+    $(buttonObject).toggleClass('sort');
+
     var resultTable = $('#' + resultTableString);
     var orderDigit = ($(buttonObject).hasClass('sort')) ? 0 : 1; // 0 = ASC, 1 = DESC
     var sorting = [[key, orderDigit]];
 
-    resultTable.tablesorter();
     resultTable.trigger("update");
     resultTable.trigger("sorton", [sorting]);
     $('.headerSortFalse > td').unbind();
