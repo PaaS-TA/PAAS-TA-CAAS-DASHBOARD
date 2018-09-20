@@ -36,7 +36,7 @@ public class NodesService {
      */
     Nodes getNode(String nodeName) {
         return restTemplateService.send(Constants.TARGET_CAAS_API,
-            Constants.URI_API_NODES_LIST.replace("{nodeName:.+}", nodeName), HttpMethod.GET, null, Nodes.class);
+                Constants.URI_API_NODES_LIST.replace("{nodeName:.+}", nodeName), HttpMethod.GET, null, Nodes.class);
     }
 
 }

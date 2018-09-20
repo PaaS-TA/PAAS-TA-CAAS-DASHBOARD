@@ -24,9 +24,6 @@ public class PropertyService {
     @Value("${caasApi.url}")
     private String caasApiUrl;
 
-    @Value("${caasCfApi.url}")
-    private String caasCfApiUrl;
-
     @Value("${commonApi.url}")
     private String commonApiUrl;
 }

@@ -31,5 +31,5 @@ public class DeploymentsSpec {
 
     private CommonPodTemplateSpec template;
 
-    public Set<String> images;
+    private Set<String> images;
 }

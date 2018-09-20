@@ -57,7 +57,7 @@ public class AccessInfoController {
      * @param accessTokenName the access token name
      * @return the secret
      */
-    @GetMapping(value = Constants.CAAS_BASE_URL + "/accessInfo/namespace/{namespace}/accessTokenName/{accessTokenName}")
+    @GetMapping(value = Constants.CAAS_BASE_URL + Constants.URI_API_SECRETS_DETAIL)
     @ResponseBody
     public AccessInfo getSecret(@PathVariable("namespace") String namespace, @PathVariable("accessTokenName") String accessTokenName) {
         return accessInfoService.getToken(namespace, accessTokenName);

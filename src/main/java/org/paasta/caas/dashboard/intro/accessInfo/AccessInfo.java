@@ -11,6 +11,8 @@ import lombok.Data;
  */
 @Data
 class AccessInfo {
+    private String resultCode;
+
     private String caCertToken;
     private String userAccessToken;
 }
