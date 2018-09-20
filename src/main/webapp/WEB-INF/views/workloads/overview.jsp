@@ -71,7 +71,6 @@
     // GET LIST
     var getPodsList = function() {
         viewLoading('show');
-        disableSearchPodList();
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
         getPodListUsingRequestURL(reqUrl);
         viewLoading('hide');
