@@ -204,22 +204,22 @@
 <script type="text/javascript">
 
     var BASE_URL = "/caas";
-    var roleName;
-    var caCertToken;
-    var userAccessToken;
+    var G_ROLE_NAME;
+    var G_CA_CERT_TOKEN;
+    var G_USER_ACCESS_TOKEN;
 
     // kubectl access guide variable
-    var guideClusterName;
-    var guideClusterServer;
-    var guideUserName;
-    var guideContextName;
-    var guideNamespace;
+    var G_GUIDE_CLUSTER_NAME;
+    var G_GUIDE_CLUSTER_SERVER;
+    var G_GUIDE_USER_NAME;
+    var G_GUIDE_CONTEXT_NAME;
+    var G_GUIDE_NAMESPACE;
 
 
     // certification token download
     var downloadCrtToken = function () {
         var fileNameToSaveAs = "cluster-certificate.crt";
-        var textToWrite = caCertToken;
+        var textToWrite = G_CA_CERT_TOKEN;
 
         var ie = navigator.userAgent.match(/MSIE\s([\d.]+)/),
             ie11 = navigator.userAgent.match(/Trident\/7.0/) && navigator.userAgent.match(/rv:11/),
@@ -261,23 +261,23 @@
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
         //$("#access-user-token").val(data.caasAccountTokenName);
 
-        guideClusterName = data.caasClusterName;
-        guideClusterServer = data.caasUrl;
-        guideUserName = data.serviceInstanceId + "-" + data.id;
-        guideContextName = guideUserName + "-context";
-        guideNamespace = data.caasNamespace;
+        G_GUIDE_CLUSTER_NAME = data.caasClusterName;
+        G_GUIDE_CLUSTER_SERVER = data.caasUrl;
+        G_GUIDE_USER_NAME = data.serviceInstanceId + "-" + data.id;
+        G_GUIDE_CONTEXT_NAME = G_GUIDE_USER_NAME + "-context";
+        G_GUIDE_NAMESPACE = data.caasNamespace;
 
         if(data.roleSetCode === '<c:out value="${roleSetCodeList.administratorCode}" />'){
-            roleName = '<c:out value="${roleSetNameList.administratorName}" />';
+            G_ROLE_NAME = '<c:out value="${roleSetNameList.administratorName}" />';
         }else if(data.roleSetCode === '<c:out value="${roleSetCodeList.regularUserCode}" />'){
-            roleName = '<c:out value="${roleSetNameList.regularUserName}" />';
+            G_ROLE_NAME = '<c:out value="${roleSetNameList.regularUserName}" />';
         }else if(data.roleSetCode === '<c:out value="${roleSetCodeList.initUserCode}" />'){
-            roleName = '<c:out value="${roleSetNameList.initUserName}" />';
+            G_ROLE_NAME = '<c:out value="${roleSetNameList.initUserName}" />';
         }
 
-        $("#access-user-role").val(roleName);
+        $("#access-user-role").val(G_ROLE_NAME);
 
-        userAccessToken = data.caasAccountTokenName;
+        G_USER_ACCESS_TOKEN = data.caasAccountTokenName;
         getAccessToken();
     };
 
@@ -286,24 +286,24 @@
     var getAccessToken = function () {
         var reqUrl = "<%= Constants.CAAS_BASE_URL %><%= Constants.URI_API_SECRETS_DETAIL %>"
             .replace("{namespace:.+}", NAME_SPACE)
-            .replace("{accessTokenName:.+}", userAccessToken);
+            .replace("{accessTokenName:.+}", G_USER_ACCESS_TOKEN);
 
         procCallAjax(reqUrl, "GET", null, null, callbackGetAccessToken);
     };
 
     var callbackGetAccessToken = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        //$("#access-user-token").val(data.userAccessToken);
-        caCertToken = data.caCertToken;
-        userAccessToken = data.userAccessToken;
+
+        G_CA_CERT_TOKEN = data.caCertToken;
+        G_USER_ACCESS_TOKEN = data.userAccessToken;
 
         // kubectl access guide input logic
-        $('.caasClusterName').html(guideClusterName);
-        $('.caasClusterServer').html(guideClusterServer);
-        $('.caasUserName').html(guideUserName);
-        $('.caasContextName').html(guideContextName);
-        $('.caasNamespace').html(guideNamespace);
-        $('.caasCredentialsToken').html(userAccessToken);
+        $('.caasClusterName').html(G_GUIDE_CLUSTER_NAME);
+        $('.caasClusterServer').html(G_GUIDE_CLUSTER_SERVER);
+        $('.caasUserName').html(G_GUIDE_USER_NAME);
+        $('.caasContextName').html(G_GUIDE_CONTEXT_NAME);
+        $('.caasNamespace').html(G_GUIDE_NAMESPACE);
+        $('.caasCredentialsToken').html(G_USER_ACCESS_TOKEN);
     };
 
 
@@ -315,7 +315,7 @@
         // copy function
         $("#btn-copy").on("click", function(){
             var target = $("#out_a");
-            var inA = userAccessToken;
+            var inA = G_USER_ACCESS_TOKEN;
             target.val(inA);
             target.select();
             var successful = document.execCommand('copy');
