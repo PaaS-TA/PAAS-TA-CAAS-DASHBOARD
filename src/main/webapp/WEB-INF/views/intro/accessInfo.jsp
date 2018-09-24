@@ -296,6 +296,14 @@
         //$("#access-user-token").val(data.userAccessToken);
         caCertToken = data.caCertToken;
         userAccessToken = data.userAccessToken;
+
+        // kubectl access guide input logic
+        $('.caasClusterName').html(guideClusterName);
+        $('.caasClusterServer').html(guideClusterServer);
+        $('.caasUserName').html(guideUserName);
+        $('.caasContextName').html(guideContextName);
+        $('.caasNamespace').html(guideNamespace);
+        $('.caasCredentialsToken').html(userAccessToken);
     };
 
 
@@ -316,19 +324,5 @@
 
         getUser();
 
-        // kubectl access guide input logic
-        var clusterName = guideClusterName;
-        var clusterServer = guideClusterServer;
-        var userName = guideUserName;
-        var contextName = guideContextName;
-        var namespace = guideNamespace;
-        var credentialsToken = userAccessToken;
-
-        $('.caasClusterName').html(clusterName);
-        $('.caasClusterServer').html(clusterServer);
-        $('.caasUserName').html(userName);
-        $('.caasContextName').html(contextName);
-        $('.caasNamespace').html(namespace);
-        $('.caasCredentialsToken').html(credentialsToken);
     });
 </script>
