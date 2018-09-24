@@ -5,6 +5,7 @@
   @since 2018.09.10
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <div class="content">
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
@@ -266,12 +267,12 @@
         guideContextName = guideUserName + "-context";
         guideNamespace = data.caasNamespace;
 
-        if(data.roleSetCode == "RS0001"){
-            roleName = "Administrator";
-        }else if(data.roleSetCode == "RS0002"){
-            roleName = "Regular User";
-        }else if(data.roleSetCode == "RS0003"){
-            roleName = "Init User";
+        if(data.roleSetCode === '<c:out value="${roleSetCodeList.administratorCode}" />'){
+            roleName = '<c:out value="${roleSetNameList.administratorName}" />';
+        }else if(data.roleSetCode === '<c:out value="${roleSetCodeList.regularUserCode}" />'){
+            roleName = '<c:out value="${roleSetNameList.regularUserName}" />';
+        }else if(data.roleSetCode === '<c:out value="${roleSetCodeList.initUserCode}" />'){
+            roleName = '<c:out value="${roleSetNameList.initUserName}" />';
         }
 
         $("#access-user-role").val(roleName);
@@ -305,9 +306,10 @@
 
         // copy function
         $("#btn-copy").on("click", function(){
+            var target = $("#out_a");
             var inA = userAccessToken;
-            $("#out_a").val(inA);
-            $("#out_a").select();
+            target.val(inA);
+            target.select();
             var successful = document.execCommand('copy');
             alert("복사되었습니다.");
         });

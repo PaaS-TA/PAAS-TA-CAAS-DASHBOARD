@@ -1,13 +1,16 @@
 package org.paasta.caas.dashboard.users;
 
 import org.paasta.caas.dashboard.common.CommonService;
+import org.paasta.caas.dashboard.common.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User Controller 클래스
@@ -23,17 +26,19 @@ public class UsersController {
     private static final String BASE_URL = "/admin/users";
     private final CommonService commonService;
     private final UsersService userService;
+    private final PropertyService propertyService;
 
     /**
      * Instantiates a new User controller.
-     *
-     * @param commonService the common service
+     *  @param commonService the common service
      * @param userService   the user service
+     * @param propertyService
      */
     @Autowired
-    public UsersController(CommonService commonService, UsersService userService) {
+    public UsersController(CommonService commonService, UsersService userService, PropertyService propertyService) {
         this.commonService = commonService;
         this.userService = userService;
+        this.propertyService = propertyService;
     }
 
     /**
@@ -44,7 +49,21 @@ public class UsersController {
      */
     @GetMapping
     public ModelAndView getUserMain(HttpServletRequest httpServletRequest) {
-        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
+        Map roleSetCodeList = new HashMap();
+        roleSetCodeList.put("administratorCode", propertyService.getAdministratorCode());
+        roleSetCodeList.put("regularUserCode", propertyService.getRegularUserCode());
+        roleSetCodeList.put("initUserCode", propertyService.getInitUserCode());
+
+        Map roleSetNameList = new HashMap();
+        roleSetNameList.put("administratorName", propertyService.getAdministratorName());
+        roleSetNameList.put("regularUserName", propertyService.getRegularUserName());
+        roleSetNameList.put("initUserName", propertyService.getInitUserName());
+
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("roleSetCodeList", roleSetCodeList);
+        mv.addObject("roleSetNameList", roleSetNameList);
+
+        return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", mv);
     }
 
     /**

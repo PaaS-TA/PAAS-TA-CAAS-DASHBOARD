@@ -133,11 +133,11 @@ public class UsersService {
         String roleBindingsName = user.getCaasNamespace() + "-" + realUserName + "-role-binding";
 
         // 1. roleSetCode 가 뭐 인지 확인 후 role-name 찾아서 해당 role.ftl 로 replace 해준다.
-        if(user.getRoleSetCode().equals("RS0001")){
+        if(user.getRoleSetCode().equals(propertyService.getAdministratorCode())){
             roleYml = templateService.convert("instance/create_admin_role.ftl", model);
-        }else if(user.getRoleSetCode().equals("RS0002")){
+        }else if(user.getRoleSetCode().equals(propertyService.getRegularUserCode())){
             roleYml = templateService.convert("instance/create_regular_role.ftl", model);
-        }else if(user.getRoleSetCode().equals("RS0003")){
+        }else if(user.getRoleSetCode().equals(propertyService.getInitUserCode())){
             roleYml = templateService.convert("instance/create_init_role.ftl", model);
         }
 

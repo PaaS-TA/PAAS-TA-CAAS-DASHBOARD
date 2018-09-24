@@ -127,6 +127,14 @@
 
     var deleteUserId;
 
+    var G_ADMIN_CODE = '<c:out value="${roleSetCodeList.administratorCode}" />';
+    var G_REGULAR_USER_CODE = '<c:out value="${roleSetCodeList.regularUserCode}" />';
+    var G_INIT_USER_CODE = '<c:out value="${roleSetCodeList.initUserCode}" />';
+
+    var G_ADMIN_NAME = '<c:out value="${roleSetNameList.administratorName}" />';
+    var G_REGULAR_USER_NAME = '<c:out value="${roleSetNameList.regularUserName}" />';
+    var G_INIT_USER_NAME = '<c:out value="${roleSetNameList.initUserName}" />';
+
     // SESSION VARIABLE
     var rsUpdate = '<c:out value="${sessionScope.RS_USER_MANAGEMENT_UPDATE}"/>';
     var rsDelete = '<c:out value="${sessionScope.RS_USER_MANAGEMENT_DELETE}"/>';
@@ -161,24 +169,26 @@
         var resultHeaderArea = $('#resultHeaderArea');
         var noResultArea = $('#noResultArea');
 
-        var items = new Array;
+        var items = [];
 
         for(var k = 0; k < usersList.length; k++){
-            if(usersList[k].roleSetCode == "RS0001"){
-                usersList[k].roleSetCode = "Administrator";
-            }else if(usersList[k].roleSetCode == "RS0002"){
-                usersList[k].roleSetCode = "Regular User";
-            }else if(usersList[k].roleSetCode == "RS0003"){
-                usersList[k].roleSetCode = "Init User";
+            var rc = usersList[k].roleSetCode;
+
+            if(rc === G_ADMIN_CODE){
+                rc = G_ADMIN_NAME;
+            }else if(rc === G_REGULAR_USER_CODE){
+                rc = G_REGULAR_USER_NAME;
+            }else if(rc === G_INIT_USER_CODE){
+                rc = G_INIT_USER_NAME;
             }
 
 
             var defaultSelectRole = $(".user-filter option:selected").val();
 
-            if(defaultSelectRole == "Total" || roleSearchName == "Total"){
+            if(defaultSelectRole === "Total" || roleSearchName === "Total"){
                 items = usersList;
                 break;
-            }else if(roleSearchName == usersList[k].roleSetCode){
+            }else if(roleSearchName === rc){
                 items.push(usersList[k]);
             }
         }
@@ -197,7 +207,7 @@
         var splitWord;
         var selectBox = '';
 
-        var roles = ['Administrator', 'Regular User', 'Init User'];
+        var roles = [G_ADMIN_NAME, G_REGULAR_USER_NAME, G_INIT_USER_NAME];
 
         for (var i = 0; i < listLength; i++) {
             var option = '';
@@ -219,27 +229,28 @@
                 splitRole = roleArr[1];
 
                 // 4. splitRole 이 admin 인 경우 select box 는 disabled
-                if((splitRole == "admin")){
+                if((splitRole === "admin")){
                     selectBox += "<select disabled name='role-filter' data-user-id='"+ items[i].userId +"'>"
                 }else{
                     selectBox += "<select name='role-filter' data-user-id='"+ items[i].userId +"'>"
                 }
 
 
+                var rc2 = items[i].roleSetCode;
 
                 // role code 이름 변환
-                if(items[i].roleSetCode == "RS0001"){
-                    items[i].roleSetCode = "Administrator";
-                }else if(items[i].roleSetCode == "RS0002"){
-                    items[i].roleSetCode = "Regular User";
-                }else if(items[i].roleSetCode == "RS0003"){
-                    items[i].roleSetCode = "Init User";
+                if(rc2 === G_ADMIN_CODE){
+                    rc2 = G_ADMIN_NAME;
+                }else if(rc2 === G_REGULAR_USER_CODE){
+                    rc2 = G_REGULAR_USER_NAME;
+                }else if(rc2 === G_INIT_USER_CODE){
+                    rc2 = G_INIT_USER_NAME;
                 }
 
                 var layerpop1 = '';
                 var layerpop2 = '';
 
-                if(splitRole == "admin"){
+                if(splitRole === "admin"){
                     layerpop1 += "<span data-target='#layerpop1' data-toggle='modal' name='saveRole' style='display: none'><i class='fas fa-save'></i></span>";
                     layerpop2 += "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser' style='display: none'><i class='fas fa-trash-alt'></i></span>";
                 }else{
@@ -257,7 +268,7 @@
                 }
 
                 for (var r = 0; r < roles.length; r++) {
-                    if (items[i].roleSetCode == roles[r]) {
+                    if (rc2 === roles[r]) {
                         option += '<option value="' + roles[r] + '" selected>' + roles[r] + '</option>';
                     } else {
                         option += '<option value="' + roles[r] + '">' + roles[r] + '</option>';
@@ -302,12 +313,10 @@
     // BIND (CHANGE ROLE SAVE BUTTON)
     $(document).on("click", "span[name=saveRole]", function(){
         var index = $('span[name=saveRole]').index(this);
-        //alert(index);
-        //alert($('select[name=role-filter]').eq(index).data("userId"));
-        //alert($('select[name=role-filter]').eq(index).find(':selected').val());
+        var selectedRoleFilter = $('select[name=role-filter]');
 
-        userIdSelectRole = $('select[name=role-filter]').eq(index).data("userId");
-        userPerRole = $('select[name=role-filter]').eq(index).find(':selected').val();
+        userIdSelectRole = selectedRoleFilter.eq(index).data("userId");
+        userPerRole = selectedRoleFilter.eq(index).find(':selected').val();
 
         var code = "<p class='account_modal_p'><span>" + userIdSelectRole + "</span> 님을 <span>"+ userPerRole + "</span>로 Role 을 변경하시겠습니까?</p>";
         $(".roleUpdate").html(code);
@@ -316,18 +325,17 @@
 
     // BIND (CLICK ROLE SAVE BUTTON)
     $(document).on("click", "#roleUpdateBtn", function () {
-        //console.log("여기 들어오니잉???");
         updateRoleOfUser();
     });
 
     // SET UPDATE USER ROLE
     var updateRoleOfUser = function () {
-        if(userPerRole == "Administrator"){
-            userPerRole = "RS0001"
-        }else if (userPerRole == "Regular User"){
-            userPerRole = "RS0002"
-        }else if(userPerRole == "Init User"){
-            userPerRole = "RS0003"
+        if(userPerRole === G_ADMIN_NAME){
+            userPerRole = G_ADMIN_CODE;
+        }else if (userPerRole === G_REGULAR_USER_NAME){
+            userPerRole = G_REGULAR_USER_CODE;
+        }else if(userPerRole === G_INIT_USER_NAME){
+            userPerRole = G_INIT_USER_CODE;
         }
 
         var reqParam = {
