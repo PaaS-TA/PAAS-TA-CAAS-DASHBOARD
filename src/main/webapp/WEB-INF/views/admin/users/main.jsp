@@ -47,13 +47,6 @@
                             </thead>
                             <tbody id="resultArea">
                             </tbody>
-                            <!--tfoot>
-                                <tr>
-                                    <td colspan="6">
-                                        <button class="btns2 btns2_1 colors4 event_btns">더보기</button>
-                                    </td>
-                                </tr>
-                            </tfoot-->
                         </table>
                     </div>
                 </div>
@@ -61,60 +54,6 @@
         </ul>
     </div>
 </div>
-
-<!-- modal -->
-<%--<div class="modal fade in" id="layerpop1">
-    <div class="vertical-alignment-helper">
-        <div class="modal-dialog vertical-align-center">
-            <div class="modal-content">
-                <!-- header -->
-                <div class="modal-header">
-                    <!-- 닫기(x) 버튼 -->
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                    <!-- header title -->
-                    <h4 class="modal-title">Role 변경</h4>
-                </div>
-                <!-- body -->
-                <div class="modal-body roleUpdate">
-                   &lt;%&ndash; <p class="account_modal_p"><span>hong@test.com</span> 님을 <span>Administrator</span>로 Role을 변경하시겠습니까?
-                    </p>&ndash;%&gt;
-                </div>
-                <!-- Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btns2 colors4" data-dismiss="modal" id="roleUpdateBtn">변경</button>
-                    <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade in" id="layerpop2">
-    <div class="vertical-alignment-helper">
-        <div class="modal-dialog vertical-align-center">
-            <div class="modal-content">
-                <!-- header -->
-                <div class="modal-header">
-                    <!-- 닫기(x) 버튼 -->
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                    <!-- header title -->
-                    <h4 class="modal-title">Member 삭제</h4>
-                </div>
-                <!-- body -->
-                <div class="modal-body">
-                    <p class="account_modal_p"><span>user</span> 님을 삭제하시겠습니까?<br>
-                        사용자를 삭제하면 복구할 수 없습니다.
-                    </p>
-                </div>
-                <!-- Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btns2 colors4" data-dismiss="modal" id="userDeleteBtn">삭제</button>
-                    <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>--%>
 
 <script type="text/javascript">
 
@@ -350,8 +289,6 @@
     // CALLBACK USER ROLE
     var callbackUpdateRoleOfUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-//        alertMessage("권한이 수정되었습니다.", true);
-//        setTimeout(reload, 2000);
         var code = "<p class='account_modal_p'>Role 이 변경되었습니다.</p>";
         $(".roleUpdateComplete").html(code);
         $("#layerpop-single-button1").modal("show");
@@ -370,9 +307,6 @@
 
         deleteUserId = $("#resultArea").find(".userId").eq(index).text();
 
-        //console.log("index 는 ", index);
-        //console.log("id 는 ", deleteUserId);
-
         var code = "<p class='account_modal_p'><span>" + deleteUserId + "</span> 님을 삭제하시겠습니까?<br>사용자를 삭제하면 복구할 수 없습니다.</p>";
         $(".deleteUser").html(code);
     });
@@ -380,7 +314,6 @@
 
     // BIND (CLICK USER DELETE BUTTON)
     $(document).on("click", "#userDeleteBtn", function () {
-        //console.log("여기 들어오니잉???");
         deleteUser(deleteUserId);
     });
 
@@ -395,8 +328,6 @@
     // CALLBACK DELETE USER
     var callbackDeleteUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-//        alertMessage("사용자가 삭제되었습니다.", true);
-//        setTimeout(reload, 2000);
         var code = "<p class='account_modal_p'>사용자가 삭제되었습니다.</p>";
         $(".deleteUserComplete").html(code);
         $("#layerpop-single-button2").modal("show");
@@ -407,10 +338,6 @@
         location.reload(true);
     });
 
-    // page reload
-    var reload = function () {
-        location.reload(true);
-    };
 
     // ON LOAD
     $(document.body).ready(function () {
