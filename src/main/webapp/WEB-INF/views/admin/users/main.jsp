@@ -58,13 +58,13 @@
 <script type="text/javascript">
 
     var BASE_URL = "/caas";
-    var usersList;
-    var roleSearchName;
+    var G_USERS_LIST;
+    var G_ROLE_SEARCH_NAME;
 
-    var userIdSelectRole;
-    var userPerRole;
+    var G_USER_ID_SELECT_ROLE;
+    var G_USER_PER_ROLE;
 
-    var deleteUserId;
+    var G_DELETE_USER_ID;
 
     var G_ADMIN_CODE = '<c:out value="${roleSetCodeList.administratorCode}" />';
     var G_REGULAR_USER_CODE = '<c:out value="${roleSetCodeList.regularUserCode}" />';
@@ -75,13 +75,13 @@
     var G_INIT_USER_NAME = '<c:out value="${roleSetNameList.initUserName}" />';
 
     // SESSION VARIABLE
-    var rsUpdate = '<c:out value="${sessionScope.RS_USER_MANAGEMENT_UPDATE}"/>';
-    var rsDelete = '<c:out value="${sessionScope.RS_USER_MANAGEMENT_DELETE}"/>';
+    var G_RS_UPDATE = '<c:out value="${sessionScope.RS_USER_MANAGEMENT_UPDATE}"/>';
+    var G_RS_DELETE = '<c:out value="${sessionScope.RS_USER_MANAGEMENT_DELETE}"/>';
 
 
     // SELECTED ROLE VALUE
     var changeRoleSearch = function () {
-        roleSearchName = $(".user-filter option:checked").text();
+        G_ROLE_SEARCH_NAME = $(".user-filter option:checked").text();
         setUsersList(document.getElementById("table-search-01").value);
     };
 
@@ -96,7 +96,7 @@
         viewLoading('hide');
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
-        usersList = data;
+        G_USERS_LIST = data;
         setUsersList("");
     };
 
@@ -110,8 +110,8 @@
 
         var items = [];
 
-        for(var k = 0; k < usersList.length; k++){
-            var rc = usersList[k].roleSetCode;
+        for(var k = 0; k < G_USERS_LIST.length; k++){
+            var rc = G_USERS_LIST[k].roleSetCode;
 
             if(rc === G_ADMIN_CODE){
                 rc = G_ADMIN_NAME;
@@ -124,11 +124,11 @@
 
             var defaultSelectRole = $(".user-filter option:selected").val();
 
-            if(defaultSelectRole === "Total" || roleSearchName === "Total"){
-                items = usersList;
+            if(defaultSelectRole === "Total" || G_ROLE_SEARCH_NAME === "Total"){
+                items = G_USERS_LIST;
                 break;
-            }else if(roleSearchName === rc){
-                items.push(usersList[k]);
+            }else if(G_ROLE_SEARCH_NAME === rc){
+                items.push(G_USERS_LIST[k]);
             }
         }
 
@@ -199,10 +199,10 @@
 
 
                 // 현재 세션이 admin 이 아닐 때
-                if(rsUpdate !== "TRUE"){
+                if(G_RS_UPDATE !== "TRUE"){
                     layerpop1 = '';
                 }
-                if(rsDelete !== "TRUE"){
+                if(G_RS_DELETE !== "TRUE"){
                     layerpop2 = '';
                 }
 
@@ -254,10 +254,10 @@
         var index = $('span[name=saveRole]').index(this);
         var selectedRoleFilter = $('select[name=role-filter]');
 
-        userIdSelectRole = selectedRoleFilter.eq(index).data("userId");
-        userPerRole = selectedRoleFilter.eq(index).find(':selected').val();
+        G_USER_ID_SELECT_ROLE = selectedRoleFilter.eq(index).data("userId");
+        G_USER_PER_ROLE = selectedRoleFilter.eq(index).find(':selected').val();
 
-        var code = "<p class='account_modal_p'><span>" + userIdSelectRole + "</span> 님을 <span>"+ userPerRole + "</span>로 Role 을 변경하시겠습니까?</p>";
+        var code = "<p class='account_modal_p'><span>" + G_USER_ID_SELECT_ROLE + "</span> 님을 <span>"+ G_USER_PER_ROLE + "</span>로 Role 을 변경하시겠습니까?</p>";
         $(".roleUpdate").html(code);
     });
 
@@ -269,18 +269,18 @@
 
     // SET UPDATE USER ROLE
     var updateRoleOfUser = function () {
-        if(userPerRole === G_ADMIN_NAME){
-            userPerRole = G_ADMIN_CODE;
-        }else if (userPerRole === G_REGULAR_USER_NAME){
-            userPerRole = G_REGULAR_USER_CODE;
-        }else if(userPerRole === G_INIT_USER_NAME){
-            userPerRole = G_INIT_USER_CODE;
+        if(G_USER_PER_ROLE === G_ADMIN_NAME){
+            G_USER_PER_ROLE = G_ADMIN_CODE;
+        }else if (G_USER_PER_ROLE === G_REGULAR_USER_NAME){
+            G_USER_PER_ROLE = G_REGULAR_USER_CODE;
+        }else if(G_USER_PER_ROLE === G_INIT_USER_NAME){
+            G_USER_PER_ROLE = G_INIT_USER_CODE;
         }
 
         var reqParam = {
-            userId: userIdSelectRole,
+            userId: G_USER_ID_SELECT_ROLE,
             caasNamespace: NAME_SPACE,
-            roleSetCode: userPerRole
+            roleSetCode: G_USER_PER_ROLE
         };
 
         postProcCallAjax(BASE_URL + "/users/updateUserRole?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackUpdateRoleOfUser);
@@ -305,16 +305,16 @@
         console.log("user delete");
         var index = $('span[name=deleteUser]').index(this);
 
-        deleteUserId = $("#resultArea").find(".userId").eq(index).text();
+        G_DELETE_USER_ID = $("#resultArea").find(".userId").eq(index).text();
 
-        var code = "<p class='account_modal_p'><span>" + deleteUserId + "</span> 님을 삭제하시겠습니까?<br>사용자를 삭제하면 복구할 수 없습니다.</p>";
+        var code = "<p class='account_modal_p'><span>" + G_DELETE_USER_ID + "</span> 님을 삭제하시겠습니까?<br>사용자를 삭제하면 복구할 수 없습니다.</p>";
         $(".deleteUser").html(code);
     });
 
 
     // BIND (CLICK USER DELETE BUTTON)
     $(document).on("click", "#userDeleteBtn", function () {
-        deleteUser(deleteUserId);
+        deleteUser(G_DELETE_USER_ID);
     });
 
     // SET DELETE USER
