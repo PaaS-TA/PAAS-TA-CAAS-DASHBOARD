@@ -6,7 +6,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <div class="content">
     <div class="cluster_tabs clearfix"></div>
     <div class="cluster_content01 row two_line two_view">
@@ -56,8 +56,6 @@
 </div>
 
 <script type="text/javascript">
-
-    var BASE_URL = "/caas";
     var G_USERS_LIST;
     var G_ROLE_SEARCH_NAME;
 
@@ -87,7 +85,11 @@
 
     // GET LIST
     var getUsersList = function() {
-        procCallAjax(BASE_URL + "/users/getList?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, "GET", null, null, callbackGetUsersList);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_LIST %>"
+            .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
+            .replace("{organizationGuid:.+}", ORGANIZATION_GUID);
+
+        procCallAjax(reqUrl, "GET", null, null, callbackGetUsersList);
     };
 
 
@@ -283,7 +285,7 @@
             roleSetCode: G_USER_PER_ROLE
         };
 
-        postProcCallAjax(BASE_URL + "/users/updateUserRole?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackUpdateRoleOfUser);
+        postProcCallAjax("/updateUserRole?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackUpdateRoleOfUser);
     };
 
     // CALLBACK USER ROLE
@@ -322,7 +324,7 @@
         var reqParam = {
             userId: userId
         };
-        postProcCallAjax(BASE_URL + "/users/deleteUser?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackDeleteUser);
+        postProcCallAjax("/deleteUser?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackDeleteUser);
     };
 
     // CALLBACK DELETE USER

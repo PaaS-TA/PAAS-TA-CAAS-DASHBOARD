@@ -202,8 +202,6 @@
 </div>
 
 <script type="text/javascript">
-
-    var BASE_URL = "/caas";
     var G_ROLE_NAME;
     var G_CA_CERT_TOKEN;
     var G_USER_ACCESS_TOKEN;
@@ -252,7 +250,12 @@
 
     // GET User
     var getUser = function() {
-        procCallAjax(BASE_URL + "/users/getUser?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID + "&userId=" + USER_ID, "GET", null, null, callbackGetUser);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_DETAIL %>"
+            .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
+            .replace("{organizationGuid:.+}", ORGANIZATION_GUID)
+            .replace("{userId:.+}", USER_ID);
+
+        procCallAjax(reqUrl, "GET", null, null, callbackGetUser);
     };
 
     // CALLBACK

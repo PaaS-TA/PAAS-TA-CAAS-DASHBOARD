@@ -63,7 +63,7 @@ public class UsersService {
      *
      * @return the user list
      */
-    public List<Users> getUsesListByServiceInstanceId(String serviceInstanceId, String organizationGuid) {
+    List<Users> getUsesListByServiceInstanceId(String serviceInstanceId, String organizationGuid) {
         return restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_USERS_LIST
                 .replace("{serviceInstanceId:.+}", serviceInstanceId)
                 .replace("{organizationGuid:.+}", organizationGuid), HttpMethod.GET, null, List.class);
@@ -77,7 +77,7 @@ public class UsersService {
      * @param userId the userId
      * @return the user
      */
-    public Users getUserByServiceInstanceId(String serviceInstanceId, String organizationGuid, String userId) {
+    Users getUserByServiceInstanceId(String serviceInstanceId, String organizationGuid, String userId) {
         Users users = restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_USERS_DETAIL
                 .replace("{serviceInstanceId:.+}", serviceInstanceId)
                 .replace("{organizationGuid:.+}", organizationGuid)
@@ -95,7 +95,7 @@ public class UsersService {
      * @param user the user
      * @return the user
      */
-    public Users updateUserRole(String serviceInstanceId, String organizationGuid, Users user) {
+    Users updateUserRole(String serviceInstanceId, String organizationGuid, Users user) {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
@@ -167,7 +167,7 @@ public class UsersService {
      * @param user the user
      * @return the Users
      */
-    public Users deleteUserByServiceInstanceId(Users user) {
+    Users deleteUserByServiceInstanceId(Users user) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
 

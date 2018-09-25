@@ -1,6 +1,7 @@
 package org.paasta.caas.dashboard.users;
 
 import org.paasta.caas.dashboard.common.CommonService;
+import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,6 @@ import java.util.Map;
  * @since 2018.08.02
  */
 @Controller
-@RequestMapping(value = "/caas/users")
 public class UsersController {
 
     private static final String BASE_URL = "/admin/users";
@@ -47,7 +47,7 @@ public class UsersController {
      * @param httpServletRequest the http servlet request
      * @return the user main
      */
-    @GetMapping
+    @GetMapping(value = Constants.URI_USERS)
     public ModelAndView getUserMain(HttpServletRequest httpServletRequest) {
         Map roleSetCodeList = new HashMap();
         roleSetCodeList.put("administratorCode", propertyService.getAdministratorCode());
@@ -71,10 +71,10 @@ public class UsersController {
      *
      * @return the users list
      */
-    @GetMapping(value = "/getList")
+    @GetMapping(value = Constants.API_URL + Constants.URI_COMMON_API_USERS_LIST)
     @ResponseBody
-    public List<Users> getUsesListByServiceInstanceId(@RequestParam("serviceInstanceId") String serviceInstanceId,
-                                                      @RequestParam("organizationGuid") String organizationGuid) {
+    public List<Users> getUsesListByServiceInstanceId(@PathVariable("serviceInstanceId") String serviceInstanceId,
+                                                      @PathVariable("organizationGuid") String organizationGuid) {
         return userService.getUsesListByServiceInstanceId(serviceInstanceId, organizationGuid);
     }
 
@@ -86,11 +86,11 @@ public class UsersController {
      * @param userId the userId
      * @return the users
      */
-    @GetMapping(value = "/getUser")
+    @GetMapping(value = Constants.API_URL + Constants.URI_COMMON_API_USERS_DETAIL)
     @ResponseBody
-    public Users getUserByServiceInstanceId(@RequestParam("serviceInstanceId") String serviceInstanceId,
-                                            @RequestParam("organizationGuid") String organizationGuid,
-                                            @RequestParam("userId") String userId) {
+    public Users getUserByServiceInstanceId(@PathVariable("serviceInstanceId") String serviceInstanceId,
+                                            @PathVariable("organizationGuid") String organizationGuid,
+                                            @PathVariable("userId") String userId) {
         return userService.getUserByServiceInstanceId(serviceInstanceId, organizationGuid, userId);
     }
 

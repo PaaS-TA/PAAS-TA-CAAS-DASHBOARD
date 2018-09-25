@@ -41,6 +41,9 @@ public class Constants {
     public static final String URI_INTRO_OVERVIEW = "/caas/intro/overview";
     public static final String URI_INTRO_ACCESS_INFO = "/caas/intro/accessInfo";
 
+    // VIEW URL - users
+    public static final String URI_USERS = "/caas/users";
+
     // TODO :: REMOVE DUPLICATED VARIABLES
     // URI_CONTROLLER_NAMESPACE >> URI_CLUSTER_NAMESPACES
     // CONTROLLER MAPPING URI
