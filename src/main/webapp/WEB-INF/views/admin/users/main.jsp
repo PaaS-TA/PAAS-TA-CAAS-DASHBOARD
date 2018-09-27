@@ -47,13 +47,6 @@
                             </thead>
                             <tbody id="resultArea">
                             </tbody>
-                            <!--tfoot>
-                                <tr>
-                                    <td colspan="6">
-                                        <button class="btns2 btns2_1 colors4 event_btns">더보기</button>
-                                    </td>
-                                </tr>
-                            </tfoot-->
                         </table>
                     </div>
                 </div>
@@ -62,79 +55,33 @@
     </div>
 </div>
 
-<!-- modal -->
-<%--<div class="modal fade in" id="layerpop1">
-    <div class="vertical-alignment-helper">
-        <div class="modal-dialog vertical-align-center">
-            <div class="modal-content">
-                <!-- header -->
-                <div class="modal-header">
-                    <!-- 닫기(x) 버튼 -->
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                    <!-- header title -->
-                    <h4 class="modal-title">Role 변경</h4>
-                </div>
-                <!-- body -->
-                <div class="modal-body roleUpdate">
-                   &lt;%&ndash; <p class="account_modal_p"><span>hong@test.com</span> 님을 <span>Administrator</span>로 Role을 변경하시겠습니까?
-                    </p>&ndash;%&gt;
-                </div>
-                <!-- Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btns2 colors4" data-dismiss="modal" id="roleUpdateBtn">변경</button>
-                    <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade in" id="layerpop2">
-    <div class="vertical-alignment-helper">
-        <div class="modal-dialog vertical-align-center">
-            <div class="modal-content">
-                <!-- header -->
-                <div class="modal-header">
-                    <!-- 닫기(x) 버튼 -->
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                    <!-- header title -->
-                    <h4 class="modal-title">Member 삭제</h4>
-                </div>
-                <!-- body -->
-                <div class="modal-body">
-                    <p class="account_modal_p"><span>user</span> 님을 삭제하시겠습니까?<br>
-                        사용자를 삭제하면 복구할 수 없습니다.
-                    </p>
-                </div>
-                <!-- Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btns2 colors4" data-dismiss="modal" id="userDeleteBtn">삭제</button>
-                    <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>--%>
-
 <script type="text/javascript">
 
     var BASE_URL = "/caas";
-    var usersList;
-    var roleSearchName;
+    var G_USERS_LIST;
+    var G_ROLE_SEARCH_NAME;
 
-    var userIdSelectRole;
-    var userPerRole;
+    var G_USER_ID_SELECT_ROLE;
+    var G_USER_PER_ROLE;
 
-    var deleteUserId;
+    var G_DELETE_USER_ID;
+
+    var G_ADMIN_CODE = '<c:out value="${roleSetCodeList.administratorCode}" />';
+    var G_REGULAR_USER_CODE = '<c:out value="${roleSetCodeList.regularUserCode}" />';
+    var G_INIT_USER_CODE = '<c:out value="${roleSetCodeList.initUserCode}" />';
+
+    var G_ADMIN_NAME = '<c:out value="${roleSetNameList.administratorName}" />';
+    var G_REGULAR_USER_NAME = '<c:out value="${roleSetNameList.regularUserName}" />';
+    var G_INIT_USER_NAME = '<c:out value="${roleSetNameList.initUserName}" />';
 
     // SESSION VARIABLE
-    var rsUpdate = '<c:out value="${sessionScope.RS_USER_MANAGEMENT_UPDATE}"/>';
-    var rsDelete = '<c:out value="${sessionScope.RS_USER_MANAGEMENT_DELETE}"/>';
+    var G_RS_UPDATE = '<c:out value="${sessionScope.RS_USER_MANAGEMENT_UPDATE}"/>';
+    var G_RS_DELETE = '<c:out value="${sessionScope.RS_USER_MANAGEMENT_DELETE}"/>';
 
 
     // SELECTED ROLE VALUE
     var changeRoleSearch = function () {
-        roleSearchName = $(".user-filter option:checked").text();
+        G_ROLE_SEARCH_NAME = $(".user-filter option:checked").text();
         setUsersList(document.getElementById("table-search-01").value);
     };
 
@@ -149,7 +96,7 @@
         viewLoading('hide');
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
-        usersList = data;
+        G_USERS_LIST = data;
         setUsersList("");
     };
 
@@ -161,25 +108,27 @@
         var resultHeaderArea = $('#resultHeaderArea');
         var noResultArea = $('#noResultArea');
 
-        var items = new Array;
+        var items = [];
 
-        for(var k = 0; k < usersList.length; k++){
-            if(usersList[k].roleSetCode == "RS0001"){
-                usersList[k].roleSetCode = "Administrator";
-            }else if(usersList[k].roleSetCode == "RS0002"){
-                usersList[k].roleSetCode = "Regular User";
-            }else if(usersList[k].roleSetCode == "RS0003"){
-                usersList[k].roleSetCode = "Init User";
+        for(var k = 0; k < G_USERS_LIST.length; k++){
+            var rc = G_USERS_LIST[k].roleSetCode;
+
+            if(rc === G_ADMIN_CODE){
+                rc = G_ADMIN_NAME;
+            }else if(rc === G_REGULAR_USER_CODE){
+                rc = G_REGULAR_USER_NAME;
+            }else if(rc === G_INIT_USER_CODE){
+                rc = G_INIT_USER_NAME;
             }
 
 
             var defaultSelectRole = $(".user-filter option:selected").val();
 
-            if(defaultSelectRole == "Total" || roleSearchName == "Total"){
-                items = usersList;
+            if(defaultSelectRole === "Total" || G_ROLE_SEARCH_NAME === "Total"){
+                items = G_USERS_LIST;
                 break;
-            }else if(roleSearchName == usersList[k].roleSetCode){
-                items.push(usersList[k]);
+            }else if(G_ROLE_SEARCH_NAME === rc){
+                items.push(G_USERS_LIST[k]);
             }
         }
 
@@ -197,7 +146,7 @@
         var splitWord;
         var selectBox = '';
 
-        var roles = ['Administrator', 'Regular User', 'Init User'];
+        var roles = [G_ADMIN_NAME, G_REGULAR_USER_NAME, G_INIT_USER_NAME];
 
         for (var i = 0; i < listLength; i++) {
             var option = '';
@@ -219,27 +168,28 @@
                 splitRole = roleArr[1];
 
                 // 4. splitRole 이 admin 인 경우 select box 는 disabled
-                if((splitRole == "admin")){
+                if((splitRole === "admin")){
                     selectBox += "<select disabled name='role-filter' data-user-id='"+ items[i].userId +"'>"
                 }else{
                     selectBox += "<select name='role-filter' data-user-id='"+ items[i].userId +"'>"
                 }
 
 
+                var rc2 = items[i].roleSetCode;
 
                 // role code 이름 변환
-                if(items[i].roleSetCode == "RS0001"){
-                    items[i].roleSetCode = "Administrator";
-                }else if(items[i].roleSetCode == "RS0002"){
-                    items[i].roleSetCode = "Regular User";
-                }else if(items[i].roleSetCode == "RS0003"){
-                    items[i].roleSetCode = "Init User";
+                if(rc2 === G_ADMIN_CODE){
+                    rc2 = G_ADMIN_NAME;
+                }else if(rc2 === G_REGULAR_USER_CODE){
+                    rc2 = G_REGULAR_USER_NAME;
+                }else if(rc2 === G_INIT_USER_CODE){
+                    rc2 = G_INIT_USER_NAME;
                 }
 
                 var layerpop1 = '';
                 var layerpop2 = '';
 
-                if(splitRole == "admin"){
+                if(splitRole === "admin"){
                     layerpop1 += "<span data-target='#layerpop1' data-toggle='modal' name='saveRole' style='display: none'><i class='fas fa-save'></i></span>";
                     layerpop2 += "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser' style='display: none'><i class='fas fa-trash-alt'></i></span>";
                 }else{
@@ -249,15 +199,15 @@
 
 
                 // 현재 세션이 admin 이 아닐 때
-                if(rsUpdate !== "TRUE"){
+                if(G_RS_UPDATE !== "TRUE"){
                     layerpop1 = '';
                 }
-                if(rsDelete !== "TRUE"){
+                if(G_RS_DELETE !== "TRUE"){
                     layerpop2 = '';
                 }
 
                 for (var r = 0; r < roles.length; r++) {
-                    if (items[i].roleSetCode == roles[r]) {
+                    if (rc2 === roles[r]) {
                         option += '<option value="' + roles[r] + '" selected>' + roles[r] + '</option>';
                     } else {
                         option += '<option value="' + roles[r] + '">' + roles[r] + '</option>';
@@ -302,38 +252,35 @@
     // BIND (CHANGE ROLE SAVE BUTTON)
     $(document).on("click", "span[name=saveRole]", function(){
         var index = $('span[name=saveRole]').index(this);
-        //alert(index);
-        //alert($('select[name=role-filter]').eq(index).data("userId"));
-        //alert($('select[name=role-filter]').eq(index).find(':selected').val());
+        var selectedRoleFilter = $('select[name=role-filter]');
 
-        userIdSelectRole = $('select[name=role-filter]').eq(index).data("userId");
-        userPerRole = $('select[name=role-filter]').eq(index).find(':selected').val();
+        G_USER_ID_SELECT_ROLE = selectedRoleFilter.eq(index).data("userId");
+        G_USER_PER_ROLE = selectedRoleFilter.eq(index).find(':selected').val();
 
-        var code = "<p class='account_modal_p'><span>" + userIdSelectRole + "</span> 님을 <span>"+ userPerRole + "</span>로 Role 을 변경하시겠습니까?</p>";
+        var code = "<p class='account_modal_p'><span>" + G_USER_ID_SELECT_ROLE + "</span> 님을 <span>"+ G_USER_PER_ROLE + "</span>로 Role 을 변경하시겠습니까?</p>";
         $(".roleUpdate").html(code);
     });
 
 
     // BIND (CLICK ROLE SAVE BUTTON)
     $(document).on("click", "#roleUpdateBtn", function () {
-        //console.log("여기 들어오니잉???");
         updateRoleOfUser();
     });
 
     // SET UPDATE USER ROLE
     var updateRoleOfUser = function () {
-        if(userPerRole == "Administrator"){
-            userPerRole = "RS0001"
-        }else if (userPerRole == "Regular User"){
-            userPerRole = "RS0002"
-        }else if(userPerRole == "Init User"){
-            userPerRole = "RS0003"
+        if(G_USER_PER_ROLE === G_ADMIN_NAME){
+            G_USER_PER_ROLE = G_ADMIN_CODE;
+        }else if (G_USER_PER_ROLE === G_REGULAR_USER_NAME){
+            G_USER_PER_ROLE = G_REGULAR_USER_CODE;
+        }else if(G_USER_PER_ROLE === G_INIT_USER_NAME){
+            G_USER_PER_ROLE = G_INIT_USER_CODE;
         }
 
         var reqParam = {
-            userId: userIdSelectRole,
+            userId: G_USER_ID_SELECT_ROLE,
             caasNamespace: NAME_SPACE,
-            roleSetCode: userPerRole
+            roleSetCode: G_USER_PER_ROLE
         };
 
         postProcCallAjax(BASE_URL + "/users/updateUserRole?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackUpdateRoleOfUser);
@@ -342,8 +289,6 @@
     // CALLBACK USER ROLE
     var callbackUpdateRoleOfUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-//        alertMessage("권한이 수정되었습니다.", true);
-//        setTimeout(reload, 2000);
         var code = "<p class='account_modal_p'>Role 이 변경되었습니다.</p>";
         $(".roleUpdateComplete").html(code);
         $("#layerpop-single-button1").modal("show");
@@ -360,20 +305,16 @@
         console.log("user delete");
         var index = $('span[name=deleteUser]').index(this);
 
-        deleteUserId = $("#resultArea").find(".userId").eq(index).text();
+        G_DELETE_USER_ID = $("#resultArea").find(".userId").eq(index).text();
 
-        //console.log("index 는 ", index);
-        //console.log("id 는 ", deleteUserId);
-
-        var code = "<p class='account_modal_p'><span>" + deleteUserId + "</span> 님을 삭제하시겠습니까?<br>사용자를 삭제하면 복구할 수 없습니다.</p>";
+        var code = "<p class='account_modal_p'><span>" + G_DELETE_USER_ID + "</span> 님을 삭제하시겠습니까?<br>사용자를 삭제하면 복구할 수 없습니다.</p>";
         $(".deleteUser").html(code);
     });
 
 
     // BIND (CLICK USER DELETE BUTTON)
     $(document).on("click", "#userDeleteBtn", function () {
-        //console.log("여기 들어오니잉???");
-        deleteUser(deleteUserId);
+        deleteUser(G_DELETE_USER_ID);
     });
 
     // SET DELETE USER
@@ -387,8 +328,6 @@
     // CALLBACK DELETE USER
     var callbackDeleteUser = function (data) {
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-//        alertMessage("사용자가 삭제되었습니다.", true);
-//        setTimeout(reload, 2000);
         var code = "<p class='account_modal_p'>사용자가 삭제되었습니다.</p>";
         $(".deleteUserComplete").html(code);
         $("#layerpop-single-button2").modal("show");
@@ -399,10 +338,6 @@
         location.reload(true);
     });
 
-    // page reload
-    var reload = function () {
-        location.reload(true);
-    };
 
     // ON LOAD
     $(document.body).ready(function () {
