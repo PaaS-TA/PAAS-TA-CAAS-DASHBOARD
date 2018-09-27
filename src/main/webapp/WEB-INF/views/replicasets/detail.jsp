@@ -15,7 +15,7 @@
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
             <!-- Details 시작 -->
-            <li class="cluster_first_box"><!-- TODO :: 차트 추가시 cluster_second_box 로 변경-->
+            <li class="cluster_first_box">
                 <div class="sortable_wrap">
                     <div class="sortable_top">
                         <p>Details</p>
@@ -274,7 +274,6 @@
             }
 
             //External Endpoints
-            //TODO :: xxx.xxx.xxx.xxx:1234  뒤에 port 표시 확인 필요
             var externalEndpoints = [];
             externalEndpoints = items[i].spec.externalIPs;
 

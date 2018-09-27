@@ -38,15 +38,6 @@
             </li>
             <!-- Deployments 끝 -->
 
-            <!-- modal TODO :: 사용확인 후 삭제 -->
-            <%--<div class="modal fade dashboard" id="layerpop">--%>
-                <%--<div class="vertical-alignment-helper">--%>
-                    <%--<div class="modal-dialog vertical-align-center">--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <!-- modal 끝 TODO :: 사용확인 후 삭제 -->
-
             <!-- Pods 시작 -->
             <li class="cluster_third_box">
                 <jsp:include page="../pods/list.jsp" flush="true"/>
@@ -107,14 +98,14 @@
             }
         });
 
-        var podsChartRunningPer = podsChartRunningCnt / podsListLength * 100;
-        var podsChartFailedPer = podsChartFailedCnt / podsListLength * 100;
-        var podsChartPenddingPer = podsChartPenddingCnt / podsListLength * 100;
+        var podsChartRunningPer   = podsChartRunningCnt   / podsListLength * 100;
+        var podsChartFailedPer    = podsChartFailedCnt    / podsListLength * 100;
+        var podsChartPenddingPer  = podsChartPenddingCnt  / podsListLength * 100;
         var podsChartSucceededPer = podsChartSucceededCnt / podsListLength * 100;
 
-        var devChartRunningPer = G_DEV_CAHRT_RUNNING_CNT / devListLength * 100;
-        var devChartFailedPer = G_DEV_CHART_FAILED_CNT / devListLength * 100;
-        var devChartPenddingPer = G_DEV_CHART_PENDDING_CNT / devListLength * 100;
+        var devChartRunningPer   = G_DEV_CAHRT_RUNNING_CNT  / devListLength * 100;
+        var devChartFailedPer    = G_DEV_CHART_FAILED_CNT   / devListLength * 100;
+        var devChartPenddingPer  = G_DEV_CHART_PENDDING_CNT / devListLength * 100;
         var devChartSucceededPer = G_DEV_CHART_SUCCEEDEDCNT / devListLength * 100;
         // ReplicaSets Statistics
         var repsChartRunningPer   = G_REPLICA_SETS_CHART_RUNNING_CNT   / G_REPLICA_SETS_LIST_LENGTH * 100;

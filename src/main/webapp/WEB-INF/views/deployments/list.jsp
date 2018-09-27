@@ -112,7 +112,7 @@
                     imageTags += '<p>' + containers[i].image + '</p>';
                 }
 
-                addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
+                addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가
 
                 var statusIconHtml;
                 var statusMessageHtml = [];
