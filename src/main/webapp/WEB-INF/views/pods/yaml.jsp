@@ -47,7 +47,7 @@
     var callbackGetPods = function(data) {
         viewLoading('show');
 
-        if (false === procCheckValidData(data)) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage();
             return;

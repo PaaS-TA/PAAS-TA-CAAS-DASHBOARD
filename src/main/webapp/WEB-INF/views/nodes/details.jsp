@@ -9,7 +9,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="content">
     <jsp:include page="commonNodes.jsp" flush="true"/>
-    
+
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
 
     <!-- Nodes Details 시작-->
@@ -29,31 +29,31 @@
                             <tbody>
                             <tr>
                                 <th><i class="cWrapDot"></i> Name</th>
-                                <td id="node_name"> - </td>
+                                <td id="node_name"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td id="node_labels" class="labels_wrap"> - </td>
+                                <td id="node_labels" class="labels_wrap"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Annotations</th>
-                                <td id="node_annotations" class="labels_wrap"> - </td>
+                                <td id="node_annotations" class="labels_wrap"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Creation Time</th>
-                                <td id="node_created_at"> - </td>
+                                <td id="node_created_at"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Addresses</th>
-                                <td id="node_addresses" class="labels_wrap"> - </td>
+                                <td id="node_addresses" class="labels_wrap"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Pod CIDR</th>
-                                <td id="node_pod_cidr"> - </td>
+                                <td id="node_pod_cidr"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Unschedulable</th>
-                                <td id="node_unschedulable"> - </td>
+                                <td id="node_unschedulable"> -</td>
                             </tr>
                             </tbody>
                         </table>
@@ -74,43 +74,43 @@
                             <tbody>
                             <tr>
                                 <th><i class="cWrapDot"></i> Machine ID</th>
-                                <td id="node_machine_id"> - </td>
+                                <td id="node_machine_id"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> System UUID</th>
-                                <td id="node_system_uuid"> - </td>
+                                <td id="node_system_uuid"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Boot ID</th>
-                                <td id="node_boot_id"> - </td>
+                                <td id="node_boot_id"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Kernel Version</th>
-                                <td id="node_kernel_version"> - </td>
+                                <td id="node_kernel_version"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> OS Images</th>
-                                <td id="node_images"> - </td>
+                                <td id="node_images"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Container Runtime Version</th>
-                                <td id="node_container_version"> - </td>
+                                <td id="node_container_version"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Kubelet version</th>
-                                <td id="node_kubenet_version"> - </td>
+                                <td id="node_kubenet_version"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Kube-Proxy Version</th>
-                                <td id="node_kubeproxy_version"> - </td>
+                                <td id="node_kubeproxy_version"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Operation system</th>
-                                <td id="node_os_name"> - </td>
+                                <td id="node_os_name"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Architecture</th>
-                                <td id="node_architecture"> - </td>
+                                <td id="node_architecture"> -</td>
                             </tr>
                             </tbody>
                         </table>
@@ -124,8 +124,8 @@
     // SET CONTENT TO LAYER POP MODAL
     var setLayerpop = function(eventElement) {
         var select = $(eventElement);
-        var title = JSON.stringify( select.data('title') ).replace(/^"|"$/g, '');
-        var content = JSON.stringify( select.data('content') ).replace(/^"|"$/g, '');
+        var title = JSON.stringify(select.data('title')).replace(/^"|"$/g, '');
+        var content = JSON.stringify(select.data('content')).replace(/^"|"$/g, '');
 
         // TODO :: REMOVE AFTER CHECK
         // $('.modal-title').html(title);
@@ -209,7 +209,7 @@
     var callbackGetNodeDetail = function(data) {
         viewLoading('show');
 
-        if (false === procCheckValidData(data)) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage();
             return;
@@ -229,7 +229,7 @@
         var addresses = procSetSelector(convertToHTMLSymbol(addressesObj));
         var unschedulable = false;
         if (null != spec.taints && spec.taints instanceof Array) {
-            for(var i = 0; i < spec.taints.length; i++) {
+            for (var i = 0; i < spec.taints.length; i++) {
                 if (spec.taints[i].key === 'node-role.kubernetes.io/master' && spec.taints[i].effect !== 'NoSchedule') {
                     unschedulable = true;
                     break;

@@ -32,7 +32,9 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr id="nodeEventsnotFound" style="display:none;"><td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td></tr>
+                            <tr id="nodeEventsnotFound" style="display:none;">
+                                <td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td>
+                            </tr>
                             <tr id="nodeEventsTableHeader">
                                 <td>Message</td>
                                 <td>Source</td>
@@ -94,9 +96,9 @@
         var nodeEventsNotFound = $('#nodeEventsnotFound');
         var nodeEventsTableHeader = $('#nodeEventsTableHeader');
         var nodeEventsResultArea = $('#nodeEventsResultArea');
-        if (false === procCheckValidData(data)) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
-            alertMessage(nvl(data.resultMessage, "Node의 Event 목록을 가져오지 못했습니다."), false);
+            alertMessage();
             nodeEventsNotFound.show();
             nodeEventsTableHeader.hide();
             nodeEventsResultArea.hide();

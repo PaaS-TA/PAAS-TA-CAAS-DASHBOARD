@@ -12,7 +12,8 @@
         <p>Pods</p>
         <ul id="pod-list-search-form" class="colright_btn">
             <li>
-                <input type="text" id="table-search-01" name="table-search" class="table-search" placeholder="Pod name" onkeypress="if (event.keyCode === 13) { setPodsListWithFilter(this.value); }"/>
+                <input type="text" id="table-search-01" name="table-search" class="table-search" placeholder="Pod name"
+                       onkeypress="if (event.keyCode === 13) { setPodsListWithFilter(this.value); }"/>
                 <button name="button" class="btn table-search-on" type="button">
                     <i class="fas fa-search"></i>
                 </button>
@@ -34,12 +35,18 @@
                 <td colspan='6'><p class='service_p'>실행 중인 Pods가 없습니다.</p></td>
             </tr>
             <tr id="podListResultHeaderArea" class="headerSortFalse">
-                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '0')"><i class="fas fa-caret-down"></i></button></td>
+                <td>Name
+                    <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '0')"><i
+                            class="fas fa-caret-down"></i></button>
+                </td>
                 <td>Namespace</td>
                 <td>Node</td>
                 <td>Status</td>
                 <td>Restarts</td>
-                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '5')"><i class="fas fa-caret-down"></i></button></td>
+                <td>Created on
+                    <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '5')"><i
+                            class="fas fa-caret-down"></i></button>
+                </td>
             </tr>
             </thead>
             <tbody id="podListResultArea">
@@ -48,9 +55,70 @@
     </div>
 </div>
 <script type="text/javascript">
+    var G_PODS_CHART_RUNNING_CNT = 0;
+    var G_PODS_CHART_FAILED_CNT = 0;
+    var G_PODS_CHART_PENDING_CNT = 0;
+    var G_PODS_CHART_SUCCEEDED_CNT = 0;
+    var G_PODS_LIST_LENGTH = 0;
+
+    // GET LIST
+    var getPodsList = function() {
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
+        getPodListUsingRequestURL(reqUrl);
+    };
+
     // GET POD LIST USING REQUEST URL
     var getPodListUsingRequestURL = function(reqUrl) {
         procCallAjax(reqUrl, "GET", null, null, callbackGetPodList);
+    };
+
+    // CALLBACK POD LIST
+    var callbackGetPodList = function(data) {
+        viewLoading('show');
+
+        $('#noPodListResultArea').show();
+        $('#podListResultArea').hide();
+        $('#podListResultHeaderArea').hide();
+
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
+            return;
+        }
+
+        var pod;
+        var podList = [];
+        var podNameList = [];
+        $.each(data.items, function(index, item) {
+            pod = getPod(item);
+            podList.push(pod);
+            podNameList.push(pod.name);
+
+            // for chart of overview
+            switch (pod.podStatus) {
+                case "Pending":
+                    G_PODS_CHART_PENDING_CNT++;
+                    break;
+                case "Running":
+                    G_PODS_CHART_RUNNING_CNT++;
+                    break;
+                case "Succeeded":
+                    G_PODS_CHART_SUCCEEDED_CNT++;
+                    break;
+                default:
+                    G_PODS_CHART_FAILED_CNT++;
+                    break;
+            }
+            G_PODS_LIST_LENGTH++;
+        });
+
+        setPodTable(podList);
+        procSetEventStatusForPods(podNameList);
+
+        procSetToolTipForTableTd('podListResultArea');
+        $('[data-toggle="tooltip"]').tooltip();
+
+        viewLoading('hide');
     };
 
     // GET POD STATUS FROM POD'S STATUS DATA
@@ -62,18 +130,23 @@
           2.1. all of pod's container statuses is "Running" -> return "Running"
           2.2. some of pod's container statuses isn't "Running" -> return these status, but "terminated" state is the highest order.
          */
-        if (podStatus.phase.includes("Succeeded")) {
-            return podStatus.phase;
+        var podStatusStr = nvl(podStatus.phase, 'Unknown');
+        if (podStatusStr.includes("Succeeded")) {
+            return podStatusStr;
         }
 
         // default value is empty array, callback is none.
-        var containerStatuses = procIfDataIsNull(podStatus["containerStatuses"], null, []);
+        var containerStatuses = [];
+        if ('' !== nvl(podStatus["containerStatuses"])) {
+            containerStatuses = podStatus["containerStatuses"]
+        }
+
         if (containerStatuses instanceof Array && 0 === containerStatuses.length) {
-            return podStatus.phase;
+            return podStatusStr;
         }
 
         var notRunningIndex = -1;
-        var notRunningState = "";
+        var notRunningState = podStatusStr.toLowerCase();
         containerStatuses.map(function(item, index) {
             var state = Object.keys(item.state)[0];
             // terminated state : highest order
@@ -86,20 +159,10 @@
         if (-1 === notRunningIndex) {
             return "Running";
         } else {
-            // ex : Waiting: ImagePullBackOff
             var statusStr = notRunningState.charAt(0).toUpperCase() + notRunningState.substring(1);
-            var reason = procIfDataIsNull(containerStatuses[notRunningIndex].state[notRunningState]["reason"], null, "Unknown");
+            var reason = nvl(containerStatuses[notRunningIndex].state[notRunningState]["reason"], "Unknown");
             return (statusStr + ": " + reason);
         }
-    };
-
-    // GET POD ERROR MESSAGE
-    var getPodErrorMessage = function(namespace, podName) {
-        var reqUrl = "<%= Constants.URI_API_EVENTS_LIST %>"
-            .replace('{namespace:.+}', namespace).replace('{resourceName:.+}', podName);
-        procCallAjax(reqUrl, "GET", null, null, function(data) {
-
-        });
     };
 
     // GET POD DATA
@@ -107,18 +170,33 @@
         // required : name, namespace, node, status, restart(count), created on
         var metadata = podItem.metadata;
         var spec = podItem.spec;
-        var containerStatuses = podItem.status.containerStatuses;
-
         var status = getPodStatus(podItem.status);
         var errorMsg;
         if (status !== "Running" && status !== "Succeeded") {
-            var findConditions = podItem.status.conditions.filter(function(item) {
-                return item.reason != null && item.message != null
-            });
-            if (findConditions.length > 0) {
-                errorMsg = findConditions[0].reason + " (" + findConditions[0].message + ")";
-            } else {
-                errorMsg = "Unknown Error";
+            errorMsg = 'Unknown Error';
+            if ('' !== nvl(podItem.status.conditions)) {
+                var findConditions = podItem.status.conditions.filter(function(item) {
+                    return item.reason != null && item.message != null
+                });
+                if (findConditions.length > 0) {
+                    errorMsg = findConditions[0].reason;
+                    if ('' !== nvl(findConditions[0].message)) {
+                        errorMsg += " (" + findConditions[0].message + ")";
+                    }
+                }
+            }
+        } else {
+            errorMsg = '';
+        }
+
+        var containerStatuses = [];
+        if ('' !== nvl(podItem.status.containerStatuses)) {
+            containerStatuses = podItem.status.containerStatuses;
+        }
+        var restartCountSum = 0;
+        for (var i = 0; i < containerStatuses.length; i++) {
+            if ('' !== nvl(containerStatuses.restartCount)) {
+                restartCountSum += containerStatuses.restartCount;
             }
         }
 
@@ -129,12 +207,7 @@
             nodeName: nvl(spec.nodeName, "-"),
             podStatus: status,
             podErrorMsg: errorMsg,
-            restartCount: procIfDataIsNull(
-                containerStatuses, function(data) {
-                    return data.reduce(function(a, b) {
-                        return {restartCount: a.restartCount + b.restartCount};
-                    }, {restartCount: 0}).restartCount;
-                }, 0),
+            restartCount: restartCountSum,
             creationTimestamp: metadata.creationTimestamp
         };
     };
@@ -156,7 +229,7 @@
             // included "Unknown" status
             styleClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"};
         }
-        
+
         // disable tooltip to icon
         styleClassSet.span += " tableTdToolTipFalse";
 
@@ -188,9 +261,9 @@
             var pod = podList[i];
             var styleClassSet = getPodStatusStyleClass(pod.podStatus);
 
-            var podNameHtml = "<span class='" + styleClassSet.span + "'><i class='" + styleClassSet.i + "'></i></span> "
+            var podNameHtml = '<span class="' + styleClassSet.span + '"><i class="' + styleClassSet.i + '"></i></span> '
                 + createAnchorTag("<%= Constants.URI_WORKLOAD_PODS %>/" + pod.name, pod.name, true);
-            if (null != pod.podErrorMsg && "" !== pod.podErrorMsg) {
+            if ('' !== nvl(pod.podErrorMsg)) {
                 podNameHtml += ("<br><span>" + pod.podErrorMsg + "</span>");
             }
 
@@ -265,64 +338,6 @@
                 }
             }
         }
-
-        viewLoading('hide');
-    };
-
-    // DEFAULT POD STATUS FUNCTION
-    var getPodStatuses = function() {
-        // 기본값 추가
-        return [{
-            name: "INVALID_NAME",
-            status: "INVALID_STATUS"
-        }];
-    };
-
-    // CALLBACK POD LIST
-    var callbackGetPodList = function(data) {
-        viewLoading('show');
-
-        if (false == procCheckValidData(data)) {
-            viewLoading('hide');
-            alertMessage();
-            $('#noPodListResultArea').show();
-            $('#podListResultArea').hide();
-            $('#podListResultHeaderArea').hide();
-            return;
-        }
-
-        var podList = [];
-        var podStatusList = [];
-        var podNameList = [];
-        $.each(data.items, function(index, item) {
-            var pod = getPod(item);
-            var statusValue;
-            switch (pod.podStatus) {
-                case "Pending":
-                case "Running":
-                case "Succeeded":
-                    statusValue = pod.podStatus;
-                    break;
-                default:
-                    statusValue = "Failed";
-                    break;
-            }
-
-            podList.push(pod);
-            podStatusList.push({name: pod.name, status: statusValue});
-            podNameList.push(pod.name);
-        });
-
-        // setting getPodStatuses function and data
-        getPodStatuses = function() {
-            return podStatusList;
-        };
-
-        setPodTable(podList);
-        procSetEventStatusForPods(podNameList);
-
-        procSetToolTipForTableTd('podListResultArea');
-        $('[data-toggle="tooltip"]').tooltip();
 
         viewLoading('hide');
     };

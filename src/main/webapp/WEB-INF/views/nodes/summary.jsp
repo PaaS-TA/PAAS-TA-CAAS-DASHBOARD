@@ -34,7 +34,9 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr id="conditionsNotFound" style="display:none;"><td colspan="6"><p class='service_p'>Node의 Condition 정보가 없습니다.</p></td></tr>
+                            <tr id="conditionsNotFound" style="display:none;">
+                                <td colspan="6"><p class='service_p'>Node의 Condition 정보가 없습니다.</p></td>
+                            </tr>
                             <tr id="conditionsTableHeader">
                                 <td>Type</td>
                                 <td>Status</td>
@@ -64,7 +66,7 @@
         var podsTableHeader = $('#podListResultHeaderArea');
         var conditionsNotFound = $('#conditionsNotFound');
         var conditionsTableHeader = $('#conditionsTableHeader');
-        if (false === procCheckValidData(data)) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage();
             podNotFound.show();

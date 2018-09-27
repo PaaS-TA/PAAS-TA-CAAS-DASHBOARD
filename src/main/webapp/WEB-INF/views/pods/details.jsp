@@ -30,46 +30,44 @@
                             <tbody>
                             <tr>
                                 <th><i class="cWrapDot"></i> Name</th>
-                                <td id="name"></td>
+                                <td id="name"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td id="labels" class="labels_wrap"></td>
+                                <td id="labels" class="labels_wrap"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Creation Time</th>
-                                <td id="creationTime"></td>
+                                <td id="creationTime"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Status</th>
-                                <td id="status"></td>
+                                <td id="status"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> QoS Class</th>
-                                <td id="qosClass"></td>
+                                <td id="qosClass"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Node</th>
-                                <td id="node"></td>
+                                <td id="node"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> IP</th>
-                                <td id="ip"></td>
+                                <td id="ip"> -</td>
                             </tr>
 
                             <tr>
                                 <th><i class="cWrapDot"></i> Conditions</th>
-                                <td id="conditions"></td>
+                                <td id="conditions"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Controllers</th>
-                                <%--<td>Replica Set : <a href="http://caas_replica_view.html">spring-cloud-web-user-d7c647b44</a></td>--%>
-                                <td id="controllers"></td>
+                                <td id="controllers"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Volumes</th>
-                                <td id="volumes"></td>
-                                <%--<td><a href="#">default-token-9vmgs</a></td>--%>
+                                <td id="volumes"> -</td>
                             </tr>
                             </tbody>
                         </table>
@@ -91,7 +89,9 @@
                                 <col style='width:25%;'>
                                 <col style='width:15%;'>
                             </colgroup>
-                            <tr id="noContainersResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Pods가 없습니다.</p></td></tr>
+                            <tr id="noContainersResultArea" style="display: none;">
+                                <td colspan='6'><p class='service_p'>조회 된 Containers가 없습니다.</p></td>
+                            </tr>
                             <thead id="containersResultHeaderArea">
                             <tr>
                                 <td>Name</td>
@@ -110,36 +110,6 @@
         </ul>
     </div>
     <!-- Details  끝 -->
-    <%-- Container 정보에 대한 Table Form 시작 --%>
-    <table id="containerForm" class="table_detail alignL">
-        <colgroup>
-            <col style="*">
-            <col style="*">
-        </colgroup>
-        <tbody>
-        <tr>
-            <td>Name</td>
-            <td name="cName"></td>
-        </tr>
-        <tr>
-            <td>Image</td>
-            <td name="cImage"></td>
-        </tr>
-        <tr>
-            <td>Environment variables</td>
-            <td name="cEnv"></td>
-        </tr>
-        <tr>
-            <td>Commands</td>
-            <td name="cCmd"></td>
-        </tr>
-        <tr>
-            <td>Args</td>
-            <td name="cArgs"></td>
-        </tr>
-        </tbody>
-    </table>
-    <%-- Container 정보에 대한 Table Form 끝 --%>
 </div>
 <script type="text/javascript">
     // ON LOAD
@@ -160,9 +130,9 @@
     var callbackGetDetail = function(data) {
         viewLoading('show');
 
-        if (false === procCheckValidData(data)) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
-            alertMessage(nvl(data.resultMessage, "Pod 정보를 가져오지 못했습니다."), false);
+            alertMessage();
             return;
         }
 
@@ -176,11 +146,11 @@
 
         var labels = procSetSelector(data.metadata.labels);
         var conditionStr = '';
-        for (var i = 0; i < data.length; i++) {
+        for (var i = 0; i < data.status.conditions.length; i++) {
             if (i > 0) {
                 conditionStr += ", ";
             }
-            conditionStr += (data[i].type + ": " + data[i].status);
+            conditionStr += (data.status.conditions[i].type + ": " + data.status.conditions[i].status);
         }
 
         $("#name").html(data.metadata.name);
@@ -192,7 +162,7 @@
 
         if ('' === nvl(data.spec.nodeName)) {
             $("#node").html("-");
-        }  else {
+        } else {
             $("#node").html("<a href='javascript:void(0);' " +
                 "onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + data.spec.nodeName + "/summary\");'>"
                 + data.spec.nodeName + '</a>');
@@ -209,7 +179,7 @@
                 + data.metadata.ownerReferences[0].name + '</a>');
         }
 
-        $("#volumes").textContent = data.spec.volumes[0].name;
+        $("#volumes").html(data.spec.volumes[0].name);
 
         createContainerResultArea(data.status, data.spec.containers);
 
@@ -272,35 +242,47 @@
         return spans.join('');
     };
 
-    var upperCaseFirstLetterOnly = function(obj) {
-        return (obj + '').charAt(0).toUpperCase() + (obj + '').substring(1);
-    };
-
     // CREATE CONTAINER MAP (CONTAINER INFO + CONTAINER STATUS)
     var getContainerMap = function(containers, containerStatuses, podPhase) {
         var containerMap = {};
         var tempArr;
+
+        if ('' === nvl(containers)) {
+            return containerMap;
+        }
+
         containers.map(function(container) {
             var name = nvl(container['name']);
             if ("" !== name) {
                 containerMap[name] = container;
             }
         });
-        containerStatuses.map(function(status) {
-            var name = nvl(status['name']);
-            if ("" === name) {
-                return;
-            }
-            tempArr = Object.keys(status['state']);
-            if (tempArr.length > 0) {
-                containerMap[name]['state'] = upperCaseFirstLetterOnly(tempArr[0]);
-            } else {
-                containerMap[name]['state'] = upperCaseFirstLetterOnly(podPhase);
-            }
 
-            containerMap[name]['restartCount'] = status.restartCount;
-            containerMap[name]['ready'] = status.ready;
-        });
+        if ('' !== nvl(containerStatuses)) {
+            containerStatuses.map(function(status) {
+                var name = nvl(status['name']);
+                if ("" === name) {
+                    return;
+                }
+                tempArr = Object.keys(status['state']);
+                if (tempArr.length > 0) {
+                    containerMap[name]['state'] = upperCaseFirstLetterOnly(tempArr[0]);
+                } else {
+                    containerMap[name]['state'] = upperCaseFirstLetterOnly(podPhase);
+                }
+
+                containerMap[name]['restartCount'] = status.restartCount;
+                containerMap[name]['ready'] = status.ready;
+            });
+        } else {
+            containers.map(function(container) {
+                // default value
+                var name = nvl(container['name']);
+                containerMap[name]['state'] = ' - ';
+                containerMap[name]['restartCount'] = ' - ';
+                containerMap[name]['ready'] = ' - ';
+            });
+        }
 
         return containerMap;
     };
@@ -311,37 +293,49 @@
         var resultHeaderArea = $('#containersResultHeaderArea');
         var noResultArea = $('#noContainersResultArea');
 
-        var containerMap = getContainerMap(containers, status.containerStatuses, status.phase);
-        var listLength = containers.length;
+        resultHeaderArea.hide();
+        resultArea.hide();
+        noResultArea.show();
 
-        var detailForm = $('#containerForm').clone().removeAttr('id');
-        $('#containerForm').remove();
+        var containerMap = getContainerMap(containers, status.containerStatuses, nvl(status.phase, 'Unknown'));
+        var listCount = 0;
+
+        var containerDetailHtml =
+            '<%-- Container 정보에 대한 Table Form 시작 --%> <div><table class="table_detail alignL"> \
+                <colgroup><col style="*"><col style="*"></colgroup> \
+                <tbody> \
+                    <tr><td>Name</td>                  <td name="cName" > -</td></tr> \
+                    <tr><td>Image</td>                 <td name="cImage"> -</td></tr> \
+                    <tr><td>Environment variables</td> <td name="cEnv"  > -</td></tr> \
+                    <tr><td>Commands</td>              <td name="cCmd"  > -</td></tr> \
+                    <tr><td>Args</td>                  <td name="cArgs" > -</td></tr> \
+                </tbody></table></div> <%-- Container 정보에 대한 Table Form 끝 --%>';
 
         $.each(Object.keys(containerMap), function(index, item) {
             var container = containerMap[item];
 
-            var detailTable = detailForm.clone().wrapAll("<div/>");
-            detailTable.find('[name=cName]').html(container.name);
-            detailTable.find('[name=cImage]').html(container.image);
-            detailTable.find('[name=cEnv]').html(envParser(container));
-            detailTable.find('[name=cCmd]').html(nvl(container.command, "-"));
-            detailTable.find('[name=cArgs]').html(nvl(container.args, "-"));
+            var detailTable = $(containerDetailHtml);
+            var tdList = detailTable.find('td[name]');
+            tdList[0].innerHTML = container.name;
+            tdList[1].innerHTML = container.image;
+            tdList[2].innerHTML = envParser(container);
+            tdList[3].innerHTML = nvl(container.command, "-");
+            tdList[4].innerHTML = nvl(container.args, "-");
 
             resultArea.append(
-                // container short-info
                 '<tr>'
                 + '<td><a href="javascript:void(0);" onclick="showHide(\'container-' + index + '\');">' + container.name + '</a></td>'
-                + '<td><span>' + nvl(container.state, "Unknown") + '</span></td>'
-                + '<td><span>' + nvl(container.image, "-") + '</span></td>'
-                + '<td>' + nvl(container.restartCount, "-") + '</td>'
+                + '<td><span>' + nvl(container.state, " - ") + '</span></td>'
+                + '<td><span>' + nvl(container.image, " - ") + '</span></td>'
+                + '<td>' + nvl(container.restartCount, " - ") + '</td>'
                 + '</tr>'
                 // container detail info
-                + '<tr style="display:none;" id="container-' + index + '"><td colspan="4">'
-                + detailTable.parent().html()
-                + '</td></tr>');
+                + '<tr style="display:none;" id="container-' + index + '"><td colspan="4">' + detailTable.html() + '</td></tr>');
+
+            listCount++;
         });
 
-        if (listLength < 1) {
+        if (listCount < 1) {
             resultHeaderArea.hide();
             resultArea.hide();
             noResultArea.show();
@@ -399,8 +393,8 @@
     // CONTENT SETTING FOR POP-UP MODAL
     var setLayerpop = function(eventElement) {
         var select = $(eventElement);
-        var title = JSON.stringify( select.data('title') ).replace(/^"|"$/g, '');
-        var content = JSON.stringify( select.data('content') ).replace(/^"|"$/g, '');
+        var title = JSON.stringify(select.data('title')).replace(/^"|"$/g, '');
+        var content = JSON.stringify(select.data('content')).replace(/^"|"$/g, '');
 
         // TODO :: REMOVE AFTER CHECK
         // $('.modal-title').html(title);

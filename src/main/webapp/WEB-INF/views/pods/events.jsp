@@ -32,7 +32,9 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td></tr>
+                            <tr id="noResultArea" style="display: none;">
+                                <td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td>
+                            </tr>
                             <tr id="resultHeaderArea">
                                 <td>Message</td>
                                 <td>Source</td>
@@ -105,9 +107,9 @@
         var noResultArea = $('#noResultArea');
         var resultHeaderArea = $('#resultHeaderArea');
         var resultArea = $('#resultArea');
-        if (false === procCheckValidData(data)) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
-            alertMessage(nvl(data.resultMessage, "Pod 정보를 가져오지 못했습니다."), false);
+            alertMessage();
             noResultArea.show();
             resultHeaderArea.hide();
             resultArea.hide();
