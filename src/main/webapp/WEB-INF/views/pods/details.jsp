@@ -190,7 +190,6 @@
     var createSpans = function(data, type) {
         // After run procCreateSpans, If some of span html are JSON Object or JSON Array value,
         // it adds layer-pop action and related event.
-
         var defaultSpanHtml = procCreateSpans(data, type);
         if ('-' === defaultSpanHtml) {
             return '-';
@@ -215,16 +214,10 @@
             }
 
             key = spanData.substring(0, separatorIndex);
-            // try to convert html symbol to raw character of comma and quota
             value = spanData.substring(separatorIndex + 1);
             try {
                 var type = typeof JSON.parse($('<p>' + value + '</p>').html());
                 if ('object' === type) {
-                    // TODO :: REMOVE AFTER CHECK
-                    // newSpanStr = '<span class="bg_blue" onclick="setLayerpop(this)" '
-                    //     + 'data-target="#layerpop3" data-toggle="modal" data-title="' + key
-                    //     + '" data-content="' + spanData.substring(separatorIndex + 1) + '">'
-                    //     + '<a>' + key + '</a></span> ';
                     newSpanStr = '<span class="bg_blue" onclick="setLayerpop(this)" '
                         + 'data-title="' + key + '" data-content="' + spanData.substring(separatorIndex + 1) + '">'
                         + '<a>' + key + '</a></span> ';
@@ -275,12 +268,12 @@
                 containerMap[name]['ready'] = status.ready;
             });
         } else {
+            // default value
             containers.map(function(container) {
-                // default value
                 var name = nvl(container['name']);
-                containerMap[name]['state'] = ' - ';
-                containerMap[name]['restartCount'] = ' - ';
-                containerMap[name]['ready'] = ' - ';
+                containerMap[name]['state'] = ' -';
+                containerMap[name]['restartCount'] = ' -';
+                containerMap[name]['ready'] = ' -';
             });
         }
 
@@ -322,14 +315,11 @@
             tdList[3].innerHTML = nvl(container.command, "-");
             tdList[4].innerHTML = nvl(container.args, "-");
 
-            resultArea.append(
-                '<tr>'
+            resultArea.append('<tr>'
                 + '<td><a href="javascript:void(0);" onclick="showHide(\'container-' + index + '\');">' + container.name + '</a></td>'
                 + '<td><span>' + nvl(container.state, " - ") + '</span></td>'
                 + '<td><span>' + nvl(container.image, " - ") + '</span></td>'
-                + '<td>' + nvl(container.restartCount, " - ") + '</td>'
-                + '</tr>'
-                // container detail info
+                + '<td>' + nvl(container.restartCount, " - ") + '</td></tr>'
                 + '<tr style="display:none;" id="container-' + index + '"><td colspan="4">' + detailTable.html() + '</td></tr>');
 
             listCount++;
@@ -395,10 +385,6 @@
         var select = $(eventElement);
         var title = JSON.stringify(select.data('title')).replace(/^"|"$/g, '');
         var content = JSON.stringify(select.data('content')).replace(/^"|"$/g, '');
-
-        // TODO :: REMOVE AFTER CHECK
-        // $('.modal-title').html(title);
-        // $('.modal-body').html('<p>' + content + '</p>');
 
         procSetLayerPopup(title, content, null, null, 'x', null, null, null);
     };

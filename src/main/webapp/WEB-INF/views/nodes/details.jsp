@@ -127,13 +127,10 @@
         var title = JSON.stringify(select.data('title')).replace(/^"|"$/g, '');
         var content = JSON.stringify(select.data('content')).replace(/^"|"$/g, '');
 
-        // TODO :: REMOVE AFTER CHECK
-        // $('.modal-title').html(title);
-        // $('.modal-body').html('<p>' + content + '</p>');
-
         procSetLayerPopup(title, content, null, null, 'x', null, null, null);
     };
 
+    // DO TRY TO CONVERT HTML SYMBOL TO RAW CHARACTER OF COMMA AND QUOTA
     var convertToHTMLSymbol = function(externalObj) {
         var objKeys = Object.keys(externalObj);
         for (var i = 0; i < objKeys.length; i++) {
@@ -146,6 +143,7 @@
         return externalObj;
     };
 
+    // REPLACE FIRST LETTER ONLY TO UPPER-CASE ALPHABET LETTER FROM EXTERNAL STRING(OR OBJECT)
     var upperCaseFirstLetterOnly = function(obj) {
         return (obj + '').charAt(0).toUpperCase() + (obj + '').substring(1);
     };
@@ -183,11 +181,6 @@
             try {
                 var type = typeof JSON.parse($('<p>' + value + '</p>').html());
                 if ('object' === type) {
-                    // TODO :: REMOVE AFTER CHECK
-                    // newSpanStr = '<span class="bg_blue" onclick="setLayerpop(this)" '
-                    //     + 'data-target="#layerpop3" data-toggle="modal" data-title="' + key
-                    //     + '" data-content="' + spanData.substring(separatorIndex + 1) + '">'
-                    //     + '<a>' + key + '</a></span> ';
                     newSpanStr = '<span class="bg_blue" onclick="setLayerpop(this)" '
                         + 'data-title="' + key + '" data-content="' + spanData.substring(separatorIndex + 1) + '">'
                         + '<a>' + key + '</a></span> ';

@@ -11,12 +11,12 @@
 <script type="text/javascript">
     var G_POD_NAME = '<c:out value="${podName}" default="" />';
 
-    // UPPER CASE FOR FIRST LETTER ONLY
+    // REPLACE FIRST LETTER ONLY TO UPPER-CASE ALPHABET LETTER FROM EXTERNAL STRING(OR OBJECT)
     var upperCaseFirstLetterOnly = function(obj) {
         return (obj + '').charAt(0).toUpperCase() + (obj + '').substring(1);
     };
 
-    // SET ICON NEXT TO POD'S NAME
+    // SET ICON NEXT TO POD'S NAME (FOR H1 TAG)
     var setPodStatusIcon = function() {
         var podStatusIconHtml = '<span class="fa fa-file-alt" style="color:#2a6575;"></span> ';
         $("#workload_pod_name").html(podStatusIconHtml + " " + G_POD_NAME);

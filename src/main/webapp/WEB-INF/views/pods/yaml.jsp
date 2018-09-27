@@ -33,9 +33,7 @@
     </div>
     <!-- Services YAML 끝 -->
 </div>
-
 <jsp:include page="../common/syntaxHighlighter.jsp" flush="true"/>
-
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function() {
