@@ -118,7 +118,7 @@
         Highcharts.chart('piechart01', {
             chart: {
                 type: 'pie',
-                marginTop: 0,
+                marginTop: 0
             },
             title: {
                 text: 'Deployments',
@@ -163,7 +163,7 @@
         Highcharts.chart('piechart02', {
             chart: {
                 type: 'pie',
-                marginTop: 0,
+                marginTop: 0
             },
             title: {
                 text: 'Pods',
@@ -208,7 +208,7 @@
         Highcharts.chart('piechart03', {
             chart: {
                 type: 'pie',
-                marginTop: 0,
+                marginTop: 0
             },
             title: {
                 text: 'Replica Sets',
