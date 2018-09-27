@@ -147,7 +147,7 @@
                     "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/" + deployName + "\");'>" + deployName + '</a>' +
                     statusMessageHtml +
                     '</td>' +
-                    "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
+                    "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + namespace + "\");'>" + namespace + "</td>" +
                     labelObject +
                     '<td>' + runningPods +" / " + totalPods + '</td>' +
                     '<td>' + creationTimestamp + '</td>' +

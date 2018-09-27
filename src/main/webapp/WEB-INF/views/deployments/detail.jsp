@@ -147,7 +147,7 @@
             + unavailableReplicas + " unavailable";
 
         document.getElementById("name").textContent = deployName;
-        document.getElementById("namespaceID").innerHTML = "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>";
+        document.getElementById("namespaceID").innerHTML = "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + namespace + "\");'>" + namespace + "</td>";
         document.getElementById("labels").innerHTML = procCreateSpans(labels);
         document.getElementById("annotations").innerHTML = createAnnotations(annotations);
         document.getElementById("creationTime").textContent = creationTimestamp;

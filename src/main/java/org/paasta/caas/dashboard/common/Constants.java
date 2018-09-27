@@ -21,9 +21,6 @@ public class Constants {
     // FOR SSO
     public static final String CAAS_INIT_URI = "/caas/intro/overview";
 
-    // TODO :: REMOVE UNUSED VARIABLES
-    public static final String API_WORKLOAD = "/workloads";
-
     // VIEW URL - Clusters
     public static final String URI_CLUSTER_NODES        = "/caas/clusters/nodes";
     public static final String URI_CLUSTER_NAMESPACES   = "/caas/clusters/namespaces";
@@ -40,11 +37,6 @@ public class Constants {
     // VIEW URL - intro
     public static final String URI_INTRO_OVERVIEW = "/caas/intro/overview";
     public static final String URI_INTRO_ACCESS_INFO = "/caas/intro/accessInfo";
-
-    // TODO :: REMOVE DUPLICATED VARIABLES
-    // URI_CONTROLLER_NAMESPACE >> URI_CLUSTER_NAMESPACES
-    // CONTROLLER MAPPING URI
-    public static final String URI_CONTROLLER_NAMESPACE      = "/caas/clusters/namespaces";
 
     // API URI :: NAME SPACES
     public static final String URI_API_NAME_SPACES_DETAIL           = "/namespaces/{namespace:.+}";
