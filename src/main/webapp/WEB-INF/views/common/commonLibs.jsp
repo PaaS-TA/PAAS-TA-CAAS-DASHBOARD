@@ -39,20 +39,18 @@
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/jquery.jscrollpane.css"/>'>
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/common.css"/>'>
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/common_new.css"/>'>
-<link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/caas-common.css"/>'>
-<link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/jquery.loadingModal.css"/>'>
 <link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/gspinner.min.css"/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value="/resources/css/caas-common.css"/>'>
 
 <%--JS--%>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery-1.12.4.min.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.cookie.js"/>'></script>
-<script type="text/javascript" src="<c:url value="/resources/js/jquery.splitter.js"/>"></script>
+<%--TODO :: REMOVE AFTER CHECK--%>
+<%--<script type="text/javascript" src="<c:url value="/resources/js/jquery.splitter.js"/>"></script>--%>
 <script type="text/javascript" src='<c:url value="/resources/js/bootstrap.min.js"/>'></script>
 <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/jquery.jscrollpane.min.js"/>"></script>
-<script type="text/javascript" src='<c:url value="/resources/js/clipboard.min.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.tablesorter.min.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/resources/js/jquery.loadingModal.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/g-spinner.min.js"/>'></script>
 
 <script type="text/javascript">
