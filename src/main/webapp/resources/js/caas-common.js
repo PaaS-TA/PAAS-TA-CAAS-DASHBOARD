@@ -190,11 +190,6 @@ var procIfDataIsNull = function (data, procCallback, defaultValue) {
 };
 
 
-var stringifyJSON = function (obj) {
-    return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
-};
-
-
 var viewLoading = function(type) {
     var dashboardWrap = $("#dashboardWrap");
     var loader = $("#loadingSpinner");

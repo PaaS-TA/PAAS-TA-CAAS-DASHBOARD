@@ -223,7 +223,7 @@
             resultArea.show();
             resultArea.html(htmlString);
             resultTable.tablesorter({
-                sortList: [[0, 0]] // 0 = ASC, 1 = DESC
+                sortList: [[5, 1]] // 0 = ASC, 1 = DESC
             });
             resultTable.trigger("update");
             $('.headerSortFalse > td').unbind();

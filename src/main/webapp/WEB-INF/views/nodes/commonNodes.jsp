@@ -10,7 +10,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <h1 id="cluster_node_name" class="view-title"></h1>
 <script type="text/javascript">
-    var G_NODE_NAME = "<c:out value=\"${nodeName}\"/>";
+    var G_NODE_NAME = '<c:out value="${nodeName}"/>';
 
     // GET NODE
     var getNode = function(nodeName, callbackFunc) {

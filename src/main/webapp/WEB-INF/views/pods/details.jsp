@@ -166,36 +166,50 @@
             return;
         }
 
-        var labels = stringifyJSON(data.metadata.labels).replace(/,/g, ', ');
-
-        document.getElementById("name").textContent = data.metadata.name;
-        document.getElementById("labels").innerHTML = createSpans(labels, "false");
-        document.getElementById("creationTime").textContent = data.metadata.creationTimestamp;
-        document.getElementById("status").innerHTML = data.status.phase;
-        document.getElementById("qosClass").textContent = data.status.qosClass; //qosClass
-        document.getElementById("conditions").textContent = conditionParser(data.status.conditions);
-
-        if (data.spec.nodeName == null) {
-            document.getElementById("node").innerHTML = "-";
+        var labelKeys = Object.keys(data.metadata.labels);
+        for (var i = 0; i < labelKeys.length; i++) {
+            // convert raw character of comma and quota to html symbol
+            data.metadata.labels[labelKeys[i]] =
+                data.metadata.labels[labelKeys[i]].replace(/,/g, '&comma;').replace(/"/g, '&quot;')
+                    .replace(/{/g, '&lbrace;').replace(/}/g, '&rbrace;').replace(/:/g, '&colon;');
         }
 
-        if (data.spec.nodeName != null) {
-            document.getElementById("node").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + data.spec.nodeName + "/summary\");'>" +
-                data.spec.nodeName +
-                '</a>';
+        var labels = procSetSelector(data.metadata.labels);
+        var conditionStr = '';
+        for (var i = 0; i < data.length; i++) {
+            if (i > 0) {
+                conditionStr += ", ";
+            }
+            conditionStr += (data[i].type + ": " + data[i].status);
         }
 
-        document.getElementById("ip").textContent = nvl(data.status.podIP, "-");
+        $("#name").html(data.metadata.name);
+        $("#labels").html(createSpans(labels, "NOT_LB"));
+        $("#creationTime").html(data.metadata.creationTimestamp);
+        $("#status").html(data.status.phase);
+        $("#qosClass").html(data.status.qosClass);
+        $("#conditions").html(conditionStr);
+
+        if ('' === nvl(data.spec.nodeName)) {
+            $("#node").html("-");
+        }  else {
+            $("#node").html("<a href='javascript:void(0);' " +
+                "onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + data.spec.nodeName + "/summary\");'>"
+                + data.spec.nodeName + '</a>');
+        }
+
+        $("#ip").html(nvl(data.status.podIP, "-"));
 
         if (labels.match('job-name')) {
             // A tag position for Jobs detail page
-            document.getElementById("controllers").innerHTML = data.metadata.ownerReferences[0].name;
+            $("#controllers").html(data.metadata.ownerReferences[0].name);
         } else {
-            document.getElementById("controllers").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>" +
-                data.metadata.ownerReferences[0].name +
-                '</a>';
+            $("#controllers").html("<a href='javascript:void(0);' "
+                + "onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>"
+                + data.metadata.ownerReferences[0].name + '</a>');
         }
-        document.getElementById("volumes").textContent = data.spec.volumes[0].name;
+
+        $("#volumes").textContent = data.spec.volumes[0].name;
 
         createContainerResultArea(data.status, data.spec.containers);
 
@@ -203,53 +217,59 @@
     };
 
     // CREATE SPANS FOR LABELS
-    var createSpans = function(inputData, type) {
-        var data = inputData.replace(/=/g, ':').split(/,\s/);
-        var spanHtml = "";
+    var createSpans = function(data, type) {
+        // After run procCreateSpans, If some of span html are JSON Object or JSON Array value,
+        // it adds layer-pop action and related event.
 
-        $.each(data, function(index, item) {
-            if (type === "true" && index > 0) {
-                spanHtml += '<br>';
+        var defaultSpanHtml = procCreateSpans(data, type);
+        if ('-' === defaultSpanHtml) {
+            return '-';
+        }
+
+        var spans = defaultSpanHtml.split('</span> ');
+
+        var spanStr,
+            spanData,
+            separatorIndex,
+            key,
+            value,
+            newSpanStr;
+
+        for (var index = 0; index < spans.length; index++) {
+            spanStr = spans[index];
+            spanData = spanStr.replace('<span class="bg_gray">', '');
+            separatorIndex = spanData.indexOf(':');
+            if ('' === spanData || '' === spanData.replace(/ /g, '') || separatorIndex < 0) {
+                spans[index] += spanStr + '</span> ';
+                continue;
             }
 
-            var htmlString = null;
-            var separatorIndex = item.indexOf(": ");
-            if (separatorIndex > 0) {
-                var title = item.substring(0, separatorIndex);
-                var content = item.substring(separatorIndex + 2);
-                try {
-                    var test = JSON.parse(content);    // JSON object test only
-                    if (test instanceof Object || test instanceof Array) {
-                        htmlString = $('<span class="bg_blue" onclick="setLayerpop(this)" data-target="#layerpop3" data-toggle="modal" '
-                            + 'data-title="' + title + '"><a>' + title + '</a></span> ')
-                            .attr('data-content', content).wrapAll("<div/>").parent().html();
-                    }
-                } catch (e) {
+            key = spanData.substring(0, separatorIndex);
+            // try to convert html symbol to raw character of comma and quota
+            value = spanData.substring(separatorIndex + 1);
+            try {
+                var type = typeof JSON.parse($('<p>' + value + '</p>').html());
+                if ('object' === type) {
+                    newSpanStr = '<span class="bg_blue" onclick="setLayerpop(this)" '
+                        + 'data-target="#layerpop3" data-toggle="modal" data-title="' + key
+                        + '" data-content="' + spanData.substring(separatorIndex + 1) + '">'
+                        + '<a>' + key + '</a></span> ';
+                } else {
+                    newSpanStr = spanStr + '</span> ';
                 }
+            } catch (e) {
+                // ignore exception
+                newSpanStr = spanStr + '</span> ';
             }
 
-            if (null == htmlString) {
-                htmlString = '<span class="bg_gray">' + item.replace(": ", ":") + '</span>';
-            }
+            spans[index] = newSpanStr;
+        }
 
-            spanHtml += (htmlString + ' ');
-        });
-
-        return spanHtml;
+        return spans.join('');
     };
 
-    // PARSER OF POD'S CONDITIONS
-    var conditionParser = function(data) {
-        var tempStr = "";
-
-        for (var i = 0; i < data.length; i++) {
-            if (i > 0) {
-                tempStr += ", ";
-            }
-
-            tempStr += (data[i].type + ": " + data[i].status);
-        }
-        return tempStr;
+    var upperCaseFirstLetterOnly = function(obj) {
+        return (obj + '').charAt(0).toUpperCase() + (obj + '').substring(1);
     };
 
     // CREATE CONTAINER MAP (CONTAINER INFO + CONTAINER STATUS)
@@ -269,9 +289,9 @@
             }
             tempArr = Object.keys(status['state']);
             if (tempArr.length > 0) {
-                containerMap[name]['state'] = tempArr[0].charAt(0).toUpperCase() + tempArr[0].substring(1);
+                containerMap[name]['state'] = upperCaseFirstLetterOnly(tempArr[0]);
             } else {
-                containerMap[name]['state'] = podPhase.charAt(0).toUpperCase() + podPhase.substring(1);
+                containerMap[name]['state'] = upperCaseFirstLetterOnly(podPhase);
             }
 
             containerMap[name]['restartCount'] = status.restartCount;
@@ -375,19 +395,10 @@
     // CONTENT SETTING FOR POP-UP MODAL
     var setLayerpop = function(eventElement) {
         var select = $(eventElement);
-        var title = select.data('title');
-        if (title instanceof Object) {
-            title = JSON.stringify(title);
-        }
-
-        var content = select.data('content');
-        if (content instanceof Object) {
-            content = '<p>' + JSON.stringify(content) + '</p>';
-        } else {
-            content = '<p>' + content + '</p>';
-        }
+        var title = JSON.stringify( select.data('title') ).replace(/^"|"$/g, '');
+        var content = JSON.stringify( select.data('content') ).replace(/^"|"$/g, '');
 
         $('.modal-title').html(title);
-        $('.modal-body').html(content);
+        $('.modal-body').html('<p>' + content + '</p>');
     };
 </script>
