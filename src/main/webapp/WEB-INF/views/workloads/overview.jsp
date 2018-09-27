@@ -57,17 +57,6 @@
 
 <script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
 <script type="text/javascript">
-
-    // ***** For Pods *****
-    // GET LIST
-    var getPodsList = function() {
-        viewLoading('show');
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
-        getPodListUsingRequestURL(reqUrl);
-        viewLoading('hide');
-    };
-
-
     // ON LOAD
     $(window).bind("load", function () {
         getDeploymentsList();
@@ -77,31 +66,12 @@
     });
 
     var createChart = function() {
-        var podsChartRunningCnt = 0;
-        var podsChartFailedCnt = 0;
-        var podsChartSucceededCnt= 0;
-        var podsChartPenddingCnt = 0;
-
-        var podStatuses = getPodStatuses();
-        var podsListLength = podStatuses.length;
         var devListLength = G_DEPLOYMENTS_LIST_LENGTH;
 
-        $.each(podStatuses, function (index, item) {
-            if(item.status.indexOf("Running") > -1) {
-                podsChartRunningCnt += 1;
-            } else if (item.status.indexOf("Failed") > -1) {
-                podsChartFailedCnt += 1;
-            } else if (item.status.indexOf("Pending") > -1) {
-                podsChartPenddingCnt += 1;
-            } else if (item.status.indexOf("Succeeded") > -1) {
-                podsChartSucceededCnt += 1;
-            }
-        });
-
-        var podsChartRunningPer   = podsChartRunningCnt   / podsListLength * 100;
-        var podsChartFailedPer    = podsChartFailedCnt    / podsListLength * 100;
-        var podsChartPenddingPer  = podsChartPenddingCnt  / podsListLength * 100;
-        var podsChartSucceededPer = podsChartSucceededCnt / podsListLength * 100;
+        var podsChartRunningPer   = G_PODS_CHART_RUNNING_CNT   / G_PODS_LIST_LENGTH * 100;
+        var podsChartFailedPer    = G_PODS_CHART_FAILED_CNT    / G_PODS_LIST_LENGTH * 100;
+        var podsChartPenddingPer  = G_PODS_CHART_PENDING_CNT   / G_PODS_LIST_LENGTH * 100;
+        var podsChartSucceededPer = G_PODS_CHART_SUCCEEDED_CNT / G_PODS_LIST_LENGTH * 100;
 
         var devChartRunningPer   = G_DEV_CAHRT_RUNNING_CNT  / devListLength * 100;
         var devChartFailedPer    = G_DEV_CHART_FAILED_CNT   / devListLength * 100;
