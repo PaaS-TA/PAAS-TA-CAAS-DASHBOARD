@@ -1,6 +1,6 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%--
-  Replicaset main
+  ReplicaSet detail
   @author CISS
   @version 1.0
   @since 2018.08.14
@@ -96,12 +96,12 @@
                             <thead>
                             <tr id="noResultAreaForServices" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
                             <tr id="resultHeaderAreaForService">
-                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '0')"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTableForServices', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Labels</td>
                                 <td>Cluster IP</td>
                                 <td>Internal endpoints</td>
                                 <td>External endpoints</td>
-                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '5')"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTableForServices', this, '5')"><i class="fas fa-caret-down"></i></button></td>
                             </tr>
                             </thead>
                             <tbody id="resultAreaForService">
@@ -126,13 +126,10 @@
 
     // CALLBACK
     var callbackGetDetail = function(data) {
-        //아래의 소스로 변경 필요
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        /* 아래의 소스
         if (!procCheckValidData(data)) {
             viewLoading('hide');
             return false;
-        }*/
+        }
 
         var replicaSetName      = data.metadata.name;
         var namespace           = data.metadata.namespace;
@@ -178,14 +175,10 @@
 
     // CALLBACK
     var callbackGetDeploymentsInfo = function(data) {
-        //아래의 소스로 변경 필요
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-
-        /*아래의 소스
         if (!procCheckValidData(data)) {
             viewLoading('hide');
             return false;
-        }*/
+        }
 
         var deploymentsInfo;
 
@@ -286,7 +279,8 @@
             htmlString.push(
                     "<tr>"
                     + "<td><span class='green2'><i class='fas fa-check-circle'></i></span> "
-                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/" + serviceName + "\");'>" + serviceName + "</a>"
+                    + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/"
+                    + serviceName + "\");'>" + serviceName + "</a>"
                     + "</td>"
                     + "<td>" + procCreateSpans(labels, "LB") + "</td>"
                     + "<td>" + items[i].spec.clusterIP + "</td>"
@@ -309,7 +303,11 @@
             resultHeaderArea.show();
             resultArea.show();
             resultArea.html(htmlString);
-            resultTable.tablesorter();
+
+            resultTable.tablesorter({
+                sortList: [[5, 1]] // 0 = ASC, 1 = DESC
+            });
+
             resultTable.trigger("update");
         }
 

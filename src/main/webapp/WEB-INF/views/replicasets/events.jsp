@@ -1,5 +1,5 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %><%--
-  Replicaset main
+  ReplicaSet events
   @author CISS
   @version 1.0
   @since 2018.08.14
