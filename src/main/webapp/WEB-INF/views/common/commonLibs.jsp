@@ -5,7 +5,7 @@
   version: 1.0
   since: 2018.08.02
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -25,8 +25,8 @@
 </sec:authorize>
 
 <!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<script type="text/javascript" src="/resources/js/html5shiv.min.js"></script>
+<script type="text/javascript" src="/resources/js/respond.min.js"></script>
 <![endif]-->
 
 <%--CSS--%>
@@ -55,20 +55,12 @@
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.loadingModal.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/g-spinner.min.js"/>'></script>
 
-<%--JS :: USE ONLY ON REQUIRED PAGES--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/ElementQueries.js"/>'></script>--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/img_slide.js"/>'></script>--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/ResizeSensor.js"/>'></script>--%>
-<%--<script type="text/javascript" src='<c:url value="/resources/js/typeahead.bundle.js"/>'></script>--%>
-
 <script type="text/javascript">
 
     var RESULT_STATUS_SUCCESS  = "<%= Constants.RESULT_STATUS_SUCCESS %>";
     var RESULT_STATUS_FAIL     = "<%= Constants.RESULT_STATUS_FAIL %>";
     var URI_API_EVENTS_LIST    = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>";
-    var URI_API_PODS_RESOURCES = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>"
+    var URI_API_PODS_RESOURCES = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>";
     var URI_WORKLOADS_PODS     = "<%= Constants.URI_WORKLOAD_PODS %>";
 
     var USER_ID = "${userid}";
