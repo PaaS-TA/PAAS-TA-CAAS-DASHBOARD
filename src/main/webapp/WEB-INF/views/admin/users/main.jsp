@@ -190,11 +190,17 @@
                 var layerpop2 = '';
 
                 if(splitRole === "admin"){
-                    layerpop1 += "<span data-target='#layerpop1' data-toggle='modal' name='saveRole' style='display: none'><i class='fas fa-save'></i></span>";
-                    layerpop2 += "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser' style='display: none'><i class='fas fa-trash-alt'></i></span>";
+                    // TODO :: REMOVE AFTER CHECK
+                    // layerpop1 += "<span data-target='#layerpop1' data-toggle='modal' name='saveRole' style='display: none'><i class='fas fa-save'></i></span>";
+                    // layerpop2 += "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser' style='display: none'><i class='fas fa-trash-alt'></i></span>";
+                    layerpop1 += "<span class='usersSaveRole' style='display: none'><i class='fas fa-save'></i></span>";
+                    layerpop2 += "<span class='usersDeleteUser' style='display: none'><i class='fas fa-trash-alt'></i></span>";
                 }else{
-                    layerpop1 += "<span data-target='#layerpop1' data-toggle='modal' name='saveRole'><i class='fas fa-save'></i></span>";
-                    layerpop2 += "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser' ><i class='fas fa-trash-alt'></i></span>";
+                    // TODO :: REMOVE AFTER CHECK
+                    // layerpop1 += "<span data-target='#layerpop1' data-toggle='modal' name='saveRole'><i class='fas fa-save'></i></span>";
+                    // layerpop2 += "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser' ><i class='fas fa-trash-alt'></i></span>";
+                    layerpop1 += "<span class='usersSaveRole'><i class='fas fa-save'></i></span>";
+                    layerpop2 += "<span class='usersDeleteUser' ><i class='fas fa-trash-alt'></i></span>";
                 }
 
 
@@ -250,22 +256,29 @@
 
 
     // BIND (CHANGE ROLE SAVE BUTTON)
-    $(document).on("click", "span[name=saveRole]", function(){
-        var index = $('span[name=saveRole]').index(this);
+    // TODO :: REMOVE AFTER CHECK
+    // $(document).on("click", "span[name=saveRole]", function(){
+    // var index = $('span[name=saveRole]').index(this);
+    $(document).on("click", "span[class=usersSaveRole]", function(){
+        var index = $('.usersSaveRole').index(this);
         var selectedRoleFilter = $('select[name=role-filter]');
 
         G_USER_ID_SELECT_ROLE = selectedRoleFilter.eq(index).data("userId");
         G_USER_PER_ROLE = selectedRoleFilter.eq(index).find(':selected').val();
 
         var code = "<p class='account_modal_p'><span>" + G_USER_ID_SELECT_ROLE + "</span> 님을 <span>"+ G_USER_PER_ROLE + "</span>로 Role 을 변경하시겠습니까?</p>";
-        $(".roleUpdate").html(code);
+        // TODO :: REMOVE AFTER CHECK
+        // $(".roleUpdate").html(code);
+
+        procSetLayerPopup('알림', code, '확인', '취소', 'x', 'updateRoleOfUser();', null, null);
     });
 
 
+    // TODO :: REMOVE AFTER CHECK
     // BIND (CLICK ROLE SAVE BUTTON)
-    $(document).on("click", "#roleUpdateBtn", function () {
-        updateRoleOfUser();
-    });
+    // $(document).on("click", "#roleUpdateBtn", function () {
+    //     updateRoleOfUser();
+    // });
 
     // SET UPDATE USER ROLE
     var updateRoleOfUser = function () {
@@ -288,55 +301,86 @@
 
     // CALLBACK USER ROLE
     var callbackUpdateRoleOfUser = function (data) {
+        // TODO :: REMOVE AFTER CHECK
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        var code = "<p class='account_modal_p'>Role 이 변경되었습니다.</p>";
-        $(".roleUpdateComplete").html(code);
-        $("#layerpop-single-button1").modal("show");
+        // var code = "<p class='account_modal_p'>Role 이 변경되었습니다.</p>";
+        // $(".roleUpdateComplete").html(code);
+        // $("#layerpop-single-button1").modal("show");
+
+        var resultString = 'Role 이 변경되었습니다.';
+        // TODO :: APPLY :: data.resultCode
+        // if (!procCheckValidData(data)) {
+        //     viewLoading('hide');
+        //     resultString = 'Role 변경에 실패했습니다.';
+        // }
+
+        procSetLayerPopup('알림', resultString, '확인', '취소', 'x', 'location.reload(true);', 'location.reload(true);', 'location.reload(true);');
     };
 
 
+    // TODO :: REMOVE AFTER CHECK
     // BIND (CLICK ROLE SAVE COMPLETE BUTTON)
-    $(document).on("click", "#okBtnUpdate", function () {
-        location.reload(true);
-    });
+    // $(document).on("click", "#okBtnUpdate", function () {
+    //     location.reload(true);
+    // });
 
     // BIND (DELETE USER MODAL)
-    $(document).on("click", "span[name=deleteUser]", function () {
-        console.log("user delete");
-        var index = $('span[name=deleteUser]').index(this);
+    // TODO :: REMOVE AFTER CHECK
+    // $(document).on("click", "span[name=deleteUser]", function () {
+    //     console.log("user delete");
+    //     var index = $('span[name=deleteUser]').index(this);
+    $(document).on("click", "span[class=usersDeleteUser]", function(){
+        var index = $('.usersDeleteUser').index(this);
 
         G_DELETE_USER_ID = $("#resultArea").find(".userId").eq(index).text();
 
         var code = "<p class='account_modal_p'><span>" + G_DELETE_USER_ID + "</span> 님을 삭제하시겠습니까?<br>사용자를 삭제하면 복구할 수 없습니다.</p>";
-        $(".deleteUser").html(code);
+        // TODO :: REMOVE AFTER CHECK
+        // $(".deleteUser").html(code);
+
+        procSetLayerPopup('알림', code, '확인', '취소', 'x', 'deleteUser("' + G_DELETE_USER_ID + '");', null, null);
     });
 
 
     // BIND (CLICK USER DELETE BUTTON)
-    $(document).on("click", "#userDeleteBtn", function () {
-        deleteUser(G_DELETE_USER_ID);
-    });
+    // TODO :: REMOVE AFTER CHECK
+    // $(document).on("click", "#userDeleteBtn", function () {
+    //     deleteUser(G_DELETE_USER_ID);
+    // });
 
     // SET DELETE USER
     var deleteUser = function (userId) {
         var reqParam = {
             userId: userId
         };
+
         postProcCallAjax(BASE_URL + "/users/deleteUser?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackDeleteUser);
     };
 
     // CALLBACK DELETE USER
     var callbackDeleteUser = function (data) {
+        // TODO :: REMOVE AFTER CHECK
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        var code = "<p class='account_modal_p'>사용자가 삭제되었습니다.</p>";
-        $(".deleteUserComplete").html(code);
-        $("#layerpop-single-button2").modal("show");
+        // var code = "<p class='account_modal_p'>사용자가 삭제되었습니다.</p>";
+        // $(".deleteUserComplete").html(code);
+        // $("#layerpop-single-button2").modal("show");
+
+        var resultString = '사용자가 삭제되었습니다.';
+
+        // TODO :: APPLY :: data.resultCode
+        // if (!procCheckValidData(data)) {
+        //     viewLoading('hide');
+        //     resultString = '사용자 삭제에 실패했습니다.'
+        // }
+
+        procSetLayerPopup('알림', resultString, '확인', '취소', 'x', 'location.reload(true);', 'location.reload(true);', 'location.reload(true);');
     };
 
+    // TODO :: REMOVE AFTER CHECK
     // BIND (CLICK USER DELETE COMPLETE BUTTON)
-    $(document).on("click", "#okBtnDelete", function () {
-        location.reload(true);
-    });
+    // $(document).on("click", "#okBtnDelete", function () {
+    //     location.reload(true);
+    // });
 
 
     // ON LOAD
