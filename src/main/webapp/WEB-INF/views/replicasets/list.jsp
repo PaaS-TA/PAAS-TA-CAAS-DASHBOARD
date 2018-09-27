@@ -1,5 +1,5 @@
 <%--
-  ReplicaSet main
+  ReplicaSet list
   @author CISS
   @version 1.0
   @since 2018.08.09
@@ -52,7 +52,7 @@
 
     // Overview 통계용 데이터
     var G_REPLICA_SETS_LIST_LENGTH = 0;
-    var G_REPLICA_SETS_TOTAL_CNT = 0;;
+    var G_REPLICA_SETS_TOTAL_CNT = 0;
     var G_REPLICA_SETS_CHART_RUNNING_CNT =0;
     var G_REPLICA_SETS_CHART_FAILED_CNT = 0;
     var G_REPLICA_SETS_CHART_PENDDING_CNT = 0;
@@ -152,7 +152,7 @@
                         + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_REPLICA_SETS %>/" + replicaSetName + "\");'>" + replicaSetName + "</a>"
                         + statusMessageHtml
                         + "</td>"
-                        + "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>"
+                        + "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + namespace + "\");'>" + namespace + "</td>"
                         + "<td>" + procCreateSpans(labels, "LB") + "</td>"
                         + "<td>" + pods + "</td>"
                         + "<td>" + creationTimestamp+"</td>"

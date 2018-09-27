@@ -24,7 +24,7 @@
                         <p>Conditions</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL">
+                        <table id="node_conditions" class="table_event condition alignL">
                             <colgroup>
                                 <col style=".">
                                 <col style=".">
@@ -34,7 +34,9 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr id="conditionsNotFound" style="display:none;"><td colspan="6"><p class='service_p'>Node의 Condition 정보가 없습니다.</p></td></tr>
+                            <tr id="conditionsNotFound" style="display:none;">
+                                <td colspan="6"><p class='service_p'>Node의 Condition 정보가 없습니다.</p></td>
+                            </tr>
                             <tr id="conditionsTableHeader">
                                 <td>Type</td>
                                 <td>Status</td>
@@ -64,17 +66,12 @@
         var podsTableHeader = $('#podListResultHeaderArea');
         var conditionsNotFound = $('#conditionsNotFound');
         var conditionsTableHeader = $('#conditionsTableHeader');
-        if (false === procCheckValidData(data)) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
-            var podNotFoundMessage = nvl(data.resultMessage, "Node의 Pod 정보를 가져오지 못했습니다.");
-            alertMessage(podNotFoundMessage, false);
-            podNotFound.find('p').html(podNotFoundMessage);
+            alertMessage();
             podNotFound.show();
             podsTableHeader.hide();
 
-            var conditionsNotFoundMessage = nvl(data.resultMessage, "Node의 정보를 가져오지 못했습니다.");
-            alertMessage(conditionsNotFoundMessage, false);
-            conditionsNotFound.find('p').html(conditionsNotFoundMessage);
             conditionsNotFound.show();
             conditionsTableHeader.hide();
             return;
@@ -104,8 +101,13 @@
 
         if (contents.length > 0) {
             $('#conditionResultArea').html(contents);
+            var sort = [[0, 0]];
+            $('#node_conditions').tablesorter({
+                sortList: sort    // 0 = ASC, 1 = DESC
+            });
+            $('#node_conditions').trigger("update");
+            $('.headerSortFalse > td').unbind();
         } else {
-            conditionsNotFound.find('p').html("Node의 Condition 목록을 가져오지 못했습니다.");
             conditionsNotFound.show();
             conditionsTableHeader.hide();
         }

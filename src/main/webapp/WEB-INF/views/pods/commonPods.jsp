@@ -11,47 +11,12 @@
 <script type="text/javascript">
     var G_POD_NAME = '<c:out value="${podName}" default="" />';
 
-    // GET POD STATUS
-    var getPodStatus = function(podStatus) {
-        /*
-        1. Pod's status is succeeded -> return this.
-        1. count of pod's containers is less than 0 -> return pod's status
-        2. else...
-          2.1. all of pod's container statuses is "Running" -> return "Running"
-          2.2. some of pod's container statuses isn't "Running" -> return these status, but "terminated" state is the highest order.
-         */
-        if (podStatus.phase.includes("Succeeded")) {
-            return podStatus.phase;
-        }
-
-        // default value is empty array, callback is none.
-        var containerStatuses = procIfDataIsNull(podStatus["containerStatuses"], null, []);
-        if (containerStatuses instanceof Array && 0 === containerStatuses.length) {
-            return podStatus.phase;
-        }
-
-        var notRunningIndex = -1;
-        var notRunningState = (podStatus.phase + '').toLowerCase();
-        containerStatuses.map(function(item, index) {
-            var state = Object.keys(item.state)[0];
-            // terminated state : highest order
-            if ("running" !== state && "terminated" !== notRunningState) {
-                notRunningIndex = index;
-                notRunningState = state;
-            }
-        });
-
-        if (-1 === notRunningIndex) {
-            return "Running";
-        } else {
-            // ex : Waiting: ImagePullBackOff
-            var statusStr = notRunningState.charAt(0).toUpperCase() + notRunningState.substring(1);
-            var reason = procIfDataIsNull(containerStatuses[notRunningIndex].state[notRunningState]["reason"], null, "Unknown");
-            return (statusStr + ": " + reason);
-        }
+    // REPLACE FIRST LETTER ONLY TO UPPER-CASE ALPHABET LETTER FROM EXTERNAL STRING(OR OBJECT)
+    var upperCaseFirstLetterOnly = function(obj) {
+        return (obj + '').charAt(0).toUpperCase() + (obj + '').substring(1);
     };
 
-    // SET ICON NEXT TO POD'S NAME
+    // SET ICON NEXT TO POD'S NAME (FOR H1 TAG)
     var setPodStatusIcon = function() {
         var podStatusIconHtml = '<span class="fa fa-file-alt" style="color:#2a6575;"></span> ';
         $("#workload_pod_name").html(podStatusIconHtml + " " + G_POD_NAME);

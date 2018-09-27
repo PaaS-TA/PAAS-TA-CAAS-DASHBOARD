@@ -317,12 +317,16 @@
 
         // copy function
         $("#btn-copy").on("click", function(){
-            var target = $("#out_a");
-            var inA = G_USER_ACCESS_TOKEN;
-            target.val(inA);
-            target.select();
-            var successful = document.execCommand('copy');
-            alert("복사되었습니다.");
+            // TODO :: REMOVE AFTER CHECK
+            // var target = $("#out_a");
+            // var inA = G_USER_ACCESS_TOKEN;
+            // target.val(inA);
+            // target.select();
+            // var successful = document.execCommand('copy');
+            // alert("복사되었습니다.");
+
+            var resultString = (procSetExecuteCommandCopy(G_USER_ACCESS_TOKEN)) ? '토큰을 복사했습니다.' : '토큰 복사에 실패했습니다.';
+            procSetLayerPopup('알림', resultString, '확인', '취소', 'x', null, null, null);
         });
 
         getUser();

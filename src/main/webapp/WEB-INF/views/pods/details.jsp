@@ -30,46 +30,44 @@
                             <tbody>
                             <tr>
                                 <th><i class="cWrapDot"></i> Name</th>
-                                <td id="name"></td>
+                                <td id="name"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Labels</th>
-                                <td id="labels" class="labels_wrap"></td>
+                                <td id="labels" class="labels_wrap"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Creation Time</th>
-                                <td id="creationTime"></td>
+                                <td id="creationTime"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Status</th>
-                                <td id="status"></td>
+                                <td id="status"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> QoS Class</th>
-                                <td id="qosClass"></td>
+                                <td id="qosClass"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Node</th>
-                                <td id="node"></td>
+                                <td id="node"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> IP</th>
-                                <td id="ip"></td>
+                                <td id="ip"> -</td>
                             </tr>
 
                             <tr>
                                 <th><i class="cWrapDot"></i> Conditions</th>
-                                <td id="conditions"></td>
+                                <td id="conditions"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Controllers</th>
-                                <%--<td>Replica Set : <a href="http://caas_replica_view.html">spring-cloud-web-user-d7c647b44</a></td>--%>
-                                <td id="controllers"></td>
+                                <td id="controllers"> -</td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Volumes</th>
-                                <td id="volumes"></td>
-                                <%--<td><a href="#">default-token-9vmgs</a></td>--%>
+                                <td id="volumes"> -</td>
                             </tr>
                             </tbody>
                         </table>
@@ -91,7 +89,9 @@
                                 <col style='width:25%;'>
                                 <col style='width:15%;'>
                             </colgroup>
-                            <tr id="noContainersResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Pods가 없습니다.</p></td></tr>
+                            <tr id="noContainersResultArea" style="display: none;">
+                                <td colspan='6'><p class='service_p'>조회 된 Containers가 없습니다.</p></td>
+                            </tr>
                             <thead id="containersResultHeaderArea">
                             <tr>
                                 <td>Name</td>
@@ -110,36 +110,6 @@
         </ul>
     </div>
     <!-- Details  끝 -->
-    <%-- Container 정보에 대한 Table Form 시작 --%>
-    <table id="containerForm" class="table_detail alignL">
-        <colgroup>
-            <col style="*">
-            <col style="*">
-        </colgroup>
-        <tbody>
-        <tr>
-            <td>Name</td>
-            <td name="cName"></td>
-        </tr>
-        <tr>
-            <td>Image</td>
-            <td name="cImage"></td>
-        </tr>
-        <tr>
-            <td>Environment variables</td>
-            <td name="cEnv"></td>
-        </tr>
-        <tr>
-            <td>Commands</td>
-            <td name="cCmd"></td>
-        </tr>
-        <tr>
-            <td>Args</td>
-            <td name="cArgs"></td>
-        </tr>
-        </tbody>
-    </table>
-    <%-- Container 정보에 대한 Table Form 끝 --%>
 </div>
 <script type="text/javascript">
     // ON LOAD
@@ -160,42 +130,56 @@
     var callbackGetDetail = function(data) {
         viewLoading('show');
 
-        if (false === procCheckValidData(data)) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
-            alertMessage(nvl(data.resultMessage, "Pod 정보를 가져오지 못했습니다."), false);
+            alertMessage();
             return;
         }
 
-        var labels = stringifyJSON(data.metadata.labels).replace(/,/g, ', ');
-
-        document.getElementById("name").textContent = data.metadata.name;
-        document.getElementById("labels").innerHTML = createSpans(labels, "false");
-        document.getElementById("creationTime").textContent = data.metadata.creationTimestamp;
-        document.getElementById("status").innerHTML = data.status.phase;
-        document.getElementById("qosClass").textContent = data.status.qosClass; //qosClass
-        document.getElementById("conditions").textContent = conditionParser(data.status.conditions);
-
-        if (data.spec.nodeName == null) {
-            document.getElementById("node").innerHTML = "-";
+        var labelKeys = Object.keys(data.metadata.labels);
+        for (var i = 0; i < labelKeys.length; i++) {
+            // convert raw character of comma and quota to html symbol
+            data.metadata.labels[labelKeys[i]] =
+                data.metadata.labels[labelKeys[i]].replace(/,/g, '&comma;').replace(/"/g, '&quot;')
+                    .replace(/{/g, '&lbrace;').replace(/}/g, '&rbrace;').replace(/:/g, '&colon;');
         }
 
-        if (data.spec.nodeName != null) {
-            document.getElementById("node").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + data.spec.nodeName + "/summary\");'>" +
-                data.spec.nodeName +
-                '</a>';
+        var labels = procSetSelector(data.metadata.labels);
+        var conditionStr = '';
+        for (var i = 0; i < data.status.conditions.length; i++) {
+            if (i > 0) {
+                conditionStr += ", ";
+            }
+            conditionStr += (data.status.conditions[i].type + ": " + data.status.conditions[i].status);
         }
 
-        document.getElementById("ip").textContent = nvl(data.status.podIP, "-");
+        $("#name").html(data.metadata.name);
+        $("#labels").html(createSpans(labels, "NOT_LB"));
+        $("#creationTime").html(data.metadata.creationTimestamp);
+        $("#status").html(data.status.phase);
+        $("#qosClass").html(data.status.qosClass);
+        $("#conditions").html(conditionStr);
+
+        if ('' === nvl(data.spec.nodeName)) {
+            $("#node").html("-");
+        } else {
+            $("#node").html("<a href='javascript:void(0);' " +
+                "onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + data.spec.nodeName + "/summary\");'>"
+                + data.spec.nodeName + '</a>');
+        }
+
+        $("#ip").html(nvl(data.status.podIP, "-"));
 
         if (labels.match('job-name')) {
             // A tag position for Jobs detail page
-            document.getElementById("controllers").innerHTML = data.metadata.ownerReferences[0].name;
+            $("#controllers").html(data.metadata.ownerReferences[0].name);
         } else {
-            document.getElementById("controllers").innerHTML = "<a href='javascript:void(0);' onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>" +
-                data.metadata.ownerReferences[0].name +
-                '</a>';
+            $("#controllers").html("<a href='javascript:void(0);' "
+                + "onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>"
+                + data.metadata.ownerReferences[0].name + '</a>');
         }
-        document.getElementById("volumes").textContent = data.spec.volumes[0].name;
+
+        $("#volumes").html(data.spec.volumes[0].name);
 
         createContainerResultArea(data.status, data.spec.containers);
 
@@ -203,80 +187,95 @@
     };
 
     // CREATE SPANS FOR LABELS
-    var createSpans = function(inputData, type) {
-        var data = inputData.replace(/=/g, ':').split(/,\s/);
-        var spanHtml = "";
-
-        $.each(data, function(index, item) {
-            if (type === "true" && index > 0) {
-                spanHtml += '<br>';
-            }
-
-            var htmlString = null;
-            var separatorIndex = item.indexOf(": ");
-            if (separatorIndex > 0) {
-                var title = item.substring(0, separatorIndex);
-                var content = item.substring(separatorIndex + 2);
-                try {
-                    var test = JSON.parse(content);    // JSON object test only
-                    if (test instanceof Object || test instanceof Array) {
-                        htmlString = $('<span class="bg_blue" onclick="setLayerpop(this)" data-target="#layerpop3" data-toggle="modal" '
-                            + 'data-title="' + title + '"><a>' + title + '</a></span> ')
-                            .attr('data-content', content).wrapAll("<div/>").parent().html();
-                    }
-                } catch (e) {
-                }
-            }
-
-            if (null == htmlString) {
-                htmlString = '<span class="bg_gray">' + item.replace(": ", ":") + '</span>';
-            }
-
-            spanHtml += (htmlString + ' ');
-        });
-
-        return spanHtml;
-    };
-
-    // PARSER OF POD'S CONDITIONS
-    var conditionParser = function(data) {
-        var tempStr = "";
-
-        for (var i = 0; i < data.length; i++) {
-            if (i > 0) {
-                tempStr += ", ";
-            }
-
-            tempStr += (data[i].type + ": " + data[i].status);
+    var createSpans = function(data, type) {
+        // After run procCreateSpans, If some of span html are JSON Object or JSON Array value,
+        // it adds layer-pop action and related event.
+        var defaultSpanHtml = procCreateSpans(data, type);
+        if ('-' === defaultSpanHtml) {
+            return '-';
         }
-        return tempStr;
+
+        var spans = defaultSpanHtml.split('</span> ');
+
+        var spanStr,
+            spanData,
+            separatorIndex,
+            key,
+            value,
+            newSpanStr;
+
+        for (var index = 0; index < spans.length; index++) {
+            spanStr = spans[index];
+            spanData = spanStr.replace('<span class="bg_gray">', '');
+            separatorIndex = spanData.indexOf(':');
+            if ('' === spanData || '' === spanData.replace(/ /g, '') || separatorIndex < 0) {
+                spans[index] += spanStr + '</span> ';
+                continue;
+            }
+
+            key = spanData.substring(0, separatorIndex);
+            value = spanData.substring(separatorIndex + 1);
+            try {
+                var type = typeof JSON.parse($('<p>' + value + '</p>').html());
+                if ('object' === type) {
+                    newSpanStr = '<span class="bg_blue" onclick="setLayerpop(this)" '
+                        + 'data-title="' + key + '" data-content="' + spanData.substring(separatorIndex + 1) + '">'
+                        + '<a>' + key + '</a></span> ';
+                } else {
+                    newSpanStr = spanStr + '</span> ';
+                }
+            } catch (e) {
+                // ignore exception
+                newSpanStr = spanStr + '</span> ';
+            }
+
+            spans[index] = newSpanStr;
+        }
+
+        return spans.join('');
     };
 
     // CREATE CONTAINER MAP (CONTAINER INFO + CONTAINER STATUS)
     var getContainerMap = function(containers, containerStatuses, podPhase) {
         var containerMap = {};
         var tempArr;
+
+        if ('' === nvl(containers)) {
+            return containerMap;
+        }
+
         containers.map(function(container) {
             var name = nvl(container['name']);
             if ("" !== name) {
                 containerMap[name] = container;
             }
         });
-        containerStatuses.map(function(status) {
-            var name = nvl(status['name']);
-            if ("" === name) {
-                return;
-            }
-            tempArr = Object.keys(status['state']);
-            if (tempArr.length > 0) {
-                containerMap[name]['state'] = tempArr[0].charAt(0).toUpperCase() + tempArr[0].substring(1);
-            } else {
-                containerMap[name]['state'] = podPhase.charAt(0).toUpperCase() + podPhase.substring(1);
-            }
 
-            containerMap[name]['restartCount'] = status.restartCount;
-            containerMap[name]['ready'] = status.ready;
-        });
+        if ('' !== nvl(containerStatuses)) {
+            containerStatuses.map(function(status) {
+                var name = nvl(status['name']);
+                if ("" === name) {
+                    return;
+                }
+                tempArr = Object.keys(status['state']);
+                if (tempArr.length > 0) {
+                    containerMap[name]['state'] = upperCaseFirstLetterOnly(tempArr[0]);
+                } else {
+                    containerMap[name]['state'] = upperCaseFirstLetterOnly(podPhase);
+                }
+
+                containerMap[name]['restartCount'] = status.restartCount;
+                containerMap[name]['ready'] = status.ready;
+            });
+        } else {
+            // default value
+            containers.map(function(container) {
+                var name = nvl(container['name']);
+                containerMap[name]['state'] = ' -';
+                containerMap[name]['restartCount'] = ' -';
+                containerMap[name]['ready'] = ' -';
+            });
+        }
 
         return containerMap;
     };
@@ -287,37 +286,46 @@
         var resultHeaderArea = $('#containersResultHeaderArea');
         var noResultArea = $('#noContainersResultArea');
 
-        var containerMap = getContainerMap(containers, status.containerStatuses, status.phase);
-        var listLength = containers.length;
+        resultHeaderArea.hide();
+        resultArea.hide();
+        noResultArea.show();
 
-        var detailForm = $('#containerForm').clone().removeAttr('id');
-        $('#containerForm').remove();
+        var containerMap = getContainerMap(containers, status.containerStatuses, nvl(status.phase, 'Unknown'));
+        var listCount = 0;
+
+        var containerDetailHtml =
+            '<%-- Container 정보에 대한 Table Form 시작 --%> <div><table class="table_detail alignL"> \
+                <colgroup><col style="*"><col style="*"></colgroup> \
+                <tbody> \
+                    <tr><td>Name</td>                  <td name="cName" > -</td></tr> \
+                    <tr><td>Image</td>                 <td name="cImage"> -</td></tr> \
+                    <tr><td>Environment variables</td> <td name="cEnv"  > -</td></tr> \
+                    <tr><td>Commands</td>              <td name="cCmd"  > -</td></tr> \
+                    <tr><td>Args</td>                  <td name="cArgs" > -</td></tr> \
+                </tbody></table></div> <%-- Container 정보에 대한 Table Form 끝 --%>';
 
         $.each(Object.keys(containerMap), function(index, item) {
             var container = containerMap[item];
 
-            var detailTable = detailForm.clone().wrapAll("<div/>");
-            detailTable.find('[name=cName]').html(container.name);
-            detailTable.find('[name=cImage]').html(container.image);
-            detailTable.find('[name=cEnv]').html(envParser(container));
-            detailTable.find('[name=cCmd]').html(nvl(container.command, "-"));
-            detailTable.find('[name=cArgs]').html(nvl(container.args, "-"));
+            var detailTable = $(containerDetailHtml);
+            var tdList = detailTable.find('td[name]');
+            tdList[0].innerHTML = container.name;
+            tdList[1].innerHTML = container.image;
+            tdList[2].innerHTML = envParser(container);
+            tdList[3].innerHTML = nvl(container.command, "-");
+            tdList[4].innerHTML = nvl(container.args, "-");
 
-            resultArea.append(
-                // container short-info
-                '<tr>'
+            resultArea.append('<tr>'
                 + '<td><a href="javascript:void(0);" onclick="showHide(\'container-' + index + '\');">' + container.name + '</a></td>'
-                + '<td><span>' + nvl(container.state, "Unknown") + '</span></td>'
-                + '<td><span>' + nvl(container.image, "-") + '</span></td>'
-                + '<td>' + nvl(container.restartCount, "-") + '</td>'
-                + '</tr>'
-                // container detail info
-                + '<tr style="display:none;" id="container-' + index + '"><td colspan="4">'
-                + detailTable.parent().html()
-                + '</td></tr>');
+                + '<td><span>' + nvl(container.state, " - ") + '</span></td>'
+                + '<td><span>' + nvl(container.image, " - ") + '</span></td>'
+                + '<td>' + nvl(container.restartCount, " - ") + '</td></tr>'
+                + '<tr style="display:none;" id="container-' + index + '"><td colspan="4">' + detailTable.html() + '</td></tr>');
+
+            listCount++;
         });
 
-        if (listLength < 1) {
+        if (listCount < 1) {
             resultHeaderArea.hide();
             resultArea.hide();
             noResultArea.show();
@@ -375,19 +383,9 @@
     // CONTENT SETTING FOR POP-UP MODAL
     var setLayerpop = function(eventElement) {
         var select = $(eventElement);
-        var title = select.data('title');
-        if (title instanceof Object) {
-            title = JSON.stringify(title);
-        }
+        var title = JSON.stringify(select.data('title')).replace(/^"|"$/g, '');
+        var content = JSON.stringify(select.data('content')).replace(/^"|"$/g, '');
 
-        var content = select.data('content');
-        if (content instanceof Object) {
-            content = '<p>' + JSON.stringify(content) + '</p>';
-        } else {
-            content = '<p>' + content + '</p>';
-        }
-
-        $('.modal-title').html(title);
-        $('.modal-body').html(content);
+        procSetLayerPopup(title, content, null, null, 'x', null, null, null);
     };
 </script>

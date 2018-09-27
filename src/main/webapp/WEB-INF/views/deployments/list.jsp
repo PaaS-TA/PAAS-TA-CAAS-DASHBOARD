@@ -112,7 +112,7 @@
                     imageTags += '<p>' + containers[i].image + '</p>';
                 }
 
-                addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가 TODO :: pod 조회시에도 사용할수 있게 수정
+                addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가
 
                 var statusIconHtml;
                 var statusMessageHtml = [];
@@ -147,7 +147,7 @@
                     "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/" + deployName + "\");'>" + deployName + '</a>' +
                     statusMessageHtml +
                     '</td>' +
-                    "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CONTROLLER_NAMESPACE %>/" + namespace + "\");'>" + namespace + "</td>" +
+                    "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + namespace + "\");'>" + namespace + "</td>" +
                     labelObject +
                     '<td>' + runningPods +" / " + totalPods + '</td>' +
                     '<td>' + creationTimestamp + '</td>' +

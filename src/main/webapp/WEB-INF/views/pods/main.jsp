@@ -20,10 +20,6 @@
         </ul>
     </div>
 </div>
-<%--TODO--%>
-<!-- modal -->
-
-
 <script type="text/javascript">
     // GET LIST
     var getPodList = function() {

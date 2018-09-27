@@ -33,9 +33,7 @@
     </div>
     <!-- Services YAML 끝 -->
 </div>
-
 <jsp:include page="../common/syntaxHighlighter.jsp" flush="true"/>
-
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function() {
@@ -47,7 +45,7 @@
     var callbackGetPods = function(data) {
         viewLoading('show');
 
-        if (false === procCheckValidData(data)) {
+        if (!procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage();
             return;

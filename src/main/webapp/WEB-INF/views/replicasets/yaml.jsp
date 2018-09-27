@@ -1,5 +1,5 @@
 <%--
-  Replicaset main
+  Replicaset yaml
   @author CISS
   @version 1.0
   @since 2018.08.14

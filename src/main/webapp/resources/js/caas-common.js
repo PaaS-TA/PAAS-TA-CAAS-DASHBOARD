@@ -27,8 +27,6 @@ var procCallAjax = function(reqUrl, reqMethod, param, preFunc, callback) {
 };
 
 var postProcCallAjax = function (reqUrl, param, callback) {
-    console.log("POST REQUEST");
-
     var reqData = {};
 
     if (param !== null) {
@@ -149,51 +147,24 @@ var procSetSortList = function(resultTableString, buttonObject, key) {
 };
 
 
-var procCheckValidData = function (data, checkFunc) {
-    var validCheckFunc = procIfDataIsNull(checkFunc, null, function(data) {
-        var isNull;
-        if (null == data) {
-            isNull = true;
-        } else if ("" == nvl(data['resultCode'])) {
-            isNull = true;
-        } else {
-            isNull = false;
+var procCheckValidData = function (data) {
+    var ensureData;
+    if ('' === nvl(data)) {
+        ensureData = {};
+        ensureData.resultCode = RESULT_STATUS_FAIL;
+    } else {
+        ensureData = data;
+        if ('' === nvl(data['resultCode'])) {
+            ensureData.resultCode = RESULT_STATUS_FAIL;
         }
+    }
 
-        if (isNull) {
-            // If data is null, it transfers 'NOT FOUND' page forced.
-            viewLoading('show');
-            procMovePage('/caas/resource/notFound');
-            data.resultCode = RESULT_STATUS_FAIL;
-        }
-
-        return data;
-    });
-
-    var ensureData = procIfDataIsNull(data, validCheckFunc, { resultCode: RESULT_STATUS_FAIL });
     if (RESULT_STATUS_FAIL === ensureData.resultCode) {
         return false;
     } else {
         return null != data.resultCode;
     }
 };
-
-var procIfDataIsNull = function (data, procCallback, defaultValue) {
-    if (null == data) {
-        return defaultValue;
-    } else {
-        if (null == procCallback)
-            return data;
-        else
-            return procCallback(data);
-    }
-};
-
-
-var stringifyJSON = function (obj) {
-    return JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=');
-};
-
 
 var viewLoading = function(type) {
     var dashboardWrap = $("#dashboardWrap");
@@ -252,11 +223,10 @@ var procSetEventStatusForPods = function(podNameList) {
 var callbackSetEventStatusForPods = function(data) {
     if (!procCheckValidData(data)) {
         viewLoading('hide');
-        alertMessage(nvl(data.resultMessage, "Event를 가져올 수 없습니다."), false);
+        alertMessage();
         return false;
     }
 
-    var itemType;
     var podName = data.resourceName;
     var items = data.items;
     var listLength = items.length;
@@ -316,8 +286,6 @@ var addPodsEvent = function(targetObject, selector) {
     procCallAjax(reqPodsUrl, "GET", null, null, function(podsData){
         $.each(podsData.items, function (index, itemList) {
             var podsName = itemList.metadata.name;
-            //console.log("podsName::::::"+podsName);
-
             var reqEventsUrl = URI_API_EVENTS_LIST
                 .replace("{namespace:.+}", NAME_SPACE)
                 .replace("{resourceName:.+}", podsName);
@@ -333,14 +301,11 @@ var addPodsEvent = function(targetObject, selector) {
 
             });
 
-            //console.log('eventType:::'+eventType);
-            //console.log('eventMessage:::'+eventMessage);
         }); // Event API call end
     }); //Pods API call end
 
     targetObject.type = eventType;
     targetObject.message = eventMessage;
-    //console.log("Print:::"+JSON.stringify(targetObject));
 
 };
 
@@ -386,7 +351,7 @@ var procSetToolTipForTableTd = function (tableObjectString) {
 };
 
 
-// PROC SET TOOL TIP ATTRIBUTES
+// SET TOOL TIP ATTRIBUTES
 var procSetToolTipAttributes = function (tagObject) {
     var tagObjectHtml = tagObject.html();
     if (!tagObject.hasClass('tableTdToolTipFalse') && tagObjectHtml !== '' && tagObjectHtml !== '-') {
@@ -416,4 +381,62 @@ var procCreateSpans = function (data, type) {
         });
     }
     return spanTemplate;
+};
+
+
+// SET LAYER POPUP
+var procSetLayerPopup = function (reqTitle, reqContents, reqSuccess, reqCancel, reqClose, reqSuccessCallback, reqCancelCallback, reqCloseCallback) {
+    $('.modal-backdrop').remove();
+
+    var commonLayerPopupSuccessButton = $('#commonLayerPopupSuccessButton');
+    var commonLayerPopupCancelButton = $('#commonLayerPopupCancelButton');
+    var commonLayerPopupCloseButton = $('#commonLayerPopupCloseButton');
+    var commonLayerPopupFooterWrap = $('#commonLayerPopupFooterWrap');
+
+    commonLayerPopupCancelButton.hide();
+    commonLayerPopupCloseButton.hide();
+    commonLayerPopupFooterWrap.hide();
+
+    if (nvl(reqSuccess) !== '' || nvl(reqCancel) !== '') {
+        commonLayerPopupSuccessButton.html(nvl(reqSuccess, '확인'));
+        commonLayerPopupFooterWrap.show();
+    }
+
+    if (nvl(reqCancel) !== '') {
+        commonLayerPopupCancelButton.html(reqCancel);
+        commonLayerPopupCancelButton.show();
+    }
+
+    if (nvl(reqClose) !== '') {
+        commonLayerPopupCloseButton.html(reqClose);
+        commonLayerPopupCloseButton.show();
+    }
+
+    if (nvl(reqSuccessCallback) !== '') {
+        commonLayerPopupSuccessButton.attr('onclick', reqSuccessCallback);
+    }
+
+    if (nvl(reqCancelCallback) !== '') {
+        commonLayerPopupCancelButton.attr('onclick', reqCancelCallback);
+    }
+
+    if (nvl(reqCloseCallback) !== '') {
+        commonLayerPopupCloseButton.attr('onclick', reqCloseCallback);
+    }
+
+    $('#commonLayerPopupTitle').html(nvl(reqTitle, '알림'));
+    $('#commonLayerPopupContents').html(nvl(reqContents, '정상 처리되었습니다.'));
+
+    $("#commonLayerPopup").modal("show");
+
+};
+
+
+// SET EXECUTE COMMAND COPY
+var procSetExecuteCommandCopy = function (reqValue) {
+    var target = $("#out_a");
+    target.val(reqValue);
+    target.select();
+
+    return document.execCommand('copy');
 };
