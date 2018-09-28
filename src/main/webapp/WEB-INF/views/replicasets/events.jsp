@@ -29,8 +29,8 @@
                                 <col style='.'>
                             </colgroup>
                             <thead>
-                            <tr id="noResultArea" style="display: none;"><td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderArea">
+                            <tr id="noResultArea"><td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td></tr>
+                            <tr id="resultHeaderArea" style="display: none;">
                                 <td>Message</td>
                                 <td>Source</td>
                                 <td>Sub-object</td>
@@ -82,9 +82,9 @@
         for (var i = 0; i < listLength; i++) {
             htmlString.push(
                     "<tr>"
-                    + "<td>" + items[i].message + "</td>"
-                    + "<td>" + items[i].source.component + " " + nvl(items[i].source.host) + "</td>"
-                    + "<td>" + nvl(items[i].involvedObject.fieldPath, "-") + "</td>"
+                    + "<td><p>" + items[i].message + "</p></td>"
+                    + "<td><p>" + items[i].source.component + " " + nvl(items[i].source.host) + "</p></td>"
+                    + "<td><p>" + nvl(items[i].involvedObject.fieldPath, "-") + "</p></td>"
                     + "<td>" + items[i].count + "</td>"
                     + "<td>" + items[i].firstTimestamp + "</td>"
                     + "<td>" + items[i].lastTimestamp + "</td>"
