@@ -86,11 +86,26 @@
             <div class="sortable_top">
                 <p>Resource Quotas</p>
             </div>
+            <div class="account_table view" style="margin:0 0 -30px 0;">
+                <table>
+                    <colgroup>
+                        <col style="width:20%">
+                        <col style=".">
+                    </colgroup>
+                    <tbody style="">
+                    <tr>
+                        <th><i class="cWrapDot"></i> Name</th>
+                        <td>{{metadata.name}}</td>
+                    </tr>
+                    <tr>
+                        <th><i class="cWrapDot"></i> Scopes</th>
+                        <td>{{spec.scopes}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <div class="view_table_wrap">
                 <table class="table_event condition alignL">
-                    <p class="p30">- <strong>Name</strong> : {{metadata.name}} / - <strong>Scopes</strong> :
-                        {{spec.scopes}}
-                    </p>
                     <colgroup>
                         <col style='width:auto;'>
                         <col style='width:20%;'>
@@ -170,7 +185,7 @@
             $("#detailTab").append(html);
 
             viewLoading('hide');
-            alertMessage('Get NameSpaces Fail~', false);
+            alertMessage();
 
             return false;
         }
