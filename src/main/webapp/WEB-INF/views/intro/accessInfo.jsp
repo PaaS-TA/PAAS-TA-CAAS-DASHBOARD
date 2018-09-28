@@ -317,6 +317,8 @@
     // CALLBACK
     var callbackGetUser = function(data) {
         viewLoading('hide');
+
+        // TODO :: MUST BE ALERT MESSAGE
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
         //$("#access-user-token").val(data.caasAccountTokenName);
 

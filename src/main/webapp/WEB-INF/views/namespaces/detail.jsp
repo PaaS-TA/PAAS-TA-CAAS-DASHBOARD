@@ -1,3 +1,4 @@
+<%-- // TODO :: REMOVE PAGE? --%>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
