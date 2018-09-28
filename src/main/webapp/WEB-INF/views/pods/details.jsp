@@ -1,13 +1,11 @@
 <%--
-  Deployments main
+  Pods details
   @author Hyungu Cho
   @version 1.0
   @since 2018.08.14
 --%>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="content">
     <jsp:include page="commonPods.jsp" flush="true"/>
 
@@ -114,16 +112,15 @@
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function() {
-        viewLoading('show');
-        getDetail();
-        viewLoading('hide');
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_DETAIL %>'
+            .replace('{namespace:.+}', NAME_SPACE).replace('{podName:.+}', G_POD_NAME);
+
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetDetail);
     });
 
-    // GET POD'S DETAIL
-    var getDetail = function() {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_DETAIL %>"
-            .replace("{namespace:.+}", NAME_SPACE).replace("{podName:.+}", G_POD_NAME);
-        procCallAjax(reqUrl, "GET", null, null, callbackGetDetail);
+    var createMovePageAnchorTag = function(movePageUrl, content) {
+        var anchorTag = '<a href="javascript:void(0);" onclick="procMovePage(\'' + movePageUrl + '\');">' + content + '</a>';
+        return anchorTag;
     };
 
     // CALLBACK GET POD'S DETAIL
@@ -146,40 +143,53 @@
 
         var labels = procSetSelector(data.metadata.labels);
         var conditionStr = '';
-        for (var i = 0; i < data.status.conditions.length; i++) {
-            if (i > 0) {
-                conditionStr += ", ";
+        if ('' !== nvl(data.status.conditions)) {
+            for (var i = 0; i < data.status.conditions.length; i++) {
+                if (i > 0) {
+                    conditionStr += ', ';
+                }
+                conditionStr += (data.status.conditions[i].type + ': ' + data.status.conditions[i].status);
             }
-            conditionStr += (data.status.conditions[i].type + ": " + data.status.conditions[i].status);
-        }
-
-        $("#name").html(data.metadata.name);
-        $("#labels").html(createSpans(labels, "NOT_LB"));
-        $("#creationTime").html(data.metadata.creationTimestamp);
-        $("#status").html(data.status.phase);
-        $("#qosClass").html(data.status.qosClass);
-        $("#conditions").html(conditionStr);
-
-        if ('' === nvl(data.spec.nodeName)) {
-            $("#node").html("-");
         } else {
-            $("#node").html("<a href='javascript:void(0);' " +
-                "onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NODES %>/" + data.spec.nodeName + "/summary\");'>"
-                + data.spec.nodeName + '</a>');
+            conditionStr = '-';
         }
 
-        $("#ip").html(nvl(data.status.podIP, "-"));
-
-        if (labels.match('job-name')) {
-            // A tag position for Jobs detail page
-            $("#controllers").html(data.metadata.ownerReferences[0].name);
+        var nodeNameHtml;
+        if ('' !== nvl(data.spec.nodeName)) {
+            nodeNameHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NODES %>/' + data.spec.nodeName + '/summary', data.spec.nodeName);
         } else {
-            $("#controllers").html("<a href='javascript:void(0);' "
-                + "onclick='procMovePage(\"/caas/workloads/replicaSets/" + data.metadata.ownerReferences[0].name + "\");'>"
-                + data.metadata.ownerReferences[0].name + '</a>');
+            nodeNameHtml = '-';
         }
 
-        $("#volumes").html(data.spec.volumes[0].name);
+        var controllerNameHtml;
+        if (data.metadata.ownerReferences instanceof Array && data.metadata.ownerReferences[0] instanceof Object) {
+            var ownerName = nvl(data.metadata.ownerReferences[0].name, '-');
+            if ('-' !== ownerName && labels.match('job-name')) {
+                controllerNameHtml = ownerName;
+            } else {
+                controllerNameHtml = createMovePageAnchorTag('<%= Constants.URI_WORKLOAD_REPLICA_SETS %>/' + ownerName, ownerName);
+            }
+        } else {
+            controllerNameHtml = '-';
+        }
+
+        var volumeName;
+        if (data.spec.volumes instanceof Array && data.spec.volumes[0] instanceof Object) {
+            volumeName = nvl(data.spec.volumes[0].name, '-');
+        } else {
+            volumeName = '-';
+        }
+
+        $('#name').html(data.metadata.name);
+        $('#labels').html(createSpans(labels, 'NOT_LB'));
+        $('#creationTime').html(data.metadata.creationTimestamp);
+        $('#status').html(data.status.phase);
+        $('#qosClass').html(data.status.qosClass);
+        $('#node').html(nodeNameHtml);
+        $('#conditions').html(conditionStr);
+        $('#ip').html(nvl(data.status.podIP, '-'));
+        $('#controllers').html(controllerNameHtml);
+        $('#volumes').html(volumeName);
 
         createContainerResultArea(data.status, data.spec.containers);
 
@@ -246,7 +256,7 @@
 
         containers.map(function(container) {
             var name = nvl(container['name']);
-            if ("" !== name) {
+            if ('' !== name) {
                 containerMap[name] = container;
             }
         });
@@ -254,7 +264,7 @@
         if ('' !== nvl(containerStatuses)) {
             containerStatuses.map(function(status) {
                 var name = nvl(status['name']);
-                if ("" === name) {
+                if ('' === name) {
                     return;
                 }
                 tempArr = Object.keys(status['state']);
@@ -312,14 +322,14 @@
             tdList[0].innerHTML = container.name;
             tdList[1].innerHTML = container.image;
             tdList[2].innerHTML = envParser(container);
-            tdList[3].innerHTML = nvl(container.command, "-");
-            tdList[4].innerHTML = nvl(container.args, "-");
+            tdList[3].innerHTML = nvl(container.command, '-');
+            tdList[4].innerHTML = nvl(container.args, '-');
 
             resultArea.append('<tr>'
                 + '<td><a href="javascript:void(0);" onclick="showHide(\'container-' + index + '\');">' + container.name + '</a></td>'
-                + '<td><span>' + nvl(container.state, " - ") + '</span></td>'
-                + '<td><span>' + nvl(container.image, " - ") + '</span></td>'
-                + '<td>' + nvl(container.restartCount, " - ") + '</td></tr>'
+                + '<td><span>' + nvl(container.state, ' - ') + '</span></td>'
+                + '<td><span>' + nvl(container.image, ' - ') + '</span></td>'
+                + '<td>' + nvl(container.restartCount, ' - ') + '</td></tr>'
                 + '<tr style="display:none;" id="container-' + index + '"><td colspan="4">' + detailTable.html() + '</td></tr>');
 
             listCount++;
@@ -343,26 +353,26 @@
     // CONTAINER ENVIRONMENT VARIABLE PARSER
     var envParser = function(container) {
         if (container.env == null) {
-            return "-";
+            return '-';
         }
 
         var envs = container.env;
-        var tempStr = "";
+        var tempStr = '';
 
         for (var i = 0; i < envs.length; i++) {
-            if ("" !== tempStr) {
+            if ('' !== tempStr) {
                 tempStr += '<br>';
             }
 
             if (Object.keys(envs[i]).indexOf('valueFrom') > -1) {
                 var valueFrom = envs[i]['valueFrom'];
                 if (null == valueFrom['fieldRef']) {
-                    tempStr += (Object.values(envs[i])[0] + ":&nbsp;" + JSON.stringify(valueFrom));
+                    tempStr += (Object.values(envs[i])[0] + ':&nbsp;' + JSON.stringify(valueFrom));
                 } else {
-                    tempStr += (Object.values(envs[i])[0] + ":&nbsp;" + JSON.stringify(valueFrom['fieldRef']));
+                    tempStr += (Object.values(envs[i])[0] + ':&nbsp;' + JSON.stringify(valueFrom['fieldRef']));
                 }
             } else {
-                tempStr += (Object.values(envs[i])[0] + ":&nbsp;" + Object.values(envs[i])[1]);
+                tempStr += (Object.values(envs[i])[0] + ':&nbsp;' + Object.values(envs[i])[1]);
             }
         }
 
@@ -373,7 +383,7 @@
     var showHide = function(indexId) {
         var tr = $('#' + indexId);
 
-        if (tr.is(":visible")) {
+        if (tr.is(':visible')) {
             tr.css('display', 'none');
         } else {
             tr.css('display', 'table-row');

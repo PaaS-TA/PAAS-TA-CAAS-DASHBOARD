@@ -6,8 +6,6 @@
 --%>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="content">
     <jsp:include page="commonNodes.jsp" flush="true"/>
 
@@ -22,7 +20,7 @@
                         <p>Events</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table id="events_table_in_node" class="table_event condition alignL service-lh">
+                        <table id="nodeEventsTable" class="table_event condition alignL service-lh">
                             <colgroup>
                                 <col style=".">
                                 <col style=".">
@@ -35,7 +33,7 @@
                             <tr id="nodeEventsnotFound" style="display:none;">
                                 <td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td>
                             </tr>
-                            <tr id="nodeEventsTableHeader">
+                            <tr id="nodeEventsTableHeader" class="headerSortFalse">
                                 <td>Message</td>
                                 <td>Source</td>
                                 <td>Sub-object</td>
@@ -56,9 +54,14 @@
 <script type="text/javascript">
     // PARSE EVENT FROM DATA
     var getEventList = function(items) {
-        return items.map(function(data) {
+        var eventList = items.map(function(data) {
             var tmpSource = data.source.component + (nvl(data.source.host) ? ' ' + nvl(data.source.host) : '');
-            var tmpSubObject = nvl(data.involvedObject.fieldPath, '-');
+            var tmpSubObject;
+            if ('' !== nvl(data.involvedObject)) {
+                tmpSubObject = nvl(data.involvedObject.fieldPath, '-');
+            } else {
+                tmpSubObject = '-';
+            }
             return {
                 message: data.message,
                 source: tmpSource,
@@ -67,26 +70,9 @@
                 firstSeen: data.firstTimestamp,
                 lastSeen: data.lastTimestamp
             };
-        }).sort(function(eventA, eventB) {
-            // sort : first seen
-            var firstA = eventA.firstSeen;
-            var firstB = eventB.firstSeen;
-            var ascending = true;
-            var reverseNumber = (ascending) ? 1 : -1;
-            if (firstA === firstB) {
-                return 0;
-            } else {
-                if (firstA == null) {
-                    return -1 * reverseNumber;
-                } else if (firstB == null) {
-                    return reverseNumber;
-                } else if (firstA > firstB) {
-                    return reverseNumber;
-                } else {
-                    return -1 * reverseNumber;
-                }
-            }
         });
+
+        return eventList;
     };
 
     // CALLBACK GET NODE EVENT
@@ -96,44 +82,51 @@
         var nodeEventsNotFound = $('#nodeEventsnotFound');
         var nodeEventsTableHeader = $('#nodeEventsTableHeader');
         var nodeEventsResultArea = $('#nodeEventsResultArea');
+
+        nodeEventsNotFound.show();
+        nodeEventsTableHeader.hide();
+        nodeEventsResultArea.hide();
+
         if (!procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage();
-            nodeEventsNotFound.show();
-            nodeEventsTableHeader.hide();
-            nodeEventsResultArea.hide();
             return;
         }
 
         var eventList = getEventList(data.items);
-        var listLength = eventList.length;
+        var listCount = 0;
 
         $.each(eventList, function(index, event) {
             var messageHtml;
-            if (0 === event.message.indexOf("Error")) {
-                messageHtml = '<span class="red2 tableTdToolTipFalse"><i class="fas fa-exclamation-circle"></i></span> <span class="red2">';
+            if (0 === event.message.indexOf('Error')) {
+                messageHtml = '<span class="red2 tableTdToolTipFalse"><i class="fas fa-exclamation-circle"></i></span> '
+                    + '<span class="red2">' + event.message + '</span>';
             } else {
-                messageHtml = '<span>';
+                messageHtml = '<span>' + event.message + '</span>';
             }
-            messageHtml = $(messageHtml + event.message + '</span>').wrapAll("<div/>").parent().html();
-            nodeEventsResultArea.append("<tr>"
-                + "<td>" + messageHtml + "</td>"
-                + "<td><span>" + event.source + "</span></td>"
-                + "<td><span>" + event.subObject + "</span></td>"
-                + "<td>" + event.count + "</td>"
-                + "<td>" + event.firstSeen + "</td>"
-                + "<td>" + event.lastSeen + "</td>"
-                + "</tr>");
+            nodeEventsResultArea.append('<tr>'
+                + '<td>'       + messageHtml     + '</td>'
+                + '<td><span>' + event.source    + '</span></td>'
+                + '<td><span>' + event.subObject + '</span></td>'
+                + '<td>'       + event.count     + '</td>'
+                + '<td>'       + event.firstSeen + '</td>'
+                + '<td>'       + event.lastSeen  + '</td>'
+                + '</tr>');
+
+            listCount++;
         });
 
-        if (listLength < 1) {
-            nodeEventsNotFound.show();
-            nodeEventsTableHeader.hide();
-            nodeEventsResultArea.hide();
-        } else {
+        if (listCount > 0) {
             nodeEventsNotFound.hide();
             nodeEventsTableHeader.show();
             nodeEventsResultArea.show();
+
+            var eventsTable = $('#nodeEventsTable');
+            eventsTable.tablesorter({
+                sortList: [[4, 0]] // 0 = ASC, 1 = DESC
+            });
+            eventsTable.trigger('update');
+            $('.headerSortFalse > td').unbind();
         }
 
         procSetToolTipForTableTd('nodeEventsResultArea');
@@ -142,20 +135,12 @@
         viewLoading('hide');
     };
 
-    // GET EVENTS LIST BY NODE
-    var getEventsListByNode = function(namespace, nodeName) {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
-            .replace("{namespace:.+}", namespace).replace("{resourceName:.+}", nodeName);
-
-        procCallAjax(reqUrl, "GET", null, null, callbackGetNodeEvent);
-    };
-
     // ON LOAD
     $(document.body).ready(function() {
-        viewLoading('show');
-        getEventsListByNode(NAME_SPACE, G_NODE_NAME);
-        viewLoading('hide');
-    });
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>'
+            .replace('{namespace:.+}', NAME_SPACE).replace('{resourceName:.+}', G_NODE_NAME);
 
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetNodeEvent);
+    });
 </script>
 <!-- NodeEvents 끝 -->

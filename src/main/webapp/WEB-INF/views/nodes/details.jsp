@@ -1,15 +1,12 @@
 <%--
-  Nodes detail
+  Nodes details
   @author Hyungu Cho
   @version 1.0
   @since 2018.08.14
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="content">
     <jsp:include page="commonNodes.jsp" flush="true"/>
-
     <jsp:include page="../common/contentsTab.jsp" flush="true"/>
 
     <!-- Nodes Details 시작-->
@@ -233,10 +230,10 @@
         var nodeInfo = status.nodeInfo;
 
         $('#node_name').html(metadata.name);
-        $('#node_labels').html(createSpans(labels, "NOT_LB"));
-        $('#node_annotations').html(createSpans(annotations, "NOT_LB"));
+        $('#node_labels').html(createSpans(labels, 'NOT_LB'));
+        $('#node_annotations').html(createSpans(annotations, 'NOT_LB'));
         $('#node_created_at').html(metadata.creationTimestamp);
-        $('#node_addresses').html(createSpans(addresses, "NOT_LB"));
+        $('#node_addresses').html(createSpans(addresses, 'NOT_LB'));
         $('#node_pod_cidr').html(spec.podCIDR);
         $('#node_unschedulable').html(upperCaseFirstLetterOnly(unschedulable));
 

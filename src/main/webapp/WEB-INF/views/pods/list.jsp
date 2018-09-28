@@ -1,9 +1,8 @@
 <%--
-  This file must include </views/common/commonLibs.jsp> file in the file that you want to include this file.
-  How to use : Use jsp:include tag under like " ul[class="maT30"] > li " element.
-  User: Hyungu Cho
-  Date: 2018-09-10
-  Time: 오전 09:05
+  Pods list (only included-usage)
+  @author Hyungu Cho
+  @version 1.0
+  @since 2018.09.10
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
@@ -36,16 +35,16 @@
             </tr>
             <tr id="podListResultHeaderArea" class="headerSortFalse">
                 <td>Name
-                    <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '0')"><i
-                            class="fas fa-caret-down"></i></button>
+                    <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '0')">
+                        <i class="fas fa-caret-down"></i></button>
                 </td>
                 <td>Namespace</td>
                 <td>Node</td>
                 <td>Status</td>
                 <td>Restarts</td>
                 <td>Created on
-                    <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '5')"><i
-                            class="fas fa-caret-down"></i></button>
+                    <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '5')">
+                        <i class="fas fa-caret-down"></i></button>
                 </td>
             </tr>
             </thead>
@@ -63,13 +62,13 @@
 
     // GET LIST
     var getPodsList = function() {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>'.replace('{namespace:.+}', NAME_SPACE);
         getPodListUsingRequestURL(reqUrl);
     };
 
     // GET POD LIST USING REQUEST URL
     var getPodListUsingRequestURL = function(reqUrl) {
-        procCallAjax(reqUrl, "GET", null, null, callbackGetPodList);
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetPodList);
     };
 
     // CALLBACK POD LIST
@@ -96,13 +95,13 @@
 
             // for chart of overview
             switch (pod.podStatus) {
-                case "Pending":
+                case 'Pending':
                     G_PODS_CHART_PENDING_CNT++;
                     break;
-                case "Running":
+                case 'Running':
                     G_PODS_CHART_RUNNING_CNT++;
                     break;
-                case "Succeeded":
+                case 'Succeeded':
                     G_PODS_CHART_SUCCEEDED_CNT++;
                     break;
                 default:
@@ -127,18 +126,18 @@
         1. Pod's status is succeeded -> return this.
         1. count of pod's containers is less than 0 -> return pod's status
         2. else...
-          2.1. all of pod's container statuses is "Running" -> return "Running"
-          2.2. some of pod's container statuses isn't "Running" -> return these status, but "terminated" state is the highest order.
+          2.1. all of pod's container statuses is 'Running' -> return 'Running'
+          2.2. some of pod's container statuses isn't 'Running' -> return these status, but 'terminated' state is the highest order.
          */
         var podStatusStr = nvl(podStatus.phase, 'Unknown');
-        if (podStatusStr.includes("Succeeded")) {
+        if (podStatusStr.includes('Succeeded')) {
             return podStatusStr;
         }
 
         // default value is empty array, callback is none.
         var containerStatuses = [];
-        if ('' !== nvl(podStatus["containerStatuses"])) {
-            containerStatuses = podStatus["containerStatuses"]
+        if ('' !== nvl(podStatus['containerStatuses'])) {
+            containerStatuses = podStatus['containerStatuses']
         }
 
         if (containerStatuses instanceof Array && 0 === containerStatuses.length) {
@@ -150,18 +149,18 @@
         containerStatuses.map(function(item, index) {
             var state = Object.keys(item.state)[0];
             // terminated state : highest order
-            if ("running" !== state && "terminated" !== notRunningState) {
+            if ('running' !== state && 'terminated' !== notRunningState) {
                 notRunningIndex = index;
                 notRunningState = state;
             }
         });
 
         if (-1 === notRunningIndex) {
-            return "Running";
+            return 'Running';
         } else {
             var statusStr = notRunningState.charAt(0).toUpperCase() + notRunningState.substring(1);
-            var reason = nvl(containerStatuses[notRunningIndex].state[notRunningState]["reason"], "Unknown");
-            return (statusStr + ": " + reason);
+            var reason = nvl(containerStatuses[notRunningIndex].state[notRunningState]['reason'], 'Unknown');
+            return (statusStr + ': ' + reason);
         }
     };
 
@@ -172,7 +171,7 @@
         var spec = podItem.spec;
         var status = getPodStatus(podItem.status);
         var errorMsg;
-        if (status !== "Running" && status !== "Succeeded") {
+        if (status !== 'Running' && status !== 'Succeeded') {
             errorMsg = 'Unknown Error';
             if ('' !== nvl(podItem.status.conditions)) {
                 var findConditions = podItem.status.conditions.filter(function(item) {
@@ -181,7 +180,7 @@
                 if (findConditions.length > 0) {
                     errorMsg = findConditions[0].reason;
                     if ('' !== nvl(findConditions[0].message)) {
-                        errorMsg += " (" + findConditions[0].message + ")";
+                        errorMsg += ' (' + findConditions[0].message + ')';
                     }
                 }
             }
@@ -204,7 +203,7 @@
         return {
             name: metadata.name,
             namespace: metadata.namespace,
-            nodeName: nvl(spec.nodeName, "-"),
+            nodeName: nvl(spec.nodeName, '-'),
             podStatus: status,
             podErrorMsg: errorMsg,
             restartCount: restartCountSum,
@@ -215,35 +214,31 @@
     // GET POD STATUS STYLE CLASS
     var getPodStatusStyleClass = function(statusString) {
         var styleClassSet;
-        if (statusString.includes("Pending")) {
-            styleClassSet = {span: "pending2", i: "fas fa-exclamation-triangle"};
-        } else if (statusString.includes("Running")) {
-            styleClassSet = {span: "running2", i: "fas fa-check-circle"};
-        } else if (statusString.includes("Succeeded")) {
-            styleClassSet = {span: "succeeded2", i: "fas fa-check-circle"};
-        } else if (statusString.includes("Terminiated")) {
-            styleClassSet = {span: "failed2", i: "fas fa-exclamation-circle"};
-        } else if (statusString.includes("Waiting")) {
-            styleClassSet = {span: "waiting2", i: "fas fa-exclamation-triangle"};
+        if (statusString.includes('Pending')) {
+            styleClassSet = {span: 'pending2', i: 'fas fa-exclamation-triangle'};
+        } else if (statusString.includes('Running')) {
+            styleClassSet = {span: 'running2', i: 'fas fa-check-circle'};
+        } else if (statusString.includes('Succeeded')) {
+            styleClassSet = {span: 'succeeded2', i: 'fas fa-check-circle'};
+        } else if (statusString.includes('Terminiated')) {
+            styleClassSet = {span: 'failed2', i: 'fas fa-exclamation-circle'};
+        } else if (statusString.includes('Waiting')) {
+            styleClassSet = {span: 'waiting2', i: 'fas fa-exclamation-triangle'};
         } else {
-            // included "Unknown" status
-            styleClassSet = {span: "unknown2", i: "fas fa-exclamation-triangle"};
+            // included 'Unknown' status
+            styleClassSet = {span: 'unknown2', i: 'fas fa-exclamation-triangle'};
         }
 
         // disable tooltip to icon
-        styleClassSet.span += " tableTdToolTipFalse";
+        styleClassSet.span += ' tableTdToolTipFalse';
 
         return styleClassSet;
     };
 
     // CREATE ANCHOR TAG FUNCTION
-    var createAnchorTag = function(movePageUrl, content, isTooltip) {
-        var anchorTag = "<a href='javascript:void(0);' onclick='procMovePage(\"" + movePageUrl + "\");'>" + content + "</a>";
-        if (isTooltip) {
-            return $(anchorTag).wrapAll("<div/>").parent().html();
-        } else {
-            return anchorTag;
-        }
+    var createMovePageAnchorTag = function(movePageUrl, content) {
+        var anchorTag = '<a href="javascript:void(0);" onclick="procMovePage(\'' + movePageUrl + '\');">' + content + '</a>';
+        return anchorTag;
     };
 
     // SET POD LIST TABLE
@@ -252,7 +247,10 @@
         var resultArea = $('#podListResultArea');
         var resultHeaderArea = $('#podListResultHeaderArea');
         var noResultArea = $('#noPodListResultArea');
-        var resultTable = $('#resultTableForPod');
+        
+        noResultArea.show();
+        resultHeaderArea.hide();
+        resultArea.hide();
 
         var listLength = podList.length;
         var htmlString = [];
@@ -262,43 +260,42 @@
             var styleClassSet = getPodStatusStyleClass(pod.podStatus);
 
             var podNameHtml = '<span class="' + styleClassSet.span + '"><i class="' + styleClassSet.i + '"></i></span> '
-                + createAnchorTag("<%= Constants.URI_WORKLOAD_PODS %>/" + pod.name, pod.name, true);
+                + createMovePageAnchorTag('<%= Constants.URI_WORKLOAD_PODS %>/' + pod.name, pod.name);
             if ('' !== nvl(pod.podErrorMsg)) {
-                podNameHtml += ("<br><span>" + pod.podErrorMsg + "</span>");
+                podNameHtml += ('<br><span>' + pod.podErrorMsg + '</span>');
             }
 
             var nodeNameHtml;
-            if (pod.nodeName !== "-") {
-                nodeNameHtml = createAnchorTag("<%= Constants.URI_CLUSTER_NODES %>/" + pod.nodeName + "/summary", pod.nodeName, true);
+            if (pod.nodeName !== '-') {
+                nodeNameHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NODES %>/' + pod.nodeName + '/summary', pod.nodeName);
             } else {
-                nodeNameHtml = "-";
+                nodeNameHtml = '-';
             }
 
-            var namespaceHtml = createAnchorTag("<%= Constants.URI_CLUSTER_NAMESPACES %>/" + pod.namespace, pod.namespace, true);
+            var namespaceHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NAMESPACES %>/' + pod.namespace, pod.namespace);
 
-            htmlString.push("<tr name='podRow' data-search-key='" + pod.name + "'>"
-                + "<td id='" + pod.name + "'>" + podNameHtml + "</td>"
-                + "<td>" + namespaceHtml + "</td>"
-                + "<td>" + nodeNameHtml + "</td>"
-                + "<td><span>" + pod.podStatus + "</span></td>"
-                + "<td>" + pod.restartCount + "</td>"
-                + "<td>" + pod.creationTimestamp + "</td>"
-                + "</tr>");
+            htmlString.push('<tr name="podRow" data-search-key="' + pod.name + '">'
+                + '<td id="' + pod.name + '">' + podNameHtml + '</td>'
+                + '<td>' + namespaceHtml + '</td>'
+                + '<td>' + nodeNameHtml + '</td>'
+                + '<td><span>' + pod.podStatus + '</span></td>'
+                + '<td>' + pod.restartCount + '</td>'
+                + '<td>' + pod.creationTimestamp + '</td>'
+                + '</tr>');
         }
 
-        if (htmlString.length < 1) {
-            noResultArea.show();
-            resultHeaderArea.hide();
-            resultArea.hide();
-        } else {
+        if (htmlString.length > 0) {
             noResultArea.hide();
             resultHeaderArea.show();
             resultArea.show();
+            
             resultArea.html(htmlString);
+            
+            var resultTable = $('#resultTableForPod');
             resultTable.tablesorter({
                 sortList: [[5, 1]] // 0 = ASC, 1 = DESC
             });
-            resultTable.trigger("update");
+            resultTable.trigger('update');
             $('.headerSortFalse > td').unbind();
         }
     };
@@ -307,12 +304,12 @@
     var setPodsListWithFilter = function(findValue) {
         viewLoading('show');
 
-        var podsTableHeader = $("#podListResultHeaderArea");
-        var podNotFound = $("#noPodListResultArea");
-        var podRows = $("tr[name=podRow]");
+        var podsTableHeader = $('#podListResultHeaderArea');
+        var podNotFound = $('#noPodListResultArea');
+        var podRows = $('tr[name=podRow]');
 
         if (podRows.length > 0) {
-            if (nvl(findValue) === "") {
+            if ('' === nvl(findValue)) {
                 podNotFound.hide();
                 podsTableHeader.show();
                 podRows.show();
@@ -320,7 +317,7 @@
                 var showCount = 0;
                 $.each(podRows, function(index, podRow) {
                     var rowElement = $(podRow);
-                    if (rowElement.data("searchKey").includes(findValue)) {
+                    if (rowElement.data('searchKey').includes(findValue)) {
                         rowElement.show();
                         showCount++;
                     } else {

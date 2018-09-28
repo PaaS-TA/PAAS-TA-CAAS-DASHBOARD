@@ -1,13 +1,11 @@
 <%--
-  Deployment main
+  Pods events
   @author Hyungu Cho
   @version 1.0
   @since 2018.08.14
 --%>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="content">
     <jsp:include page="commonPods.jsp" flush="true"/>
 
@@ -22,7 +20,7 @@
                         <p>Events</p>
                     </div>
                     <div class="view_table_wrap">
-                        <table class="table_event condition alignL service-lh">
+                        <table id="resultTable" class="table_event condition alignL service-lh">
                             <colgroup>
                                 <col style=".">
                                 <col style=".">
@@ -35,7 +33,7 @@
                             <tr id="noResultArea" style="display: none;">
                                 <td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td>
                             </tr>
-                            <tr id="resultHeaderArea">
+                            <tr id="resultHeaderArea" class="headerSortFalse">
                                 <td>Message</td>
                                 <td>Source</td>
                                 <td>Sub-object</td>
@@ -56,20 +54,16 @@
 </div>
 
 <script type="text/javascript">
-    // ON LOAD
-    $(document.body).ready(function() {
-        viewLoading('show');
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE)
-            .replace("{resourceName:.+}", G_POD_NAME);
-        procCallAjax(reqUrl, "GET", null, null, callbackGetList);
-        viewLoading('hide');
-    });
-
     // PARSE EVENT FROM DATA
     var getEventList = function(items) {
-        return items.map(function(data) {
+        var eventList = items.map(function(data) {
             var tmpSource = data.source.component + (nvl(data.source.host) ? ' ' + nvl(data.source.host) : '');
-            var tmpSubObject = nvl(data.involvedObject.fieldPath, '-');
+            var tmpSubObject;
+            if ('' !== nvl(data.involvedObject)) {
+                tmpSubObject = nvl(data.involvedObject.fieldPath, '-');
+            } else {
+                tmpSubObject = '-';
+            }
             return {
                 message: data.message,
                 source: tmpSource,
@@ -78,26 +72,9 @@
                 firstSeen: data.firstTimestamp,
                 lastSeen: data.lastTimestamp
             };
-        }).sort(function(eventA, eventB) {
-            // sort : first seen
-            var firstA = eventA.firstSeen;
-            var firstB = eventB.firstSeen;
-            var ascending = true;
-            var reverseNumber = (ascending) ? 1 : -1;
-            if (firstA === firstB) {
-                return 0;
-            } else {
-                if (firstA == null) {
-                    return -1 * reverseNumber;
-                } else if (firstB == null) {
-                    return reverseNumber;
-                } else if (firstA > firstB) {
-                    return reverseNumber;
-                } else {
-                    return -1 * reverseNumber;
-                }
-            }
         });
+
+        return eventList;
     };
 
     // CALLBACK
@@ -107,44 +84,51 @@
         var noResultArea = $('#noResultArea');
         var resultHeaderArea = $('#resultHeaderArea');
         var resultArea = $('#resultArea');
+
+        noResultArea.show();
+        resultHeaderArea.hide();
+        resultArea.hide();
+
         if (!procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage();
-            noResultArea.show();
-            resultHeaderArea.hide();
-            resultArea.hide();
             return;
         }
 
         var eventList = getEventList(data.items);
-        var listLength = eventList.length;
+        var listCount = 0;
 
         $.each(eventList, function(index, event) {
             var messageHtml;
-            if (0 === event.message.indexOf("Error")) {
-                messageHtml = '<span class="red2 tableTdToolTipFalse"><i class="fas fa-exclamation-circle"></i></span> <span class="red2">';
+            if (0 === event.message.indexOf('Error')) {
+                messageHtml = '<span class="red2 tableTdToolTipFalse"><i class="fas fa-exclamation-circle"></i></span> '
+                    + '<span class="red2">' + event.message + '</span>';
             } else {
-                messageHtml = '<span>';
+                messageHtml = '<span>' + event.message + '</span>';
             }
-            messageHtml = $(messageHtml + event.message + '</span>').wrapAll("<div/>").parent().html();
-            resultArea.append("<tr>"
-                + "<td>" + messageHtml + "</td>"
-                + "<td><span>" + event.source + "</span></td>"
-                + "<td><span>" + event.subObject + "</span></td>"
-                + "<td>" + event.count + "</td>"
-                + "<td>" + event.firstSeen + "</td>"
-                + "<td>" + event.lastSeen + "</td>"
-                + "</tr>");
+            resultArea.append('<tr>'
+                + '<td>'       + messageHtml     + '</td>'
+                + '<td><span>' + event.source    + '</span></td>'
+                + '<td><span>' + event.subObject + '</span></td>'
+                + '<td>'       + event.count     + '</td>'
+                + '<td>'       + event.firstSeen + '</td>'
+                + '<td>'       + event.lastSeen  + '</td>'
+                + '</tr>');
+            
+            listCount++;
         });
 
-        if (listLength < 1) {
-            noResultArea.show();
-            resultHeaderArea.hide();
-            resultArea.hide();
-        } else {
+        if (listCount > 0) {
             noResultArea.hide();
             resultHeaderArea.show();
             resultArea.show();
+
+            var eventsTable = $('#resultTable');
+            eventsTable.tablesorter({
+                sortList: [[4, 0]] // 0 = ASC, 1 = DESC
+            });
+            eventsTable.trigger('update');
+            $('.headerSortFalse > td').unbind();
         }
 
         // TOOL TIP
@@ -153,4 +137,12 @@
 
         viewLoading('hide');
     };
+
+    // ON LOAD
+    $(document.body).ready(function() {
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>'
+            .replace('{namespace:.+}', NAME_SPACE).replace('{resourceName:.+}', G_POD_NAME);
+
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetList);
+    });
 </script>

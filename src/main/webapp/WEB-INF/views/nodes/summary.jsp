@@ -7,7 +7,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="content">
     <jsp:include page="commonNodes.jsp" flush="true"/>
 
@@ -66,28 +65,31 @@
         var podsTableHeader = $('#podListResultHeaderArea');
         var conditionsNotFound = $('#conditionsNotFound');
         var conditionsTableHeader = $('#conditionsTableHeader');
+        
+        podNotFound.show();
+        podsTableHeader.hide();
+        conditionsNotFound.show();
+        conditionsTableHeader.hide();
+            
         if (!procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage();
-            podNotFound.show();
-            podsTableHeader.hide();
-
-            conditionsNotFound.show();
-            conditionsTableHeader.hide();
             return;
         }
 
         var nodeName = data.metadata.name;
         var conditions = data.status.conditions;
         $.each(conditions, function(index, condition) {
-            condition.lastHeartbeatTime = condition.lastHeartbeatTime.replace(/T/g, " ").replace(/Z$/g, "");
-            condition.lastTransitionTime = condition.lastTransitionTime.replace(/T/g, " ").replace(/Z$/g, "");
+            condition.lastHeartbeatTime = condition.lastHeartbeatTime.replace(/T/g, ' ').replace(/Z$/g, '');
+            condition.lastTransitionTime = condition.lastTransitionTime.replace(/T/g, ' ').replace(/Z$/g, '');
         });
 
-        var podListReqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_NODE %>"
-            .replace("{namespace:.+}", NAME_SPACE).replace("{nodeName:.+}", nodeName);
+        // SET PODS TABLE
+        var podListReqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_NODE %>'
+            .replace('{namespace:.+}', NAME_SPACE).replace('{nodeName:.+}', nodeName);
         getPodListUsingRequestURL(podListReqUrl);
 
+        // SET NODE'S CONDITIONS
         var contents = [];
         $.each(conditions, function(index, condition) {
             contents.push('<tr>'
@@ -101,15 +103,10 @@
 
         if (contents.length > 0) {
             $('#conditionResultArea').html(contents);
-            var sort = [[0, 0]];
-            $('#node_conditions').tablesorter({
-                sortList: sort    // 0 = ASC, 1 = DESC
-            });
-            $('#node_conditions').trigger("update");
-            $('.headerSortFalse > td').unbind();
-        } else {
-            conditionsNotFound.show();
-            conditionsTableHeader.hide();
+            podNotFound.hide();
+            podsTableHeader.show();
+            conditionsNotFound.hide();
+            conditionsTableHeader.show();
         }
 
         procSetToolTipForTableTd('conditionResultArea');

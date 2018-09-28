@@ -1,13 +1,11 @@
 <%--
-  Deployment main
+  Pods YAML
   @author Hyungu Cho
   @version 1.0
   @since 2018.08.14
 --%>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="content">
     <jsp:include page="commonPods.jsp" flush="true"/>
 
@@ -37,9 +35,9 @@
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function() {
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_YAML %>"
-            .replace("{namespace:.+}", NAME_SPACE).replace("{podName:.+}", G_POD_NAME);
-        procCallAjax(reqUrl, "GET", null, null, callbackGetPods);
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_YAML %>'
+            .replace('{namespace:.+}', NAME_SPACE).replace('{podName:.+}', G_POD_NAME);
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetPods);
     });
 
     var callbackGetPods = function(data) {
