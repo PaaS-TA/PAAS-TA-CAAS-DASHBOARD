@@ -45,8 +45,6 @@
 <%--JS--%>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery-1.12.4.min.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/jquery.cookie.js"/>'></script>
-<%--TODO :: REMOVE AFTER CHECK--%>
-<%--<script type="text/javascript" src="<c:url value="/resources/js/jquery.splitter.js"/>"></script>--%>
 <script type="text/javascript" src='<c:url value="/resources/js/bootstrap.min.js"/>'></script>
 <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/jquery.jscrollpane.min.js"/>"></script>
