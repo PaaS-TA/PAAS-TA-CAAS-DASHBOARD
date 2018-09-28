@@ -154,7 +154,6 @@
     z-index: 999;
 }
 
-/* detail Icon */
 .detail_icon {
     color: #2a6575;
 }
@@ -170,4 +169,21 @@
 .custom-tag-content-overflow {
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.custom-access-contents-overflow {
+    overflow: hidden;
+}
+
+.custom-access-copy-button {
+    cursor: pointer;
+}
+
+.custom-access-copy-button:hover {
+    color: #154c94;
+    font-weight: bold;
+}
+
+.custom-access-title-caution {
+    padding: 0 0 4px 30px;
 }

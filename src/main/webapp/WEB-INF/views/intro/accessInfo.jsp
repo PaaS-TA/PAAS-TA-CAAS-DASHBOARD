@@ -66,32 +66,42 @@
                     <p>※ For Linux</p>
                 </div>
                 <div class="custom-access-contents">
-                    <p>export CAAS_SERVICE_CLUSTER_NAME="<span class="caasClusterName"></span>"</p>
-                    <p>export CAAS_SERVICE_CLUSTER_SERVER="<span class="caasClusterServer"></span>"</p>
-                    <p>export CAAS_SERVICE_USER_NAME="<span class="caasUserName"></span>"</p>
-                    <p>export CAAS_SERVICE_CONTEXT_NAME="<span class="caasContextName"></span>"</p>
-                    <p>export CAAS_SERVICE_NAMESPACE_NAME="<span class="caasNamespace"></span>"</p>
-                    <p>export CAAS_SERVICE_CREDENTIALS_TOKEN="<span class="caasCredentialsToken"></span>"</p>
+                    <div id="caasEnvironmentsForLinux">
+                        <p>export CAAS_SERVICE_CLUSTER_NAME="<span class="caasClusterName"></span>"</p>
+                        <p>export CAAS_SERVICE_CLUSTER_SERVER="<span class="caasClusterServer"></span>"</p>
+                        <p>export CAAS_SERVICE_USER_NAME="<span class="caasUserName"></span>"</p>
+                        <p>export CAAS_SERVICE_CONTEXT_NAME="<span class="caasContextName"></span>"</p>
+                        <p>export CAAS_SERVICE_NAMESPACE_NAME="<span class="caasNamespace"></span>"</p>
+                        <p class="custom-access-contents-overflow">export CAAS_SERVICE_CREDENTIALS_TOKEN="<span class="caasCredentialsToken"></span>"</p>
+                    </div>
+                    <div class="fa-pull-right">
+                        <i class="fas fa-copy custom-access-copy-button" about="caasEnvironmentsForLinux"></i>
+                    </div>
                 </div>
                 <div class="maT10">
                     <p>※ For Windows</p>
                 </div>
                 <div class="custom-access-contents">
-                    <p>set CAAS_SERVICE_CLUSTER_NAME="<span class="caasClusterName"></span>"</p>
-                    <p>set CAAS_SERVICE_CLUSTER_SERVER="<span class="caasClusterServer"></span>"</p>
-                    <p>set CAAS_SERVICE_USER_NAME="<span class="caasUserName"></span>"</p>
-                    <p>set CAAS_SERVICE_CONTEXT_NAME="<span class="caasContextName"></span>"</p>
-                    <p>set CAAS_SERVICE_NAMESPACE_NAME="<span class="caasNamespace"></span>"</p>
-                    <p>set CAAS_SERVICE_CREDENTIALS_TOKEN="<span class="caasCredentialsToken"></span>"</p>
+                    <div id="caasEnvironmentsForWindows">
+                        <p>set CAAS_SERVICE_CLUSTER_NAME="<span class="caasClusterName"></span>"</p>
+                        <p>set CAAS_SERVICE_CLUSTER_SERVER="<span class="caasClusterServer"></span>"</p>
+                        <p>set CAAS_SERVICE_USER_NAME="<span class="caasUserName"></span>"</p>
+                        <p>set CAAS_SERVICE_CONTEXT_NAME="<span class="caasContextName"></span>"</p>
+                        <p>set CAAS_SERVICE_NAMESPACE_NAME="<span class="caasNamespace"></span>"</p>
+                        <p class="custom-access-contents-overflow">set CAAS_SERVICE_CREDENTIALS_TOKEN="<span class="caasCredentialsToken"></span>"</p>
+                    </div>
+                    <div class="fa-pull-right">
+                        <i class="fas fa-copy custom-access-copy-button" about="caasEnvironmentsForWindows"></i>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="custom-access-wrap">
             <div class="custom-access-title-wrap">
-                <div class="custom-access-title" style="float: left;">
+                <div class="custom-access-title fa-pull-left">
                     <p>3. Cluster 등록</p>
                 </div>
-                <div class="custom-access-title-right" style="float: right;">
+                <div class="custom-access-title-right fa-pull-right">
                     <button type="button" class="btns colors4" onclick="return downloadCrtToken();">Download certificate file</button>
                 </div>
             </div>
@@ -101,41 +111,57 @@
                     <p>※ For Linux</p>
                 </div>
                 <div class="custom-access-contents">
-                    <p>kubectl config set-cluster \${CAAS_SERVICE_CLUSTER_NAME} --embed-certs=true --server=\${CAAS_SERVICE_CLUSTER_SERVER} --certificate-authority=[DOWNLOADED FILE PATH]</p>
+                    <div class="fa-pull-left" id="caasClusterForLinux">
+                        <p>kubectl config set-cluster \${CAAS_SERVICE_CLUSTER_NAME} --embed-certs=true --server=\${CAAS_SERVICE_CLUSTER_SERVER} --certificate-authority=[DOWNLOADED FILE PATH]</p>
+                    </div>
+                    <div class="fa-pull-right">
+                        <i class="fas fa-copy custom-access-copy-button" about="caasClusterForLinux"></i>
+                    </div>
                 </div>
                 <div class="maT10">
                     <p>※ For Windows</p>
                 </div>
                 <div class="custom-access-contents">
-                    <p>kubectl config set-cluster %CAAS_SERVICE_CLUSTER_NAME% --embed-certs=true --server=%CAAS_SERVICE_CLUSTER_SERVER% --certificate-authority=[DOWNLOADED FILE PATH]</p>
+                    <div class="fa-pull-left" id="caasClusterForWindows">
+                        <p>kubectl config set-cluster %CAAS_SERVICE_CLUSTER_NAME% --embed-certs=true --server=%CAAS_SERVICE_CLUSTER_SERVER% --certificate-authority=[DOWNLOADED FILE PATH]</p>
+                    </div>
+                    <div class="fa-pull-right">
+                        <i class="fas fa-copy custom-access-copy-button" about="caasClusterForWindows"></i>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="custom-access-wrap">
             <div class="custom-access-title-wrap">
-                <div class="custom-access-title" style="float: left;">
+                <div class="custom-access-title">
                     <p>4. Credential 등록</p>
                 </div>
-                <div class="custom-access-title-right" style="float: right;">
-                    <button class="btns colors4" id="btn-copy" data-clipboard-action="cut" data-clipboard-target="#out_a">Copy Token</button>
-                </div>
             </div>
-            <div class="clearfix"></div>
+            <div class="custom-access-title-caution">
+                <p style="color: red;"><i class="fas fa-info-circle"></i> 토큰을 응용 프로그램과 공유 할 때 주의 하십시오. 공용 코드 저장소에 사용자 토큰을 게시하지 마십시오.</p>
+            </div>
             <div class="custom-access-contents-wrap">
-                <div>
-                    <p style="color: red;"><i class="fas fa-info-circle"></i> 토큰을 응용 프로그램과 공유 할 때 주의 하십시오. 공용 코드 저장소에 사용자 토큰을 게시하지 마십시오.</p>
-                </div>
                 <div class="maT10">
                     <p>※ For Linux</p>
                 </div>
                 <div class="custom-access-contents">
-                    <p>kubectl config set-credentials \%CAAS_SERVICE_USER_NAME} --token=\${CAAS_SERVICE_CREDENTIALS_TOKEN}</p>
+                    <div class="fa-pull-left" id="caasCredentialForLinux">
+                        <p>kubectl config set-credentials \%CAAS_SERVICE_USER_NAME} --token=\${CAAS_SERVICE_CREDENTIALS_TOKEN}</p>
+                    </div>
+                    <div class="fa-pull-right">
+                        <i class="fas fa-copy custom-access-copy-button" about="caasCredentialForLinux"></i>
+                    </div>
                 </div>
                 <div class="maT10">
                     <p>※ For Windows</p>
                 </div>
                 <div class="custom-access-contents">
-                    <p>kubectl config set-credentials %CAAS_SERVICE_USER_NAME% --token=%CAAS_SERVICE_CREDENTIALS_TOKEN%</p>
+                    <div class="fa-pull-left" id="caasCredentialForWindows">
+                        <p>kubectl config set-credentials %CAAS_SERVICE_USER_NAME% --token=%CAAS_SERVICE_CREDENTIALS_TOKEN%</p>
+                    </div>
+                    <div class="fa-pull-right">
+                        <i class="fas fa-copy custom-access-copy-button" about="caasCredentialForWindows"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -148,13 +174,23 @@
                     <p>※ For Linux</p>
                 </div>
                 <div class="custom-access-contents">
-                    <p>kubectl config set-context \${CAAS_SERVICE_CONTEXT_NAME} --user=\${CAAS_SERVICE_USER_NAME} --namespace=\${CAAS_SERVICE_NAMESPACE_NAME} --cluster=\${CAAS_SERVICE_CLUSTER_NAME}</p>
+                    <div class="fa-pull-left" id="caasContextForLinux">
+                        <p>kubectl config set-context \${CAAS_SERVICE_CONTEXT_NAME} --user=\${CAAS_SERVICE_USER_NAME} --namespace=\${CAAS_SERVICE_NAMESPACE_NAME} --cluster=\${CAAS_SERVICE_CLUSTER_NAME}</p>
+                    </div>
+                    <div class="fa-pull-right">
+                        <i class="fas fa-copy custom-access-copy-button" about="caasContextForLinux"></i>
+                    </div>
                 </div>
                 <div class="maT10">
                     <p>※ For Windows</p>
                 </div>
                 <div class="custom-access-contents">
-                    <p>kubectl config set-context %CAAS_SERVICE_CONTEXT_NAME% --user=%CAAS_SERVICE_USER_NAME% --namespace=%CAAS_SERVICE_NAMESPACE_NAME% --cluster=%CAAS_SERVICE_CLUSTER_NAME%</p>
+                    <div class="fa-pull-left" id="caasContextForWindows">
+                        <p>kubectl config set-context %CAAS_SERVICE_CONTEXT_NAME% --user=%CAAS_SERVICE_USER_NAME% --namespace=%CAAS_SERVICE_NAMESPACE_NAME% --cluster=%CAAS_SERVICE_CLUSTER_NAME%</p>
+                    </div>
+                    <div class="fa-pull-right">
+                        <i class="fas fa-copy custom-access-copy-button" about="caasContextForWindows"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -167,13 +203,23 @@
                     <p>※ For Linux</p>
                 </div>
                 <div class="custom-access-contents">
-                    <p>kubectl config use-context \${CAAS_SERVICE_CONTEXT_NAME}</p>
+                    <div class="fa-pull-left" id="caasContextUseForLinux">
+                        <p>kubectl config use-context \${CAAS_SERVICE_CONTEXT_NAME}</p>
+                    </div>
+                    <div class="fa-pull-right">
+                        <i class="fas fa-copy custom-access-copy-button" about="caasContextUseForLinux"></i>
+                    </div>
                 </div>
                 <div class="maT10">
                     <p>※ For Windows</p>
                 </div>
                 <div class="custom-access-contents">
-                    <p>kubectl config use-context %CAAS_SERVICE_CONTEXT_NAME%</p>
+                    <div class="fa-pull-left" id="caasContextUseForWindows">
+                        <p>kubectl config use-context %CAAS_SERVICE_CONTEXT_NAME%</p>
+                    </div>
+                    <div class="fa-pull-right">
+                        <i class="fas fa-copy custom-access-copy-button" about="caasContextUseForWindows"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -183,7 +229,12 @@
             </div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>kubectl config view</p>
+                    <div class="fa-pull-left" id="caasConfigCheck">
+                        <p>kubectl config view</p>
+                    </div>
+                    <div class="fa-pull-right">
+                        <i class="fas fa-copy custom-access-copy-button" about="caasConfigCheck"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -193,7 +244,12 @@
             </div>
             <div class="custom-access-contents-wrap">
                 <div class="custom-access-contents">
-                    <p>kubectl get all</p>
+                    <div class="fa-pull-left" id="caasResourceCheck">
+                        <p>kubectl get all</p>
+                    </div>
+                    <div class="fa-pull-right">
+                        <i class="fas fa-copy custom-access-copy-button" about="caasResourceCheck"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -310,24 +366,34 @@
     };
 
 
+    // BIND
+    $(".custom-access-copy-button").on("click", function () {
+        var item = document.getElementById($(this).attr('about'));
+        var reqValue = item.innerText || item.textContent;
+        var resultString = (procSetExecuteCommandCopy(reqValue)) ? '스크립트를 복사했습니다.' : '스크립트 복사에 실패했습니다.';
+        procSetLayerPopup('알림', resultString, '확인', null, 'x', null, null, null);
+    });
+
+
     // ON LOAD
     $(document.body).ready(function () {
         viewLoading('show');
         $("#access-user-name").val(USER_ID);
 
-        // copy function
-        $("#btn-copy").on("click", function(){
-            // TODO :: REMOVE AFTER CHECK
-            // var target = $("#out_a");
-            // var inA = G_USER_ACCESS_TOKEN;
-            // target.val(inA);
-            // target.select();
-            // var successful = document.execCommand('copy');
-            // alert("복사되었습니다.");
 
-            var resultString = (procSetExecuteCommandCopy(G_USER_ACCESS_TOKEN)) ? '토큰을 복사했습니다.' : '토큰 복사에 실패했습니다.';
-            procSetLayerPopup('알림', resultString, '확인', '취소', 'x', null, null, null);
-        });
+        // TODO :: REMOVE AFTER CHECK
+        // // copy function
+        // $("#btn-copy").on("click", function(){
+        //     // var target = $("#out_a");
+        //     // var inA = G_USER_ACCESS_TOKEN;
+        //     // target.val(inA);
+        //     // target.select();
+        //     // var successful = document.execCommand('copy');
+        //     // alert("복사되었습니다.");
+        //
+        //     var resultString = (procSetExecuteCommandCopy(G_USER_ACCESS_TOKEN)) ? '토큰을 복사했습니다.' : '토큰 복사에 실패했습니다.';
+        //     procSetLayerPopup('알림', resultString, '확인', '취소', 'x', null, null, null);
+        // });
 
         getUser();
 

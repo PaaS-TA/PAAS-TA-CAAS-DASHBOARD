@@ -433,9 +433,13 @@ var procSetLayerPopup = function (reqTitle, reqContents, reqSuccess, reqCancel, 
 
 
 // SET EXECUTE COMMAND COPY
-var procSetExecuteCommandCopy = function (reqValue) {
+var procSetExecuteCommandCopy = function (requestValue) {
+    if (nvl(requestValue) === '') {
+        return false;
+    }
+
     var target = $("#out_a");
-    target.val(reqValue);
+    target.val(requestValue);
     target.select();
 
     return document.execCommand('copy');
