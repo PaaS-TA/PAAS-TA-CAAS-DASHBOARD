@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Deployments 관련 Caas API 를 호출 하는 컨트롤러이다.
+ * Deployments Controller 클래스
  *
  * @author Hyungu Cho
  * @version 1.0
@@ -30,9 +30,10 @@ public class DeploymentsController {
     }
 
     /**
-     * Deployments 메인페이지 (리스트 페이지) 로 이동한다.
+     * Deployments main 페이지로 이동한다.
+     *
      * @param httpServletRequest the http servlet request
-     * @return ModelAndView(Spring 클래스)
+     * @return the deployments main
      */
     // TODO :: MODIFY
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments")
@@ -42,9 +43,9 @@ public class DeploymentsController {
 
     /**
      * Deployments detail 페이지로 이동한다.
+     *
      * @param httpServletRequest the http servlet request
-     * @param deploymentsName deployments name
-     * @return ModelAndView(Spring 클래스)
+     * @return the deployments detail
      */
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}")
     public ModelAndView getDashboardDetail(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
@@ -52,10 +53,10 @@ public class DeploymentsController {
     }
 
     /**
-     * Deployments detail events 페이지로 이동한다.
+     * Deployments events 페이지로 이동한다.
+     *
      * @param httpServletRequest the http servlet request
-     * @param deploymentsName deployments name
-     * @return ModelAndView(Spring 클래스)
+     * @return the deployments detail events
      */
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/events")
     public ModelAndView getDashboardEvent(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
@@ -63,10 +64,10 @@ public class DeploymentsController {
     }
 
     /**
-     * Deployments detail yaml 페이지로 이동한다.
+     * Deployments yaml 페이지로 이동한다.
+     *
      * @param httpServletRequest the http servlet request
-     * @param deploymentsName deployments name
-     * @return ModelAndView(Spring 클래스)
+     * @return the replicaSets detail yaml
      */
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/yaml")
     public ModelAndView getDashboardYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
@@ -74,10 +75,10 @@ public class DeploymentsController {
     }
 
     /**
-     * 지정한 네임스페이스에 있는 deployments의 목록을 서비스를 통해 호출하여 받은 결과값을 반환한다.
+     * Deployments 목록을 조회한다.
      *
-     * @param namespace namespace
-     * @return List of deployments (specific namespace)
+     * @param namespace the namespace
+     * @return the deployments list
      */
     @GetMapping( value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_LIST )
     public DeploymentsList getDeploymentsList(@PathVariable String namespace) {
@@ -85,11 +86,11 @@ public class DeploymentsController {
     }
 
     /**
-     * 지정한 네임스페이스에 있는 특정한 deployment의 상세 내역을 서비스를 통해 호출하여 받은 결과값을 반환한다.
+     * Deployments 상세 정보를 조회한다.
      *
-     * @param namespace request namespace
-     * @param deploymentsName request deploymentsName
-     * @return Deployments's detail content (specific namespace and deployments)
+     * @param namespace the namespace
+     * @param deploymentsName the deployments name
+     * @return the deployments
      */
     @GetMapping( value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_DETAIL )
     public Deployments getDeployments(@PathVariable String namespace, @PathVariable String deploymentsName) {
@@ -97,11 +98,11 @@ public class DeploymentsController {
     }
 
     /**
-     * Services YAML 정보를 조회한다.
+     * Deployments YAML 정보를 조회한다.
      *
-     * @param namespace   the namespace
-     * @param deploymentsName the deploymentsName
-     * @return the custom services yaml
+     * @param namespace the namespace
+     * @param deploymentsName the deployments name
+     * @return the deployments yaml
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_YAML)
     @ResponseBody
@@ -110,11 +111,11 @@ public class DeploymentsController {
     }
 
     /**
-     * deployments 목록을 조회한다. (Label Selector)
+     * Deployments 목록을 조회한다. (Label Selector)
      *
      * @param namespace the namespace
-     * @param selector  the selector for filter
-     * @return List of deployments
+     * @param selector the selector for filter
+     * @return the deployments list
      */
     @GetMapping( value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_RESOURCES )
     @ResponseBody
