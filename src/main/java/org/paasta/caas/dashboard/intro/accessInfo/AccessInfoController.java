@@ -33,7 +33,7 @@ public class AccessInfoController {
      * Instantiates a new Access info controller.
      *  @param commonService     the common service
      * @param accessInfoService the access info service
-     * @param propertyService
+     * @param propertyService the property service
      */
     @Autowired
     public AccessInfoController(CommonService commonService, AccessInfoService accessInfoService, PropertyService propertyService) {
@@ -51,12 +51,12 @@ public class AccessInfoController {
      */
     @GetMapping(value = Constants.URI_INTRO_ACCESS_INFO)
     public ModelAndView getIntroAccessInfo(HttpServletRequest httpServletRequest) {
-        Map roleSetCodeList = new HashMap();
+        Map<String, String> roleSetCodeList = new HashMap<>();
         roleSetCodeList.put("administratorCode", propertyService.getAdministratorCode());
         roleSetCodeList.put("regularUserCode", propertyService.getRegularUserCode());
         roleSetCodeList.put("initUserCode", propertyService.getInitUserCode());
 
-        Map roleSetNameList = new HashMap();
+        Map<String, String> roleSetNameList = new HashMap<>();
         roleSetNameList.put("administratorName", propertyService.getAdministratorName());
         roleSetNameList.put("regularUserName", propertyService.getRegularUserName());
         roleSetNameList.put("initUserName", propertyService.getInitUserName());
