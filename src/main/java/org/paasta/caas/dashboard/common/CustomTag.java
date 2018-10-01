@@ -1,21 +1,21 @@
 package org.paasta.caas.dashboard.common;
 
 import javax.servlet.jsp.tagext.SimpleTagSupport;
+
 /**
- * Navigation을 위한 CustomTag 클래스
+ * CustomTag 클래스.
  *
  * @author hyerin
  * @version 1.0
- * @since 2018.09.03
+ * @since 2018.07.24
  */
 public class CustomTag extends SimpleTagSupport {
 
     /**
      * Camel Case로 되어 있는 것을 분리해준다
      * ex) hyerinTest -> Hyerin Test
-     * @author hyerin
-     * @version 1.0
-     * @since 2018.09.03
+     * @param str
+     * @return String
      */
     public static String camelCaseParser(String str) {
         if(str == null || str.length() == 0) {
