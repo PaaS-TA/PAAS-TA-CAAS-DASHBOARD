@@ -14,7 +14,7 @@
     <!-- Deployments 시작 -->
     <div class="cluster_content02 row two_line two_view harf_view" style="display: block;">
         <ul class="maT30">
-            <li class="cluster_first_box">
+            <li class="cluster_first_box maB50">
                 <jsp:include page="./list.jsp"/>
             </li>
         </ul>

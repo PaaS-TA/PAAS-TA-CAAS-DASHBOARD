@@ -85,7 +85,7 @@
             </li>
             <!-- Replica Set 끝 -->
             <!-- Pods 시작 -->
-            <li class="cluster_third_box">
+            <li class="cluster_third_box maB50">
                 <jsp:include page="../pods/list.jsp"/>
             </li>
             <!-- Pods 끝 -->
