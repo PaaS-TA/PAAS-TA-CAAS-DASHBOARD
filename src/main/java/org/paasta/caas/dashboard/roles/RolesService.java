@@ -44,7 +44,7 @@ public class RolesService {
      *
      * @return the roles list
      */
-    public RolesList getRoleList() {
+    RolesList getRoleList() {
         // url :: /cluster/namespaces/{namespace}/roles
         return restTemplateService.send(Constants.TARGET_CAAS_API,REQ_URL, HttpMethod.GET, null, RolesList.class);
     }
@@ -64,15 +64,15 @@ public class RolesService {
                 .replace("{userId:.+}", user.getUsername()), HttpMethod.GET, null, Users.class);
 
         // users.getRoleSetCode()로 role_set_code 목록을 불러온다.
-        List<Roles> rolesList = restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_ROLES_LIST
-                .replace("{roleSetCode:.+}", users.getRoleSetCode()), HttpMethod.GET, null, List.class);
+        RolesList rolesList = restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_ROLES_LIST
+                .replace("{roleSetCode:.+}", users.getRoleSetCode()), HttpMethod.GET, null, RolesList.class);
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 
         HttpSession session = request.getSession();
 
-        for(int index =0; index < rolesList.size(); index++){
-            Roles resultRole = mapper.convertValue(rolesList.get(index), Roles.class);
-            session.setAttribute("RS_" + (resultRole.getResourceCode()).toUpperCase() + "_" + (resultRole.getVerbCode()).toUpperCase(),"TRUE");
+        for (Object aRolesList : rolesList.getItems()) {
+            Roles resultRole = mapper.convertValue(aRolesList, Roles.class);
+            session.setAttribute("RS_" + (resultRole.getResourceCode()).toUpperCase() + "_" + (resultRole.getVerbCode()).toUpperCase(), "TRUE");
         }
     }
 
@@ -85,15 +85,15 @@ public class RolesService {
     public void setRolesListAfter(String rsCode){
         ObjectMapper mapper = new ObjectMapper();
 
-        List<Roles> rolesList = restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_ROLES_LIST
-                .replace("{roleSetCode:.+}", rsCode), HttpMethod.GET, null, List.class);
+        RolesList rolesList = restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_ROLES_LIST
+                .replace("{roleSetCode:.+}", rsCode), HttpMethod.GET, null, RolesList.class);
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 
         HttpSession session = request.getSession();
 
-        for(int index =0; index < rolesList.size(); index++){
-            Roles resultRole = mapper.convertValue(rolesList.get(index), Roles.class);
-            session.setAttribute("RS_" + (resultRole.getResourceCode()).toUpperCase() + "_" + (resultRole.getVerbCode()).toUpperCase(),"TRUE");
+        for (Object aRolesList : rolesList.getItems()) {
+            Roles resultRole = mapper.convertValue(aRolesList, Roles.class);
+            session.setAttribute("RS_" + (resultRole.getResourceCode()).toUpperCase() + "_" + (resultRole.getVerbCode()).toUpperCase(), "TRUE");
         }
 
     }
