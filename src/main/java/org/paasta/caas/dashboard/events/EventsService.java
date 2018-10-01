@@ -27,23 +27,23 @@ public class EventsService {
     public EventsService(RestTemplateService restTemplateService) {this.restTemplateService = restTemplateService;}
 
     /**
-     * Gets eventList.
+     * Events 목록을 조회한다.
      *
      * @param namespace the namespace Name
      * @param resourceName the resource Name
-     * @return the eventList
+     * @return the events list
      */
-    EventsList getEventList(String namespace, String resourceName) {
+    EventsList getEventsList(String namespace, String resourceName) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/"+namespace+"/events/resource/"+resourceName, HttpMethod.GET, null, EventsList.class);
     }
 
     /**
-     * Gets namespace Events list.
+     * Events 목록을 조회한다.(for namespace)
      *
      * @param namespace the namespace Name
-     * @return the eventList
+     * @return the events list
      */
-    EventsList getNamespaceEventList(String namespace) {
+    EventsList getNamespaceEventsList(String namespace) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/"+namespace+"/events", HttpMethod.GET, null, EventsList.class);
     }
 }

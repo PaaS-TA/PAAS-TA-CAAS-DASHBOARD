@@ -29,16 +29,16 @@ public class EventsController {
     }
 
     /**
-     * Gets Events list.
+     * Events 페이지로 이동한다.
      *
      * @param namespace    the namespace
      * @param resourceName the resourceName
-     * @return the event list
+     * @return the events list
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_EVENTS_LIST)
     @ResponseBody
     EventsList getEventList(@PathVariable("namespace") String namespace, @PathVariable("resourceName") String resourceName) {
-        EventsList resultList = eventsService.getEventList(namespace, resourceName);
+        EventsList resultList = eventsService.getEventsList(namespace, resourceName);
 
         // FOR DASHBOARD
         resultList.setResourceName(resourceName);
@@ -46,15 +46,15 @@ public class EventsController {
     }
 
     /**
-     * Gets namespace Events list.
+     * Events 페이지로 이동한다.(for namespace)
      *
      * @param namespace    the namespace
-     * @return the event list
+     * @return the events list
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_NAMESPACE_EVENTS_LIST)
     @ResponseBody
     EventsList getNamespaceEventList(@PathVariable("namespace") String namespace) {
-        EventsList resultList = eventsService.getNamespaceEventList(namespace);
+        EventsList resultList = eventsService.getNamespaceEventsList(namespace);
 
         return resultList;
     }
