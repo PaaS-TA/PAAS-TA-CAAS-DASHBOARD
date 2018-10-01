@@ -36,4 +36,14 @@ public class EventsService {
     EventsList getEventList(String namespace, String resourceName) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/"+namespace+"/events/resource/"+resourceName, HttpMethod.GET, null, EventsList.class);
     }
+
+    /**
+     * Gets namespace Events list.
+     *
+     * @param namespace the namespace Name
+     * @return the eventList
+     */
+    EventsList getNamespaceEventList(String namespace) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/"+namespace+"/events", HttpMethod.GET, null, EventsList.class);
+    }
 }

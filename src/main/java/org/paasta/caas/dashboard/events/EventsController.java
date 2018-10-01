@@ -44,4 +44,18 @@ public class EventsController {
         resultList.setResourceName(resourceName);
         return resultList;
     }
+
+    /**
+     * Gets namespace Events list.
+     *
+     * @param namespace    the namespace
+     * @return the event list
+     */
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_NAMESPACE_EVENTS_LIST)
+    @ResponseBody
+    EventsList getNamespaceEventList(@PathVariable("namespace") String namespace) {
+        EventsList resultList = eventsService.getNamespaceEventList(namespace);
+
+        return resultList;
+    }
 }

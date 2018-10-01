@@ -12,9 +12,8 @@
     var getList = function () {
         var resourceName = "<c:out value='${namespace}' default='' />";
 
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
-            .replace("{namespace:.+}", NAME_SPACE)
-            .replace("{resourceName:.+}", resourceName);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_NAMESPACE_EVENTS_LIST %>"
+            .replace("{namespace:.+}", NAME_SPACE);
 
         procGetCommonEventsList(reqUrl, resourceName);
     };
