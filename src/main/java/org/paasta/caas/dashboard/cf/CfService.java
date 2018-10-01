@@ -11,7 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by indra on 2018-08-08.
+ * Cf Service 클래스.
+ *
+ * @author indra
+ * @version 1.0
+ * @since 2018.08.28
  */
 @Service
 public class CfService {
@@ -22,13 +26,25 @@ public class CfService {
     @Value("${cf.api.url}")
     private String apiUrl;
 
-
+    /**
+     * Instantiates a new Cf service.
+     *
+     * @param commonService the common service
+     * @param restTemplateService the rest template service
+     */
     @Autowired
     public CfService(CommonService commonService, RestTemplateService restTemplateService) {
         this.commonService = commonService;
         this.restTemplateService = restTemplateService;
     }
 
+    /**
+     * Organization 정보를 조회한다.
+     *
+     * @param uaaid the uaaid
+     * @param token the token
+     * @return the Map
+     */
     public Map<String, Object> getCfOrgsByUaaId(String uaaid, String token) {
         Map resultMap = new HashMap();
 
@@ -41,6 +57,13 @@ public class CfService {
         return resultMap;
     }
 
+    /**
+     * Space Guid를 조회한다.
+     *
+     * @param serviceInstanceId the serviceInstance Id
+     * @param token the token
+     * @return the Map
+     */
     public Map<String, Object> getCfServiceInstancesById(String serviceInstanceId, String token) {
         Map resultMap = new HashMap();
 
@@ -53,6 +76,13 @@ public class CfService {
         return resultMap;
     }
 
+    /**
+     * Organization Guid를 조회한다.
+     *
+     * @param space_guid the space guid
+     * @param token the token
+     * @return the Map
+     */
     public Map<String, Object> getCfServiceById(String space_guid, String token) {
         Map resultMap = new HashMap();
 
@@ -65,6 +95,13 @@ public class CfService {
         return resultMap;
     }
 
+    /**
+     * Organization Name을 조회한다.
+     *
+     * @param organization_guid the organization guid
+     * @param token the token
+     * @return the Map
+     */
     public Map<String, Object> getCfOrgById(String organization_guid, String token) {
         Map resultMap = new HashMap();
 
