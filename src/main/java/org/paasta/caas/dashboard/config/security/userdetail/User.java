@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * User 클래스.
+ * User Model 클래스
  *
  * @author indra
  * @version 1.0
