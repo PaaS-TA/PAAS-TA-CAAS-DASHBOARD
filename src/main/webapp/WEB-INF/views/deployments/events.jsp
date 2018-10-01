@@ -1,6 +1,6 @@
 <%--
   Deployment main
-  @author Hyungu Cho
+  @author PHR
   @version 1.0
   @since 2018.08.14
 --%>
