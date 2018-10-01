@@ -103,6 +103,9 @@ public class Constants {
     public static final String URI_COMMON_API_USERS_UPDATE = "/users/serviceInstanceId/{serviceInstanceId:.+}/organizationGuid/{organizationGuid:.+}/userId/{userId:.+}/update";
     public static final String URI_COMMON_API_USERS_DELETE = "/users/serviceInstanceId/{serviceInstanceId:.+}/organizationGuid/{organizationGuid:.+}/userId/{userId:.+}/delete";
 
+    // COMMON API URI :: ROLES
+    public static final String URI_COMMON_API_ROLES_LIST = "/roles/{roleSetCode:.+}";
+
     private Constants() {
         throw new IllegalStateException();
     }
