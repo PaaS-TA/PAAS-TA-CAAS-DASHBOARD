@@ -8,14 +8,14 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="content">
-    <jsp:include page="commonNodes.jsp" flush="true"/>
+    <jsp:include page="commonNodes.jsp"/>
 
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
 
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
             <li class="cluster_second_box">
-                <jsp:include page="../pods/list.jsp" flush="true"/>
+                <jsp:include page="../pods/list.jsp"/>
             </li>
             <li class="cluster_second_box maB50">
                 <div class="sortable_wrap">

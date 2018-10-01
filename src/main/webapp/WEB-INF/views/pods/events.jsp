@@ -7,9 +7,9 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div class="content">
-    <jsp:include page="commonPods.jsp" flush="true"/>
+    <jsp:include page="commonPods.jsp"/>
 
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
 
     <!-- Events 시작-->
     <div class="cluster_content02 row two_line two_view harf_view">

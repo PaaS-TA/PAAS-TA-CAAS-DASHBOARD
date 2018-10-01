@@ -11,7 +11,7 @@
         <p>Pods</p>
         <ul id="pod-list-search-form" class="colright_btn">
             <li>
-                <input type="text" id="table-search-01" name="table-search" class="table-search" placeholder="Pod name"
+                <input type="text" id="table-search-01" name="table-search" class="table-search" placeholder="search"
                        onkeypress="if (event.keyCode === 13) { setPodsListWithFilter(this.value); }"/>
                 <button name="button" class="btn table-search-on" type="button">
                     <i class="fas fa-search"></i>
@@ -27,11 +27,13 @@
                 <col style='width:10%;'>
                 <col style='width:20%;'>
                 <col style='width:5%;'>
-                <col style='width:20%;'>
+                <col style='width:15%;'>
+                <col style='width:5%;'>
+                <col style='width:5%;'>
             </colgroup>
             <thead>
             <tr id="noPodListResultArea" style="display: none;">
-                <td colspan='6'><p class='service_p'>실행 중인 Pods가 없습니다.</p></td>
+                <td colspan='8'><p class='service_p'>실행 중인 Pods가 없습니다.</p></td>
             </tr>
             <tr id="podListResultHeaderArea" class="headerSortFalse">
                 <td>Name
@@ -45,6 +47,12 @@
                 <td>Created on
                     <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '5')">
                         <i class="fas fa-caret-down"></i></button>
+                </td>
+                <td>
+                    <p class="custom-tag-content-overflow" data-toggle="tooltip" title="CPU">CPU (cores)</p>
+                </td>
+                <td>
+                    <p class="custom-tag-content-overflow" data-toggle="tooltip" title="Memory (bytes)">Memory (bytes)</p>
                 </td>
             </tr>
             </thead>
@@ -199,7 +207,62 @@
             }
         }
 
-        // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
+        var cpuSum = 0;
+        var memorySum = 0;
+        if ('' != nvl(spec.containers)) {
+            try {
+                var hasResources = false;
+                $.each(spec.containers, function(index, container) {
+                   if('' === nvl(container.resources))
+                       return;
+                   var resource = {};
+                   if ('' !== nvl(container.resources.limits)) {
+                       resource = container.resources.limits;
+                   } else if ('' !== nvl(container.resources.requests)) {
+                       resource = container.resources.requests;
+                   } else {
+                       return;
+                   }
+                   hasResources = true;
+
+                   if (resource.cpu.indexOf('m') > 0) {
+                       cpuSum += Number(resource.cpu.substring(0, resource.cpu.length - 1));
+                   } else {
+                       cpuSum += Number(resource.cpu) * 1000;
+                   }
+
+                   var multiple = 1;
+                   if (resource.memory.toLowerCase().indexOf('gi') > 0) {
+                       multiple = 1024;
+                   }
+
+                   memorySum += ( multiple * Number(resource.memory.substring(0, resource.memory.length - 2)) );
+                });
+
+                if (!hasResources) {
+                    cpuSum = memorySum = -1;
+                }
+            } catch (e) {
+                cpuSum = memorySum = -1;
+            }
+        }
+
+        if (cpuSum <= -1) {
+            cpuSum = '-';
+        } else if (cpuSum > 1000) {
+            cpuSum = Number.parseFloat(cpuSum / 1000).toFixed(3);
+        } else {
+            cpuSum += 'm';
+        }
+
+        if (memorySum <= -1) {
+            memorySum = '-';
+        } else if (memorySum >= 1048576) { // Gi
+            memorySum = Number.parseFloat(memorySum/1024).toFixed(2) + 'Gi';
+        } else {
+            memorySum += 'Mi';
+        }
+
         return {
             name: metadata.name,
             namespace: metadata.namespace,
@@ -207,7 +270,9 @@
             podStatus: status,
             podErrorMsg: errorMsg,
             restartCount: restartCountSum,
-            creationTimestamp: metadata.creationTimestamp
+            creationTimestamp: metadata.creationTimestamp,
+            usageCPU: cpuSum,
+            usageMemory: memorySum
         };
     };
 
@@ -281,6 +346,8 @@
                 + '<td><span>' + pod.podStatus + '</span></td>'
                 + '<td>' + pod.restartCount + '</td>'
                 + '<td>' + pod.creationTimestamp + '</td>'
+                + '<td><span>' + pod.usageCPU + '</span></td>'
+                + '<td><span>' + pod.usageMemory + '</span></td>'
                 + '</tr>');
         }
 

@@ -10,7 +10,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="content">
     <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <c:out value="${replicaSetName}"/></h1>
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
@@ -74,7 +74,7 @@
             <!-- Details 끝 -->
             <!-- Pods 시작 -->
             <li class="cluster_third_box">
-                <jsp:include page="../pods/list.jsp" flush="true"/>
+                <jsp:include page="../pods/list.jsp"/>
             </li>
             <!-- Pods 끝 -->
             <!-- Services 시작 -->
@@ -167,7 +167,7 @@
 
         selector = procSetSelector(selector);
 
-        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_RESOURCES %>"
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_RESOURCES %>"
                 .replace("{namespace:.+}", NAME_SPACE)
                 .replace("{selector:.+}", selector);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsInfo);

@@ -5,11 +5,10 @@
   @since 2018.08.09
 --%>
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="content">
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
     <!-- Overview 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
@@ -34,19 +33,19 @@
             <!-- 그래프 끝 -->
             <!-- Deployments 시작 -->
             <li class="cluster_third_box">
-                <jsp:include page="../deployments/list.jsp" flush="true"/>
+                <jsp:include page="../deployments/list.jsp"/>
             </li>
             <!-- Deployments 끝 -->
 
             <!-- Pods 시작 -->
             <li class="cluster_third_box">
-                <jsp:include page="../pods/list.jsp" flush="true"/>
+                <jsp:include page="../pods/list.jsp"/>
             </li>
             <!-- Pods 끝 -->
 
             <!-- Replica Sets 시작 -->
             <li class="cluster_fourth_box maB50">
-                <jsp:include page="../replicasets/list.jsp" flush="true"/>
+                <jsp:include page="../replicasets/list.jsp"/>
             </li>
             <!-- Replica Sets 끝 -->
         </ul>
@@ -61,7 +60,7 @@
     $(window).bind("load", function () {
         getDeploymentsList();
         getPodsList();
-        getReplicaSetsList("");
+        getReplicaSetsList();
         createChart();
     });
 
@@ -94,13 +93,16 @@
         if (devChartSucceededPer > 0) {
             devPieColors.push(pieColors[0]);
             devSeriesData.push([seriesLabel[0], devChartSucceededPer]);
-        } else if (devChartRunningPer > 0) {
+        }
+        if (devChartRunningPer > 0) {
             devPieColors.push(pieColors[1]);
             devSeriesData.push([seriesLabel[1], devChartRunningPer]);
-        } else if (devChartFailedPer > 0) {
+        }
+        if (devChartFailedPer > 0) {
             devPieColors.push(pieColors[2]);
             devSeriesData.push([seriesLabel[2], devChartFailedPer]);
-        } else if (devChartPenddingPer > 0) {
+        }
+        if (devChartPenddingPer > 0) {
             devPieColors.push(pieColors[3]);
             devSeriesData.push([seriesLabel[3], devChartPenddingPer]);
         }
@@ -108,13 +110,16 @@
         if (podsChartSucceededPer > 0) {
             podsPieColors.push(pieColors[0]);
             podsSeriesData.push([seriesLabel[0], podsChartSucceededPer]);
-        } else if (podsChartRunningPer > 0) {
+        }
+        if (podsChartRunningPer > 0) {
             podsPieColors.push(pieColors[1]);
             podsSeriesData.push([seriesLabel[1], podsChartRunningPer]);
-        } else if (podsChartFailedPer > 0) {
+        }
+        if (podsChartFailedPer > 0) {
             podsPieColors.push(pieColors[2]);
             podsSeriesData.push([seriesLabel[2], podsChartFailedPer]);
-        } else if (podsChartPenddingPer > 0) {
+        }
+        if (podsChartPenddingPer > 0) {
             podsPieColors.push(pieColors[3]);
             podsSeriesData.push([seriesLabel[3], podsChartPenddingPer]);
         }
@@ -122,13 +127,16 @@
         if (repsChartSucceededPer > 0) {
             repsPieColors.push(pieColors[0]);
             repsSeriesData.push([seriesLabel[0], repsChartSucceededPer]);
-        } else if (repsChartRunningPer > 0) {
+        }
+        if (repsChartRunningPer > 0) {
             repsPieColors.push(pieColors[1]);
             repsSeriesData.push([seriesLabel[1], repsChartRunningPer]);
-        } else if (repsChartFailedPer > 0) {
+        }
+        if (repsChartFailedPer > 0) {
             repsPieColors.push(pieColors[2]);
             repsSeriesData.push([seriesLabel[2], repsChartFailedPer]);
-        } else if (repsChartPenddingPer > 0) {
+        }
+        if (repsChartPenddingPer > 0) {
             repsPieColors.push(pieColors[3]);
             repsSeriesData.push([seriesLabel[3], repsChartPenddingPer]);
         }

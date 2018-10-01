@@ -8,7 +8,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <div class="content">
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
     <div class="cluster_tabs clearfix"></div>
     <div class="cluster_content01 row two_line two_view">
         <div class="sortable_wrap custom-sortable_wrap">

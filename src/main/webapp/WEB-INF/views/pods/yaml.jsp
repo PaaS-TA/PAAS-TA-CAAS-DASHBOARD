@@ -7,9 +7,9 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div class="content">
-    <jsp:include page="commonPods.jsp" flush="true"/>
+    <jsp:include page="commonPods.jsp"/>
 
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
 
     <!-- Services YAML 시작-->
     <div class="cluster_content03 row two_line two_view harf_view custom_display_block">
@@ -31,7 +31,7 @@
     </div>
     <!-- Services YAML 끝 -->
 </div>
-<jsp:include page="../common/syntaxHighlighter.jsp" flush="true"/>
+<jsp:include page="../common/syntaxHighlighter.jsp"/>
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function() {
