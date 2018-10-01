@@ -77,8 +77,10 @@ public class DeploymentsService {
      * @return the deployments list
      */
      DeploymentsList getDeploymentsListLabelSelector(String namespace, String selectors) {
-        String reqUrl = Constants.URI_API_DEPLOYMENTS_RESOURCES.replace("{namespace:.+}", namespace)
-                                                                .replace("{selector:.+}", selectors);
-        return restTemplateService.send(Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, DeploymentsList.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_DEPLOYMENTS_RESOURCES
+                    .replace("{namespace:.+}", namespace)
+                    .replace("{selector:.+}", selectors),
+                HttpMethod.GET, null, DeploymentsList.class);
     }
+
 }
