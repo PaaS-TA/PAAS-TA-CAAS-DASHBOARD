@@ -96,10 +96,13 @@
 
     // CALLBACK
     var callbackGetUsersList = function(data) {
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
+            return false;
+        }
 
-        // TODO :: data return check valid
-
-        G_USERS_LIST = data;
+        G_USERS_LIST = data.items;
 
         viewLoading('hide');
         setUsersList("");

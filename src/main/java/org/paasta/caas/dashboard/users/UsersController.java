@@ -73,7 +73,7 @@ public class UsersController {
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_COMMON_API_USERS_LIST)
     @ResponseBody
-    public List<Users> getUsesListByServiceInstanceId(@PathVariable("serviceInstanceId") String serviceInstanceId,
+    public UsersList getUsesListByServiceInstanceId(@PathVariable("serviceInstanceId") String serviceInstanceId,
                                                       @PathVariable("organizationGuid") String organizationGuid) {
         return userService.getUsesListByServiceInstanceId(serviceInstanceId, organizationGuid);
     }

@@ -8,6 +8,7 @@ import org.paasta.caas.dashboard.common.RestTemplateService;
 import org.paasta.caas.dashboard.common.TemplateService;
 import org.paasta.caas.dashboard.common.model.Users;
 import org.paasta.caas.dashboard.security.SsoAuthenticationDetails;
+import org.paasta.caas.dashboard.users.UsersList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,11 +132,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         if(certificationFlag) {
-            List commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+serviceInstanceId+"/organizationGuid/"+organization_guid, HttpMethod.GET, null, List.class);
+            UsersList commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+serviceInstanceId+"/organizationGuid/"+organization_guid, HttpMethod.GET, null, UsersList.class);
 
             spaceName = "paas-"+serviceInstanceId+"-caas";
 
-            if(commonGetUsers != null && commonGetUsers.size() > 0) {
+            if(commonGetUsers != null && commonGetUsers.getItems().size() > 0) {
                 if(commonGetUsers.toString().contains("userId="+username+",")) {
                     role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 } else {

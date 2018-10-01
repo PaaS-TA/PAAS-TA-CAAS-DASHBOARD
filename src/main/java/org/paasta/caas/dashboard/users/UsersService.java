@@ -8,8 +8,6 @@ import org.paasta.caas.dashboard.config.security.userdetail.User;
 import org.paasta.caas.dashboard.refreshSession.RefreshSessionService;
 import org.paasta.caas.dashboard.roles.Roles;
 import org.paasta.caas.dashboard.roles.RolesService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * User Service 클래스
@@ -40,7 +39,6 @@ public class UsersService {
     private final RolesService rolesService;
     private final PropertyService propertyService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UsersService.class);
 
     /**
      * Instantiates a new User service.
@@ -63,10 +61,10 @@ public class UsersService {
      *
      * @return the user list
      */
-    List<Users> getUsesListByServiceInstanceId(String serviceInstanceId, String organizationGuid) {
+    UsersList getUsesListByServiceInstanceId(String serviceInstanceId, String organizationGuid) {
         return restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_USERS_LIST
                 .replace("{serviceInstanceId:.+}", serviceInstanceId)
-                .replace("{organizationGuid:.+}", organizationGuid), HttpMethod.GET, null, List.class);
+                .replace("{organizationGuid:.+}", organizationGuid), HttpMethod.GET, null, UsersList.class);
     }
 
     /**
@@ -97,7 +95,7 @@ public class UsersService {
      */
     Users updateUserRole(String serviceInstanceId, String organizationGuid, Users user) {
 
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession();
 
         // Security User 객체
@@ -168,7 +166,7 @@ public class UsersService {
      * @return the Users
      */
     Users deleteUserByServiceInstanceId(Users user) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession();
 
         // Security User 객체
