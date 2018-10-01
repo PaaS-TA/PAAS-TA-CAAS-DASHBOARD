@@ -6,8 +6,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div class="content">
-    <jsp:include page="commonNodes.jsp" flush="true"/>
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="commonNodes.jsp"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
 
     <!-- Nodes Details 시작-->
     <div class="cluster_content02 row two_line two_view harf_view">

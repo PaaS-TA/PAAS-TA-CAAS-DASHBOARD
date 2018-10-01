@@ -11,7 +11,7 @@
 
 <div class="content">
     <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <c:out value="${deploymentsName}"/> </h1>
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
     <!-- Events 시작-->
     <div class="cluster_content02 row two_line two_view harf_view">
         <ul class="maT30">

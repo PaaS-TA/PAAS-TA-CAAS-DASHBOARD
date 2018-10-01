@@ -11,7 +11,7 @@
 
 <div class="content">
     <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <c:out value="${replicaSetName}"/></h1>
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
     <!-- YAML 시작-->
     <div class="cluster_content03 row two_line two_view">
         <ul class="maT30">
@@ -35,7 +35,7 @@
 </div>
 
 <%--SyntexHighlighter--%>
-<jsp:include page="../common/syntaxHighlighter.jsp" flush="true"/>
+<jsp:include page="../common/syntaxHighlighter.jsp"/>
 
 
 <script type="text/javascript">

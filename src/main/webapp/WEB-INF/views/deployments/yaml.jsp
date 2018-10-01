@@ -11,7 +11,7 @@
 
 <div class="content">
     <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <c:out value="${deploymentsName}"/></h1>
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
     <!-- Services YAML 시작-->
     <div class="cluster_content03 row two_line two_view harf_view custom_display_block">
         <ul class="maT30">
@@ -33,7 +33,7 @@
 </div>
 
 <%--SyntexHighlighter--%>
-<jsp:include page="../common/syntaxHighlighter.jsp" flush="true"/>
+<jsp:include page="../common/syntaxHighlighter.jsp"/>
 
 <script type="text/javascript">
     var deployName = '<c:out value="${deploymentsName}"/>';
