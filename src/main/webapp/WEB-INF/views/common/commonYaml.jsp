@@ -20,7 +20,7 @@
                     </div>
                     <div class="paA30">
                         <div class="yaml">
-                            <pre class="brush: yaml" id="resultArea"> -
+                            <pre class="brush: yaml" id="resultCommonYamlArea"> -
                             </pre>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
             return false;
         }
 
-        $('#resultArea').html('---\n' + data.sourceTypeYaml);
+        $('#resultCommonYamlArea').html('---\n' + data.sourceTypeYaml);
         viewLoading('hide');
     };
 

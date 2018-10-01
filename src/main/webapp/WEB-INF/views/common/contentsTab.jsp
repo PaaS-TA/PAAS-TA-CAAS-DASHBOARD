@@ -1,12 +1,12 @@
-<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%--
-  Created by IntelliJ IDEA.
-  User: CISS
-  Date: 7/5/2017
-  Time: 11:28 AM
-  To change this template use File | Settings | File Templates.
+  Contents tab
+
+  author: CISS
+  version: 1.0
+  since: 2018.08.30
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -214,16 +214,16 @@
             </c:choose>
         </c:when>
     </c:choose>
-    </ul>
+    <%--</ul>--%>
     <div class="cluster_tabs_line"></div>
 </div>
 
-        <script type="text/javascript">
-        // ON LOAD
-        $(document.body).ready(function () {
-        // 기존 탭클릭 이벤트 남아있는 부분 제거
-            $('.cluster_tabs li').off('click');
-        });
+<script type="text/javascript">
+    // ON LOAD
+    $(document.body).ready(function () {
+    // 기존 탭클릭 이벤트 남아있는 부분 제거
+        $('.cluster_tabs li').off('click');
+    });
 
-        $(".cluster_tabs_on").css({ "cursor": "default"});
-        </script>
+    $(".cluster_tabs_on").css({ "cursor": "default"});
+</script>

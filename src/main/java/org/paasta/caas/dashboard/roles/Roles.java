@@ -1,11 +1,6 @@
 package org.paasta.caas.dashboard.roles;
 
 import lombok.Data;
-import org.paasta.caas.dashboard.common.model.CommonMetaData;
-import org.paasta.caas.dashboard.common.model.CommonRoleRule;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Roles Model 클래스

@@ -5,7 +5,6 @@
   @since 2018.10.01
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="content">
     <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <span id="commonEventsViewTitle"> - </span></h1>
@@ -29,8 +28,8 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr id="noResultArea"><td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderArea" style="display: none;">
+                            <tr id="noResultCommonEventsArea"><td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td></tr>
+                            <tr id="resultHeaderCommonEventsArea" style="display: none;">
                                 <td>Message</td>
                                 <td>Source</td>
                                 <td>Sub-object</td>
@@ -39,7 +38,7 @@
                                 <td>Last seen</td>
                             </tr>
                             </thead>
-                            <tbody id="resultArea">
+                            <tbody id="resultCommonEventsArea">
                             <tr>
                                 <td colspan="6"> - </td>
                             </tr>
@@ -73,9 +72,9 @@
             return false;
         }
 
-        var resultArea = $('#resultArea');
-        var resultHeaderArea = $('#resultHeaderArea');
-        var noResultArea = $('#noResultArea');
+        var resultCommonEventsArea = $('#resultCommonEventsArea');
+        var resultHeaderCommonEventsArea = $('#resultHeaderCommonEventsArea');
+        var noResultCommonEventsArea = $('#noResultCommonEventsArea');
 
         var items = data.items;
         var listLength = items.length;
@@ -94,17 +93,17 @@
         }
 
         if (listLength < 1) {
-            resultHeaderArea.hide();
-            resultArea.hide();
-            noResultArea.show();
+            resultHeaderCommonEventsArea.hide();
+            resultCommonEventsArea.hide();
+            noResultCommonEventsArea.show();
         } else {
-            noResultArea.hide();
-            resultHeaderArea.show();
-            resultArea.show();
-            resultArea.html(htmlString);
+            noResultCommonEventsArea.hide();
+            resultHeaderCommonEventsArea.show();
+            resultCommonEventsArea.show();
+            resultCommonEventsArea.html(htmlString);
         }
 
-        procSetToolTipForTableTd('resultArea');
+        procSetToolTipForTableTd('resultCommonEventsArea');
         viewLoading('hide');
     };
 

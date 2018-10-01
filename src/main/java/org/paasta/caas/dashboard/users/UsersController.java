@@ -32,7 +32,7 @@ public class UsersController {
      * Instantiates a new User controller.
      *  @param commonService the common service
      * @param userService   the user service
-     * @param propertyService
+     * @param propertyService the property service
      */
     @Autowired
     public UsersController(CommonService commonService, UsersService userService, PropertyService propertyService) {

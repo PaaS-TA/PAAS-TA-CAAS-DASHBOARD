@@ -5,7 +5,7 @@
   version: 1.0
   since: 2018.09.13
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div id="loadingSpinner" style="display: none;">
