@@ -5,7 +5,6 @@
   @since 2018.09.04
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <div class="content">
     <jsp:include page="../common/contentsTab.jsp"/>
 

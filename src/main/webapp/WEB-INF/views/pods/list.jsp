@@ -11,7 +11,7 @@
         <p>Pods</p>
         <ul id="pod-list-search-form" class="colright_btn">
             <li>
-                <input type="text" id="table-search-01" name="table-search" class="table-search" placeholder="Pod name"
+                <input type="text" id="table-search-01" name="table-search" class="table-search" placeholder="search"
                        onkeypress="if (event.keyCode === 13) { setPodsListWithFilter(this.value); }"/>
                 <button name="button" class="btn table-search-on" type="button">
                     <i class="fas fa-search"></i>
@@ -27,11 +27,13 @@
                 <col style='width:10%;'>
                 <col style='width:20%;'>
                 <col style='width:5%;'>
-                <col style='width:20%;'>
+                <col style='width:15%;'>
+                <col style='width:5%;'>
+                <col style='width:5%;'>
             </colgroup>
             <thead>
             <tr id="noPodListResultArea" style="display: none;">
-                <td colspan='6'><p class='service_p'>실행 중인 Pods가 없습니다.</p></td>
+                <td colspan='8'><p class='service_p'>실행 중인 Pods가 없습니다.</p></td>
             </tr>
             <tr id="podListResultHeaderArea" class="headerSortFalse">
                 <td>Name
@@ -46,6 +48,12 @@
                     <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '5')">
                         <i class="fas fa-caret-down"></i></button>
                 </td>
+                <td>
+                    <p class="custom-tag-content-overflow" data-toggle="tooltip" title="CPU (cores)">CPU (cores)</p>
+                </td>
+                <td>
+                    <p class="custom-tag-content-overflow" data-toggle="tooltip" title="Memory (bytes)">Memory (bytes)</p>
+                </td>
             </tr>
             </thead>
             <tbody id="podListResultArea">
@@ -59,17 +67,6 @@
     var G_PODS_CHART_PENDING_CNT = 0;
     var G_PODS_CHART_SUCCEEDED_CNT = 0;
     var G_PODS_LIST_LENGTH = 0;
-
-    // GET LIST
-    var getPodsList = function() {
-        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>'.replace('{namespace:.+}', NAME_SPACE);
-        getPodListUsingRequestURL(reqUrl);
-    };
-
-    // GET POD LIST USING REQUEST URL
-    var getPodListUsingRequestURL = function(reqUrl) {
-        procCallAjax(reqUrl, 'GET', null, null, callbackGetPodList);
-    };
 
     // CALLBACK POD LIST
     var callbackGetPodList = function(data) {
@@ -199,7 +196,62 @@
             }
         }
 
-        // required : name, namespace, node, status, restart(count), created on, pod error message(when it exists)
+        var cpuSum = 0;
+        var memorySum = 0;
+        var hasResources = false;
+        if ('' != nvl(spec.containers)) {
+            try {
+                $.each(spec.containers, function(index, container) {
+                    if ('' === nvl(container.resources))
+                        return;
+                    var resource = {};
+                    if ('' !== nvl(container.resources.limits)) {
+                        resource = container.resources.limits;
+                    } else if ('' !== nvl(container.resources.requests)) {
+                        resource = container.resources.requests;
+                    } else {
+                        return;
+                    }
+                    hasResources = true;
+
+                    if (resource.cpu.indexOf('m') > 0) {
+                        cpuSum += Number(resource.cpu.substring(0, resource.cpu.length - 1));
+                    } else {
+                        cpuSum += Number(resource.cpu) * 1000;
+                    }
+
+                    var multiple = 1;
+                    if (resource.memory.toLowerCase().indexOf('gi') > 0) {
+                        multiple = 1024;
+                    }
+
+                    memorySum += (multiple * Number(resource.memory.substring(0, resource.memory.length - 2)));
+                });
+            } catch (e) {
+                cpuSum = memorySum = -1;
+            }
+        }
+
+        if (!hasResources) {
+            cpuSum = memorySum = -1;
+        }
+
+        if (cpuSum <= -1) {
+            cpuSum = '-';
+        } else if (cpuSum > 1000) {
+            cpuSum = Number.parseFloat(cpuSum / 1000).toFixed(3);
+        } else {
+            cpuSum += 'm';
+        }
+
+        if (memorySum <= -1) {
+            memorySum = '-';
+        } else if (memorySum >= 1048576) { // Gi
+            memorySum = Number.parseFloat(memorySum / 1024).toFixed(2) + 'Gi';
+        } else {
+            memorySum += 'Mi';
+        }
+
         return {
             name: metadata.name,
             namespace: metadata.namespace,
@@ -207,7 +259,9 @@
             podStatus: status,
             podErrorMsg: errorMsg,
             restartCount: restartCountSum,
-            creationTimestamp: metadata.creationTimestamp
+            creationTimestamp: metadata.creationTimestamp,
+            usageCPU: cpuSum,
+            usageMemory: memorySum
         };
     };
 
@@ -247,7 +301,7 @@
         var resultArea = $('#podListResultArea');
         var resultHeaderArea = $('#podListResultHeaderArea');
         var noResultArea = $('#noPodListResultArea');
-        
+
         noResultArea.show();
         resultHeaderArea.hide();
         resultArea.hide();
@@ -281,6 +335,8 @@
                 + '<td><span>' + pod.podStatus + '</span></td>'
                 + '<td>' + pod.restartCount + '</td>'
                 + '<td>' + pod.creationTimestamp + '</td>'
+                + '<td><span>' + pod.usageCPU + '</span></td>'
+                + '<td><span>' + pod.usageMemory + '</span></td>'
                 + '</tr>');
         }
 
@@ -288,9 +344,9 @@
             noResultArea.hide();
             resultHeaderArea.show();
             resultArea.show();
-            
+
             resultArea.html(htmlString);
-            
+
             var resultTable = $('#resultTableForPod');
             resultTable.tablesorter({
                 sortList: [[5, 1]] // 0 = ASC, 1 = DESC
@@ -337,5 +393,16 @@
         }
 
         viewLoading('hide');
+    };
+
+    // GET POD LIST USING REQUEST URL
+    var getPodListUsingRequestURL = function(reqUrl) {
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetPodList);
+    };
+
+    // GET LIST
+    var getPodsList = function() {
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>'.replace('{namespace:.+}', NAME_SPACE);
+        getPodListUsingRequestURL(reqUrl);
     };
 </script>

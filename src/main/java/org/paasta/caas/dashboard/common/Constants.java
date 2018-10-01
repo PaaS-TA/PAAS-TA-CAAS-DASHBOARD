@@ -100,6 +100,8 @@ public class Constants {
     // COMMON API URI :: USERS
     public static final String URI_COMMON_API_USERS_LIST = "/users/serviceInstanceId/{serviceInstanceId:.+}/organizationGuid/{organizationGuid:.+}";
     public static final String URI_COMMON_API_USERS_DETAIL = "/users/serviceInstanceId/{serviceInstanceId:.+}/organizationGuid/{organizationGuid:.+}/userId/{userId:.+}/";
+    public static final String URI_COMMON_API_USERS_UPDATE = "/users/serviceInstanceId/{serviceInstanceId:.+}/organizationGuid/{organizationGuid:.+}/userId/{userId:.+}/update";
+    public static final String URI_COMMON_API_USERS_DELETE = "/users/serviceInstanceId/{serviceInstanceId:.+}/organizationGuid/{organizationGuid:.+}/userId/{userId:.+}/delete";
 
     private Constants() {
         throw new IllegalStateException();

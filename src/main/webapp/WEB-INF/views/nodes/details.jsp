@@ -4,9 +4,14 @@
   @version 1.0
   @since 2018.08.14
 --%>
+<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div class="content">
-    <jsp:include page="commonNodes.jsp"/>
+    <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span>
+        <c:out value="${nodeName}" default="-"/></h1>
+
     <jsp:include page="../common/contentsTab.jsp"/>
 
     <!-- Nodes Details 시작-->
@@ -218,7 +223,7 @@
 
         var addresses = procSetSelector(convertToHTMLSymbol(addressesObj));
         var unschedulable = false;
-        if (null != spec.taints && spec.taints instanceof Array) {
+        if ('' !== nvl(spec.taints) && spec.taints instanceof Array) {
             for (var i = 0; i < spec.taints.length; i++) {
                 if (spec.taints[i].key === 'node-role.kubernetes.io/master' && spec.taints[i].effect !== 'NoSchedule') {
                     unschedulable = true;
@@ -251,11 +256,18 @@
         viewLoading('hide');
     };
 
+    // GET NODE
+    var getNode = function() {
+        var resourceName = '<c:out value="${nodeName}" default="" />';
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_NODES_LIST %>'
+            .replace('{nodeName:.+}', resourceName);
+
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetNodeDetail);
+    };
+
     // ON LOAD
     $(document.body).ready(function() {
-        viewLoading('show');
-        getNode(G_NODE_NAME, callbackGetNodeDetail);
-        viewLoading('hide');
+        getNode();
     });
 </script>
 <!-- Nodes Details 끝 -->
