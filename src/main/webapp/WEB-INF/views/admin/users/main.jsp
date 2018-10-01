@@ -303,20 +303,16 @@
             roleSetCode: G_USER_PER_ROLE
         };
 
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_DETAIL %>"
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_UPDATE %>"
             .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
             .replace("{organizationGuid:.+}", ORGANIZATION_GUID)
             .replace("{userId:.+}", G_USER_ID_SELECT_ROLE);
 
-        console.log("세카이노", reqUrl);
-
-        //postProcCallAjax("/updateUserRole?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackUpdateRoleOfUser);
         postProcCallAjax(reqUrl, reqParam, callbackUpdateRoleOfUser);
     };
 
     // CALLBACK USER ROLE
     var callbackUpdateRoleOfUser = function (data) {
-        console.log("워너원~~~", JSON.stringify(data));
         var resultString = 'Role 이 변경되었습니다.';
 
         if (!procCheckValidData(data)) {
@@ -341,37 +337,26 @@
 
     // SET DELETE USER
     var deleteUser = function (userId) {
-        var reqParam = {
-            userId: userId
-        };
+        viewLoading('show');
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_DELETE %>"
+            .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
+            .replace("{organizationGuid:.+}", ORGANIZATION_GUID)
+            .replace("{userId:.+}", userId);
 
-        postProcCallAjax("/deleteUser?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackDeleteUser);
+        postProcCallAjax(reqUrl, null, callbackDeleteUser);
     };
 
     // CALLBACK DELETE USER
     var callbackDeleteUser = function (data) {
-        // TODO :: REMOVE AFTER CHECK
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        // var code = "<p class='account_modal_p'>사용자가 삭제되었습니다.</p>";
-        // $(".deleteUserComplete").html(code);
-        // $("#layerpop-single-button2").modal("show");
-
         var resultString = '사용자가 삭제되었습니다.';
 
-        // TODO :: APPLY :: data.resultCode
-        // if (!procCheckValidData(data)) {
-        //     viewLoading('hide');
-        //     resultString = '사용자 삭제에 실패했습니다.'
-        // }
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            resultString = '사용자 삭제에 실패했습니다.'
+        }
 
         procSetLayerPopup('알림', resultString, '확인', '취소', 'x', 'location.reload(true);', 'location.reload(true);', 'location.reload(true);');
     };
-
-    // TODO :: REMOVE AFTER CHECK
-    // BIND (CLICK USER DELETE COMPLETE BUTTON)
-    // $(document).on("click", "#okBtnDelete", function () {
-    //     location.reload(true);
-    // });
 
 
     // ON LOAD

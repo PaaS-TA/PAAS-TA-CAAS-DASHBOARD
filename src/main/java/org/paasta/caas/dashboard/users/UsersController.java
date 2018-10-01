@@ -99,10 +99,11 @@ public class UsersController {
      *
      * @param serviceInstanceId the serviceInstanceId
      * @param organizationGuid the organizationGuid
+     * @param userId the userId
      * @param users the users
      * @return the users
      */
-    @PostMapping(value = Constants.API_URL + Constants.URI_COMMON_API_USERS_DETAIL)
+    @PostMapping(value = Constants.API_URL + Constants.URI_COMMON_API_USERS_UPDATE)
     @ResponseBody
     public Users updateUserRole(@PathVariable("serviceInstanceId") String serviceInstanceId,
                                 @PathVariable("organizationGuid") String organizationGuid,
@@ -118,15 +119,15 @@ public class UsersController {
      *
      * @param serviceInstanceId the serviceInstanceId
      * @param organizationGuid the organizationGuid
-     * @param users the users
+     * @param userId the userId
      * @return the users
      */
-    @PostMapping(value = "/deleteUser")
+    @PostMapping(value = Constants.API_URL + Constants.URI_COMMON_API_USERS_DELETE)
     @ResponseBody
-    public Users deleteUser(@RequestParam("serviceInstanceId") String serviceInstanceId,
-                            @RequestParam("organizationGuid") String organizationGuid,
-                            @RequestBody Users users){
-        Users user = userService.getUserByServiceInstanceId(serviceInstanceId, organizationGuid, users.getUserId());
+    public Users deleteUser(@PathVariable("serviceInstanceId") String serviceInstanceId,
+                            @PathVariable("organizationGuid") String organizationGuid,
+                            @PathVariable("userId") String userId){
+        Users user = userService.getUserByServiceInstanceId(serviceInstanceId, organizationGuid, userId);
         return userService.deleteUserByServiceInstanceId(user);
     }
 }
