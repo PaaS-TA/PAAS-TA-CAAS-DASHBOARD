@@ -85,6 +85,7 @@
 
     // GET LIST
     var getUsersList = function() {
+        viewLoading('show');
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_LIST %>"
             .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
             .replace("{organizationGuid:.+}", ORGANIZATION_GUID);
@@ -96,6 +97,7 @@
     // CALLBACK
     var callbackGetUsersList = function(data) {
         viewLoading('hide');
+        console.log("볼빨간 사춘기~~~", JSON.stringify(data));
         if (RESULT_STATUS_FAIL === data.resultStatus) return false;
 
         G_USERS_LIST = data;
@@ -104,6 +106,7 @@
 
     // SET LIST
     var setUsersList = function(searchKeyword) {
+        viewLoading('show');
         var userId;
 
         var resultArea = $('#resultArea');
@@ -248,6 +251,7 @@
             resultArea.html(htmlString);
         }
 
+        viewLoading('hide');
     };
 
     // BIND (SERACH USER BUTTON)
@@ -284,6 +288,7 @@
 
     // SET UPDATE USER ROLE
     var updateRoleOfUser = function () {
+        viewLoading('show');
         if(G_USER_PER_ROLE === G_ADMIN_NAME){
             G_USER_PER_ROLE = G_ADMIN_CODE;
         }else if (G_USER_PER_ROLE === G_REGULAR_USER_NAME){
@@ -298,57 +303,41 @@
             roleSetCode: G_USER_PER_ROLE
         };
 
-        postProcCallAjax("/updateUserRole?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackUpdateRoleOfUser);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_DETAIL %>"
+            .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
+            .replace("{organizationGuid:.+}", ORGANIZATION_GUID)
+            .replace("{userId:.+}", G_USER_ID_SELECT_ROLE);
+
+        console.log("세카이노", reqUrl);
+
+        //postProcCallAjax("/updateUserRole?serviceInstanceId=" + SERVICE_INSTANCE_ID + "&organizationGuid=" + ORGANIZATION_GUID, reqParam, callbackUpdateRoleOfUser);
+        postProcCallAjax(reqUrl, reqParam, callbackUpdateRoleOfUser);
     };
 
     // CALLBACK USER ROLE
     var callbackUpdateRoleOfUser = function (data) {
-        // TODO :: REMOVE AFTER CHECK
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        // var code = "<p class='account_modal_p'>Role 이 변경되었습니다.</p>";
-        // $(".roleUpdateComplete").html(code);
-        // $("#layerpop-single-button1").modal("show");
-
+        console.log("워너원~~~", JSON.stringify(data));
         var resultString = 'Role 이 변경되었습니다.';
-        // TODO :: APPLY :: data.resultCode
-        // if (!procCheckValidData(data)) {
-        //     viewLoading('hide');
-        //     resultString = 'Role 변경에 실패했습니다.';
-        // }
 
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            resultString = 'Role 변경에 실패했습니다.';
+        }
         procSetLayerPopup('알림', resultString, '확인', '취소', 'x', 'location.reload(true);', 'location.reload(true);', 'location.reload(true);');
     };
 
 
-    // TODO :: REMOVE AFTER CHECK
-    // BIND (CLICK ROLE SAVE COMPLETE BUTTON)
-    // $(document).on("click", "#okBtnUpdate", function () {
-    //     location.reload(true);
-    // });
-
     // BIND (DELETE USER MODAL)
-    // TODO :: REMOVE AFTER CHECK
-    // $(document).on("click", "span[name=deleteUser]", function () {
-    //     console.log("user delete");
-    //     var index = $('span[name=deleteUser]').index(this);
     $(document).on("click", "span[class=usersDeleteUser]", function(){
         var index = $('.usersDeleteUser').index(this);
 
         G_DELETE_USER_ID = $("#resultArea").find(".userId").eq(index).text();
 
         var code = "<p class='account_modal_p'><span>" + G_DELETE_USER_ID + "</span> 님을 삭제하시겠습니까?<br>사용자를 삭제하면 복구할 수 없습니다.</p>";
-        // TODO :: REMOVE AFTER CHECK
-        // $(".deleteUser").html(code);
 
         procSetLayerPopup('알림', code, '확인', '취소', 'x', 'deleteUser("' + G_DELETE_USER_ID + '");', null, null);
     });
 
-
-    // BIND (CLICK USER DELETE BUTTON)
-    // TODO :: REMOVE AFTER CHECK
-    // $(document).on("click", "#userDeleteBtn", function () {
-    //     deleteUser(G_DELETE_USER_ID);
-    // });
 
     // SET DELETE USER
     var deleteUser = function (userId) {
@@ -387,7 +376,6 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        viewLoading('show');
         getUsersList();
     });
 

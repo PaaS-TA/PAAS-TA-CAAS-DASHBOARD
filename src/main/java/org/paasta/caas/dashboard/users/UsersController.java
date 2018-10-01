@@ -102,12 +102,13 @@ public class UsersController {
      * @param users the users
      * @return the users
      */
-    @PostMapping(value = "/updateUserRole")
+    @PostMapping(value = Constants.API_URL + Constants.URI_COMMON_API_USERS_DETAIL)
     @ResponseBody
-    public Users updateUserRole(@RequestParam("serviceInstanceId") String serviceInstanceId,
-                                @RequestParam("organizationGuid") String organizationGuid,
+    public Users updateUserRole(@PathVariable("serviceInstanceId") String serviceInstanceId,
+                                @PathVariable("organizationGuid") String organizationGuid,
+                                @PathVariable("userId") String userId,
                                 @RequestBody Users users){
-        Users user = userService.getUserByServiceInstanceId(serviceInstanceId, organizationGuid, users.getUserId());
+        Users user = userService.getUserByServiceInstanceId(serviceInstanceId, organizationGuid, userId);
         user.setRoleSetCode(users.getRoleSetCode());
         return userService.updateUserRole(serviceInstanceId, organizationGuid, user);
     }
