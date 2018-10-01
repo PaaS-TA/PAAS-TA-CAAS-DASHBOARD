@@ -209,42 +209,42 @@
 
         var cpuSum = 0;
         var memorySum = 0;
+        var hasResources = false;
         if ('' != nvl(spec.containers)) {
             try {
-                var hasResources = false;
                 $.each(spec.containers, function(index, container) {
-                   if('' === nvl(container.resources))
-                       return;
-                   var resource = {};
-                   if ('' !== nvl(container.resources.limits)) {
-                       resource = container.resources.limits;
-                   } else if ('' !== nvl(container.resources.requests)) {
-                       resource = container.resources.requests;
-                   } else {
-                       return;
-                   }
-                   hasResources = true;
+                    if ('' === nvl(container.resources))
+                        return;
+                    var resource = {};
+                    if ('' !== nvl(container.resources.limits)) {
+                        resource = container.resources.limits;
+                    } else if ('' !== nvl(container.resources.requests)) {
+                        resource = container.resources.requests;
+                    } else {
+                        return;
+                    }
+                    hasResources = true;
 
-                   if (resource.cpu.indexOf('m') > 0) {
-                       cpuSum += Number(resource.cpu.substring(0, resource.cpu.length - 1));
-                   } else {
-                       cpuSum += Number(resource.cpu) * 1000;
-                   }
+                    if (resource.cpu.indexOf('m') > 0) {
+                        cpuSum += Number(resource.cpu.substring(0, resource.cpu.length - 1));
+                    } else {
+                        cpuSum += Number(resource.cpu) * 1000;
+                    }
 
-                   var multiple = 1;
-                   if (resource.memory.toLowerCase().indexOf('gi') > 0) {
-                       multiple = 1024;
-                   }
+                    var multiple = 1;
+                    if (resource.memory.toLowerCase().indexOf('gi') > 0) {
+                        multiple = 1024;
+                    }
 
-                   memorySum += ( multiple * Number(resource.memory.substring(0, resource.memory.length - 2)) );
+                    memorySum += (multiple * Number(resource.memory.substring(0, resource.memory.length - 2)));
                 });
-
-                if (!hasResources) {
-                    cpuSum = memorySum = -1;
-                }
             } catch (e) {
                 cpuSum = memorySum = -1;
             }
+        }
+
+        if (!hasResources) {
+            cpuSum = memorySum = -1;
         }
 
         if (cpuSum <= -1) {
@@ -258,7 +258,7 @@
         if (memorySum <= -1) {
             memorySum = '-';
         } else if (memorySum >= 1048576) { // Gi
-            memorySum = Number.parseFloat(memorySum/1024).toFixed(2) + 'Gi';
+            memorySum = Number.parseFloat(memorySum / 1024).toFixed(2) + 'Gi';
         } else {
             memorySum += 'Mi';
         }
@@ -312,7 +312,7 @@
         var resultArea = $('#podListResultArea');
         var resultHeaderArea = $('#podListResultHeaderArea');
         var noResultArea = $('#noPodListResultArea');
-        
+
         noResultArea.show();
         resultHeaderArea.hide();
         resultArea.hide();
@@ -355,9 +355,9 @@
             noResultArea.hide();
             resultHeaderArea.show();
             resultArea.show();
-            
+
             resultArea.html(htmlString);
-            
+
             var resultTable = $('#resultTableForPod');
             resultTable.tablesorter({
                 sortList: [[5, 1]] // 0 = ASC, 1 = DESC
