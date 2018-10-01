@@ -24,19 +24,8 @@
         // SET MENU CURSOR
         procSetMenuCursor();
 
-        // TODO :: REMOVE AFTER CHECK
-        // var clipboard = new ClipboardJS('.bar');
-        // clipboard.on('success', function (e) {
-        //     alert("복사되었습니다.");
-        //     console.log(e);
-        // });
-        //
-        // clipboard.on('error', function (e) {
-        //     console.log(e);
-        // });
-
         // REMOVE UNNECESSARY EVENTS
         $(".sortable_wrap,.sortable_line > li").unbind();
-
     });
+
 </script>

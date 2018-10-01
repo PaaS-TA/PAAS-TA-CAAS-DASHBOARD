@@ -79,6 +79,7 @@
     var callbackGetReplicaSetsList = function(data) {
         if (!procCheckValidData(data)) {
             viewLoading('hide');
+            alertMessage();
             return false;
         }
 

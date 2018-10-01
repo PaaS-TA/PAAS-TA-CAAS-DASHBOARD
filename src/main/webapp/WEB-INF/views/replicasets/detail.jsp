@@ -128,6 +128,7 @@
     var callbackGetDetail = function(data) {
         if (!procCheckValidData(data)) {
             viewLoading('hide');
+            alertMessage();
             return false;
         }
 
@@ -177,6 +178,7 @@
     var callbackGetDeploymentsInfo = function(data) {
         if (!procCheckValidData(data)) {
             viewLoading('hide');
+            alertMessage();
             return false;
         }
 
@@ -225,6 +227,7 @@
     var callbackGetServices = function(data) {
         if (!procCheckValidData(data)) {
             viewLoading('hide');
+            alertMessage();
             return false;
         }
 

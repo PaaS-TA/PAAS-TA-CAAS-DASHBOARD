@@ -10,7 +10,7 @@
 <nav style="height: 90%;">
     <div class="scroll_style">
         <ul class="nav_1d caas_nav">
-            <li id="left-menu-users" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/users');">
+            <li id="left-menu-users" onclick="procMovePage('<%= Constants.URI_USERS %>');">
                 <dl>
                     <dt>
                         <div id="lnbimg10" class="lefticos">
@@ -24,7 +24,7 @@
                     </dd>
                 </dl>
             </li>
-            <li id="left-menu-roles" onclick="procMovePage('<%= Constants.CAAS_BASE_URL %>/roles');">
+            <li id="left-menu-roles" onclick="procMovePage('<%= Constants.URI_ROLES %>');">
                 <dl>
                     <dt>
                         <div id="lnbimg11" class="">
