@@ -7,12 +7,12 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <div class="content">
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
 
     <div class="cluster_content02 row two_line two_view harf_view" style="display: block;">
         <ul class="maT30">
             <li class="cluster_first_box">
-                <jsp:include page="./list.jsp" flush="true"/>
+                <jsp:include page="./list.jsp"/>
             </li>
         </ul>
     </div>

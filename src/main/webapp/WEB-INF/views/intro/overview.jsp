@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <div class="content">
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
     <div class="cluster_tabs clearfix"></div>
     <!-- Intro 시작-->
     <div class="cluster_content01 row two_line two_view">

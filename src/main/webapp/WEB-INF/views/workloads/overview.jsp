@@ -5,11 +5,10 @@
   @since 2018.08.09
 --%>
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="content">
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
     <!-- Overview 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
         <ul class="maT30">
@@ -34,19 +33,19 @@
             <!-- 그래프 끝 -->
             <!-- Deployments 시작 -->
             <li class="cluster_third_box">
-                <jsp:include page="../deployments/list.jsp" flush="true"/>
+                <jsp:include page="../deployments/list.jsp"/>
             </li>
             <!-- Deployments 끝 -->
 
             <!-- Pods 시작 -->
             <li class="cluster_third_box">
-                <jsp:include page="../pods/list.jsp" flush="true"/>
+                <jsp:include page="../pods/list.jsp"/>
             </li>
             <!-- Pods 끝 -->
 
             <!-- Replica Sets 시작 -->
             <li class="cluster_fourth_box maB50">
-                <jsp:include page="../replicasets/list.jsp" flush="true"/>
+                <jsp:include page="../replicasets/list.jsp"/>
             </li>
             <!-- Replica Sets 끝 -->
         </ul>
@@ -61,7 +60,7 @@
     $(window).bind("load", function () {
         getDeploymentsList();
         getPodsList();
-        getReplicaSetsList("");
+        getReplicaSetsList();
         createChart();
     });
 
