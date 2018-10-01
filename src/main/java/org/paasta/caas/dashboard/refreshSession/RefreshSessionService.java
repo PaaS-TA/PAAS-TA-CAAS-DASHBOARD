@@ -7,6 +7,8 @@ import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
 
 /**
+ * Refresh Session Service 클래스
+ *
  * @author hrjin
  * @version 1.0
  * @since 2018-09-07
@@ -24,12 +26,8 @@ public class RefreshSessionService {
         while(se.hasMoreElements()){
             String rsCode = (String)se.nextElement();
 
-            System.out.println("@@@@@@@ rsValue : "+rsCode+" : "+session.getAttribute(rsCode));
-
             if(rsCode.indexOf("RS_") == 0){
-                System.out.println("@@@@@@@ Before delete: "+rsCode);
                 session.removeAttribute(rsCode);
-                System.out.println("@@@@@@@ After delete: "+rsCode);
             }
         }
 
