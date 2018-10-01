@@ -22,7 +22,7 @@
 
 </head>
 <body>
-    `<div class="wrap dashboard" id="dashboardWrap" style="display: none;">
+    <div class="wrap dashboard" id="dashboardWrap" style="display: none;">
         <tiles:insertAttribute name="header"/>
         <tiles:insertAttribute name="left-menu"/>
         <div class="contain">
@@ -40,6 +40,6 @@
     </div>
     <div>
         <tiles:insertAttribute name="loadingSpinner"/>
-    </div>`
+    </div>
 </body>
 </html>
