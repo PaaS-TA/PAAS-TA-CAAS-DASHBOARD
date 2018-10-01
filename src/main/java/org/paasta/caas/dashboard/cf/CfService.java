@@ -1,6 +1,5 @@
 package org.paasta.caas.dashboard.cf;
 
-import org.paasta.caas.dashboard.common.CommonService;
 import org.paasta.caas.dashboard.common.RestTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +19,6 @@ import java.util.Map;
 @Service
 public class CfService {
 
-    private final CommonService commonService;
     private final RestTemplateService restTemplateService;
 
     @Value("${cf.api.url}")
@@ -29,12 +27,10 @@ public class CfService {
     /**
      * Instantiates a new Cf service.
      *
-     * @param commonService the common service
      * @param restTemplateService the rest template service
      */
     @Autowired
-    public CfService(CommonService commonService, RestTemplateService restTemplateService) {
-        this.commonService = commonService;
+    public CfService(RestTemplateService restTemplateService) {
         this.restTemplateService = restTemplateService;
     }
 
