@@ -7,8 +7,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div class="content">
-    <jsp:include page="commonNodes.jsp"/>
+    <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span>
+        <c:out value="${nodeName}" default="-"/></h1>
 
     <jsp:include page="../common/contentsTab.jsp"/>
 
@@ -65,12 +67,12 @@
         var podsTableHeader = $('#podListResultHeaderArea');
         var conditionsNotFound = $('#conditionsNotFound');
         var conditionsTableHeader = $('#conditionsTableHeader');
-        
+
         podNotFound.show();
         podsTableHeader.hide();
         conditionsNotFound.show();
         conditionsTableHeader.hide();
-            
+
         if (!procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage();
@@ -115,10 +117,17 @@
         viewLoading('hide');
     };
 
+    // GET NODE
+    var getNode = function() {
+        var resourceName = '<c:out value="${nodeName}" default="" />';
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_NODES_LIST %>'
+            .replace('{nodeName:.+}', resourceName);
+
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetNodeSummary);
+    };
+
     // ON LOAD
     $(document.body).ready(function() {
-        viewLoading('show');
-        getNode(G_NODE_NAME, callbackGetNodeSummary);
-        viewLoading('hide');
+        getNode();
     });
 </script>

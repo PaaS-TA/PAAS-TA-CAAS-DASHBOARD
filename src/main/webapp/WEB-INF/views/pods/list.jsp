@@ -49,7 +49,7 @@
                         <i class="fas fa-caret-down"></i></button>
                 </td>
                 <td>
-                    <p class="custom-tag-content-overflow" data-toggle="tooltip" title="CPU">CPU (cores)</p>
+                    <p class="custom-tag-content-overflow" data-toggle="tooltip" title="CPU (cores)">CPU (cores)</p>
                 </td>
                 <td>
                     <p class="custom-tag-content-overflow" data-toggle="tooltip" title="Memory (bytes)">Memory (bytes)</p>
@@ -67,17 +67,6 @@
     var G_PODS_CHART_PENDING_CNT = 0;
     var G_PODS_CHART_SUCCEEDED_CNT = 0;
     var G_PODS_LIST_LENGTH = 0;
-
-    // GET LIST
-    var getPodsList = function() {
-        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>'.replace('{namespace:.+}', NAME_SPACE);
-        getPodListUsingRequestURL(reqUrl);
-    };
-
-    // GET POD LIST USING REQUEST URL
-    var getPodListUsingRequestURL = function(reqUrl) {
-        procCallAjax(reqUrl, 'GET', null, null, callbackGetPodList);
-    };
 
     // CALLBACK POD LIST
     var callbackGetPodList = function(data) {
@@ -404,5 +393,16 @@
         }
 
         viewLoading('hide');
+    };
+
+    // GET POD LIST USING REQUEST URL
+    var getPodListUsingRequestURL = function(reqUrl) {
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetPodList);
+    };
+
+    // GET LIST
+    var getPodsList = function() {
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>'.replace('{namespace:.+}', NAME_SPACE);
+        getPodListUsingRequestURL(reqUrl);
     };
 </script>
