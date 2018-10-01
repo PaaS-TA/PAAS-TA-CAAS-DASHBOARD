@@ -96,11 +96,15 @@
 
     // CALLBACK
     var callbackGetUsersList = function(data) {
-        viewLoading('hide');
-        console.log("볼빨간 사춘기~~~", JSON.stringify(data));
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
+            return false;
+        }
 
-        G_USERS_LIST = data;
+        G_USERS_LIST = data.items;
+
+        viewLoading('hide');
         setUsersList("");
     };
 
@@ -195,15 +199,9 @@
                 var layerpop2 = '';
 
                 if(splitRole === "admin"){
-                    // TODO :: REMOVE AFTER CHECK
-                    // layerpop1 += "<span data-target='#layerpop1' data-toggle='modal' name='saveRole' style='display: none'><i class='fas fa-save'></i></span>";
-                    // layerpop2 += "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser' style='display: none'><i class='fas fa-trash-alt'></i></span>";
                     layerpop1 += "<span class='usersSaveRole' style='display: none'><i class='fas fa-save'></i></span>";
                     layerpop2 += "<span class='usersDeleteUser' style='display: none'><i class='fas fa-trash-alt'></i></span>";
                 }else{
-                    // TODO :: REMOVE AFTER CHECK
-                    // layerpop1 += "<span data-target='#layerpop1' data-toggle='modal' name='saveRole'><i class='fas fa-save'></i></span>";
-                    // layerpop2 += "<span data-target='#layerpop2' data-toggle='modal' name='deleteUser' ><i class='fas fa-trash-alt'></i></span>";
                     layerpop1 += "<span class='usersSaveRole'><i class='fas fa-save'></i></span>";
                     layerpop2 += "<span class='usersDeleteUser' ><i class='fas fa-trash-alt'></i></span>";
                 }
@@ -262,9 +260,6 @@
 
 
     // BIND (CHANGE ROLE SAVE BUTTON)
-    // TODO :: REMOVE AFTER CHECK
-    // $(document).on("click", "span[name=saveRole]", function(){
-    // var index = $('span[name=saveRole]').index(this);
     $(document).on("click", "span[class=usersSaveRole]", function(){
         var index = $('.usersSaveRole').index(this);
         var selectedRoleFilter = $('select[name=role-filter]');
@@ -273,18 +268,10 @@
         G_USER_PER_ROLE = selectedRoleFilter.eq(index).find(':selected').val();
 
         var code = "<p class='account_modal_p'><span>" + G_USER_ID_SELECT_ROLE + "</span> 님을 <span>"+ G_USER_PER_ROLE + "</span>로 Role 을 변경하시겠습니까?</p>";
-        // TODO :: REMOVE AFTER CHECK
-        // $(".roleUpdate").html(code);
 
         procSetLayerPopup('알림', code, '확인', '취소', 'x', 'updateRoleOfUser();', null, null);
     });
 
-
-    // TODO :: REMOVE AFTER CHECK
-    // BIND (CLICK ROLE SAVE BUTTON)
-    // $(document).on("click", "#roleUpdateBtn", function () {
-    //     updateRoleOfUser();
-    // });
 
     // SET UPDATE USER ROLE
     var updateRoleOfUser = function () {

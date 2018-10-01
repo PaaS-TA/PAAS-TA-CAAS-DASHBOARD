@@ -54,10 +54,10 @@ public class RestTemplateService {
         this.restTemplate = restTemplate;
         this.propertyService = propertyService;
 
-        this.caasApiBase64Authorization = "Basic "
+        caasApiBase64Authorization = "Basic "
                 + Base64Utils.encodeToString(
                 (caasApiAuthorizationId + ":" + caasApiAuthorizationPassword).getBytes(StandardCharsets.UTF_8));
-        this.commonApiBase64Authorization = "Basic "
+        commonApiBase64Authorization = "Basic "
                 + Base64Utils.encodeToString(
                 (commonApiAuthorizationId + ":" + commonApiAuthorizationPassword).getBytes(StandardCharsets.UTF_8));
     }
@@ -157,7 +157,7 @@ public class RestTemplateService {
             authorization = commonApiBase64Authorization;
         }
 
-        this.base64Authorization = authorization;
-        this.baseUrl = apiUrl;
+        base64Authorization = authorization;
+        baseUrl = apiUrl;
     }
 }

@@ -4,6 +4,7 @@ import org.paasta.caas.dashboard.common.CommonService;
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
 import org.paasta.caas.dashboard.security.SsoAuthenticationDetails;
+import org.paasta.caas.dashboard.users.UsersList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +51,9 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
 
                 SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
                 if (ssoAuthenticationDetails.getServiceInstanceId() != null && !ssoAuthenticationDetails.getServiceInstanceId().trim().equals("") && ssoAuthenticationDetails.getOrganizationGuid() != null && !ssoAuthenticationDetails.getOrganizationGuid().trim().equals("")) {
-                    List commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+ssoAuthenticationDetails.getServiceInstanceId()+"/organizationGuid/"+ssoAuthenticationDetails.getOrganizationGuid(), HttpMethod.GET, null, List.class);
+                    UsersList commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+ssoAuthenticationDetails.getServiceInstanceId()+"/organizationGuid/"+ssoAuthenticationDetails.getOrganizationGuid(), HttpMethod.GET, null, UsersList.class);
 
-                    if(commonGetUsers == null || commonGetUsers.size() == 0) {
+                    if(commonGetUsers == null || commonGetUsers.getItems().size() == 0) {
                         LOGGER.info(":: Session not .. redirect.. unauthorized");
                         SecurityContextHolder.clearContext();
                         response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");

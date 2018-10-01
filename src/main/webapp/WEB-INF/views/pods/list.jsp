@@ -25,11 +25,11 @@
                 <col style='width:auto;'>
                 <col style='width:10%;'>
                 <col style='width:10%;'>
-                <col style='width:20%;'>
+                <col style='width:10%;'>
                 <col style='width:5%;'>
-                <col style='width:15%;'>
-                <col style='width:5%;'>
-                <col style='width:5%;'>
+                <col style='width:10%;'>
+                <col style='width:10%;'>
+                <col style='width:10%;'>
             </colgroup>
             <thead>
             <tr id="noPodListResultArea" style="display: none;">
@@ -48,12 +48,8 @@
                     <button class="sort-arrow" onclick="procSetSortList('resultTableForPod', this, '5')">
                         <i class="fas fa-caret-down"></i></button>
                 </td>
-                <td>
-                    <p class="custom-tag-content-overflow" data-toggle="tooltip" title="CPU (cores)">CPU (cores)</p>
-                </td>
-                <td>
-                    <p class="custom-tag-content-overflow" data-toggle="tooltip" title="Memory (bytes)">Memory (bytes)</p>
-                </td>
+                <td>CPU (cores)</td>
+                <td>Memory (bytes)</td>
             </tr>
             </thead>
             <tbody id="podListResultArea">
@@ -90,7 +86,6 @@
             podList.push(pod);
             podNameList.push(pod.name);
 
-            // for chart of overview
             switch (pod.podStatus) {
                 case 'Pending':
                     G_PODS_CHART_PENDING_CNT++;
@@ -119,13 +114,6 @@
 
     // GET POD STATUS FROM POD'S STATUS DATA
     var getPodStatus = function(podStatus) {
-        /*
-        1. Pod's status is succeeded -> return this.
-        1. count of pod's containers is less than 0 -> return pod's status
-        2. else...
-          2.1. all of pod's container statuses is 'Running' -> return 'Running'
-          2.2. some of pod's container statuses isn't 'Running' -> return these status, but 'terminated' state is the highest order.
-         */
         var podStatusStr = nvl(podStatus.phase, 'Unknown');
         if (podStatusStr.includes('Succeeded')) {
             return podStatusStr;
@@ -163,7 +151,6 @@
 
     // GET POD DATA
     var getPod = function(podItem) {
-        // required : name, namespace, node, status, restart(count), created on
         var metadata = podItem.metadata;
         var spec = podItem.spec;
         var status = getPodStatus(podItem.status);
@@ -239,15 +226,27 @@
         if (cpuSum <= -1) {
             cpuSum = '-';
         } else if (cpuSum > 1000) {
-            cpuSum = Number.parseFloat(cpuSum / 1000).toFixed(3);
+            var cpuFloat = Number.parseFloat(cpuSum / 1000).toFixed(3);
+            var cpuInt = Number.parseInt(cpuSum / 1000);
+            if (Math.abs(cpuFloat - cpuInt) === 0) {
+                cpuSum = cpuInt;
+            } else {
+                cpuSum = cpuFloat;
+            }
         } else {
             cpuSum += 'm';
         }
 
         if (memorySum <= -1) {
             memorySum = '-';
-        } else if (memorySum >= 1048576) { // Gi
-            memorySum = Number.parseFloat(memorySum / 1024).toFixed(2) + 'Gi';
+        } else if (memorySum > 102400) {
+            var memoryFloat = Number.parseFloat(memorySum / 1024).toFixed(3);
+            var memoryInt = Number.parseInt(memorySum / 1024);
+            if (Math.abs(memoryFloat - memoryInt) === 0) {
+                memorySum = memoryInt + 'Gi';
+            } else {
+                memorySum = memoryFloat + 'Gi';
+            }
         } else {
             memorySum += 'Mi';
         }
@@ -279,7 +278,6 @@
         } else if (statusString.includes('Waiting')) {
             styleClassSet = {span: 'waiting2', i: 'fas fa-exclamation-triangle'};
         } else {
-            // included 'Unknown' status
             styleClassSet = {span: 'unknown2', i: 'fas fa-exclamation-triangle'};
         }
 
@@ -297,7 +295,6 @@
 
     // SET POD LIST TABLE
     var setPodTable = function(podList) {
-        // set data into a table
         var resultArea = $('#podListResultArea');
         var resultHeaderArea = $('#podListResultHeaderArea');
         var noResultArea = $('#noPodListResultArea');
@@ -382,7 +379,6 @@
                 });
 
                 if (showCount <= 0) {
-                    // html into tr > td > p
                     podNotFound.show();
                     podsTableHeader.hide();
                 } else {
@@ -395,14 +391,10 @@
         viewLoading('hide');
     };
 
-    // GET POD LIST USING REQUEST URL
-    var getPodListUsingRequestURL = function(reqUrl) {
-        procCallAjax(reqUrl, 'GET', null, null, callbackGetPodList);
-    };
-
-    // GET LIST
+    // GET PODS' LIST
     var getPodsList = function() {
         var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>'.replace('{namespace:.+}', NAME_SPACE);
-        getPodListUsingRequestURL(reqUrl);
+
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetPodList);
     };
 </script>

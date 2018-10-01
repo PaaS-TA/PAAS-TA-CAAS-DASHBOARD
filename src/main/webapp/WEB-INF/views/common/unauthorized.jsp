@@ -1,11 +1,10 @@
 <%--
-  Created by IntelliJ IDEA.
-  User: REX
-  Date: 7/5/2017
-  Time: 11:28 AM
-  To change this template use File | Settings | File Templates.
+  Unauthorized
+  @author dojjang
+  @version 1.0
+  @since 2018.07.31
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
