@@ -24,7 +24,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * CustomUserDetails service 클래스.
+ *
+ * @author indra
+ * @version 1.0
+ * @since 2018.08.28
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -172,14 +178,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         return user;
     }
 
-    /**
-     * parameter에 넘어온 userName 값으로 생선된 namespace의 관리자 계정을 생성한다. user명은 web 등에서
-     * kubernetes 명명규칙에 맞는 변수가 넘어왔다고 가정한다. instance/create_account.ftl의 변수를 채운 후
-     * restTemplateService로 rest 통신한다.
-     *
-     * @author Hyerin
-     * @since 2018.07.30
-     */
     public void createUser(String spaceName, String userName) {
         LOGGER.info("createUser spaceName~~ {}", spaceName);
         LOGGER.info("createUser userName~~ {}", userName);
@@ -190,18 +188,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         String yml = null;
         yml = templateService.convert("instance/create_account.ftl", model);
 
-//        restTemplateService.cubeSend(caasUrl+"/api/v1/namespaces/" + spaceName + "/serviceaccounts", yml, caas_adminValue, HttpMethod.POST, String.class);
         restTemplateService.send(Constants.TARGET_CAAS_API, "/authenticate/namespaces/" + spaceName + "/serviceaccounts", HttpMethod.POST, yml, null);
         LOGGER.info("createUser end~~");
     }
 
-    /**
-     * 생성된 namespace에 role을 생성한다. role이름은 'namespace명-role' 이다.
-     * instance/create_init_role.ftl의 변수를 채운 후 restTemplateService로 rest 통신한다.
-     *
-     * @author Hyerin
-     * @since 2018.07.30
-     */
     public void createRole(String spaceName, String userName, String roleName) {
         LOGGER.info("createRole spaceName~~ {}", spaceName);
         LOGGER.info("createRole userName~~ {}", userName);
@@ -215,7 +205,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         yml = templateService.convert("instance/create_init_role.ftl", model);
 
         try {
-//            restTemplateService.cubeSend(caasUrl+"/apis/rbac.authorization.k8s.io/v1/namespaces/" + spaceName + "/roles", yml, caas_adminValue, HttpMethod.POST, String.class);
             restTemplateService.send(Constants.TARGET_CAAS_API, "/authenticate/namespaces/" + spaceName + "/roles", HttpMethod.POST, yml, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -223,13 +212,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOGGER.info("createRole end~~");
     }
 
-    /**
-     * 생성된 namespace에 roleBinding을 생성한다. binding이름은 'namespace명-role-binding' 이다.
-     * instance/create_roleBinding.ftl의 변수를 채운 후 restTemplateService로 rest 통신한다.
-     *
-     * @author Hyerin
-     * @since 2018.07.30
-     */
     public void createRoleBinding(String spaceName, String userName, String roleName) {
         LOGGER.info("createRoleBinding spaceName~~ {}", spaceName);
         LOGGER.info("createRoleBinding userName~~ {}", userName);
@@ -243,7 +225,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         yml = templateService.convert("instance/create_roleBinding.ftl", model);
 
         try {
-//            restTemplateService.cubeSend(caasUrl+"/apis/rbac.authorization.k8s.io/v1/namespaces/" + spaceName + "/rolebindings", yml, caas_adminValue, HttpMethod.POST, String.class);
             restTemplateService.send(Constants.TARGET_CAAS_API, "/authenticate/namespaces/" + spaceName + "/rolebindings", HttpMethod.POST, yml, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -251,18 +232,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOGGER.info("createRoleBinding end~~");
     }
 
-    /**
-     * 생성한 유저의 토큰값을 가져온다.
-     * JSON형태로 값이 넘어오니까 파싱하는 로직이 포함되어 있다.
-     *
-     * @author Hyerin
-     * @since 2018.07.30
-     */
     public String getToken(String spaceName, String userName) {
         LOGGER.info("getToken spaceName~~ {}", spaceName);
         LOGGER.info("getToken userName~~ {}", userName);
 
-//        String jsonObj = restTemplateService.cubeSend(caasUrl+"/api/v1/namespaces/" + spaceName + "/serviceaccounts/" + userName, caas_adminValue, HttpMethod.GET, String.class);
         String jsonObj = restTemplateService.send(Constants.TARGET_CAAS_API, "/authenticate/namespaces/" + spaceName + "/serviceaccounts/" + userName, HttpMethod.GET, null, String.class);
         LOGGER.info("getToken jsonObj~~ {}",jsonObj);
         JsonParser parser = new JsonParser();

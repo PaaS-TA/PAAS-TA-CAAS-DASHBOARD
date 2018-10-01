@@ -36,7 +36,11 @@ import java.util.Enumeration;
 import static java.util.Arrays.asList;
 
 /**
- * Created by Moon on 2017-07-21.
+ * SsoSecurityConfiguration 클래스.
+ *
+ * @author indra
+ * @version 1.0
+ * @since 2018.08.28
  */
 @Configuration
 public class SsoSecurityConfiguration {
@@ -83,8 +87,6 @@ public class SsoSecurityConfiguration {
 
     @Bean(name = "ssoEntryPointMatcher")
     public RequestMatcher ssoEntryPointMatcher() {
-        /*TODO :: MODIFY OR REMOVE*/
-//        return new AntPathRequestMatcher("/caas/clusters/overview/**");
         return new AntPathRequestMatcher(Constants.CAAS_INIT_URI + "/**");
     }
 
