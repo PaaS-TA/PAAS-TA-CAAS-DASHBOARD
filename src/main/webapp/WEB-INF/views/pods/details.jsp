@@ -6,8 +6,11 @@
 --%>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div class="content">
-    <jsp:include page="commonPods.jsp"/>
+    <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span>
+        <c:out value="${podName}" default="-"/></h1>
 
     <jsp:include page="../common/contentsTab.jsp"/>
 
@@ -110,90 +113,9 @@
     <!-- Details  끝 -->
 </div>
 <script type="text/javascript">
-    // ON LOAD
-    $(document.body).ready(function() {
-        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_DETAIL %>'
-            .replace('{namespace:.+}', NAME_SPACE).replace('{podName:.+}', G_POD_NAME);
-
-        procCallAjax(reqUrl, 'GET', null, null, callbackGetDetail);
-    });
-
     var createMovePageAnchorTag = function(movePageUrl, content) {
         var anchorTag = '<a href="javascript:void(0);" onclick="procMovePage(\'' + movePageUrl + '\');">' + content + '</a>';
         return anchorTag;
-    };
-
-    // CALLBACK GET POD'S DETAIL
-    var callbackGetDetail = function(data) {
-        viewLoading('show');
-
-        if (!procCheckValidData(data)) {
-            viewLoading('hide');
-            alertMessage();
-            return;
-        }
-
-        var labelKeys = Object.keys(data.metadata.labels);
-        for (var i = 0; i < labelKeys.length; i++) {
-            // convert raw character of comma and quota to html symbol
-            data.metadata.labels[labelKeys[i]] =
-                data.metadata.labels[labelKeys[i]].replace(/,/g, '&comma;').replace(/"/g, '&quot;')
-                    .replace(/{/g, '&lbrace;').replace(/}/g, '&rbrace;').replace(/:/g, '&colon;');
-        }
-
-        var labels = procSetSelector(data.metadata.labels);
-        var conditionStr = '';
-        if ('' !== nvl(data.status.conditions)) {
-            for (var i = 0; i < data.status.conditions.length; i++) {
-                if (i > 0) {
-                    conditionStr += ', ';
-                }
-                conditionStr += (data.status.conditions[i].type + ': ' + data.status.conditions[i].status);
-            }
-        } else {
-            conditionStr = '-';
-        }
-
-        var nodeNameHtml;
-        if ('' !== nvl(data.spec.nodeName)) {
-            nodeNameHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NODES %>/' + data.spec.nodeName + '/summary', data.spec.nodeName);
-        } else {
-            nodeNameHtml = '-';
-        }
-
-        var controllerNameHtml;
-        if (data.metadata.ownerReferences instanceof Array && data.metadata.ownerReferences[0] instanceof Object) {
-            var ownerName = nvl(data.metadata.ownerReferences[0].name, '-');
-            if ('-' !== ownerName && labels.match('job-name')) {
-                controllerNameHtml = ownerName;
-            } else {
-                controllerNameHtml = createMovePageAnchorTag('<%= Constants.URI_WORKLOAD_REPLICA_SETS %>/' + ownerName, ownerName);
-            }
-        } else {
-            controllerNameHtml = '-';
-        }
-
-        var volumeName;
-        if (data.spec.volumes instanceof Array && data.spec.volumes[0] instanceof Object) {
-            volumeName = nvl(data.spec.volumes[0].name, '-');
-        } else {
-            volumeName = '-';
-        }
-
-        $('#name').html(data.metadata.name);
-        $('#labels').html(createSpans(labels, 'NOT_LB'));
-        $('#creationTime').html(data.metadata.creationTimestamp);
-        $('#status').html(data.status.phase);
-        $('#qosClass').html(data.status.qosClass);
-        $('#node').html(nodeNameHtml);
-        $('#conditions').html(conditionStr);
-        $('#ip').html(nvl(data.status.podIP, '-'));
-        $('#controllers').html(controllerNameHtml);
-        $('#volumes').html(volumeName);
-
-        createContainerResultArea(data.status, data.spec.containers);
-
-        viewLoading('hide');
     };
 
     // CREATE SPANS FOR LABELS
@@ -243,6 +165,11 @@
         }
 
         return spans.join('');
+    };
+
+    // REPLACE FIRST LETTER ONLY TO UPPER-CASE ALPHABET LETTER FROM EXTERNAL STRING(OR OBJECT)
+    var upperCaseFirstLetterOnly = function(obj) {
+        return (obj + '').charAt(0).toUpperCase() + (obj + '').substring(1);
     };
 
     // CREATE CONTAINER MAP (CONTAINER INFO + CONTAINER STATUS)
@@ -398,4 +325,92 @@
 
         procSetLayerPopup(title, content, null, null, 'x', null, null, null);
     };
+
+    // CALLBACK GET POD'S DETAIL
+    var callbackGetDetail = function(data) {
+        viewLoading('show');
+
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
+            return;
+        }
+
+        var labelKeys = Object.keys(data.metadata.labels);
+        for (var i = 0; i < labelKeys.length; i++) {
+            // convert raw character of comma and quota to html symbol
+            data.metadata.labels[labelKeys[i]] =
+                data.metadata.labels[labelKeys[i]].replace(/,/g, '&comma;').replace(/"/g, '&quot;')
+                    .replace(/{/g, '&lbrace;').replace(/}/g, '&rbrace;').replace(/:/g, '&colon;');
+        }
+
+        var labels = procSetSelector(data.metadata.labels);
+        var conditionStr = '';
+        if ('' !== nvl(data.status.conditions)) {
+            for (var i = 0; i < data.status.conditions.length; i++) {
+                if (i > 0) {
+                    conditionStr += ', ';
+                }
+                conditionStr += (data.status.conditions[i].type + ': ' + data.status.conditions[i].status);
+            }
+        } else {
+            conditionStr = '-';
+        }
+
+        var nodeNameHtml;
+        if ('' !== nvl(data.spec.nodeName)) {
+            nodeNameHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NODES %>/' + data.spec.nodeName + '/summary', data.spec.nodeName);
+        } else {
+            nodeNameHtml = '-';
+        }
+
+        var controllerNameHtml;
+        if (data.metadata.ownerReferences instanceof Array && data.metadata.ownerReferences[0] instanceof Object) {
+            var ownerName = nvl(data.metadata.ownerReferences[0].name, '-');
+            if ('-' !== ownerName && labels.match('job-name')) {
+                controllerNameHtml = ownerName;
+            } else {
+                controllerNameHtml = createMovePageAnchorTag('<%= Constants.URI_WORKLOAD_REPLICA_SETS %>/' + ownerName, ownerName);
+            }
+        } else {
+            controllerNameHtml = '-';
+        }
+
+        var volumeName;
+        if (data.spec.volumes instanceof Array && data.spec.volumes[0] instanceof Object) {
+            volumeName = nvl(data.spec.volumes[0].name, '-');
+        } else {
+            volumeName = '-';
+        }
+
+        $('#name').html(data.metadata.name);
+        $('#labels').html(createSpans(labels, 'NOT_LB'));
+        $('#creationTime').html(data.metadata.creationTimestamp);
+        $('#status').html(data.status.phase);
+        $('#qosClass').html(data.status.qosClass);
+        $('#node').html(nodeNameHtml);
+        $('#conditions').html(conditionStr);
+        $('#ip').html(nvl(data.status.podIP, '-'));
+        $('#controllers').html(controllerNameHtml);
+        $('#volumes').html(volumeName);
+
+        createContainerResultArea(data.status, data.spec.containers);
+
+        viewLoading('hide');
+    };
+
+    // GET POD'S DETAIL
+    var getDetail = function() {
+        var resourceName = '<c:out value="${podName}" default="" />';
+
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_DETAIL %>'
+            .replace('{namespace:.+}', NAME_SPACE).replace('{podName:.+}', resourceName);
+
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetDetail);
+    };
+
+    // ON LOAD
+    $(document.body).ready(function() {
+        getDetail();
+    });
 </script>

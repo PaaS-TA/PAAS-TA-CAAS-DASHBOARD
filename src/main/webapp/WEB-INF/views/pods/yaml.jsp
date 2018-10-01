@@ -6,51 +6,23 @@
 --%>
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<div class="content">
-    <jsp:include page="commonPods.jsp"/>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-    <jsp:include page="../common/contentsTab.jsp"/>
+<jsp:include page="../common/commonYaml.jsp"/>
 
-    <!-- Services YAML 시작-->
-    <div class="cluster_content03 row two_line two_view harf_view custom_display_block">
-        <ul class="maT30">
-            <li>
-                <div class="sortable_wrap">
-                    <div class="sortable_top">
-                        <p>YAML</p>
-                    </div>
-                    <div id="resultYamlArea" class="paA30">
-                        <div class="yaml">
-                            <pre class="brush: yaml" id="resultArea"> -
-                            </pre>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <!-- Services YAML 끝 -->
-</div>
-<jsp:include page="../common/syntaxHighlighter.jsp"/>
 <script type="text/javascript">
+    // GET POD'S YAML
+    var getYaml = function() {
+        var resourceName = '<c:out value="${podName}" default="" />';
+
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_YAML %>'
+            .replace('{namespace:.+}', NAME_SPACE).replace('{podName:.+}', resourceName);
+
+        procGetCommonDetailYaml(reqUrl, resourceName);
+    };
+
     // ON LOAD
     $(document.body).ready(function() {
-        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_YAML %>'
-            .replace('{namespace:.+}', NAME_SPACE).replace('{podName:.+}', G_POD_NAME);
-        procCallAjax(reqUrl, 'GET', null, null, callbackGetPods);
+        getYaml();
     });
-
-    var callbackGetPods = function(data) {
-        viewLoading('show');
-
-        if (!procCheckValidData(data)) {
-            viewLoading('hide');
-            alertMessage();
-            return;
-        }
-
-        $('#resultArea').html('---\n' + nvl(data.sourceTypeYaml, ''));
-
-        viewLoading('hide');
-    };
 </script>
