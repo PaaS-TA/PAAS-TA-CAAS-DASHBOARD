@@ -348,6 +348,9 @@ var procSetToolTipForTableTd = function (tableObjectString) {
             });
         }
     });
+
+    // TOOL TIP
+    $('[data-toggle="tooltip"]').tooltip();
 };
 
 

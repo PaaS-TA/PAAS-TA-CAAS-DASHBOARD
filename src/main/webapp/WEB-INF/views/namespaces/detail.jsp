@@ -4,7 +4,7 @@
 
 <div class="content">
     <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <span id="title"></span></h1>
-    <jsp:include page="../common/contentsTab.jsp" flush="true"/>
+    <jsp:include page="../common/contentsTab.jsp"/>
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view">
         <ul id="detailTab" class="maT30">
