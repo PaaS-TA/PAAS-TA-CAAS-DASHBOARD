@@ -40,7 +40,7 @@
 
     var getDetail = function() {
         viewLoading('show');
-        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_YAML %>".replace("{namespace:.+}", NAME_SPACE)
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_YAML %>".replace("{namespace:.+}", NAME_SPACE)
                                                                     .replace("{deploymentsName:.+}", deployName);
 
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeployments);
