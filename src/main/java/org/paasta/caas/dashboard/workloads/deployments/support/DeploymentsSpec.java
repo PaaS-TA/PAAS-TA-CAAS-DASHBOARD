@@ -4,8 +4,6 @@ import lombok.Data;
 import org.paasta.caas.dashboard.common.model.CommonLabelSelector;
 import org.paasta.caas.dashboard.common.model.CommonPodTemplateSpec;
 
-import java.util.Set;
-
 /**
  * DeploymentsSpec Model 클래스
  *
@@ -23,5 +21,4 @@ public class DeploymentsSpec {
     private CommonLabelSelector selector;
     private DeploymentsStrategy strategy;
     private CommonPodTemplateSpec template;
-    private Set<String> images;
 }
