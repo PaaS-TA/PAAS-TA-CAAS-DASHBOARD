@@ -24,7 +24,11 @@ import org.springframework.web.context.request.RequestContextListener;
 
 
 /**
- * Created by indra on 2018-07-31.
+ * SsoSecurityConfigAdapter 클래스.
+ *
+ * @author indra
+ * @version 1.0
+ * @since 2018.08.28
  */
 @Configuration
 @Order(1)
@@ -114,8 +118,6 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
                     .antMatchers(Constants.CAAS_INIT_URI).access("hasRole('ROLE_ADMIN')")
                     .antMatchers(Constants.CAAS_INIT_URI + "/**").authenticated()
                     .antMatchers("/caas/clusters/namespaces/**").access("hasRole('ROLE_ADMIN')")
-                    .antMatchers("/caas/dashboard").access("hasRole('ROLE_ADMIN')")
-                    .antMatchers("/caas/dashboard/**").authenticated()
                     .antMatchers("/caas/users").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/workload/replicaSets").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/common/**").permitAll()

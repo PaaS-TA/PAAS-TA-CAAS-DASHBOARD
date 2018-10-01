@@ -24,7 +24,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * CustomUserDetails service 클래스.
+ *
+ * @author indra
+ * @version 1.0
+ * @since 2018.08.28
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -190,7 +196,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         String yml = null;
         yml = templateService.convert("instance/create_account.ftl", model);
 
-//        restTemplateService.cubeSend(caasUrl+"/api/v1/namespaces/" + spaceName + "/serviceaccounts", yml, caas_adminValue, HttpMethod.POST, String.class);
         restTemplateService.send(Constants.TARGET_CAAS_API, "/authenticate/namespaces/" + spaceName + "/serviceaccounts", HttpMethod.POST, yml, null);
         LOGGER.info("createUser end~~");
     }
@@ -215,7 +220,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         yml = templateService.convert("instance/create_init_role.ftl", model);
 
         try {
-//            restTemplateService.cubeSend(caasUrl+"/apis/rbac.authorization.k8s.io/v1/namespaces/" + spaceName + "/roles", yml, caas_adminValue, HttpMethod.POST, String.class);
             restTemplateService.send(Constants.TARGET_CAAS_API, "/authenticate/namespaces/" + spaceName + "/roles", HttpMethod.POST, yml, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -243,7 +247,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         yml = templateService.convert("instance/create_roleBinding.ftl", model);
 
         try {
-//            restTemplateService.cubeSend(caasUrl+"/apis/rbac.authorization.k8s.io/v1/namespaces/" + spaceName + "/rolebindings", yml, caas_adminValue, HttpMethod.POST, String.class);
             restTemplateService.send(Constants.TARGET_CAAS_API, "/authenticate/namespaces/" + spaceName + "/rolebindings", HttpMethod.POST, yml, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -262,7 +265,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOGGER.info("getToken spaceName~~ {}", spaceName);
         LOGGER.info("getToken userName~~ {}", userName);
 
-//        String jsonObj = restTemplateService.cubeSend(caasUrl+"/api/v1/namespaces/" + spaceName + "/serviceaccounts/" + userName, caas_adminValue, HttpMethod.GET, String.class);
         String jsonObj = restTemplateService.send(Constants.TARGET_CAAS_API, "/authenticate/namespaces/" + spaceName + "/serviceaccounts/" + userName, HttpMethod.GET, null, String.class);
         LOGGER.info("getToken jsonObj~~ {}",jsonObj);
         JsonParser parser = new JsonParser();
