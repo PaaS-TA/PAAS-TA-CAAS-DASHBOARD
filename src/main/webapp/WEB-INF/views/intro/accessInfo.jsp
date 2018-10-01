@@ -146,7 +146,7 @@
                 </div>
                 <div class="custom-access-contents">
                     <div class="fa-pull-left" id="caasCredentialForLinux">
-                        <p>kubectl config set-credentials \%CAAS_SERVICE_USER_NAME} --token=\${CAAS_SERVICE_CREDENTIALS_TOKEN}</p>
+                        <p>kubectl config set-credentials \${CAAS_SERVICE_USER_NAME} --token=\${CAAS_SERVICE_CREDENTIALS_TOKEN}</p>
                     </div>
                     <div class="fa-pull-right">
                         <i class="fas fa-copy custom-access-copy-button" about="caasCredentialForLinux"></i>
@@ -306,6 +306,7 @@
 
     // GET User
     var getUser = function() {
+        viewLoading('show');
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_DETAIL %>"
             .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
             .replace("{organizationGuid:.+}", ORGANIZATION_GUID)
@@ -316,11 +317,11 @@
 
     // CALLBACK
     var callbackGetUser = function(data) {
-        viewLoading('hide');
-
-        // TODO :: MUST BE ALERT MESSAGE
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
-        //$("#access-user-token").val(data.caasAccountTokenName);
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
+            return false;
+        }
 
         G_GUIDE_CLUSTER_NAME = data.caasClusterName;
         G_GUIDE_CLUSTER_SERVER = data.caasUrl;
@@ -336,15 +337,18 @@
             G_ROLE_NAME = '<c:out value="${roleSetNameList.initUserName}" />';
         }
 
+        $("#access-user-name").val(USER_ID);
         $("#access-user-role").val(G_ROLE_NAME);
 
         G_USER_ACCESS_TOKEN = data.caasAccountTokenName;
+        viewLoading('hide');
         getAccessToken();
     };
 
 
     // user 의 token 값 가져오기
     var getAccessToken = function () {
+        viewLoading('show');
         var reqUrl = "<%= Constants.CAAS_BASE_URL %><%= Constants.URI_API_SECRETS_DETAIL %>"
             .replace("{namespace:.+}", NAME_SPACE)
             .replace("{accessTokenName:.+}", G_USER_ACCESS_TOKEN);
@@ -353,7 +357,11 @@
     };
 
     var callbackGetAccessToken = function (data) {
-        if (RESULT_STATUS_FAIL === data.resultStatus) return false;
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
+            return false;
+        }
 
         G_CA_CERT_TOKEN = data.caCertToken;
         G_USER_ACCESS_TOKEN = data.userAccessToken;
@@ -365,6 +373,8 @@
         $('.caasContextName').html(G_GUIDE_CONTEXT_NAME);
         $('.caasNamespace').html(G_GUIDE_NAMESPACE);
         $('.caasCredentialsToken').html(G_USER_ACCESS_TOKEN);
+
+        viewLoading('hide');
     };
 
 
@@ -379,24 +389,6 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        viewLoading('show');
-        $("#access-user-name").val(USER_ID);
-
-
-        // TODO :: REMOVE AFTER CHECK
-        // // copy function
-        // $("#btn-copy").on("click", function(){
-        //     // var target = $("#out_a");
-        //     // var inA = G_USER_ACCESS_TOKEN;
-        //     // target.val(inA);
-        //     // target.select();
-        //     // var successful = document.execCommand('copy');
-        //     // alert("복사되었습니다.");
-        //
-        //     var resultString = (procSetExecuteCommandCopy(G_USER_ACCESS_TOKEN)) ? '토큰을 복사했습니다.' : '토큰 복사에 실패했습니다.';
-        //     procSetLayerPopup('알림', resultString, '확인', '취소', 'x', null, null, null);
-        // });
-
         getUser();
 
     });

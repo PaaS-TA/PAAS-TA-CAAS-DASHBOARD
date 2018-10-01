@@ -66,25 +66,73 @@
     });
 
     var createChart = function() {
-        var devListLength = G_DEPLOYMENTS_LIST_LENGTH;
-
         var podsChartRunningPer   = G_PODS_CHART_RUNNING_CNT   / G_PODS_LIST_LENGTH * 100;
         var podsChartFailedPer    = G_PODS_CHART_FAILED_CNT    / G_PODS_LIST_LENGTH * 100;
         var podsChartPenddingPer  = G_PODS_CHART_PENDING_CNT   / G_PODS_LIST_LENGTH * 100;
         var podsChartSucceededPer = G_PODS_CHART_SUCCEEDED_CNT / G_PODS_LIST_LENGTH * 100;
 
-        var devChartRunningPer   = G_DEV_CAHRT_RUNNING_CNT  / devListLength * 100;
-        var devChartFailedPer    = G_DEV_CHART_FAILED_CNT   / devListLength * 100;
-        var devChartPenddingPer  = G_DEV_CHART_PENDDING_CNT / devListLength * 100;
-        var devChartSucceededPer = G_DEV_CHART_SUCCEEDEDCNT / devListLength * 100;
-        // ReplicaSets Statistics
+        var devChartRunningPer    = G_DEV_CAHRT_RUNNING_CNT  / G_DEPLOYMENTS_LIST_LENGTH * 100;
+        var devChartFailedPer     = G_DEV_CHART_FAILED_CNT   / G_DEPLOYMENTS_LIST_LENGTH * 100;
+        var devChartPenddingPer   = G_DEV_CHART_PENDDING_CNT / G_DEPLOYMENTS_LIST_LENGTH * 100;
+        var devChartSucceededPer  = G_DEV_CHART_SUCCEEDEDCNT / G_DEPLOYMENTS_LIST_LENGTH * 100;
+
         var repsChartRunningPer   = G_REPLICA_SETS_CHART_RUNNING_CNT   / G_REPLICA_SETS_LIST_LENGTH * 100;
         var repsChartFailedPer    = G_REPLICA_SETS_CHART_FAILED_CNT    / G_REPLICA_SETS_LIST_LENGTH * 100;
         var repsChartPenddingPer  = G_REPLICA_SETS_CHART_PENDDING_CNT  / G_REPLICA_SETS_LIST_LENGTH * 100;
         var repsChartSucceededPer = G_REPLICA_SETS_CHART_SUCCEEDED_CNT / G_REPLICA_SETS_LIST_LENGTH * 100;
 
-        // 도넛차트
+        var devPieColors = [];
+        var devSeriesData= [];
+        var podsPieColors = [];
+        var podsSeriesData= [];
+        var repsPieColors = [];
+        var repsSeriesData= [];
+
         var pieColors = ['#3076b2', '#85c014', '#f01108' , '#333440'];
+        var seriesLabel = ['Succeeded', 'Running', 'Failed', 'Pendding'];
+
+        if (devChartSucceededPer > 0) {
+            devPieColors.push(pieColors[0]);
+            devSeriesData.push([seriesLabel[0], devChartSucceededPer]);
+        } else if (devChartRunningPer > 0) {
+            devPieColors.push(pieColors[1]);
+            devSeriesData.push([seriesLabel[1], devChartRunningPer]);
+        } else if (devChartFailedPer > 0) {
+            devPieColors.push(pieColors[2]);
+            devSeriesData.push([seriesLabel[2], devChartFailedPer]);
+        } else if (devChartPenddingPer > 0) {
+            devPieColors.push(pieColors[3]);
+            devSeriesData.push([seriesLabel[3], devChartPenddingPer]);
+        }
+
+        if (podsChartSucceededPer > 0) {
+            podsPieColors.push(pieColors[0]);
+            podsSeriesData.push([seriesLabel[0], podsChartSucceededPer]);
+        } else if (podsChartRunningPer > 0) {
+            podsPieColors.push(pieColors[1]);
+            podsSeriesData.push([seriesLabel[1], podsChartRunningPer]);
+        } else if (podsChartFailedPer > 0) {
+            podsPieColors.push(pieColors[2]);
+            podsSeriesData.push([seriesLabel[2], podsChartFailedPer]);
+        } else if (podsChartPenddingPer > 0) {
+            podsPieColors.push(pieColors[3]);
+            podsSeriesData.push([seriesLabel[3], podsChartPenddingPer]);
+        }
+
+        if (repsChartSucceededPer > 0) {
+            repsPieColors.push(pieColors[0]);
+            repsSeriesData.push([seriesLabel[0], repsChartSucceededPer]);
+        } else if (repsChartRunningPer > 0) {
+            repsPieColors.push(pieColors[1]);
+            repsSeriesData.push([seriesLabel[1], repsChartRunningPer]);
+        } else if (repsChartFailedPer > 0) {
+            repsPieColors.push(pieColors[2]);
+            repsSeriesData.push([seriesLabel[2], repsChartFailedPer]);
+        } else if (repsChartPenddingPer > 0) {
+            repsPieColors.push(pieColors[3]);
+            repsSeriesData.push([seriesLabel[3], repsChartPenddingPer]);
+        }
+
         Highcharts.chart('piechart01', {
             chart: {
                 type: 'pie',
@@ -101,7 +149,7 @@
             plotOptions: {
                 pie: {
                     innerSize: 110,
-                    colors : pieColors,
+                    colors : devPieColors,
                     dataLabels: {
                         enabled: true,
                         format: '{point.percentage:.0f} %',
@@ -119,12 +167,7 @@
                 footerFormat:''
             },
             series: [{
-                data: [
-                    ['Succeeded', devChartSucceededPer],
-                    ['Running', devChartRunningPer],
-                    ['Failed', devChartFailedPer],
-                    ['Pendding', devChartPenddingPer]
-                ]
+                data: devSeriesData
             }],
             credits: { // logo hide
                 enabled: false
@@ -146,7 +189,7 @@
             plotOptions: {
                 pie: {
                     innerSize: 110,
-                    colors : pieColors,
+                    colors : podsPieColors,
                     dataLabels: {
                         enabled: true,
                         format: '{point.percentage:.0f} %',
@@ -164,12 +207,7 @@
                 footerFormat:''
             },
             series: [{
-                data: [
-                    ['Succeeded', podsChartSucceededPer],
-                    ['Running', podsChartRunningPer],
-                    ['Failed', podsChartFailedPer],
-                    ['Pendding', podsChartPenddingPer]
-                ]
+                data: podsSeriesData
             }],
             credits: { // logo hide
                 enabled: false
@@ -191,7 +229,7 @@
             plotOptions: {
                 pie: {
                     innerSize: 110,
-                    colors : pieColors,
+                    colors : repsPieColors,
                     dataLabels: {
                         enabled: true,
                         format: '{point.percentage:.0f} %',
@@ -209,12 +247,7 @@
                 footerFormat:''
             },
             series: [{
-                data: [
-                    ['Succeeded', repsChartSucceededPer],
-                    ['Running', repsChartRunningPer],
-                    ['Failed', repsChartFailedPer],
-                    ['Pendding', repsChartPenddingPer]
-                ]
+                data: repsSeriesData
             }],
             credits: { // logo hide
                 enabled: false
