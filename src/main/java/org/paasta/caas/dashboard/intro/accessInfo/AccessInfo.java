@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * Intro AccessInfo Model 클래스
  *
- * @author REX
+ * @author hrjin
  * @version 1.0
  * @since 2018.09.10
  */
