@@ -19,7 +19,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * CustomInterceptor 클래스.
+ *
+ * @author indra
+ * @version 1.0
+ * @since 2018.08.28
+ */
 public class CustomInterceptor extends HandlerInterceptorAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomInterceptor.class);
 
@@ -39,7 +45,6 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
 
         try {
             if (!url.contains("/common/error/unauthorized") && !url.contains("/resources/images")) {
-//                Pattern pattern = Pattern.compile("(/caas/intro/overview/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
                 Pattern pattern = Pattern.compile("("+Constants.CAAS_INIT_URI+"/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
                 Matcher matcher = pattern.matcher(url);
 
