@@ -9,7 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 /**
- * Deployments 관련 Caas API 를 호출 하는 서비스이다.
+ * Deployments Service 클래스
  *
  * @author Hyungu Cho
  * @version 1.0
@@ -25,37 +25,41 @@ public class DeploymentsService {
         this.restTemplateService = restTemplateService;
     }
 
+
     /**
-     * 지정한 네임스페이스에 있는 deployments의 목록을 CaaS API에 호출하여 받은 결과값을 반환한다.
-     *
-     * @param namespace namespace
-     * @return List of deployments (specific namespace)
+     * Deployments 목록을 조회한다.
+     * @param namespace   the namespace
+     * @return the deployments list
      */
     public DeploymentsList getDeploymentsList (String namespace ) {
-
-        String urlWithNamespace = Constants.URI_API_DEPLOYMENTS_LIST.replace( "{namespace:.+}", namespace );
-        return restTemplateService.send( Constants.TARGET_CAAS_API, urlWithNamespace, HttpMethod.GET, null, DeploymentsList.class);
+        return restTemplateService.send( Constants.TARGET_CAAS_API,
+                Constants.URI_API_DEPLOYMENTS_LIST
+                        .replace( "{namespace:.+}", namespace ),
+                HttpMethod.GET, null, DeploymentsList.class);
     }
+
 
     /**
-     * 지정한 네임스페이스에 있는 특정한 deployment의 상세 내역을 CaaS API에 호출하여 받은 결과값을 반환한다.
+     * Deployments 상세 정보를 조회한다.
      *
-     * @param namespace request namespace
-     * @param deploymentsName request deployment's name
-     * @return Deployments's detail content (specific namespace and deployments)
+     * @param namespace   the namespace
+     * @param deploymentsName the deployments name
+     * @return the deployments
      */
     public Deployments getDeployments (String namespace, String deploymentsName ) {
-        String urlWithDeploymentsName = Constants.URI_API_DEPLOYMENTS_DETAIL.replace( "{namespace:.+}", namespace )
-                                                                            .replace( "{deploymentsName:.+}", deploymentsName );
-        return restTemplateService.send(Constants.TARGET_CAAS_API, urlWithDeploymentsName, HttpMethod.GET, null, Deployments.class);
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_DEPLOYMENTS_DETAIL
+                    .replace( "{namespace:.+}", namespace )
+                    .replace( "{deploymentsName:.+}", deploymentsName )
+                , HttpMethod.GET, null, Deployments.class);
     }
+
 
     /**
      * Deployments YAML을 조회한다.
      *
      * @param namespace   the namespace
      * @param deploymentsName the deployments name
-     * @return the custom services yaml
+     * @return the deployments yaml
      */
     Deployments getDeploymentsYaml(String namespace, String deploymentsName) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_DEPLOYMENTS_YAML
@@ -66,13 +70,13 @@ public class DeploymentsService {
 
 
     /**
-     * selector를 이용해 Deployment List를 조회한다
+     * Deployments 목록을 조회한다. (Label Selector)
      *
-     * @param namespace request namespace
-     * @param selectors fitter selector
-     * @return List of deployments (specific namespace)
+     * @param namespace the namespace
+     * @param selectors the selectors
+     * @return the deployments list
      */
-    public DeploymentsList getDeploymentsListLabelSelector(String namespace, String selectors) {
+     DeploymentsList getDeploymentsListLabelSelector(String namespace, String selectors) {
         String reqUrl = Constants.URI_API_DEPLOYMENTS_RESOURCES.replace("{namespace:.+}", namespace)
                                                                 .replace("{selector:.+}", selectors);
         return restTemplateService.send(Constants.TARGET_CAAS_API, reqUrl, HttpMethod.GET, null, DeploymentsList.class);

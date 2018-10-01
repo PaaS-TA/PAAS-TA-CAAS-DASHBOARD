@@ -131,7 +131,7 @@ public class ReplicaSetsController {
      *
      * @param namespace the namespace
      * @param selector the selector for filter
-     * @return ReplicaSets list
+     * @return the replicaSets list
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_REPLICA_SETS_RESOURCES)
     @ResponseBody

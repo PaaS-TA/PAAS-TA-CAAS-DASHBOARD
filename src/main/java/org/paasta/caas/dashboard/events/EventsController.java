@@ -29,7 +29,7 @@ public class EventsController {
     }
 
     /**
-     * Events 페이지로 이동한다.
+     * Events 목록을 조회한다.
      *
      * @param namespace    the namespace
      * @param resourceName the resourceName
@@ -46,7 +46,7 @@ public class EventsController {
     }
 
     /**
-     * Events 페이지로 이동한다.(for namespace)
+     * Events 목록을 조회한다.(for namespace)
      *
      * @param namespace    the namespace
      * @return the events list
