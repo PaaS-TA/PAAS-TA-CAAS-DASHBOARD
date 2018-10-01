@@ -1,6 +1,5 @@
 package org.paasta.caas.dashboard.cf;
 
-import org.paasta.caas.dashboard.common.CommonService;
 import org.paasta.caas.dashboard.common.RestTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +19,6 @@ import java.util.Map;
 @Service
 public class CfService {
 
-    private final CommonService commonService;
     private final RestTemplateService restTemplateService;
 
     @Value("${cf.api.url}")
@@ -29,12 +27,10 @@ public class CfService {
     /**
      * Instantiates a new Cf service.
      *
-     * @param commonService the common service
      * @param restTemplateService the rest template service
      */
     @Autowired
-    public CfService(CommonService commonService, RestTemplateService restTemplateService) {
-        this.commonService = commonService;
+    public CfService(RestTemplateService restTemplateService) {
         this.restTemplateService = restTemplateService;
     }
 
@@ -45,11 +41,11 @@ public class CfService {
      * @param token the token
      * @return the Map
      */
-    public Map<String, Object> getCfOrgsByUaaId(String uaaid, String token) {
+    public Map getCfOrgsByUaaId(String uaaid, String token) {
         Map resultMap = new HashMap();
 
         try {
-            resultMap = restTemplateService.cfSend(token, apiUrl+"/v2/users/"+uaaid+"/organizations", HttpMethod.GET, null, Map.class);
+            resultMap = restTemplateService.cfSend(token, apiUrl + "/v2/users/" + uaaid + "/organizations", HttpMethod.GET, null, Map.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,14 +57,14 @@ public class CfService {
      * Space Guid를 조회한다.
      *
      * @param serviceInstanceId the serviceInstance Id
-     * @param token the token
+     * @param token             the token
      * @return the Map
      */
-    public Map<String, Object> getCfServiceInstancesById(String serviceInstanceId, String token) {
+    public Map getCfServiceInstancesById(String serviceInstanceId, String token) {
         Map resultMap = new HashMap();
 
         try {
-            resultMap = restTemplateService.cfSend(token, apiUrl+"/v2/service_instances/"+serviceInstanceId, HttpMethod.GET, null, Map.class);
+            resultMap = restTemplateService.cfSend(token, apiUrl + "/v2/service_instances/" + serviceInstanceId, HttpMethod.GET, null, Map.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,14 +76,14 @@ public class CfService {
      * Organization Guid를 조회한다.
      *
      * @param space_guid the space guid
-     * @param token the token
+     * @param token      the token
      * @return the Map
      */
-    public Map<String, Object> getCfServiceById(String space_guid, String token) {
+    public Map getCfServiceById(String space_guid, String token) {
         Map resultMap = new HashMap();
 
         try {
-            resultMap = restTemplateService.cfSend(token, apiUrl+"/v2/spaces/"+space_guid, HttpMethod.GET, null, Map.class);
+            resultMap = restTemplateService.cfSend(token, apiUrl + "/v2/spaces/" + space_guid, HttpMethod.GET, null, Map.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -99,14 +95,14 @@ public class CfService {
      * Organization Name을 조회한다.
      *
      * @param organization_guid the organization guid
-     * @param token the token
+     * @param token             the token
      * @return the Map
      */
-    public Map<String, Object> getCfOrgById(String organization_guid, String token) {
+    public Map getCfOrgById(String organization_guid, String token) {
         Map resultMap = new HashMap();
 
         try {
-            resultMap = restTemplateService.cfSend(token, apiUrl+"/v2/organizations/"+organization_guid+"/summary", HttpMethod.GET, null, Map.class);
+            resultMap = restTemplateService.cfSend(token, apiUrl + "/v2/organizations/" + organization_guid + "/summary", HttpMethod.GET, null, Map.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

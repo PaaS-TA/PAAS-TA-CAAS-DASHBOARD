@@ -35,7 +35,6 @@ public class DeploymentsController {
      * @param httpServletRequest the http servlet request
      * @return the deployments main
      */
-    // TODO :: MODIFY
     @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments")
     public ModelAndView getDashboardMain(HttpServletRequest httpServletRequest) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/main", new ModelAndView());
