@@ -146,7 +146,7 @@
                 </div>
                 <div class="custom-access-contents">
                     <div class="fa-pull-left" id="caasCredentialForLinux">
-                        <p>kubectl config set-credentials \%CAAS_SERVICE_USER_NAME} --token=\${CAAS_SERVICE_CREDENTIALS_TOKEN}</p>
+                        <p>kubectl config set-credentials \${CAAS_SERVICE_USER_NAME} --token=\${CAAS_SERVICE_CREDENTIALS_TOKEN}</p>
                     </div>
                     <div class="fa-pull-right">
                         <i class="fas fa-copy custom-access-copy-button" about="caasCredentialForLinux"></i>
