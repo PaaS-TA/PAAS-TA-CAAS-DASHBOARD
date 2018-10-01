@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * Deployments Service 클래스
  *
- * @author Hyungu Cho
+ * @author PHR
  * @version 1.0
  * @since 2018.08.14
  */

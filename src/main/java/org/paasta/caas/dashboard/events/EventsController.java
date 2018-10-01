@@ -48,14 +48,12 @@ public class EventsController {
     /**
      * Events 목록을 조회한다.(for namespace)
      *
-     * @param namespace    the namespace
+     * @param namespace the namespace
      * @return the events list
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_NAMESPACE_EVENTS_LIST)
     @ResponseBody
     EventsList getNamespaceEventList(@PathVariable("namespace") String namespace) {
-        EventsList resultList = eventsService.getNamespaceEventsList(namespace);
-
-        return resultList;
+        return eventsService.getNamespaceEventsList(namespace);
     }
 }

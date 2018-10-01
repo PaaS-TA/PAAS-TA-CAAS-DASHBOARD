@@ -391,10 +391,14 @@
         viewLoading('hide');
     };
 
+    // GET PODS' LIST USING REQUEST URL
+    var getPodListUsingRequestURL = function(reqUrl) {
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetPodList);
+    }
+
     // GET PODS' LIST
     var getPodsList = function() {
         var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>'.replace('{namespace:.+}', NAME_SPACE);
-
-        procCallAjax(reqUrl, 'GET', null, null, callbackGetPodList);
+        getPodListUsingRequestURL(reqUrl);
     };
 </script>
