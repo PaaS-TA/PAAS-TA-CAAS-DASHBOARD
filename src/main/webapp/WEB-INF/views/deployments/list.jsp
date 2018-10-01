@@ -97,10 +97,6 @@
                 var namespace = metadata.namespace;
                 // 라벨이 없는 경우도 있음.
                 var labels = procSetSelector(metadata.labels);
-                if (labels === "null") {
-                    labels = null;
-                }
-
                 var creationTimestamp = metadata.creationTimestamp;
                 // Set replicas and total Pods are same.
                 var totalPods = spec.replicas;
@@ -134,13 +130,6 @@
                     G_DEV_CHART_FAILED_CNT += 1;
                 }
 
-                var labelObject ="";
-                if(!labels) {
-                    labelObject += "<td>" + nvl(labels, "-") + "</td>";
-                } else {
-                    labelObject += '<td>' + procCreateSpans(labels, "LB") + '</td>'
-                }
-
                 htmlString.push('<tr>' +
                     '<td>' +
                     statusIconHtml +
@@ -148,7 +137,7 @@
                     statusMessageHtml +
                     '</td>' +
                     "<td><a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + namespace + "\");'>" + namespace + "</td>" +
-                    labelObject +
+                    '<td>' + procCreateSpans(labels, "LB") + '</td>' +
                     '<td>' + runningPods +" / " + totalPods + '</td>' +
                     '<td>' + creationTimestamp + '</td>' +
                     "<td>" + imageTags + "</td>" +
