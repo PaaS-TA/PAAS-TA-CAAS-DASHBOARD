@@ -116,7 +116,7 @@
                 var imageTags = "";
                 var containers = itemList.spec.template.spec.containers;
                 for(var i=0; i < containers.length; i++){
-                    imageTags += '<p class="custom-content-overflow">' + containers[i].image + '</p>';
+                    imageTags += '<p>' + containers[i].image + '</p>';
                 }
 
                 //이벤트 관련 추가 START
