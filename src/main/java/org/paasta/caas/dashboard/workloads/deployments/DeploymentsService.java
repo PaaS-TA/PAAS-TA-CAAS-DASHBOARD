@@ -2,8 +2,6 @@ package org.paasta.caas.dashboard.workloads.deployments;
 
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
