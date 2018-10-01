@@ -10,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,12 +48,12 @@ public class UsersController {
      */
     @GetMapping(value = Constants.URI_USERS)
     public ModelAndView getUserMain(HttpServletRequest httpServletRequest) {
-        Map roleSetCodeList = new HashMap();
+        Map<String, String> roleSetCodeList = new HashMap<>();
         roleSetCodeList.put("administratorCode", propertyService.getAdministratorCode());
         roleSetCodeList.put("regularUserCode", propertyService.getRegularUserCode());
         roleSetCodeList.put("initUserCode", propertyService.getInitUserCode());
 
-        Map roleSetNameList = new HashMap();
+        Map<String, String> roleSetNameList = new HashMap<>();
         roleSetNameList.put("administratorName", propertyService.getAdministratorName());
         roleSetNameList.put("regularUserName", propertyService.getRegularUserName());
         roleSetNameList.put("initUserName", propertyService.getInitUserName());
