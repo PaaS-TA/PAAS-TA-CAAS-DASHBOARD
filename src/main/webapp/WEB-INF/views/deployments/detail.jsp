@@ -1,6 +1,6 @@
 <%--
   Deployment main
-  @author Hyungu Cho
+  @author PHR
   @version 1.0
   @since 2018.08.14
 --%>
@@ -98,7 +98,7 @@
 
     var getDetail = function() {
         viewLoading('show');
-        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_DETAIL %>"
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_DETAIL %>"
                 .replace("{namespace:.+}", NAME_SPACE)
                 .replace("{deploymentsName:.+}", "<c:out value='${deploymentsName}'/>");
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeployments);

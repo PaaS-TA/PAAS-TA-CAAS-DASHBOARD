@@ -124,7 +124,7 @@
             $("#detailTab").append(html);
 
             viewLoading('hide');
-            alertMessage('Get NameSpaces Fail~', false);
+            alertMessage();
 
             return false;
         }

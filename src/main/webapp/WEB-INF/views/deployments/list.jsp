@@ -57,7 +57,7 @@
 
     var getDeploymentsList = function() {
         viewLoading('show');
-        var reqUrl = "<%= Constants.URI_API_DEPLOYMENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsList);
 
     };

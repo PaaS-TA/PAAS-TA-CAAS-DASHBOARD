@@ -1,6 +1,6 @@
 <%--
   Deployment main
-  @author Hyungu Cho
+  @author PHR
   @version 1.0
   @since 2018.08.14
 --%>
@@ -86,14 +86,14 @@
             var lastTimestamp = itemList.lastTimestamp;
             var subObjectObject = "";
             if(!subObject) {
-                subObjectObject += "<td>" + nvl(subObject, "-") + "</td>";
+                subObjectObject = "<td>" + nvl(subObject, "-") + "</td>";
             } else {
-                subObjectObject += "<td>" + subObject + "</td>";
+                subObjectObject = "<td><p>" + subObject + "</p></td>";
             }
             resultArea.append("<tr>"
                                 + "<td><p>" + message + "</p></td>"
                                 + "<td><p>" + source + "</p></td>"
-                                + "<td><p>" + subObjectObject +  "</p></td>"
+                                + subObjectObject
                                 + "<td>" + count + "</td>"
                                 + "<td>" + fristTimestamp + "</td>"
                                 + "<td>" + lastTimestamp + "</td>"

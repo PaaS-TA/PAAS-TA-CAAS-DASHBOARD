@@ -79,7 +79,7 @@ public class DeploymentsController {
      * @param namespace namespace
      * @return List of deployments (specific namespace)
      */
-    @GetMapping( Constants.URI_API_DEPLOYMENTS_LIST )
+    @GetMapping( value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_LIST )
     public DeploymentsList getDeploymentsList(@PathVariable String namespace) {
         return deploymentsService.getDeploymentsList(namespace);
     }
@@ -91,7 +91,7 @@ public class DeploymentsController {
      * @param deploymentsName request deploymentsName
      * @return Deployments's detail content (specific namespace and deployments)
      */
-    @GetMapping( Constants.URI_API_DEPLOYMENTS_DETAIL )
+    @GetMapping( value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_DETAIL )
     public Deployments getDeployments(@PathVariable String namespace, @PathVariable String deploymentsName) {
         return deploymentsService.getDeployments(namespace, deploymentsName);
     }
@@ -103,7 +103,7 @@ public class DeploymentsController {
      * @param deploymentsName the deploymentsName
      * @return the custom services yaml
      */
-    @GetMapping(value = Constants.URI_API_DEPLOYMENTS_YAML)
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_YAML)
     @ResponseBody
     public Deployments getCustomServicesYaml(@PathVariable(value = "namespace") String namespace, @PathVariable("deploymentsName") String deploymentsName) {
         return deploymentsService.getDeploymentsYaml(namespace, deploymentsName);
@@ -116,7 +116,7 @@ public class DeploymentsController {
      * @param selector  the selector for filter
      * @return List of deployments
      */
-    @GetMapping( Constants.URI_API_DEPLOYMENTS_RESOURCES )
+    @GetMapping( value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_RESOURCES )
     @ResponseBody
     public DeploymentsList getDeploymentsListLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector) {
         return deploymentsService.getDeploymentsListLabelSelector(namespace, selector);
