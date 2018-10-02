@@ -10,8 +10,9 @@ var procCallAjax = function(reqUrl, reqMethod, param, preFunc, callback) {
         dataType: 'json',
         async: false,
         contentType: "application/json",
-        beforeSend: function(){
+        beforeSend: function(xhr){
             ///preFunc
+            xhr.setRequestHeader(_csrf_header, _csrf_token);
         },
         success: function(data) {
             callback(data);
@@ -26,42 +27,6 @@ var procCallAjax = function(reqUrl, reqMethod, param, preFunc, callback) {
     });
 };
 
-var postProcCallAjax = function (reqUrl, param, callback) {
-    var reqData = {};
-
-    if (param !== null) {
-        reqData = JSON.stringify(param);
-    }
-
-    $.ajax({
-        url: reqUrl,
-        method: "POST",
-        data: reqData,
-        dataType: 'json',
-        contentType: "application/json",
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(_csrf_header, _csrf_token);
-        },
-        success: function (data) {
-            if (data) {
-                callback(data, param);
-            } else {
-                var resData = {
-                    resultStatus: RESULT_STATUS_SUCCESS
-                };
-                callback(resData, param);
-            }
-        },
-        error: function (xhr, status, error) {
-            console.log("ERROR :: xhr :: ", xhr);
-            console.log("ERROR :: status :: ", status);
-            console.log("ERROR :: error :: ", error);
-        },
-        complete: function (data) {
-            console.log("COMPLETE :: data :: ", data);
-        }
-    });
-};
 
 // MOVE PAGE
 var procMovePage = function (pageUrl) {

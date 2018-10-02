@@ -275,7 +275,8 @@
 
     // SET UPDATE USER ROLE
     var updateRoleOfUser = function () {
-        viewLoading('show');
+        $("#commonLayerPopup").modal("hide");
+
         if(G_USER_PER_ROLE === G_ADMIN_NAME){
             G_USER_PER_ROLE = G_ADMIN_CODE;
         }else if (G_USER_PER_ROLE === G_REGULAR_USER_NAME){
@@ -290,12 +291,14 @@
             roleSetCode: G_USER_PER_ROLE
         };
 
+        var reqData = JSON.stringify(reqParam);
+
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_UPDATE %>"
             .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
             .replace("{organizationGuid:.+}", ORGANIZATION_GUID)
             .replace("{userId:.+}", G_USER_ID_SELECT_ROLE);
 
-        postProcCallAjax(reqUrl, reqParam, callbackUpdateRoleOfUser);
+        procCallAjax(reqUrl, "POST", reqData, null, callbackUpdateRoleOfUser);
     };
 
     // CALLBACK USER ROLE
@@ -306,6 +309,7 @@
             viewLoading('hide');
             resultString = 'Role 변경에 실패했습니다.';
         }
+        viewLoading('hide');
         procSetLayerPopup('알림', resultString, '확인', null, 'x', 'location.reload(true);', 'location.reload(true);', 'location.reload(true);');
     };
 
@@ -324,13 +328,14 @@
 
     // SET DELETE USER
     var deleteUser = function (userId) {
-        viewLoading('show');
+        $("#commonLayerPopup").modal("hide");
+
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_DELETE %>"
             .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
             .replace("{organizationGuid:.+}", ORGANIZATION_GUID)
             .replace("{userId:.+}", userId);
 
-        postProcCallAjax(reqUrl, null, callbackDeleteUser);
+        procCallAjax(reqUrl, "POST", null, null, callbackDeleteUser);
     };
 
     // CALLBACK DELETE USER
@@ -341,7 +346,7 @@
             viewLoading('hide');
             resultString = '사용자 삭제에 실패했습니다.'
         }
-
+        viewLoading('hide');
         procSetLayerPopup('알림', resultString, '확인', null, 'x', 'location.reload(true);', 'location.reload(true);', 'location.reload(true);');
     };
 
