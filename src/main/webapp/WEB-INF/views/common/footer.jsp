@@ -5,6 +5,7 @@
   version: 1.0
   since: 2018.08.07
 --%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
 
 <script type="text/javascript">
