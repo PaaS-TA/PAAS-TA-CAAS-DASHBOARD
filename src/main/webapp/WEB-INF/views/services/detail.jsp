@@ -89,7 +89,7 @@
                                 <td>Ready</td>
                             </tr>
                             </thead>
-                            <tbody id="resultAreaForEndpoints">
+                            <tbody id="resultAreaForEndpoints" style="display: none;">
                             <tr>
                                 <td colspan="4"> - </td>
                             </tr>
@@ -129,32 +129,32 @@
 
         var selector,
             endpointsPreString,
-            selectorString;
+            selectorString,
+            nodePort,
+            specPortsListLength;
 
         var dataMetadata = data.metadata;
-        var dataSpec = data.spec;
-        var specPortsList = dataSpec.ports;
-        var specPortsListLength = specPortsList.length;
-
         var serviceName = dataMetadata.name;
         var namespace = dataMetadata.namespace;
+        var dataSpec = data.spec;
         var namespaceHtml = "<a href='javascript:void(0);'data-toggle='tooltip' title='"
             + namespace + "' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/"
             + namespace + "\");'>" + namespace + "</a>";
-        var nodePort = dataSpec.ports.nodePort;
         var endpoints = "";
         var labelSelectorObject = $('#resultLabelSelector');
+        var specPortsList = dataSpec.ports;
 
-        if (nvl(nodePort) === '') {
-            nodePort = "0";
-        }
+        if (nvl(specPortsList) !== '') {
+            specPortsListLength = specPortsList.length;
+            nodePort = nvl(specPortsList.nodePort, '0');
 
-        endpointsPreString = (namespace === 'default') ? serviceName : serviceName + "." + namespace;
-        endpointsPreString += ":";
+            endpointsPreString = (namespace === 'default') ? serviceName : serviceName + "." + namespace;
+            endpointsPreString += ":";
 
-        for (var i = 0; i < specPortsListLength; i++) {
-            endpoints += '<p>' + endpointsPreString + specPortsList[i].port + " " + specPortsList[i].protocol + '</p>'
-                + '<p>' + endpointsPreString + nodePort + " " + specPortsList[i].protocol + '</p>';
+            for (var i = 0; i < specPortsListLength; i++) {
+                endpoints += '<p>' + endpointsPreString + specPortsList[i].port + " " + specPortsList[i].protocol + '</p>'
+                    + '<p>' + endpointsPreString + nodePort + " " + specPortsList[i].protocol + '</p>';
+            }
         }
 
         selector = procSetSelector(dataSpec.selector);
@@ -171,10 +171,10 @@
         $('#resultNamespace').html(namespaceHtml);
         $('#resultCreationTimestamp').html(dataMetadata.creationTimestamp);
         labelSelectorObject.html(selectorString);
-        $('#resultType').html(dataSpec.type);
-        $('#resultSessionAffinity').html(dataSpec.sessionAffinity);
-        $('#resultClusterIp').html(dataSpec.clusterIP);
-        $('#resultInternalEndpointsArea').html(endpoints);
+        $('#resultType').html(nvl(dataSpec.type, '-'));
+        $('#resultSessionAffinity').html(nvl(dataSpec.sessionAffinity, '-'));
+        $('#resultClusterIp').html(nvl(dataSpec.clusterIP, '-'));
+        $('#resultInternalEndpointsArea').html(nvl(endpoints, '-'));
 
         viewLoading('hide');
 

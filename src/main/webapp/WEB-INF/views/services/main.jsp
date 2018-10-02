@@ -106,8 +106,6 @@
             namespace,
             endpointsPreString,
             nodePort,
-            specType,
-            clusterIp,
             specPortsList,
             specPortsListLength,
             endpointWithSpecPort,
@@ -131,23 +129,19 @@
                 namespace = itemsMetadata.namespace;
                 endpointsPreString = (namespace === 'default') ? serviceName : serviceName + "." + namespace;
                 endpointsPreString += ":";
-                nodePort = itemsSpec.ports.nodePort;
-
-                if (nvl(nodePort) === '') {
-                    nodePort = "0";
-                }
-
-                specType = itemsSpec.type;
-                clusterIp = itemsSpec.clusterIP;
                 specPortsList = itemsSpec.ports;
-                specPortsListLength = specPortsList.length;
 
-                for (var j = 0; j < specPortsListLength; j++) {
-                    endpointProtocol = specPortsList[j].protocol;
-                    endpointWithSpecPort = endpointsPreString + specPortsList[j].port + " " + endpointProtocol;
-                    endpointWithNodePort = endpointsPreString + nodePort + " " + endpointProtocol;
+                if (nvl(specPortsList) !== '') {
+                    specPortsListLength = specPortsList.length;
+                    nodePort = nvl(specPortsList.nodePort, '0');
 
-                    endpoints += '<p>' + endpointWithSpecPort + '</p>' + '<p>' + endpointWithNodePort + '</p>';
+                    for (var j = 0; j < specPortsListLength; j++) {
+                        endpointProtocol = specPortsList[j].protocol;
+                        endpointWithSpecPort = endpointsPreString + specPortsList[j].port + " " + endpointProtocol;
+                        endpointWithNodePort = endpointsPreString + nodePort + " " + endpointProtocol;
+
+                        endpoints += '<p>' + endpointWithSpecPort + '</p>' + '<p>' + endpointWithNodePort + '</p>';
+                    }
                 }
 
                 htmlString.push(
@@ -156,9 +150,9 @@
                     + "<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.CAAS_BASE_URL %>/services/"
                     + serviceName + "\");'>" + serviceName + "</a>"
                     + "</td>"
-                    + "<td><p>" + specType + "</p></td>"
-                    + "<td><p>" + clusterIp + "</p></td>"
-                    + "<td>" + endpoints + "</td>"
+                    + "<td><p>" + nvl(itemsSpec.type, '-') + "</p></td>"
+                    + "<td><p>" + nvl(itemsSpec.clusterIP, '-') + "</p></td>"
+                    + "<td>" + nvl(endpoints, '-') + "</td>"
                     + "<td><p id='" + serviceName + "' class='tableTdToolTipFalse'>0 / 0</p></td>"
                     + "<td>" + itemsMetadata.creationTimestamp + "</td>"
                     + "</tr>");
