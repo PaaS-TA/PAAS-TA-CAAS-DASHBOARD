@@ -173,14 +173,24 @@
         Object.keys(annotations).forEach(function (key) {
             var annotation = annotations[key];
             if(typeof JSON.parse(annotation) == 'object') {
-                tempStr += '<span class="bg_blue"><a href="#" data-target="#layerpop3" data-toggle="modal">' + key + '</a></span>';
-                $('.modal-title').html(key);
-                $(".modal-body").html('<p>' + annotation + '</p>');
+                tempStr += '<span class="bg_blue" onclick="setLayerpop(this)" '
+                            + 'data-title="' + key + '" data-content=' + annotation + '>'
+                            + '<a>' + key + '</a></span> ';
+
             } else {
                 tempStr += procCreateSpans(key + ":"+ annotation);
             }
         });
         return tempStr;
+    };
+
+    // CONTENT SETTING FOR POP-UP MODAL
+    var setLayerpop = function(eventElement) {
+        var select = $(eventElement);
+        var title = JSON.stringify(select.data('title')).replace(/^"|"$/g, '');
+        var content = JSON.stringify(select.data('content')).replace(/^"|"$/g, '');
+
+        procSetLayerPopup(title, content, null, null, 'x', null, null, null);
     };
 
     $(document.body).ready(function () {
