@@ -33,7 +33,7 @@
             </colgroup>
             <thead>
             <tr id="noPodListResultArea" style="display: none;">
-                <td colspan='8'><p class='service_p'>실행 중인 Pods가 없습니다.</p></td>
+                <td colspan='8'><p class='service_p'>실행 중인 Pod가 없습니다.</p></td>
             </tr>
             <tr id="podListResultHeaderArea" class="headerSortFalse">
                 <td>Name
@@ -264,29 +264,6 @@
         };
     };
 
-    // GET POD STATUS STYLE CLASS
-    var getPodStatusStyleClass = function(statusString) {
-        var styleClassSet;
-        if (statusString.includes('Pending')) {
-            styleClassSet = {span: 'pending2', i: 'fas fa-exclamation-triangle'};
-        } else if (statusString.includes('Running')) {
-            styleClassSet = {span: 'running2', i: 'fas fa-check-circle'};
-        } else if (statusString.includes('Succeeded')) {
-            styleClassSet = {span: 'succeeded2', i: 'fas fa-check-circle'};
-        } else if (statusString.includes('Terminiated')) {
-            styleClassSet = {span: 'failed2', i: 'fas fa-exclamation-circle'};
-        } else if (statusString.includes('Waiting')) {
-            styleClassSet = {span: 'waiting2', i: 'fas fa-exclamation-triangle'};
-        } else {
-            styleClassSet = {span: 'unknown2', i: 'fas fa-exclamation-triangle'};
-        }
-
-        // disable tooltip to icon
-        styleClassSet.span += ' tableTdToolTipFalse';
-
-        return styleClassSet;
-    };
-
     // CREATE ANCHOR TAG FUNCTION
     var createMovePageAnchorTag = function(movePageUrl, content) {
         var anchorTag = '<a href="javascript:void(0);" onclick="procMovePage(\'' + movePageUrl + '\');">' + content + '</a>';
@@ -308,13 +285,9 @@
 
         for (var i = 0; i < listLength; i++) {
             var pod = podList[i];
-            var styleClassSet = getPodStatusStyleClass(pod.podStatus);
 
-            var podNameHtml = '<span class="' + styleClassSet.span + '"><i class="' + styleClassSet.i + '"></i></span> '
+            var podNameHtml = '<span class="running2 tableTdToolTipFalse"><i class="fas fa-check-circle"></i></span> '
                 + createMovePageAnchorTag('<%= Constants.URI_WORKLOAD_PODS %>/' + pod.name, pod.name);
-            if ('' !== nvl(pod.podErrorMsg)) {
-                podNameHtml += ('<br><span>' + pod.podErrorMsg + '</span>');
-            }
 
             var nodeNameHtml;
             if (pod.nodeName !== '-') {
