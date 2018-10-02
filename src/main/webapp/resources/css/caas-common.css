@@ -187,3 +187,12 @@
 .custom-access-title-caution {
     padding: 0 0 4px 30px;
 }
+
+select:focus {
+    background-image:url("../images/select.png");
+    background-position:right center;
+    background-repeat:no-repeat;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
