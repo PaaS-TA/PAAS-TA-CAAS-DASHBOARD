@@ -5,10 +5,6 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
-/**
- * Created by Dojun on 2016-10-05.
- */
-
 /*
     resttemplate로 api 요청시 SSL 유효성 체크를 건너뜀
  */
