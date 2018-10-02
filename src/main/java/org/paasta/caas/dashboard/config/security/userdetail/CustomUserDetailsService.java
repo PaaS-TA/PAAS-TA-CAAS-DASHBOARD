@@ -132,7 +132,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         if(certificationFlag) {
-            UsersList commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+serviceInstanceId+"/organizationGuid/"+organization_guid, HttpMethod.GET, null, UsersList.class);
+            UsersList commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_USERS_LIST
+                    .replace("{serviceInstanceId:.+}", serviceInstanceId)
+                    .replace("{organizationGuid:.+}", organization_guid), HttpMethod.GET, null, UsersList.class);
 
             spaceName = "paas-"+serviceInstanceId+"-caas";
 

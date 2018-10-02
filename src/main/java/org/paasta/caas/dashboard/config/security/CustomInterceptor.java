@@ -51,7 +51,9 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
 
                 SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
                 if (ssoAuthenticationDetails.getServiceInstanceId() != null && !ssoAuthenticationDetails.getServiceInstanceId().trim().equals("") && ssoAuthenticationDetails.getOrganizationGuid() != null && !ssoAuthenticationDetails.getOrganizationGuid().trim().equals("")) {
-                    UsersList commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+ssoAuthenticationDetails.getServiceInstanceId()+"/organizationGuid/"+ssoAuthenticationDetails.getOrganizationGuid(), HttpMethod.GET, null, UsersList.class);
+                    UsersList commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_USERS_LIST
+                            .replace("{serviceInstanceId:.+}", ssoAuthenticationDetails.getServiceInstanceId())
+                            .replace("{organizationGuid:.+}", ssoAuthenticationDetails.getOrganizationGuid()), HttpMethod.GET, null, UsersList.class);
 
                     if(commonGetUsers == null || commonGetUsers.getItems().size() == 0) {
                         LOGGER.info(":: Session not .. redirect.. unauthorized");
