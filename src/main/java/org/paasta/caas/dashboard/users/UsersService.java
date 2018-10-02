@@ -117,7 +117,7 @@ public class UsersService {
 
         Map<String, Object> model = new HashMap<>();
         model.put("spaceName", user.getCaasNamespace());
-        model.put("userName", realUserName);
+        model.put("userName", user.getCaasAccountName());
         model.put("roleName", user.getCaasNamespace() + "-" + realUserName + "-role");
         String roleYml = null;
         String roleBindingYml = null;
