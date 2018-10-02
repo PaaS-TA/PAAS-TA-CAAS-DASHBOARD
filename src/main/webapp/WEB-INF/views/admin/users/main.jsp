@@ -306,7 +306,7 @@
             viewLoading('hide');
             resultString = 'Role 변경에 실패했습니다.';
         }
-        procSetLayerPopup('알림', resultString, '확인', '취소', 'x', 'location.reload(true);', 'location.reload(true);', 'location.reload(true);');
+        procSetLayerPopup('알림', resultString, '확인', null, 'x', 'location.reload(true);', 'location.reload(true);', 'location.reload(true);');
     };
 
 
@@ -342,7 +342,7 @@
             resultString = '사용자 삭제에 실패했습니다.'
         }
 
-        procSetLayerPopup('알림', resultString, '확인', '취소', 'x', 'location.reload(true);', 'location.reload(true);', 'location.reload(true);');
+        procSetLayerPopup('알림', resultString, '확인', null, 'x', 'location.reload(true);', 'location.reload(true);', 'location.reload(true);');
     };
 
 
