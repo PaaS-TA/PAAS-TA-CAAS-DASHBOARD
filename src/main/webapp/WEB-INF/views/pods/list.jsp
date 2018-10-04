@@ -84,7 +84,9 @@
         $.each(data.items, function(index, item) {
             pod = getPod(item);
             podList.push(pod);
-            podNameList.push(pod.name);
+            if (!('Running' === pod.podStatus || 'Succeeded' === pod.podStatus)) {
+                podNameList.push(pod.name);
+            }
 
             switch (pod.podStatus) {
                 case 'Pending':
