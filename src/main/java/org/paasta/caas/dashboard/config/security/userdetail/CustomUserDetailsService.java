@@ -13,12 +13,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.*;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.client.token.AccessTokenRequest;
+import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
+import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordAccessTokenProvider;
+import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
+import org.springframework.security.oauth2.common.AuthenticationScheme;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +58,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Value("${caas.admin-token}")
     private String caasAdminToken;
+
+    @Value("${cf.uaa.oauth.client.id}")
+    private String clientId;
+
+    @Value("${cf.uaa.oauth.client.secret}")
+    private String clientSecret;
+
+    @Value("${cf.uaa.oauth.token.access.uri}")
+    private String accessUri;
 
     @Autowired
     private CfService cfService;
@@ -132,9 +154,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         if(certificationFlag) {
-            UsersList commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_USERS_LIST
-                    .replace("{serviceInstanceId:.+}", serviceInstanceId)
-                    .replace("{organizationGuid:.+}", organization_guid), HttpMethod.GET, null, UsersList.class);
+            UsersList commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+serviceInstanceId+"/organizationGuid/"+organization_guid, HttpMethod.GET, null, UsersList.class);
 
             spaceName = "paas-"+serviceInstanceId+"-caas";
 
@@ -248,6 +268,102 @@ public class CustomUserDetailsService implements UserDetailsService {
         String token = element.getAsJsonObject().get("name").toString();
         token = token.replaceAll("\"", "");
         return token;
+    }
+
+    public String getUaaToken(boolean refresh) {
+        SsoAuthenticationDetails user = ((SsoAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails());
+        LOGGER.info("############################# Token Expired : " + (user.getAccessToken().getExpiration().getTime() - System.currentTimeMillis()) / 1000 + " sec");
+
+        // Token 만료 시간 비교
+        if (user.getAccessToken().getExpiration().getTime() <= System.currentTimeMillis() || refresh) {
+            LOGGER.info("getUaaToken if in..");
+            //Rest 생성
+            RestTemplate rest = new RestTemplate();
+            //Token 재요청을 위한 데이터 설정
+            LOGGER.info(user.getUserid());
+
+            LOGGER.info("start");
+
+//            OAuth2ProtectedResourceDetails resource = getResourceDetails(user.getUserid(), "N/A", clientId, clientSecret, accessUri);
+//            AccessTokenRequest accessTokenRequest = new DefaultAccessTokenRequest();
+//            ResourceOwnerPasswordAccessTokenProvider provider = new ResourceOwnerPasswordAccessTokenProvider();
+//            provider.setRequestFactory(rest.getRequestFactory());
+//            //Token 재요청
+//            LOGGER.info("=:1="+user.getAccessToken().toString());
+//            try{
+//                OAuth2AccessToken refreshToken = provider.refreshAccessToken(resource, user.getAccessToken().getRefreshToken(), accessTokenRequest);
+//                //재요청으로 받은 Token 재설정
+//                user.setAccessToken(refreshToken);
+//                LOGGER.info("=:3="+refreshToken.toString());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//
+//                OAuth2AccessToken accessToken = provider.obtainAccessToken(resource, accessTokenRequest);
+//LOGGER.info("========");
+//                LOGGER.info(accessToken.toString());
+//
+//            }
+
+            // session에 적용
+            LOGGER.info("try");
+//                Authentication authentication = new UsernamePasswordAuthenticationToken(SecurityContextHolder.getContext().getAuthentication(), "N/A", SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            authentication = new OAuth2Authentication(((OAuth2Authentication) authentication).getOAuth2Request(), new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), "N/A", SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
+            ((OAuth2Authentication) authentication).setDetails(user);
+
+        }
+        String token = user.getTokenValue();
+
+        return token;
+    }
+
+    private OAuth2ProtectedResourceDetails getResourceDetails(String username, String password, String clientId, String clientSecret, String url) {
+        ResourceOwnerPasswordResourceDetails resource = new ResourceOwnerPasswordResourceDetails();
+        resource.setUsername(username);
+        resource.setPassword(password);
+        resource.setClientId(clientId);
+        resource.setClientSecret(clientSecret);
+        resource.setId(clientId);
+        resource.setClientAuthenticationScheme(AuthenticationScheme.header);
+        resource.setAccessTokenUri(url);
+
+        return resource;
+    }
+
+    public static final String MANAGED_KEY = "manage";
+
+    /**
+     * Checks whether the user is allowed to manage the current service instance.
+     */
+    public boolean isManagingApp(String uaaToken, String serviceInstanceId) {
+        LOGGER.info("uaaToken : "+uaaToken);
+        LOGGER.info("serviceInstanceId : "+serviceInstanceId);
+
+//        final String url = getCheckUrl(serviceInstanceId);
+        String url = "https://api.115.68.46.189.xip.io/v2/service_instances/"+serviceInstanceId+"/permissions";
+        try {
+//            RestTemplate restTemplate = new RestTemplate();
+//            HttpHeaders headers = new HttpHeaders();
+////            headers.set("Authorization", "Bearer " + getUaaToken(true));
+//            headers.set("Authorization", "Bearer " + uaaToken);
+//            headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+//            HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+//
+//            ResponseEntity<Map> result = restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+//            Map body = result.getBody();
+
+            Map body = restTemplateService.cfSend(uaaToken, url, HttpMethod.GET, null, Map.class);
+
+            LOGGER.info("===");
+            LOGGER.info(body.toString());
+
+            return Boolean.TRUE.toString().equals(body.get(MANAGED_KEY).toString().toLowerCase());
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            LOGGER.error("Error while retrieving authorization from [" + url + "].", e);
+            return false;
+        }
     }
 
 }

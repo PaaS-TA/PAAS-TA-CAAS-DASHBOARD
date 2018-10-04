@@ -108,6 +108,7 @@ public class SsoSecurityConfiguration {
         filter.setRequiresAuthenticationRequestMatcher(ssoEntryPointMatcher());
         filter.setDetailsSource(ssoAuthenticationDetailsSource());
         filter.setAuthenticationSuccessHandler(new SsoAuthenticationSuccessHandler());
+        filter.setAuthenticationFailureHandler(new SsoAuthenticationFailureHandler());
 
         return SsoFilterWrapper.wrap(filter);
     }

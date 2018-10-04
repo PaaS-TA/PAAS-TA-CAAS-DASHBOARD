@@ -3,6 +3,7 @@ package org.paasta.caas.dashboard.config.security;
 import org.paasta.caas.dashboard.common.CommonService;
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
+import org.paasta.caas.dashboard.config.security.userdetail.CustomUserDetailsService;
 import org.paasta.caas.dashboard.security.SsoAuthenticationDetails;
 import org.paasta.caas.dashboard.users.UsersList;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -36,6 +38,9 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     RestTemplateService restTemplateService;
 
+    @Autowired
+    CustomUserDetailsService customUserDetailsService;
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -45,30 +50,54 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
         LOGGER.info("** Request URI - "+url);
 
         try {
-            if (!url.contains("/common/error/unauthorized") && !url.contains("/resources/images")) {
+            if (!url.contains("/common/error/unauthorized") && !url.contains("/resources")) {
                 Pattern pattern = Pattern.compile("("+Constants.CAAS_INIT_URI+"/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
                 Matcher matcher = pattern.matcher(url);
 
-                SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
-                if (ssoAuthenticationDetails.getServiceInstanceId() != null && !ssoAuthenticationDetails.getServiceInstanceId().trim().equals("") && ssoAuthenticationDetails.getOrganizationGuid() != null && !ssoAuthenticationDetails.getOrganizationGuid().trim().equals("")) {
-                    UsersList commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_USERS_LIST
-                            .replace("{serviceInstanceId:.+}", ssoAuthenticationDetails.getServiceInstanceId())
-                            .replace("{organizationGuid:.+}", ssoAuthenticationDetails.getOrganizationGuid()), HttpMethod.GET, null, UsersList.class);
-
-                    if(commonGetUsers == null || commonGetUsers.getItems().size() == 0) {
-                        LOGGER.info(":: Session not .. redirect.. unauthorized");
-                        SecurityContextHolder.clearContext();
-                        response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
-                        return false;
-                    }
-                }
+//                SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+//                if (ssoAuthenticationDetails.getServiceInstanceId() != null && !ssoAuthenticationDetails.getServiceInstanceId().trim().equals("") && ssoAuthenticationDetails.getOrganizationGuid() != null && !ssoAuthenticationDetails.getOrganizationGuid().trim().equals("")) {
+//                    UsersList commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+ssoAuthenticationDetails.getServiceInstanceId()+"/organizationGuid/"+ssoAuthenticationDetails.getOrganizationGuid(), HttpMethod.GET, null, UsersList.class);
+//
+//                    if(commonGetUsers == null || commonGetUsers.getItems().size() == 0) {
+//                        LOGGER.info(":: Session not .. redirect.. unauthorized");
+//                        SecurityContextHolder.clearContext();
+//                        response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
+//                        return false;
+//                    }
+//                }
 
                 if (url.contains(Constants.CAAS_INIT_URI + "/") && matcher.find()) {
                     try {
-                        SecurityContextHolder.clearContext();
-
                         String serviceInstanceId = request.getServletPath().split("/")[4];
 
+                        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+                        if (authentication != null) {
+                            SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) authentication.getDetails();
+
+//                            String aa = customUserDetailsService.getUaaToken(true);
+//                            LOGGER.info(aa);
+
+//                            String ssoServiceInstanceId = ssoAuthenticationDetails.getServiceInstanceId();
+                            String uaaToken = ssoAuthenticationDetails.getAccessToken().toString();
+                            LOGGER.info(uaaToken);
+
+                            if (!customUserDetailsService.isManagingApp(uaaToken, serviceInstanceId)) {
+                                LOGGER.info("==== 1");
+                                SecurityContextHolder.clearContext();
+                                response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
+                                return false;
+                            }
+                        } else {
+                            LOGGER.info("==== 2");
+                            LOGGER.info(":: Session not .. redirect.. unauthorized.");
+                            SecurityContextHolder.clearContext();
+                            response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
+                            return false;
+                        }
+
+                        SecurityContextHolder.clearContext();
+                        LOGGER.info(url+" ==== 0");
                         response.sendRedirect(Constants.CAAS_INIT_URI + "?serviceInstanceId="+serviceInstanceId);
                         return false;
                     } catch (Exception e) {
