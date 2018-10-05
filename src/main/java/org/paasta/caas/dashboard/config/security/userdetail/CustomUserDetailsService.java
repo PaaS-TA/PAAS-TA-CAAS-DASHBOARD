@@ -59,6 +59,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Value("${caas.admin-token}")
     private String caasAdminToken;
 
+    @Value("${cf.api.url}")
+    private String apiUrl;
+
     @Value("${cf.uaa.oauth.client.id}")
     private String clientId;
 
@@ -341,17 +344,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOGGER.info("serviceInstanceId : "+serviceInstanceId);
 
 //        final String url = getCheckUrl(serviceInstanceId);
-        String url = "https://api.115.68.46.189.xip.io/v2/service_instances/"+serviceInstanceId+"/permissions";
+        String url = apiUrl+"/v2/service_instances/"+serviceInstanceId+"/permissions";
         try {
-//            RestTemplate restTemplate = new RestTemplate();
-//            HttpHeaders headers = new HttpHeaders();
-////            headers.set("Authorization", "Bearer " + getUaaToken(true));
-//            headers.set("Authorization", "Bearer " + uaaToken);
-//            headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-//            HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-//
-//            ResponseEntity<Map> result = restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
-//            Map body = result.getBody();
 
             Map body = restTemplateService.cfSend(uaaToken, url, HttpMethod.GET, null, Map.class);
 
