@@ -154,9 +154,9 @@
         $('#resultImage').html(images.join("<br>"));
         $('#resultPods').html(data.status.availableReplicas+" running");
 
-        getDeploymentsInfo(data.metadata.labels);
+        getDeploymentsInfo(nvl(data.metadata.labels));
         getDetailForPodsList(selector);
-        getServices(data.metadata.labels);
+        getServices(nvl(data.metadata.labels));
     };
 
     // GET DEPLOYMENTS INFO
