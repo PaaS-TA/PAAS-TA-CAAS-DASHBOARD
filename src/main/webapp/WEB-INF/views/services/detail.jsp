@@ -81,7 +81,7 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr id="noResultAreaForEndpoints"><td colspan='4'><p class='service_p'>조회 된 Endpoints가 없습니다.</p></td></tr>
+                            <tr id="noResultAreaForEndpoints"><td colspan='4'><p class='service_p'>조회 된 Endpoint가 없습니다.</p></td></tr>
                             <tr id="resultHeaderAreaForEndpoints" style="display: none;">
                                 <td>Host</td>
                                 <td>Ports (Name, Port, Protocol)</td>
@@ -146,12 +146,12 @@
 
         if (nvl(specPortsList) !== '') {
             specPortsListLength = specPortsList.length;
-            nodePort = nvl(specPortsList.nodePort, '0');
-
-            endpointsPreString = (namespace === 'default') ? serviceName : serviceName + "." + namespace;
-            endpointsPreString += ":";
 
             for (var i = 0; i < specPortsListLength; i++) {
+                nodePort = nvl(specPortsList[i].nodePort, '0');
+                endpointsPreString = (namespace === 'default') ? serviceName : serviceName + "." + namespace;
+                endpointsPreString += ":";
+
                 endpoints += '<p>' + endpointsPreString + specPortsList[i].port + " " + specPortsList[i].protocol + '</p>'
                     + '<p>' + endpointsPreString + nodePort + " " + specPortsList[i].protocol + '</p>';
             }
