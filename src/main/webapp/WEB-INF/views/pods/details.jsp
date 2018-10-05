@@ -336,6 +336,7 @@
             return;
         }
 
+        data.metadata.labels = nvl(data.metadata.labels, {});
         var labelKeys = Object.keys(data.metadata.labels);
         for (var i = 0; i < labelKeys.length; i++) {
             // convert raw character of comma and quota to html symbol
@@ -385,9 +386,9 @@
 
         $('#name').html(data.metadata.name);
         $('#labels').html(createSpans(labels, 'NOT_LB'));
-        $('#creationTime').html(data.metadata.creationTimestamp);
-        $('#status').html(data.status.phase);
-        $('#qosClass').html(data.status.qosClass);
+        $('#creationTime').html(nvl(data.metadata.creationTimestamp, '-'));
+        $('#status').html(nvl(data.status.phase, '-'));
+        $('#qosClass').html(nvl(data.status.qosClass, '-'));
         $('#node').html(nodeNameHtml);
         $('#conditions').html(conditionStr);
         $('#ip').html(nvl(data.status.podIP, '-'));
