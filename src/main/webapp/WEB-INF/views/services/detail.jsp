@@ -81,7 +81,7 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr id="noResultAreaForEndpoints"><td colspan='4'><p class='service_p'>조회 된 Endpoints가 없습니다.</p></td></tr>
+                            <tr id="noResultAreaForEndpoints"><td colspan='4'><p class='service_p'>조회 된 Endpoint가 없습니다.</p></td></tr>
                             <tr id="resultHeaderAreaForEndpoints" style="display: none;">
                                 <td>Host</td>
                                 <td>Ports (Name, Port, Protocol)</td>
