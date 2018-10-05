@@ -91,7 +91,7 @@
                                 <col style='width:15%;'>
                             </colgroup>
                             <tr id="noContainersResultArea" style="display: none;">
-                                <td colspan='6'><p class='service_p'>조회 된 Containers가 없습니다.</p></td>
+                                <td colspan='6'><p class='service_p'>실행 중인 Container가 없습니다.</p></td>
                             </tr>
                             <thead id="containersResultHeaderArea">
                             <tr>
