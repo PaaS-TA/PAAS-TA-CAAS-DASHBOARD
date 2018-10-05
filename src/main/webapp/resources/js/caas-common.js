@@ -260,8 +260,8 @@ var addPodsEvent = function(targetObject, selector) {
                     var eType = eData.type;
                     if(eType == 'Warning'){
                         eventType = eType;
+                        eventMessage.push(eData.message);
                     }
-                    eventMessage.push(eData.message);
                 });
 
             });
