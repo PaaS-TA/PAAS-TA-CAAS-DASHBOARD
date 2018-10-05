@@ -146,12 +146,12 @@
 
         if (nvl(specPortsList) !== '') {
             specPortsListLength = specPortsList.length;
-            nodePort = nvl(specPortsList.nodePort, '0');
-
-            endpointsPreString = (namespace === 'default') ? serviceName : serviceName + "." + namespace;
-            endpointsPreString += ":";
 
             for (var i = 0; i < specPortsListLength; i++) {
+                nodePort = nvl(specPortsList[i].nodePort, '0');
+                endpointsPreString = (namespace === 'default') ? serviceName : serviceName + "." + namespace;
+                endpointsPreString += ":";
+
                 endpoints += '<p>' + endpointsPreString + specPortsList[i].port + " " + specPortsList[i].protocol + '</p>'
                     + '<p>' + endpointsPreString + nodePort + " " + specPortsList[i].protocol + '</p>';
             }

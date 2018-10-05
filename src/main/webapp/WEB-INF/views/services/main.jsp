@@ -133,9 +133,9 @@
 
                 if (nvl(specPortsList) !== '') {
                     specPortsListLength = specPortsList.length;
-                    nodePort = nvl(specPortsList.nodePort, '0');
 
                     for (var j = 0; j < specPortsListLength; j++) {
+                        nodePort = nvl(specPortsList[j].nodePort, '0');
                         endpointProtocol = specPortsList[j].protocol;
                         endpointWithSpecPort = endpointsPreString + specPortsList[j].port + " " + endpointProtocol;
                         endpointWithNodePort = endpointsPreString + nodePort + " " + endpointProtocol;
@@ -158,7 +158,7 @@
                     + "</tr>");
 
                 if (selector !== 'false') {
-                    selectorList.push(selector + "," + serviceName);
+                    selectorList.push(selector + "||" + serviceName);
                 }
 
                 endpoints = "";
@@ -198,11 +198,10 @@
 
         for (var i = 0; i < listLength; i++) {
             viewLoading('show');
-            tempSelectorList = selectorList[i].split(",");
-
+            tempSelectorList = selectorList[i].split("||");
             reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE %>"
                 .replace("{namespace:.+}", NAME_SPACE)
-                .replace("{serviceName:.+}", tempSelectorList[1])
+                .replace("{serviceName:.+}", tempSelectorList[tempSelectorList.length - 1])
                 .replace("{selector:.+}", tempSelectorList[0]);
 
             procCallAjax(reqUrl, "GET", null, null, callbackGetDetailForPods);
