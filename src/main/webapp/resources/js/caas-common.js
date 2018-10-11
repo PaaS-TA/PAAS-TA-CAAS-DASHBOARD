@@ -146,9 +146,9 @@ var viewLoading = function(type) {
 };
 
 
-var alertMessage = function(value, result) {
-    // TODO :: SEPARATE PROPERTY
+var alertMessage = function (value, result) {
     var messageValue = '시스템 에러가 발생했습니다.';
+    var alertLayer = $(".alertLayer");
 
     if (nvl(value) !== '') {
         messageValue = value;
@@ -156,17 +156,16 @@ var alertMessage = function(value, result) {
 
     $(".alertLayer .in").html(messageValue);
     if (result) {
-        $(".alertLayer").css('border-left', '4px solid #3d10ef');
+        alertLayer.css('border-left', '4px solid #3d10ef');
     } else {
-        $(".alertLayer").css('border-left', '4px solid #cb3d4a');
+        alertLayer.css('border-left', '4px solid #cb3d4a');
     }
-    $(".alertLayer").addClass("moveAlert");
 
-    setTimeout(function(){ $(".alertLayer").removeClass("moveAlert"); }, 3000);
+    alertLayer.addClass("moveAlert");
 
-    // setInterval(function(){
-    //   $(".alertLayer").removeClass("moveAlert");
-    // }, 3000);
+    setTimeout(function () {
+        alertLayer.removeClass("moveAlert");
+    }, 3000);
 };
 
 
