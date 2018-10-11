@@ -177,7 +177,7 @@
                 splitRole = roleArr[1];
 
                 // 4. splitRole 이 admin 인 경우 select box 는 disabled
-                if((splitRole === "admin")){
+                if((splitRole === "admin") || (G_RS_UPDATE !== "TRUE")){
                     selectBox += "<select disabled name='role-filter' data-user-id='"+ items[i].userId +"'>"
                 }else{
                     selectBox += "<select name='role-filter' data-user-id='"+ items[i].userId +"'>"
