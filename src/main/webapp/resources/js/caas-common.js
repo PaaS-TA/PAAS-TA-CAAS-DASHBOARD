@@ -251,6 +251,13 @@ var addPodsEvent = function(targetObject, selector) {
     procCallAjax(reqPodsUrl, "GET", null, null, function(podsData){
         $.each(podsData.items, function (index, itemList) {
             var podsName = itemList.metadata.name;
+            var podPhase = nvl(itemList.status.phase).toLowerCase();
+
+            // 해당조건일시 이벤트에서 제외
+            if(podPhase == "running" || podPhase.includes("succeeded") || podPhase == "terminated"){
+                return true;  // continue;
+            }
+
             var reqEventsUrl = URI_API_EVENTS_LIST
                 .replace("{namespace:.+}", NAME_SPACE)
                 .replace("{resourceName:.+}", podsName);
