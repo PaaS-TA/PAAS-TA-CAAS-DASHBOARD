@@ -143,6 +143,9 @@
             }
 
             for ( var key in hards ) {
+                if(key === 'requests.storage') {
+                    continue;
+                }
                 trHtml +=
                     "<tr>"
                     + "<td>" + key + "</td>"

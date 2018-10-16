@@ -65,7 +65,7 @@
                                 <th><i class="cWrapDot"></i> Description</th>
                                 <td>
                                     <p>
-                                        2 CPUs, 2GB Memory, 10GB Disk (free)
+                                        2 CPUs, 2GB Memory (free)
                                     </p>
                                 </td>
                             </tr>
@@ -189,6 +189,9 @@
             }
 
             for ( var key in hards ) {
+                if(key === 'requests.storage') {
+                    continue;
+                }
                 trHtml +=
                     "<tr>"
                     + "<td>" + key + "</td>"

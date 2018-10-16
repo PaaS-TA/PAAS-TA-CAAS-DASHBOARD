@@ -28,7 +28,7 @@
                                 <col style=".">
                             </colgroup>
                             <thead>
-                            <tr id="noResultCommonEventsArea"><td colspan='6'><p class='service_p'>조회 된 Events가 없습니다.</p></td></tr>
+                            <tr id="noResultCommonEventsArea"><td colspan='6'><p class='service_p'>조회 된 Event가 없습니다.</p></td></tr>
                             <tr id="resultHeaderCommonEventsArea" style="display: none;">
                                 <td>Message</td>
                                 <td>Source</td>
