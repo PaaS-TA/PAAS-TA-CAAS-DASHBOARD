@@ -56,9 +56,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Value("${roleSet.initUserCode}")
     private String initUserCode;
 
-    @Value("${caas.admin-token}")
-    private String caasAdminToken;
-
     @Value("${cf.api.url}")
     private String apiUrl;
 
@@ -128,8 +125,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         //TODO namespace가 아닌가??
         String spaceName = "";
 
-        Map adminToken = restTemplateService.send(Constants.TARGET_COMMON_API, "/adminToken/"+caasAdminToken, HttpMethod.GET, null, Map.class);
+        Map adminToken = restTemplateService.send(Constants.TARGET_COMMON_API, "/adminToken/" + Constants.TOKEN_KEY, HttpMethod.GET, null, Map.class);
 
+        System.out.println("루루루루루루룰라" + adminToken.toString());
         if(adminToken != null && !adminToken.get("tokenValue").toString().equals("")) {
             caas_adminValue = adminToken.get("tokenValue").toString();
 

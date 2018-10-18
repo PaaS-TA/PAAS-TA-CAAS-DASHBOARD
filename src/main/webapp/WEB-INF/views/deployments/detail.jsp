@@ -134,8 +134,8 @@
         var strategy = spec.strategy.type;
         var minReadySeconds = spec.minReadySeconds;
         var revisionHistoryLimit = spec.revisionHistoryLimit;
-        var rollingUpdateStrategy = "Max surge: " + spec.strategy.rollingUpdate.maxSurge + ", "
-                                    + "Max unavailable: " + spec.strategy.rollingUpdate.maxUnavailable;
+        var rollingUpdateStrategy = "Max surge: " + nvl(spec.strategy.rollingUpdate.maxSurge, '-') + ", "
+                                    + "Max unavailable: " + nvl(spec.strategy.rollingUpdate.maxUnavailable, '-');
 
         var updatedReplicas = status.updatedReplicas;
         var totalReplicas = status.replicas;
