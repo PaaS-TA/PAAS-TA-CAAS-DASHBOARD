@@ -59,6 +59,12 @@
                                 <th><i class="cWrapDot"></i> Internal endpoints</th>
                                 <td id="resultInternalEndpointsArea"> - </td>
                             </tr>
+                            <tr id="nodePortUrlLinkWrap" style="display: none;">
+                                <th><i class="cWrapDot"></i> URL</th>
+                                <td>
+                                    <button id="nodePortUrlLinkButton" class="btns4 colors4" data-toggle='tooltip' title="-">URL Link</button>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -103,9 +109,34 @@
     <!-- Services Details 끝 -->
 </div>
 <input type="hidden" id="requestServiceName" name="requestServiceName" value="<c:out value='${serviceName}' default='' />" />
-
+<input type="hidden" id="hiddenMasterUrl" name="hiddenMasterUrl" value="" />
+<input type="hidden" id="hiddenNodePortUrl" name="hiddenNodePortUrl" value="" />
 
 <script type="text/javascript">
+
+    // GET DETAIL
+    var getUserDetail = function () {
+        viewLoading('show');
+
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_DETAIL %>"
+            .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
+            .replace("{organizationGuid:.+}", ORGANIZATION_GUID)
+            .replace("{userId:.+}", USER_ID);
+
+        procCallAjax(reqUrl, "GET", null, null, callbackGetUserDetail);
+    };
+
+    // CALLBACK
+    var callbackGetUserDetail = function (data) {
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
+            return false;
+        }
+
+        $('#hiddenMasterUrl').val(data.caasUrl);
+        getDetail();
+    };
 
     // GET DETAIL
     var getDetail = function() {
@@ -137,13 +168,15 @@
         var serviceName = dataMetadata.name;
         var namespace = dataMetadata.namespace;
         var dataSpec = data.spec;
-        var namespaceHtml = "<a href='javascript:void(0);'data-toggle='tooltip' title='"
+        var namespaceHtml = "<a href='javascript:void(0); 'data-toggle='tooltip' title='"
             + namespace + "' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/"
             + namespace + "\");'>" + namespace + "</a>";
         var endpoints = "";
         var labelSelectorObject = $('#resultLabelSelector');
         var specPortsList = dataSpec.ports;
+        var specType = nvl(dataSpec.type, '-');
 
+        // SET ENDPOINTS
         if (nvl(specPortsList) !== '') {
             specPortsListLength = specPortsList.length;
 
@@ -157,6 +190,7 @@
             }
         }
 
+        // SET SELECTOR
         selector = procSetSelector(dataSpec.selector);
         selectorString = selector;
 
@@ -167,14 +201,31 @@
             selectorString = selector.replace(/=/g, ':')
         }
 
+        // SET VIEW FOR TOP DETAIL AREA
         $('.resultServiceName').html(serviceName);
         $('#resultNamespace').html(namespaceHtml);
         $('#resultCreationTimestamp').html(dataMetadata.creationTimestamp);
         labelSelectorObject.html(selectorString);
-        $('#resultType').html(nvl(dataSpec.type, '-'));
+        $('#resultType').html(specType);
         $('#resultSessionAffinity').html(nvl(dataSpec.sessionAffinity, '-'));
         $('#resultClusterIp').html(nvl(dataSpec.clusterIP, '-'));
         $('#resultInternalEndpointsArea').html(nvl(endpoints, '-'));
+
+        var checkHttpString = 'http://';
+
+        // SET URL LINK
+        if (specType === 'NodePort') {
+            var masterUrl = nvl($('#hiddenMasterUrl').val(), '-').replace('https://', '').replace(checkHttpString, '');
+
+            if (masterUrl !== '') {
+                var masterUrlArray = masterUrl.split(':');
+                var nodePortUrl = checkHttpString + masterUrlArray[0] + ':' + nodePort;
+
+                $('#hiddenNodePortUrl').val(nodePortUrl);
+                $('#nodePortUrlLinkButton').attr('title', nodePortUrl);
+                $('#nodePortUrlLinkWrap').show();
+            }
+        }
 
         viewLoading('hide');
 
@@ -232,6 +283,7 @@
             subsetsListLength = dataSubsets.length;
         }
 
+        // SET ENDPOINTS LIST
         for (var i = 0; i < subsetsListLength; i++) {
             endpointsList = dataSubsets[i].addresses;
             ports = dataSubsets[i].ports;
@@ -335,9 +387,15 @@
     };
 
 
+    // BIND
+    $("#nodePortUrlLinkButton").on("click", function () {
+        window.open($('#hiddenNodePortUrl').val(), '_blank');
+    });
+
+
     // ON LOAD
     $(document.body).ready(function () {
-        getDetail();
+        getUserDetail();
     });
 
 </script>
