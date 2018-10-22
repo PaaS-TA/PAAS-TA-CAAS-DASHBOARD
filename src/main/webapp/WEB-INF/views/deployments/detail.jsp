@@ -134,8 +134,15 @@
         var strategy = spec.strategy.type;
         var minReadySeconds = spec.minReadySeconds;
         var revisionHistoryLimit = spec.revisionHistoryLimit;
-        var rollingUpdateStrategy = "Max surge: " + nvl(spec.strategy.rollingUpdate.maxSurge, '-') + ", "
-                                    + "Max unavailable: " + nvl(spec.strategy.rollingUpdate.maxUnavailable, '-');
+        var rollingUpdateStrategy ="";
+        var rollingUpdate = spec.strategy.rollingUpdate;
+        if(!rollingUpdate) {
+            rollingUpdateStrategy = "-";
+        } else {
+            rollingUpdateStrategy = "Max surge: " + rollingUpdate.maxSurge + ", "
+                + "Max unavailable: " + rollingUpdate.maxUnavailable;
+        }
+
 
         var updatedReplicas = status.updatedReplicas;
         var totalReplicas = status.replicas;
