@@ -6,8 +6,8 @@ import org.paasta.caas.dashboard.cf.CfService;
 import org.paasta.caas.dashboard.common.Constants;
 import org.paasta.caas.dashboard.common.RestTemplateService;
 import org.paasta.caas.dashboard.common.TemplateService;
-import org.paasta.caas.dashboard.common.model.Users;
 import org.paasta.caas.dashboard.security.SsoAuthenticationDetails;
+import org.paasta.caas.dashboard.users.Users;
 import org.paasta.caas.dashboard.users.UsersList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +22,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-import org.springframework.security.oauth2.client.token.AccessTokenRequest;
-import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
-import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordAccessTokenProvider;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.security.oauth2.common.AuthenticationScheme;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -74,7 +70,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     private TemplateService templateService;
 
     private final RestTemplateService restTemplateService;
-
 
     private String token;
 
@@ -127,7 +122,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         Map adminToken = restTemplateService.send(Constants.TARGET_COMMON_API, "/adminToken/" + Constants.TOKEN_KEY, HttpMethod.GET, null, Map.class);
 
-        System.out.println("루루루루루루룰라" + adminToken.toString());
         if(adminToken != null && !adminToken.get("tokenValue").toString().equals("")) {
             caas_adminValue = adminToken.get("tokenValue").toString();
 
@@ -160,6 +154,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             spaceName = "paas-"+serviceInstanceId+"-caas";
 
             if(commonGetUsers != null && commonGetUsers.getItems().size() > 0) {
+                Users planUser = commonGetUsers.getItems().get(0);
                 if(commonGetUsers.toString().contains("userId="+username+",")) {
                     role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 } else {
@@ -181,6 +176,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                     user.setOrganizationGuid(organization_guid);
                     user.setSpaceGuid(space_guid);
                     user.setRoleSetCode(initUserCode);
+                    user.setPlanName(planUser.getPlanName());
+                    user.setPlanDescription(planUser.getPlanDescription());
                     user.setDescription("user information");
 
                     Users commonCreateUser = restTemplateService.send(Constants.TARGET_COMMON_API, "/users", HttpMethod.POST, user, Users.class);
