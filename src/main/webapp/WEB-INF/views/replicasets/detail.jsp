@@ -135,7 +135,7 @@
         var replicaSetName      = data.metadata.name;
         var namespace           = data.metadata.namespace;
         var labels              = procSetSelector(data.metadata.labels);
-        var annotations         = procSetSelector(data.metadata.annotations);
+        var annotations         = data.metadata.annotations;
         var creationTimestamp   = data.metadata.creationTimestamp;
         var selector            = procSetSelector(data.spec.selector.matchLabels);
         var images              = [];
@@ -148,7 +148,7 @@
         $('#resultResourceName').html(replicaSetName);
         $('#resultNamespace').html(namespace);
         $('#resultLabel').html(procCreateSpans(labels));
-        $('#resultAnnotation').html(procCreateSpans(annotations));
+        $('#resultAnnotation').html(procSetAnnotations(annotations));
         $('#resultCreationTimestamp').html(creationTimestamp);
         $('#resultSelector').html(procCreateSpans(selector));
         $('#resultImage').html(images.join("<br>"));

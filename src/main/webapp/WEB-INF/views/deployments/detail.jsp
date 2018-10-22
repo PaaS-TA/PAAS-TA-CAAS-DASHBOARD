@@ -156,7 +156,7 @@
         $('#name').html(deployName);
         $('#namespaceID').html("<a href='javascript:void(0);' onclick='procMovePage(\"<%= Constants.URI_CLUSTER_NAMESPACES %>/" + namespace + "\");'>" + namespace);
         $('#labels').html(procCreateSpans(labels));
-        $('#annotations').html(createAnnotations(annotations));
+        $('#annotations').html(procSetAnnotations(annotations));
         $('#creationTime').html(creationTimestamp);
         $('#selector').html(procCreateSpans(selector));
         $('#strategy').html(strategy);
@@ -172,32 +172,6 @@
 
     var replaceLabels = function (data) {
         return JSON.stringify(data).replace(/"/g, '').replace(/=/g, '%3D');
-    };
-
-    //3개 일때는 동작하지 않을 수 있음.
-    var createAnnotations = function (annotations) {
-        var tempStr = "";
-        Object.keys(annotations).forEach(function (key) {
-            var annotation = annotations[key];
-            if(typeof JSON.parse(annotation) == 'object') {
-                tempStr += '<span class="bg_blue" onclick="setLayerpop(this)" '
-                            + 'data-title="' + key + '" data-content=' + annotation + '>'
-                            + '<a>' + key + '</a></span> ';
-
-            } else {
-                tempStr += procCreateSpans(key + ":"+ annotation);
-            }
-        });
-        return tempStr;
-    };
-
-    // CONTENT SETTING FOR POP-UP MODAL
-    var setLayerpop = function(eventElement) {
-        var select = $(eventElement);
-        var title = JSON.stringify(select.data('title')).replace(/^"|"$/g, '');
-        var content = JSON.stringify(select.data('content')).replace(/^"|"$/g, '');
-
-        procSetLayerPopup(title, content, null, null, 'x', null, null, null);
     };
 
     $(document.body).ready(function () {

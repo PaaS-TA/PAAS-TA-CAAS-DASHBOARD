@@ -118,54 +118,6 @@
         return anchorTag;
     };
 
-    // CREATE SPANS FOR LABELS
-    var createSpans = function(data, type) {
-        // After run procCreateSpans, If some of span html are JSON Object or JSON Array value,
-        // it adds layer-pop action and related event.
-        var defaultSpanHtml = procCreateSpans(data, type);
-        if ('-' === defaultSpanHtml) {
-            return '-';
-        }
-
-        var spans = defaultSpanHtml.split('</span> ');
-
-        var spanStr,
-            spanData,
-            separatorIndex,
-            key,
-            value,
-            newSpanStr;
-
-        for (var index = 0; index < spans.length; index++) {
-            spanStr = spans[index];
-            spanData = spanStr.replace('<span class="bg_gray">', '');
-            separatorIndex = spanData.indexOf(':');
-            if ('' === spanData || '' === spanData.replace(/ /g, '') || separatorIndex < 0) {
-                spans[index] += spanStr + '</span> ';
-                continue;
-            }
-
-            key = spanData.substring(0, separatorIndex);
-            value = spanData.substring(separatorIndex + 1);
-            try {
-                var type = typeof JSON.parse($('<p>' + value + '</p>').html());
-                if ('object' === type) {
-                    newSpanStr = '<span class="bg_blue" onclick="setLayerpop(this)" '
-                        + 'data-title="' + key + '" data-content="' + spanData.substring(separatorIndex + 1) + '">'
-                        + '<a>' + key + '</a></span> ';
-                } else {
-                    newSpanStr = spanStr + '</span> ';
-                }
-            } catch (e) {
-                // ignore exception
-                newSpanStr = spanStr + '</span> ';
-            }
-
-            spans[index] = newSpanStr;
-        }
-
-        return spans.join('');
-    };
 
     // REPLACE FIRST LETTER ONLY TO UPPER-CASE ALPHABET LETTER FROM EXTERNAL STRING(OR OBJECT)
     var upperCaseFirstLetterOnly = function(obj) {
@@ -385,7 +337,7 @@
         }
 
         $('#name').html(data.metadata.name);
-        $('#labels').html(createSpans(labels, 'NOT_LB'));
+        $('#labels').html(procCreateSpans(labels));
         $('#creationTime').html(nvl(data.metadata.creationTimestamp, '-'));
         $('#status').html(nvl(data.status.phase, '-'));
         $('#qosClass').html(nvl(data.status.qosClass, '-'));

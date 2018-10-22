@@ -57,7 +57,6 @@ var procSetSelector = function (requestMapString) {
     return JSON.stringify(requestMapString).replace(/["{}]/g, '').replace(/:/g, '=');
 };
 
-
 /**
  * 문자열이 빈 문자열인지 체크하여 빈값("") 또는 기본 문자열을 반환한다.
  * @param str           : 체크할 문자열
@@ -337,29 +336,29 @@ var procSetToolTipAttributes = function (tagObject) {
     }
 };
 
-
+// CREATE SPANS FOR LABELS, ANNOTATIONS
 var procCreateSpans = function (data, type) {
     if( !data || data == "null") {
         return "-";
     }
     var datas = data.replace(/=/g, ':').split(',');
     var spanTemplate = "";
+    var brTemplate = "";
 
-    if (type === "LB") { // Line Break
-        $.each(datas, function (index, data) {
-            if (index != 0) {
-                spanTemplate += '<br>';
-            }
-            spanTemplate += '<span class="bg_gray">' + data + '</span>';
-        });
-    } else {
-        $.each(datas, function (index, data) {
-            spanTemplate += '<span class="bg_gray">' + data + '</span> ';
-        });
+    if (type === 'LB') {
+        brTemplate = '<br>';
     }
+
+    $.each(datas, function (index, data) {
+        if (index != 0) {
+            spanTemplate += brTemplate;
+        }
+
+        spanTemplate += '<span class="bg_gray">' + data + '</span> ';
+    });
+
     return spanTemplate;
 };
-
 
 // SET LAYER POPUP
 var procSetLayerPopup = function (reqTitle, reqContents, reqSuccess, reqCancel, reqClose, reqSuccessCallback, reqCancelCallback, reqCloseCallback) {
@@ -408,7 +407,6 @@ var procSetLayerPopup = function (reqTitle, reqContents, reqSuccess, reqCancel, 
 
 };
 
-
 // SET EXECUTE COMMAND COPY
 var procSetExecuteCommandCopy = function (requestValue) {
     if (nvl(requestValue) === '') {
@@ -420,4 +418,43 @@ var procSetExecuteCommandCopy = function (requestValue) {
     target.select();
 
     return document.execCommand('copy');
+};
+
+// CREATE ANNOTATION SPANS
+var procSetAnnotations = function (annotations) {
+    // DO TRY TO CONVERT HTML SYMBOL TO RAW CHARACTER OF COMMA AND QUOTA
+    var objKeys = Object.keys(annotations);
+    for (var i = 0; i < objKeys.length; i++) {
+        // convert raw character of comma and quota to html symbol
+        var beforeValue = annotations[objKeys[i]];
+        annotations[objKeys[i]] =
+            beforeValue.replace(/,/g, '&comma;').replace(/"/g, '&quot;')
+                .replace(/{/g, '&lbrace;').replace(/}/g, '&rbrace;').replace(/:/g, '&colon;');
+    }
+
+    var tempStr = "";
+    var applyKey = 'kubectl.kubernetes.io/last-applied-configuration'
+    var applyValue = nvl(annotations[applyKey]);
+    if (applyValue !== '') {
+        tempStr = '<span class="bg_blue" onclick="procSetAnnotationLayerpop(this)" '
+            + 'data-title="' + applyKey + '" data-content=' + applyValue + '>'
+            + '<a>' + applyKey + '</a></span>';
+        delete annotations[applyKey];
+    }
+
+    if (Object.keys(annotations).length > 0) {
+        var annotationsString = procSetSelector(annotations);
+        tempStr += ' ' + procCreateSpans(annotationsString, 'NOT_LB');
+    }
+
+    return nvl(tempStr, '-');
+};
+
+// CONTENT SETTING FOR POP-UP MODAL
+var procSetAnnotationLayerpop = function(eventElement) {
+    var select = $(eventElement);
+    var title = JSON.stringify(select.data('title')).replace(/^"|"$/g, '');
+    var content = JSON.stringify(select.data('content')).replace(/^"|"$/g, '');
+
+    procSetLayerPopup(title, content, null, null, 'x', null, null, null);
 };

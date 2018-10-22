@@ -132,72 +132,9 @@
         procSetLayerPopup(title, content, null, null, 'x', null, null, null);
     };
 
-    // DO TRY TO CONVERT HTML SYMBOL TO RAW CHARACTER OF COMMA AND QUOTA
-    var convertToHTMLSymbol = function(externalObj) {
-        var objKeys = Object.keys(externalObj);
-        for (var i = 0; i < objKeys.length; i++) {
-            // convert raw character of comma and quota to html symbol
-            externalObj[objKeys[i]] =
-                externalObj[objKeys[i]].replace(/,/g, '&comma;').replace(/"/g, '&quot;')
-                    .replace(/{/g, '&lbrace;').replace(/}/g, '&rbrace;').replace(/:/g, '&colon;');
-        }
-
-        return externalObj;
-    };
-
     // REPLACE FIRST LETTER ONLY TO UPPER-CASE ALPHABET LETTER FROM EXTERNAL STRING(OR OBJECT)
     var upperCaseFirstLetterOnly = function(obj) {
         return (obj + '').charAt(0).toUpperCase() + (obj + '').substring(1);
-    };
-
-    // CREATE SPANS FUNCTION FOR LABEL, ANNOTATION, ADDRESSES
-    var createSpans = function(data, type) {
-        // After run procCreateSpans, If some of span html are JSON Object or JSON Array value,
-        // it adds layer-pop action and related event.
-        var defaultSpanHtml = procCreateSpans(data, type);
-        if ('-' === defaultSpanHtml) {
-            return '-';
-        }
-
-        var spans = defaultSpanHtml.split('</span> ');
-
-        var spanStr,
-            spanData,
-            separatorIndex,
-            key,
-            value,
-            newSpanStr;
-
-        for (var index = 0; index < spans.length; index++) {
-            spanStr = spans[index];
-            spanData = spanStr.replace('<span class="bg_gray">', '');
-            separatorIndex = spanData.indexOf(':');
-            if ('' === spanData || '' === spanData.replace(/ /g, '') || separatorIndex < 0) {
-                spans[index] += spanStr + '</span> ';
-                continue;
-            }
-
-            key = spanData.substring(0, separatorIndex);
-            // try to convert html symbol to raw character of comma and quota
-            value = spanData.substring(separatorIndex + 1);
-            try {
-                var type = typeof JSON.parse($('<p>' + value + '</p>').html());
-                if ('object' === type) {
-                    newSpanStr = '<span class="bg_blue" onclick="setLayerpop(this)" '
-                        + 'data-title="' + key + '" data-content="' + spanData.substring(separatorIndex + 1) + '">'
-                        + '<a>' + key + '</a></span> ';
-                } else {
-                    newSpanStr = spanStr + '</span> ';
-                }
-            } catch (e) {
-                // ignore exception
-                newSpanStr = spanStr + '</span> ';
-            }
-
-            spans[index] = newSpanStr;
-        }
-
-        return spans.join('');
     };
 
     // CALLBACK GET NODE DETAIL
@@ -214,14 +151,14 @@
         var spec = data.spec;
         var status = data.status;
 
-        var labels = procSetSelector(convertToHTMLSymbol(metadata.labels));
-        var annotations = procSetSelector(convertToHTMLSymbol(metadata.annotations));
+        var labels = procSetSelector(metadata.labels);
+        var annotations = metadata.annotations;
         var addressesObj = {};
         for (var i = 0; i < status.addresses.length; i++) {
             addressesObj[status.addresses[i]['type']] = status.addresses[i]['address'];
         }
 
-        var addresses = procSetSelector(convertToHTMLSymbol(addressesObj));
+        var addresses = procSetSelector(addressesObj);
         var unschedulable = false;
         if ('' !== nvl(spec.taints) && spec.taints instanceof Array) {
             for (var i = 0; i < spec.taints.length; i++) {
@@ -235,16 +172,16 @@
         var nodeInfo = status.nodeInfo;
 
         $('#node_name').html(metadata.name);
-        $('#node_labels').html(createSpans(labels, 'NOT_LB'));
-        $('#node_annotations').html(createSpans(annotations, 'NOT_LB'));
+        $('#node_labels').html(procCreateSpans(labels));
+        $('#node_annotations').html(procSetAnnotations(annotations));
         $('#node_created_at').html(metadata.creationTimestamp);
-        $('#node_addresses').html(createSpans(addresses, 'NOT_LB'));
-        $('#node_pod_cidr').html(spec.podCIDR);
+        $('#node_addresses').html(procCreateSpans(addresses));
+        $('#node_pod_cidr').html(nvl(spec.podCIDR, ' -'));
         $('#node_unschedulable').html(upperCaseFirstLetterOnly(unschedulable));
 
-        $('#node_machine_id').html(nodeInfo.machineID);
-        $('#node_system_uuid').html(nodeInfo.systemUUID);
-        $('#node_boot_id').html(nodeInfo.bootID);
+        $('#node_machine_id').html(nvl(nodeInfo.machineID, ' -'));
+        $('#node_system_uuid').html(nvl(nodeInfo.systemUUID, ' -'));
+        $('#node_boot_id').html(nvl(nodeInfo.bootID, ' -'));
         $('#node_kernel_version').html(nodeInfo.kernelVersion);
         $('#node_images').html(nodeInfo.osImage);
         $('#node_container_version').html(nodeInfo.containerRuntimeVersion);
