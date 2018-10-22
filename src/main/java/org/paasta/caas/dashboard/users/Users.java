@@ -30,4 +30,7 @@ public class Users {
 
     private String caasUrl;
     private String caasClusterName;
+
+    private String planName;
+    private String planDescription;
 }

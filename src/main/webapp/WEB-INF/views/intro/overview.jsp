@@ -59,14 +59,12 @@
                             <tbody>
                             <tr>
                                 <th><i class="cWrapDot"></i> Type</th>
-                                <td>CaaS service plan 1</td>
+                                <td id="planName"></td>
                             </tr>
                             <tr>
                                 <th><i class="cWrapDot"></i> Description</th>
                                 <td>
-                                    <p>
-                                        2 CPUs, 2GB Memory (free)
-                                    </p>
+                                    <p id="planDescription"></p>
                                 </td>
                             </tr>
                             </tbody>
@@ -150,6 +148,22 @@
         viewLoading('hide');
     };
 
+    var getPlan = function () {
+
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_DETAIL %>"
+            .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
+            .replace("{organizationGuid:.+}", ORGANIZATION_GUID)
+            .replace("{userId:.+}", USER_ID);
+        console.log("컨튜루ㅏㅓㄴㅇ롬뉴 ", reqUrl);
+        procCallAjax(reqUrl, "GET", null, null, callbackGetPlan);
+    };
+
+    var callbackGetPlan = function (data) {
+        console.log("호호 ", data);
+        $("#planName").text(data.planName);
+        $("#planDescription").text(data.planDescription);
+    };
+
 
     var getResourceQuotaList = function(namespace) {
         viewLoading('show');
@@ -214,6 +228,7 @@
 
     $(document.body).ready(function () {
         getDetail();
+        getPlan();
         getResourceQuotaList(NAME_SPACE);
     });
 
