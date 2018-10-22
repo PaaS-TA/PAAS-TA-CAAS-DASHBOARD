@@ -17,8 +17,11 @@ var procCallAjax = function(reqUrl, reqMethod, param, preFunc, callback) {
         success: function(data) {
             callback(data);
         },
-        error: function(xhr, status, error) {
-            //alert("api error message");
+        error: function(jqXHR, exception) {
+            if(jqXHR.status == 401){
+                console.log("API unauthorized.");
+                location.href = "/common/error/unauthorized";
+            }
         },
         complete : function(data) {
             // SKIP

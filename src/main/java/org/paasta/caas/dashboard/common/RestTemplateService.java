@@ -84,7 +84,7 @@ public class RestTemplateService {
 
         HttpEntity<Object> reqEntity = new HttpEntity<>(bodyObject, reqHeaders);
 
-        LOGGER.info("<T> T send :: Request : {} {baseUrl} : {}, Content-Type: {}", httpMethod, reqUrl, reqHeaders.get(CONTENT_TYPE));
+        LOGGER.info("<T> T send :: Request : {} {} : {}, Content-Type: {}", httpMethod, baseUrl, reqUrl, reqHeaders.get(CONTENT_TYPE));
 
         try {
             ResponseEntity<T> resEntity = restTemplate.exchange(baseUrl + reqUrl, httpMethod, reqEntity, responseType);

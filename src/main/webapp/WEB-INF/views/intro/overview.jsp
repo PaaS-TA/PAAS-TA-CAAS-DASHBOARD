@@ -129,7 +129,7 @@
         if (!procCheckValidData(data)) {
             noResultAreaForNameSpaceDetails.show();
             viewLoading('hide');
-            alertMessage('Get NameSpaces Fail~', false);
+            alertMessage('Get NameSpaces Failure.', false);
 
             return false;
         }

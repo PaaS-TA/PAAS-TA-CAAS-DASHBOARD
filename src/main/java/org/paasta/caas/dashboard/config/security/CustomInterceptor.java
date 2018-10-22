@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -50,22 +51,63 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
         LOGGER.info("** Request URI - "+url);
 
         try {
+
             if (!url.contains("/common/error/unauthorized") && !url.contains("/resources")) {
                 Pattern pattern = Pattern.compile("("+Constants.CAAS_INIT_URI+"/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
                 Matcher matcher = pattern.matcher(url);
 
-//                SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
-//                if (ssoAuthenticationDetails.getServiceInstanceId() != null && !ssoAuthenticationDetails.getServiceInstanceId().trim().equals("") && ssoAuthenticationDetails.getOrganizationGuid() != null && !ssoAuthenticationDetails.getOrganizationGuid().trim().equals("")) {
-//                    UsersList commonGetUsers = restTemplateService.send(Constants.TARGET_COMMON_API, "/users/serviceInstanceId/"+ssoAuthenticationDetails.getServiceInstanceId()+"/organizationGuid/"+ssoAuthenticationDetails.getOrganizationGuid(), HttpMethod.GET, null, UsersList.class);
-//
-//                    if(commonGetUsers == null || commonGetUsers.getItems().size() == 0) {
-//                        LOGGER.info(":: Session not .. redirect.. unauthorized");
-//                        SecurityContextHolder.clearContext();
-//                        response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
-//                        return false;
-//                    }
-//                }
+                SsoAuthenticationDetails ssoAuthenticationDetails = null;
 
+                Object obj = SecurityContextHolder.getContext().getAuthentication().getDetails();
+
+                if( obj instanceof SsoAuthenticationDetails){
+                    ssoAuthenticationDetails = (SsoAuthenticationDetails) obj ;
+                }
+
+                if (ssoAuthenticationDetails != null && !ssoAuthenticationDetails.getNameSpace().isEmpty()) {
+
+                    LOGGER.info(":: ssoAuthenticationDetails.namespace ::"+ ssoAuthenticationDetails.getNameSpace());
+
+                    // ADD: namespace exist checked by user
+                    boolean isExistNamespace = restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_USERS_VALID_EXIST_NAMESPACE
+                            .replace("{userId}", ssoAuthenticationDetails.getUserid())
+                            .replace("{namespace}", ssoAuthenticationDetails.getNameSpace())
+                            , HttpMethod.GET, null, Boolean.class);
+
+                    if(!isExistNamespace){
+                        LOGGER.info("### Namespace not exist.[{}] plz Check the namespace. ###", ssoAuthenticationDetails.getNameSpace());
+                        SecurityContextHolder.clearContext();
+
+                        // rest api 경우 error 처리
+                        if(url.indexOf("/api/") == 0){
+                            response.resetBuffer();
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.flushBuffer();
+                        }else{
+                            response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
+                        }
+                    }
+
+                }else{
+                    // 최초 접속이 아니면서 SSO 데이터가 없는 경우 Redirect 처리
+                    if(!url.contains("/caas/intro/overview/") && ssoAuthenticationDetails == null){
+
+                        // rest api 경우 error 처리
+                        if(url.indexOf("/api/") == 0) {
+                            response.resetBuffer();
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.flushBuffer();
+                        }else {
+                            LOGGER.info("### ssoAuthenticationDetails info is null. ###");
+                            SecurityContextHolder.clearContext();
+                            response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
+                        }
+                    }
+
+                }
+
+
+                // 최초 접속시.
                 if (url.contains(Constants.CAAS_INIT_URI + "/") && matcher.find()) {
                     try {
                         String serviceInstanceId = request.getServletPath().split("/")[4];
@@ -73,7 +115,8 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
                         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
                         if (authentication != null) {
-                            SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) authentication.getDetails();
+                            //SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) authentication.getDetails();
+                            ssoAuthenticationDetails = (SsoAuthenticationDetails) authentication.getDetails();
 
 //                            String aa = customUserDetailsService.getUaaToken(true);
 //                            LOGGER.info(aa);
