@@ -116,6 +116,8 @@
 </div>
 <script type="text/javascript">
 
+    var replicasetLabel = ""; // it label variable for Search Service List
+
     // GET DETAIL
     var getDetail = function() {
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_REPLICA_SETS_DETAIL%>"
@@ -140,6 +142,9 @@
         var selector            = procSetSelector(data.spec.selector.matchLabels);
         var images              = [];
 
+        // 서비스 리스트를 조회하기 위한 replicaset label 참조
+        replicasetLabel = data.metadata.labels;
+
         var containers = data.spec.template.spec.containers;
         for(var i=0; i < containers.length; i++){
             images.push(containers[i].image);
@@ -154,31 +159,18 @@
         $('#resultImage').html(images.join("<br>"));
         $('#resultPods').html(data.status.availableReplicas+" running");
 
-        //getDeploymentsInfo(nvl(data.metadata.labels));
         getDeploymentsInfo(data);
         getDetailForPodsList(selector);
-        //getServices(nvl(data.metadata.labels));
     };
 
     // GET DEPLOYMENTS INFO
     var getDeploymentsInfo = function(data) {
 
-        //URI_API_DEPLOYMENTS_DETAIL
-        <%--if(selector["pod-template-hash"] !== undefined){--%>
-            <%--delete selector["pod-template-hash"];--%>
-        <%--}--%>
-
-        <%--selector = procSetSelector(selector);--%>
-
-        <%--var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_RESOURCES %>"--%>
-                <%--.replace("{namespace:.+}", NAME_SPACE)--%>
-                <%--.replace("{selector:.+}", selector);--%>
-        <%--procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsInfo);--%>
-
-
-        // replicaset 상세 ownerReferences 를 참조한다.
-        // metadata.ownerReferences.name 로 deployment detail 을 조회해서 label 을 가져온다.
-
+        // URI_API_DEPLOYMENTS_DETAIL
+        /*
+           Deployments 조회 : replicaset 상세에서 ownerReferences 를 참조(metadata.ownerReferences.name == deployment name) 한다.
+                             deployment detail의 label 을 사용해 service를 조회한다.
+        */
         var deploymentsName = "";
         var deploymentsInfo = "";
 
@@ -226,11 +218,6 @@
             - service, deployment 레이블 조회시 => 필터링 조건에서 "pod-template-hash" 레이블은 제외한다.
             - pods 레이블 조회시 =>  필터링 조건에서 "pod-template-hash" 레이블 포함함.
          */
-
-//        if(selector["pod-template-hash"] !== undefined){
-//            delete selector["pod-template-hash"];
-//        }
-
         selector = procSetSelector(selector);
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_RESOURCES %>"
@@ -263,10 +250,20 @@
         var items = data.items;
         var listLength = items.length;
         var endpoints = "";
-        var selectorList = [];
         var htmlString = [];
 
+        // replicaset에서 자동으로 생성되는 hash label은 비교 대상에서 삭제한다.
+        if(replicasetLabel["pod-template-hash"] !== undefined){
+            delete replicasetLabel["pod-template-hash"];
+        }
+
         for (var i = 0; i < listLength; i++) {
+
+            // replicaset 과 service의 spec.selector 를 비교해서 같은 항목의 서비스만 출력하도록 한다.
+            if(!compareObj(items[i].spec.selector, replicasetLabel)){
+                continue;
+            }
+
             serviceName = items[i].metadata.name;
             selector = procSetSelector(items[i].spec.selector);
             endpointsPreString = serviceName + "." + items[i].metadata.namespace + ":";
@@ -309,7 +306,7 @@
                     + "<td>" + items[i].metadata.creationTimestamp + "</td>"
                     + "</tr>");
 
-            selectorList.push(selector + "," + serviceName);
+            //selectorList.push(selector + "," + serviceName);
             endpoints = "";
 
         }

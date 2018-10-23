@@ -458,3 +458,52 @@ var procSetAnnotationLayerpop = function(eventElement) {
 
     procSetLayerPopup(title, content, null, null, 'x', null, null, null);
 };
+
+//
+/**
+ * 배열의 값을 비교한다.
+ * @param object   : 대상 Object 1
+ * @param object   : 대상 Object 2
+ * @description
+ *    label 비교용으로 사용
+ *    ex use) compare( {"app":"wordpress","tier":"front"},{"tier":"front", "app":"wordpress"} )  => true
+ *
+ * @author CISS
+ * @since 2018.10.23
+ */
+var compareObj = function( a, b ){
+    var type = typeof a, i, j;
+    if( type == "object" ){
+        if( a === null ){
+            return a === b;
+        }else if( Array.isArray(a) ){
+            if( !Array.isArray(b) || a.length != b.length ){
+                return false;
+            }
+            for( i = 0, j = a.length ; i < j ; i++ ){
+                if(!compare(a[i], b[i])){
+                    return false;
+                }
+            }
+            return true;
+        }else{ //일반 오브젝트인 경우
+
+            // b의 키 갯수를 카운트 한다.
+            j = 0;
+            for( i in b ){
+                if( b.hasOwnProperty(i) ) j++;
+            }
+
+            //a의 각 키와 비교하면서 카운트를 제거한다.
+            for( i in a ){
+                if( a.hasOwnProperty(i) ){
+                    if( !compare( a[i], b[i] ) ) return false;
+                    j--;
+                }
+            }
+            //남은 카운트가 0이라면 같은 객체고 남아있다면 다른 객체.
+            return !j;
+        }
+    }
+    return a === b;
+};
