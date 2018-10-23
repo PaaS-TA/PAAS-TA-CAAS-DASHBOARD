@@ -274,7 +274,7 @@ var addPodsEvent = function(targetObject, selector) {
 
             var reqEventsUrl = URI_API_EVENTS_LIST
                 .replace("{namespace:.+}", NAME_SPACE)
-                .replace("{resourceName:.+}", podsName);
+                .replace("{resourceUid:.+}", podsName);
             procCallAjax(reqEventsUrl, "GET", null, null, function(eventData){
                 $.each(eventData.items, function (index, eData) {
                     var eType = eData.type;
