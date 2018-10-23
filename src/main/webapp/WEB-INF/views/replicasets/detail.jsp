@@ -94,8 +94,8 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                            <tr id="noResultAreaForServices" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderAreaForService">
+                            <tr id="noResultAreaForServices"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
+                            <tr id="resultHeaderAreaForService" style="display: none;">
                                 <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTableForServices', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Labels</td>
                                 <td>Cluster IP</td>
@@ -115,6 +115,8 @@
     </div>
 </div>
 <script type="text/javascript">
+
+    var replicasetLabel = ""; // it label variable for Search Service List
 
     // GET DETAIL
     var getDetail = function() {
@@ -140,6 +142,9 @@
         var selector            = procSetSelector(data.spec.selector.matchLabels);
         var images              = [];
 
+        // 서비스 리스트를 조회하기 위한 replicaset label 참조
+        replicasetLabel = data.metadata.labels;
+
         var containers = data.spec.template.spec.containers;
         for(var i=0; i < containers.length; i++){
             images.push(containers[i].image);
@@ -154,24 +159,35 @@
         $('#resultImage').html(images.join("<br>"));
         $('#resultPods').html(data.status.availableReplicas+" running");
 
-        getDeploymentsInfo(nvl(data.metadata.labels));
+        getDeploymentsInfo(data);
         getDetailForPodsList(selector);
-        getServices(nvl(data.metadata.labels));
     };
 
     // GET DEPLOYMENTS INFO
-    var getDeploymentsInfo = function(selector) {
+    var getDeploymentsInfo = function(data) {
 
-        if(selector["pod-template-hash"] !== undefined){
-            delete selector["pod-template-hash"];
+        // URI_API_DEPLOYMENTS_DETAIL
+        /*
+           Deployments 조회 : replicaset 상세에서 ownerReferences 를 참조(metadata.ownerReferences.name == deployment name) 한다.
+                             deployment detail의 label 을 사용해 service를 조회한다.
+        */
+        var deploymentsName = "";
+        var deploymentsInfo = "";
+
+        if(data.metadata.ownerReferences == null){
+            deploymentsInfo = "-";
+        }else{
+            deploymentsName = data.metadata.ownerReferences[0].name;
+            deploymentsInfo = "<a href='<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/"+deploymentsName+"'>"+deploymentsName+"</a>";
+
+            var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_DETAIL %>"
+                    .replace("{namespace:.+}", NAME_SPACE)
+                    .replace("{deploymentsName:.+}", deploymentsName);
+            procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsInfo);
         }
 
-        selector = procSetSelector(selector);
+        $('#resultDeployment').append(deploymentsInfo);
 
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_RESOURCES %>"
-                .replace("{namespace:.+}", NAME_SPACE)
-                .replace("{selector:.+}", selector);
-        procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsInfo);
     };
 
     // CALLBACK
@@ -182,18 +198,10 @@
             return false;
         }
 
-        var deploymentsInfo;
-
-        if(data.items.length > 0){
-            var deploymentsName = data.items[0].metadata.name;
-
-            deploymentsInfo = "<a href='<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/"+deploymentsName+"'>"+deploymentsName+"</a>";
-        }else{
-            deploymentsInfo = "-";
+        // deployment 상세의 label로 service 를 조회한다.
+        if(data.metadata.labels != null){
+            getServices(data.metadata.labels);
         }
-
-        $('#resultDeployment').append(deploymentsInfo);
-
     };
 
     // GET DETAIL FOR PODS LIST
@@ -210,10 +218,6 @@
             - service, deployment 레이블 조회시 => 필터링 조건에서 "pod-template-hash" 레이블은 제외한다.
             - pods 레이블 조회시 =>  필터링 조건에서 "pod-template-hash" 레이블 포함함.
          */
-        if(selector["pod-template-hash"] !== undefined){
-            delete selector["pod-template-hash"];
-        }
-
         selector = procSetSelector(selector);
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_RESOURCES %>"
@@ -246,10 +250,20 @@
         var items = data.items;
         var listLength = items.length;
         var endpoints = "";
-        var selectorList = [];
         var htmlString = [];
 
+        // replicaset에서 자동으로 생성되는 hash label은 비교 대상에서 삭제한다.
+        if(replicasetLabel["pod-template-hash"] !== undefined){
+            delete replicasetLabel["pod-template-hash"];
+        }
+
         for (var i = 0; i < listLength; i++) {
+
+            // replicaset 과 service의 spec.selector 를 비교해서 같은 항목의 서비스만 출력하도록 한다.
+            if(!compareObj(items[i].spec.selector, replicasetLabel)){
+                continue;
+            }
+
             serviceName = items[i].metadata.name;
             selector = procSetSelector(items[i].spec.selector);
             endpointsPreString = serviceName + "." + items[i].metadata.namespace + ":";
@@ -292,7 +306,7 @@
                     + "<td>" + items[i].metadata.creationTimestamp + "</td>"
                     + "</tr>");
 
-            selectorList.push(selector + "," + serviceName);
+            //selectorList.push(selector + "," + serviceName);
             endpoints = "";
 
         }
