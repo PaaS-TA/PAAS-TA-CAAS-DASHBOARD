@@ -94,8 +94,8 @@
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
-                            <tr id="noResultAreaForServices" style="display: none;"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
-                            <tr id="resultHeaderAreaForService">
+                            <tr id="noResultAreaForServices"><td colspan='6'><p class='service_p'>실행 중인 Service가 없습니다.</p></td></tr>
+                            <tr id="resultHeaderAreaForService" style="display: none;">
                                 <td>Name<button class="sort-arrow" onclick="procSetSortList('resultTableForServices', this, '0')"><i class="fas fa-caret-down"></i></button></td>
                                 <td>Labels</td>
                                 <td>Cluster IP</td>
@@ -154,24 +154,48 @@
         $('#resultImage').html(images.join("<br>"));
         $('#resultPods').html(data.status.availableReplicas+" running");
 
-        getDeploymentsInfo(nvl(data.metadata.labels));
+        //getDeploymentsInfo(nvl(data.metadata.labels));
+        getDeploymentsInfo(data);
         getDetailForPodsList(selector);
-        getServices(nvl(data.metadata.labels));
+        //getServices(nvl(data.metadata.labels));
     };
 
     // GET DEPLOYMENTS INFO
-    var getDeploymentsInfo = function(selector) {
+    var getDeploymentsInfo = function(data) {
 
-        if(selector["pod-template-hash"] !== undefined){
-            delete selector["pod-template-hash"];
+        //URI_API_DEPLOYMENTS_DETAIL
+        <%--if(selector["pod-template-hash"] !== undefined){--%>
+            <%--delete selector["pod-template-hash"];--%>
+        <%--}--%>
+
+        <%--selector = procSetSelector(selector);--%>
+
+        <%--var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_RESOURCES %>"--%>
+                <%--.replace("{namespace:.+}", NAME_SPACE)--%>
+                <%--.replace("{selector:.+}", selector);--%>
+        <%--procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsInfo);--%>
+
+
+        // replicaset 상세 ownerReferences 를 참조한다.
+        // metadata.ownerReferences.name 로 deployment detail 을 조회해서 label 을 가져온다.
+
+        var deploymentsName = "";
+        var deploymentsInfo = "";
+
+        if(data.metadata.ownerReferences == null){
+            deploymentsInfo = "-";
+        }else{
+            deploymentsName = data.metadata.ownerReferences[0].name;
+            deploymentsInfo = "<a href='<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/"+deploymentsName+"'>"+deploymentsName+"</a>";
+
+            var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_DETAIL %>"
+                    .replace("{namespace:.+}", NAME_SPACE)
+                    .replace("{deploymentsName:.+}", deploymentsName);
+            procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsInfo);
         }
 
-        selector = procSetSelector(selector);
+        $('#resultDeployment').append(deploymentsInfo);
 
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_RESOURCES %>"
-                .replace("{namespace:.+}", NAME_SPACE)
-                .replace("{selector:.+}", selector);
-        procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsInfo);
     };
 
     // CALLBACK
@@ -182,18 +206,10 @@
             return false;
         }
 
-        var deploymentsInfo;
-
-        if(data.items.length > 0){
-            var deploymentsName = data.items[0].metadata.name;
-
-            deploymentsInfo = "<a href='<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/"+deploymentsName+"'>"+deploymentsName+"</a>";
-        }else{
-            deploymentsInfo = "-";
+        // deployment 상세의 label로 service 를 조회한다.
+        if(data.metadata.labels != null){
+            getServices(data.metadata.labels);
         }
-
-        $('#resultDeployment').append(deploymentsInfo);
-
     };
 
     // GET DETAIL FOR PODS LIST
@@ -210,9 +226,10 @@
             - service, deployment 레이블 조회시 => 필터링 조건에서 "pod-template-hash" 레이블은 제외한다.
             - pods 레이블 조회시 =>  필터링 조건에서 "pod-template-hash" 레이블 포함함.
          */
-        if(selector["pod-template-hash"] !== undefined){
-            delete selector["pod-template-hash"];
-        }
+
+//        if(selector["pod-template-hash"] !== undefined){
+//            delete selector["pod-template-hash"];
+//        }
 
         selector = procSetSelector(selector);
 
