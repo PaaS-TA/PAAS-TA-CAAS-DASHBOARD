@@ -27,8 +27,7 @@
         var resourceName = '<c:out value="${podName}" default="" />';
 
         var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>'
-            .replace('{namespace:.+}', NAME_SPACE).replace('{resourceName:.+}', data.metadata.uid);
-
+            .replace('{namespace:.+}', NAME_SPACE).replace('{resourceUid:.+}', data.metadata.uid);
         procGetCommonEventsList(reqUrl, resourceName);
     };
 

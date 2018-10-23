@@ -72,7 +72,7 @@ public class Constants {
 
     public static final String URI_API_ENDPOINTS_DETAIL = "/namespaces/{namespace:.+}/endpoints/{serviceName:.+}";
 
-    public static final String URI_API_EVENTS_LIST = "/namespaces/{namespace:.+}/events/resource/{resourceName:.+}";
+    public static final String URI_API_EVENTS_LIST = "/namespaces/{namespace:.+}/events/resource/{resourceUid:.+}";
     public static final String URI_API_NAMESPACE_EVENTS_LIST    = "/namespaces/{namespace:.+}/events";
 
     public static final String URI_API_ROLES_DETAIL = "/namespaces/{namespace:.+}/roles/{roleName:.+}";

@@ -374,7 +374,7 @@
         var reqUrl;
 
         for (var i = 0; i < listLength; i++) {
-            reqUrl = URI_API_EVENTS_LIST.replace("{namespace:.+}", NAME_SPACE).replace("{resourceName:.+}", podNameList[i].uid);
+            reqUrl = URI_API_EVENTS_LIST.replace("{namespace:.+}", NAME_SPACE).replace("{resourceUid:.+}", podNameList[i].uid);
             procCallAjax(reqUrl, "GET", null, null, callbackSetEventStatusForPods);
         }
     };

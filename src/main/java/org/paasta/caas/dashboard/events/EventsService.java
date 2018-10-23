@@ -30,11 +30,11 @@ public class EventsService {
      * Events 목록을 조회한다.
      *
      * @param namespace the namespace Name
-     * @param resourceName the resource Name
+     * @param resourceUid the resource Uid
      * @return the events list
      */
-    EventsList getEventsList(String namespace, String resourceName) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/"+namespace+"/events/resource/"+resourceName, HttpMethod.GET, null, EventsList.class);
+    EventsList getEventsList(String namespace, String resourceUid) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/"+namespace+"/events/resource/"+resourceUid, HttpMethod.GET, null, EventsList.class);
     }
 
     /**
