@@ -10,16 +10,27 @@
 
 <jsp:include page="../common/commonEvents.jsp"/>
 
-
+<input type="hidden" id="requestServiceName" name="requestServiceName" value="<c:out value='${serviceName}' default='' />" />
 <script type="text/javascript">
 
+    // GET DETAIL
+    var getDetail = function() {
+        viewLoading('show');
+
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_DETAIL %>"
+            .replace("{namespace:.+}", NAME_SPACE)
+            .replace("{serviceName:.+}", document.getElementById('requestServiceName').value);
+
+        procCallAjax(reqUrl, "GET", null, null, getList);
+    };
+
     // GET LIST
-    var getList = function () {
+    var getList = function (data) {
         var resourceName = "<c:out value='${serviceName}' default='' />";
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
             .replace("{namespace:.+}", NAME_SPACE)
-            .replace("{resourceName:.+}", resourceName);
+            .replace("{resourceName:.+}", data.metadata.uid);
 
         procGetCommonEventsList(reqUrl, resourceName);
     };
@@ -27,7 +38,7 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        getList();
+        getDetail();
     });
 
 </script>

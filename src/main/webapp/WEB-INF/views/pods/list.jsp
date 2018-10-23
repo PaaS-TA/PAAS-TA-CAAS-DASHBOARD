@@ -106,7 +106,7 @@
         });
 
         setPodTable(podList);
-        procSetEventStatusForPods(podNameList);
+        procSetEventStatusForPods(podList);
 
         procSetToolTipForTableTd('podListResultArea');
         $('[data-toggle="tooltip"]').tooltip();
@@ -262,7 +262,8 @@
             restartCount: restartCountSum,
             creationTimestamp: metadata.creationTimestamp,
             usageCPU: cpuSum,
-            usageMemory: memorySum
+            usageMemory: memorySum,
+            uid: metadata.uid
         };
     };
 
@@ -299,9 +300,8 @@
             }
 
             var namespaceHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NAMESPACES %>/' + pod.namespace, pod.namespace);
-
-            htmlString.push('<tr name="podRow" data-search-key="' + pod.name + '">'
-                + '<td id="' + pod.name + '">' + podNameHtml + '</td>'
+            htmlString.push('<tr name="podRow" data-search-key="' + pod.uid + '">'
+                + '<td id="' + pod.uid + '">' + podNameHtml + '</td>'
                 + '<td>' + namespaceHtml + '</td>'
                 + '<td>' + nodeNameHtml + '</td>'
                 + '<td><span>' + pod.podStatus + '</span></td>'
@@ -361,6 +361,57 @@
                     podsTableHeader.show();
                 }
             }
+        }
+
+        viewLoading('hide');
+    };
+
+    // SET EVENT STATUS FOR PODS
+    var procSetEventStatusForPods = function(podNameList) {
+        viewLoading('show');
+
+        var listLength = podNameList.length;
+        var reqUrl;
+
+        for (var i = 0; i < listLength; i++) {
+            reqUrl = URI_API_EVENTS_LIST.replace("{namespace:.+}", NAME_SPACE).replace("{resourceName:.+}", podNameList[i].uid);
+            procCallAjax(reqUrl, "GET", null, null, callbackSetEventStatusForPods);
+        }
+    };
+
+
+    // CALLBACK SET EVENT(STATUS) FOR PODS AND RESOURCES RELATED PODS
+    var callbackSetEventStatusForPods = function(data) {
+        if (!procCheckValidData(data)) {
+            viewLoading('hide');
+            alertMessage();
+            return false;
+        }
+        var podName = data.resourceName;
+        var items = data.items;
+        var listLength = items.length;
+        var itemStatusIconHtml = "<span class='failed2 tableTdToolTipFalse'><i class='fas fas fa-exclamation-circle'></i></span> ";
+        if(listLength > 0) {
+
+        }
+        var itemMessageHtml;
+        var itemMessageList = [];
+
+        var warningCount = 0;
+        for (var i = 0; i < listLength; i++) {
+            if (items[i].type === 'Warning') {
+                itemMessageList.push(
+                    $('<p class="failed2 custom-content-overflow" data-toggle="tooltip">' + items[i].message + '</p>')
+                        .attr('title', items[i].message).wrapAll("<div/>").parent().html()
+                );
+                warningCount++;
+            }
+        }
+
+        if (warningCount > 0) {
+            itemMessageHtml = itemMessageList.join("");
+            $('#' + podName + ' span').html(itemStatusIconHtml);
+            $('#' + podName).append(itemMessageHtml);
         }
 
         viewLoading('hide');

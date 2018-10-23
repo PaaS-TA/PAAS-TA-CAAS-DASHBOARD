@@ -171,54 +171,66 @@ var alertMessage = function (value, result) {
 };
 
 
-// SET EVENT STATUS FOR PODS
-var procSetEventStatusForPods = function(podNameList) {
-    viewLoading('show');
-
-    var listLength = podNameList.length;
-    var reqUrl;
-
-    for (var i = 0; i < listLength; i++) {
-        reqUrl = URI_API_EVENTS_LIST.replace("{namespace:.+}", NAME_SPACE).replace("{resourceName:.+}", podNameList[i]);
-        procCallAjax(reqUrl, "GET", null, null, callbackSetEventStatusForPods);
-    }
-};
-
-
-// CALLBACK SET EVENT(STATUS) FOR PODS AND RESOURCES RELATED PODS
-var callbackSetEventStatusForPods = function(data) {
-    if (!procCheckValidData(data)) {
-        viewLoading('hide');
-        alertMessage();
-        return false;
-    }
-
-    var podName = data.resourceName;
-    var items = data.items;
-    var listLength = items.length;
-    var itemStatusIconHtml = "<span class='failed2 tableTdToolTipFalse'><i class='fas fas fa-exclamation-circle'></i></span> ";
-    var itemNameLinkHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"" + URI_WORKLOADS_PODS + "/" + podName + "\");'>" + podName + "</a>" ;
-    var itemMessageHtml;
-    var itemMessageList = [];
-
-    var warningCount = 0;
-    for (var i = 0; i < listLength; i++) {
-        if (items[i].type === 'Warning') {
-            itemMessageList.push(
-                $('<p class="failed2 custom-content-overflow" data-toggle="tooltip">' + items[i].message + '</p>')
-                    .attr('title', items[i].message).wrapAll("<div/>").parent().html()
-            );
-            warningCount++;
-        }
-    }
-
-    if (warningCount > 0) {
-        itemMessageHtml = itemMessageList.join("");
-        $('#' + podName).html(itemStatusIconHtml + ' ' + itemNameLinkHtml + itemMessageHtml);
-    }
-
-    viewLoading('hide');
-};
+//TODO : 수정필요 삭제하던가 바꾸던가
+// // SET EVENT STATUS FOR PODS
+// var procSetEventStatusForPods = function(podNameList) {
+//     console.log('ㅓ허허허 ', podNameList);
+//     viewLoading('show');
+//
+//     var listLength = podNameList.length;
+//     var reqUrl;
+//
+//     for (var i = 0; i < listLength; i++) {
+//         reqUrl = URI_API_EVENTS_LIST.replace("{namespace:.+}", NAME_SPACE).replace("{resourceName:.+}", podNameList[i].uid);
+//         procCallAjax(reqUrl, "GET", null, null, callbackSetEventStatusForPods);
+//     }
+// };
+//
+//
+// // CALLBACK SET EVENT(STATUS) FOR PODS AND RESOURCES RELATED PODS
+// var callbackSetEventStatusForPods = function(data) {
+//     console.log('데이타 ', data);
+//     if (!procCheckValidData(data)) {
+//         viewLoading('hide');
+//         alertMessage();
+//         return false;
+//     }
+//     console.log('집에 가고 싶다' , data.metadata);
+//     var podName = data.resourceName;
+//     console.log('파드네임 스테이터스 폴 파듯', podName);
+//     var podUid = data.uid;
+//     var items = data.items;
+//     console.log('아이템주 ', items);
+//     var listLength = items.length;
+//     var itemStatusIconHtml = "<span class='failed2 tableTdToolTipFalse'><i class='fas fas fa-exclamation-circle'></i></span> ";
+//     if(listLength > 0) {
+//
+//     }
+//     var itemNameLinkHtml = "<a href='javascript:void(0);' onclick='procMovePage(\"" + URI_WORKLOADS_PODS + "/" + podName + "\");'>" + podName + "</a>" ;
+//     var itemMessageHtml;
+//     var itemMessageList = [];
+//
+//     var warningCount = 0;
+//     for (var i = 0; i < listLength; i++) {
+//         if (items[i].type === 'Warning') {
+//             console.log('워닝ㄴ원어룬어루');
+//             itemMessageList.push(
+//                 $('<p class="failed2 custom-content-overflow" data-toggle="tooltip">' + items[i].message + '</p>')
+//                     .attr('title', items[i].message).wrapAll("<div/>").parent().html()
+//             );
+//             warningCount++;
+//         }
+//     }
+//
+//     if (warningCount > 0) {
+//         console.log('호호홍', podName);
+//         console.log('123123호호홍', itemMessageHtml);
+//         itemMessageHtml = itemMessageList.join("");
+//         $('#' + podName).html(itemStatusIconHtml + ' ' + itemNameLinkHtml + itemMessageHtml);
+//     }
+//
+//     viewLoading('hide');
+// };
 
 
 /**
@@ -245,13 +257,14 @@ var addPodsEvent = function(targetObject, selector) {
     // 기존 리스트 데이터에 event.type, event.message 추가
     var eventType = 'normal';
     var eventMessage = [];
+    var uniqueMessage = [];
 
     var reqPodsUrl = URI_API_PODS_RESOURCES
         .replace("{namespace:.+}", NAME_SPACE)
         .replace("{selector:.+}", selector);
     procCallAjax(reqPodsUrl, "GET", null, null, function(podsData){
         $.each(podsData.items, function (index, itemList) {
-            var podsName = itemList.metadata.name;
+            var podsName = itemList.metadata.uid;
             var podPhase = nvl(itemList.status.phase).toLowerCase();
 
             // 해당조건일시 이벤트에서 제외
@@ -264,11 +277,15 @@ var addPodsEvent = function(targetObject, selector) {
                 .replace("{resourceName:.+}", podsName);
             procCallAjax(reqEventsUrl, "GET", null, null, function(eventData){
                 $.each(eventData.items, function (index, eData) {
-
                     var eType = eData.type;
                     if(eType == 'Warning'){
                         eventType = eType;
                         eventMessage.push(eData.message);
+                    }
+                });
+                $.each(eventMessage, function (i, el) {
+                    if($.inArray(el, uniqueMessage) === -1) {
+                        uniqueMessage.push(el);
                     }
                 });
 
@@ -278,7 +295,7 @@ var addPodsEvent = function(targetObject, selector) {
     }); //Pods API call end
 
     targetObject.type = eventType;
-    targetObject.message = eventMessage;
+    targetObject.message = uniqueMessage;
 
 };
 
