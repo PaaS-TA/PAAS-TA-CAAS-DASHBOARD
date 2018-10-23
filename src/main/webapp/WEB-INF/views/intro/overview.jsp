@@ -154,12 +154,10 @@
             .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
             .replace("{organizationGuid:.+}", ORGANIZATION_GUID)
             .replace("{userId:.+}", USER_ID);
-        console.log("컨튜루ㅏㅓㄴㅇ롬뉴 ", reqUrl);
         procCallAjax(reqUrl, "GET", null, null, callbackGetPlan);
     };
 
     var callbackGetPlan = function (data) {
-        console.log("호호 ", data);
         $("#planName").text(data.planName);
         $("#planDescription").text(data.planDescription);
     };
