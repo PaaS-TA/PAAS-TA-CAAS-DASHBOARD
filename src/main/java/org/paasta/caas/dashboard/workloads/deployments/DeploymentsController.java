@@ -105,20 +105,20 @@ public class DeploymentsController {
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_YAML)
     @ResponseBody
-    public Deployments getCustomServicesYaml(@PathVariable(value = "namespace") String namespace, @PathVariable("deploymentsName") String deploymentsName) {
+    public Deployments getDeploymentsYaml(@PathVariable(value = "namespace") String namespace, @PathVariable("deploymentsName") String deploymentsName) {
         return deploymentsService.getDeploymentsYaml(namespace, deploymentsName);
     }
 
-    /**
-     * Deployments 목록을 조회한다. (Label Selector)
-     *
-     * @param namespace the namespace
-     * @param selector the selector for filter
-     * @return the deployments list
-     */
-    @GetMapping( value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_RESOURCES )
-    @ResponseBody
-    public DeploymentsList getDeploymentsListLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector) {
-        return deploymentsService.getDeploymentsListLabelSelector(namespace, selector);
-    }
+//    /**
+//     * Deployments 목록을 조회한다. (Label Selector)
+//     *
+//     * @param namespace the namespace
+//     * @param selector the selector for filter
+//     * @return the deployments list
+//     */
+//    @GetMapping( value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_RESOURCES )
+//    @ResponseBody
+//    public DeploymentsList getDeploymentsListLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector) {
+//        return deploymentsService.getDeploymentsListLabelSelector(namespace, selector);
+//    }
 }

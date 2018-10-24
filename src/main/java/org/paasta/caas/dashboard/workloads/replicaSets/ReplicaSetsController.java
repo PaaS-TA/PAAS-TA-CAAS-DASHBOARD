@@ -135,7 +135,7 @@ public class ReplicaSetsController {
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_REPLICA_SETS_RESOURCES)
     @ResponseBody
-    public ReplicaSetsList getReplicaSetsLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector ){
+    public ReplicaSetsList getReplicaSetsListLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector ){
         return replicaSetService.getReplicaSetsListLabelSelector(namespace, selector);
     }
 

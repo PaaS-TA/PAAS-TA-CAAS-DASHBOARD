@@ -67,18 +67,18 @@ public class DeploymentsService {
     }
 
 
-    /**
-     * Deployments 목록을 조회한다. (Label Selector)
-     *
-     * @param namespace the namespace
-     * @param selectors the selectors
-     * @return the deployments list
-     */
-     DeploymentsList getDeploymentsListLabelSelector(String namespace, String selectors) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_DEPLOYMENTS_RESOURCES
-                    .replace("{namespace:.+}", namespace)
-                    .replace("{selector:.+}", selectors),
-                HttpMethod.GET, null, DeploymentsList.class);
-    }
+//    /**
+//     * Deployments 목록을 조회한다. (Label Selector)
+//     *
+//     * @param namespace the namespace
+//     * @param selectors the selectors
+//     * @return the deployments list
+//     */
+//     DeploymentsList getDeploymentsListLabelSelector(String namespace, String selectors) {
+//        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_DEPLOYMENTS_RESOURCES
+//                    .replace("{namespace:.+}", namespace)
+//                    .replace("{selector:.+}", selectors),
+//                HttpMethod.GET, null, DeploymentsList.class);
+//    }
 
 }
