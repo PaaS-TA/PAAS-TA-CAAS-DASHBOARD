@@ -33,7 +33,10 @@ public class EventsService {
      * @param resourceUid the resource Uid
      * @return the events list
      */
-    EventsList getEventsList(String namespace, String resourceUid) {
+    EventsList getEventsList(String namespace, String resourceUid, String type) {
+        if(type != null) {
+            return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/"+namespace+"/events/resource/"+resourceUid+"?type="+type, HttpMethod.GET, null, EventsList.class);
+        }
         return restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/"+namespace+"/events/resource/"+resourceUid, HttpMethod.GET, null, EventsList.class);
     }
 
