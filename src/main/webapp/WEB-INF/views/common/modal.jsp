@@ -18,7 +18,7 @@
                     <h4 class="modal-title"><span id="commonLayerPopupTitle">-</span></h4>
                 </div>
                 <!-- body -->
-                <div class="modal-body" id="commonLayerPopupContents">
+                <div class="modal-body custom-access-popup-contents" id="commonLayerPopupContents">
                     -
                 </div>
                 <!-- Footer -->

@@ -188,6 +188,10 @@
     padding: 0 0 4px 30px;
 }
 
+.custom-access-popup-contents {
+    word-break: break-all;
+}
+
 select:focus {
     background-image:url("../images/select.png");
     background-position:right center;
