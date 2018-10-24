@@ -438,12 +438,20 @@ var procSetExecuteCommandCopy = function (requestValue) {
 };
 
 // CREATE ANNOTATION SPANS
-var procSetAnnotations = function (annotations) {
+var procSetAnnotations = function (extAnnotations) {
+    var annotations = nvl(extAnnotations);
+    if ('' === annotations || !(annotations instanceof Object)) {
+        return '-';
+    }
+
     // DO TRY TO CONVERT HTML SYMBOL TO RAW CHARACTER OF COMMA AND QUOTA
     var objKeys = Object.keys(annotations);
+    if (objKeys.length <= 0) {
+        return '-';
+    }
     for (var i = 0; i < objKeys.length; i++) {
         // convert raw character of comma and quota to html symbol
-        var beforeValue = annotations[objKeys[i]];
+        var beforeValue = annotations[objKeys[i]] + '';
         annotations[objKeys[i]] =
             beforeValue.replace(/,/g, '&comma;').replace(/"/g, '&quot;')
                 .replace(/{/g, '&lbrace;').replace(/}/g, '&rbrace;').replace(/:/g, '&colon;');
@@ -459,10 +467,8 @@ var procSetAnnotations = function (annotations) {
         delete annotations[applyKey];
     }
 
-    if (Object.keys(annotations).length > 0) {
-        var annotationsString = procSetSelector(annotations);
-        tempStr += ' ' + procCreateSpans(annotationsString, 'NOT_LB');
-    }
+    var annotationsString = procSetSelector(annotations);
+    tempStr += ' ' + procCreateSpans(annotationsString, 'NOT_LB');
 
     return nvl(tempStr, '-');
 };
