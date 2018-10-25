@@ -468,7 +468,9 @@ var procSetAnnotations = function (extAnnotations) {
     }
 
     var annotationsString = procSetSelector(annotations);
-    tempStr += ' ' + procCreateSpans(annotationsString, 'NOT_LB');
+    if ('' !== annotationsString) {
+        tempStr += ' ' + procCreateSpans(annotationsString, 'NOT_LB');
+    }
 
     return nvl(tempStr, '-');
 };
