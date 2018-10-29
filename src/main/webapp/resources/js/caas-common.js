@@ -257,7 +257,6 @@ var addPodsEvent = function(targetObject, selector) {
     // 기존 리스트 데이터에 event.type, event.message 추가
     var eventType = 'normal';
     var eventMessage = [];
-    var uniqueMessage = [];
 
     var reqPodsUrl = URI_API_PODS_RESOURCES
         .replace("{namespace:.+}", NAME_SPACE)
@@ -278,24 +277,18 @@ var addPodsEvent = function(targetObject, selector) {
             procCallAjax(reqEventsUrl, "GET", null, null, function(eventData){
                 $.each(eventData.items, function (index, eData) {
                     var eType = eData.type;
-                    if(eType == 'Warning'){
+                    if(eType == 'Warning' && !(eventMessage.indexOf(eData.message) > -1) ){
                         eventType = eType;
                         eventMessage.push(eData.message);
                     }
                 });
-                $.each(eventMessage, function (i, el) {
-                    if($.inArray(el, uniqueMessage) === -1) {
-                        uniqueMessage.push(el);
-                    }
-                });
-
             });
 
         }); // Event API call end
     }); //Pods API call end
 
     targetObject.type = eventType;
-    targetObject.message = uniqueMessage;
+    targetObject.message = eventMessage;
 
 };
 
