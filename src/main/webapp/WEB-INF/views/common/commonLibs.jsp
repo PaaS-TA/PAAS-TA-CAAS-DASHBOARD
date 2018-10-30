@@ -11,7 +11,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <sec:authorize access="isAuthenticated()">
-    <sec:authentication property="details.userid" var="userid"/>
+    <sec:authentication property="details.userId" var="userId"/>
     <sec:authentication property="details.username" var="username"/>
     <sec:authentication property="details.serviceInstanceId" var="serviceInstanceId"/>
     <sec:authentication property="details.organizationGuid" var="organizationGuid"/>
@@ -60,7 +60,7 @@
     var URI_API_PODS_RESOURCES = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR %>";
     var URI_WORKLOADS_PODS     = "<%= Constants.URI_WORKLOAD_PODS %>";
 
-    var USER_ID = "${userid}";
+    var USER_ID = "${userId}";
     var USER_NAME = "${username}";
     var SERVICE_INSTANCE_ID = "${serviceInstanceId}";
     var ORGANIZATION_GUID = "${organizationGuid}";
