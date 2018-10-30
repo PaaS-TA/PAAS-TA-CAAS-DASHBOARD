@@ -104,12 +104,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserBySsoAuthenticationDetails(SsoAuthenticationDetails ssoAuthenticationDetails) {
         List role = new ArrayList();
 
-        LOGGER.info("username : "+ssoAuthenticationDetails.getUserid());
-        LOGGER.info("uaaid : "+ssoAuthenticationDetails.getId());
+        LOGGER.info("username : "+ssoAuthenticationDetails.getUserId());
+        LOGGER.info("uaaId : "+ssoAuthenticationDetails.getId());
         LOGGER.info("token : "+ssoAuthenticationDetails.getAccessToken());
         LOGGER.info("Instance id : "+ssoAuthenticationDetails.getManagingServiceInstance());
 
-        String username = ssoAuthenticationDetails.getUserid();
+        String username = ssoAuthenticationDetails.getUserId();
         String uaaid = ssoAuthenticationDetails.getId();
         String token = ssoAuthenticationDetails.getAccessToken().toString();
         String serviceInstanceId = ssoAuthenticationDetails.getManagingServiceInstance();
@@ -278,7 +278,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             //Rest 생성
             RestTemplate rest = new RestTemplate();
             //Token 재요청을 위한 데이터 설정
-            LOGGER.info(user.getUserid());
+            LOGGER.info(user.getUserId());
 
             LOGGER.info("start");
 

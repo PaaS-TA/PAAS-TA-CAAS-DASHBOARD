@@ -29,12 +29,12 @@ public class SsoLogoutRedirectStrategy implements RedirectStrategy {
 
     @Override
     public void sendRedirect(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {
-        LOGGER.info("Logout : " + uaaLogoutUrl + "?redirect=" + serverDomain(request));
+        LOGGER.info("Logout : " + uaaLogoutUrl + "?redirect=" + getServerDomain(request));
         request.getSession().invalidate();
 //        response.sendRedirect(uaaLogoutUrl + "?redirect=" + serverDomain(request) + "/login");
     }
 
-    private String serverDomain(HttpServletRequest request) {
+    private String getServerDomain(HttpServletRequest request) {
         String forward = request.getHeader("x-forwarded-proto");
         LOGGER.info("Forward ::::::::: " + forward);
         String serverDomain = request.getRequestURL().toString().replace("/logout", "");

@@ -57,7 +57,7 @@ public class RolesService {
     public void setRolesListFirst(User user){
         ObjectMapper mapper = new ObjectMapper();
 
-        Users users = (Users) restTemplateService.send(Constants.TARGET_COMMON_API,Constants.URI_COMMON_API_USERS_DETAIL
+        Users users = restTemplateService.send(Constants.TARGET_COMMON_API,Constants.URI_COMMON_API_USERS_DETAIL
                 .replace("{serviceInstanceId:.+}", user.getServiceInstanceId())
                 .replace("{organizationGuid:.+}", user.getOrganizationGuid())
                 .replace("{userId:.+}", user.getUsername()), HttpMethod.GET, null, Users.class);

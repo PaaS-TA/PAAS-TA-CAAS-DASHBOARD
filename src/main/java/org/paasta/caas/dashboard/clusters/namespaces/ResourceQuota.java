@@ -13,6 +13,9 @@ import org.paasta.caas.dashboard.common.model.CommonMetaData;
 @Data
 public class ResourceQuota {
 
+  private String resultCode;
+  private String resultMessage;
+
   private String apiVersion;
   private String kind;
   private CommonMetaData metadata;

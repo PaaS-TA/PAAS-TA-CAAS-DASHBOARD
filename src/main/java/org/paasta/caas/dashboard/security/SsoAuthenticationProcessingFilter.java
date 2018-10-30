@@ -60,9 +60,12 @@ public class SsoAuthenticationProcessingFilter extends OAuth2ClientAuthenticatio
             ((OAuth2Authentication) authentication).setDetails(detailsSource.buildDetails(request));
         }
 
-        if (request.getSession() != null && request.getSession().getAttribute("serviceInstanceId") != null) {
+        Object obj = request.getSession().getAttribute("serviceInstanceId");
+        String serviceInstanceId = obj != null ? obj.toString() : "";
+
+        if (request.getSession() != null && serviceInstanceId != "") {
             SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) authentication.getDetails();
-            ssoAuthenticationDetails.setManagingServiceInstance(request.getSession().getAttribute("serviceInstanceId").toString());
+            ssoAuthenticationDetails.setManagingServiceInstance(serviceInstanceId);
         }
 
         AuthenticationManager authenticationManager = getAuthenticationManager();

@@ -1,11 +1,8 @@
 package org.paasta.caas.dashboard.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
-import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -20,9 +17,9 @@ import java.util.List;
 public class SsoAuthenticationDetails extends OAuth2AuthenticationDetails {
 
     private String managingServiceInstance;
-    private String instanceId;
+    //private String instanceId;
     private final String id;
-    private final String userid;
+    private final String userId;
     private String role;
     private String roleId;
     private String roleDisplayName;
@@ -37,20 +34,11 @@ public class SsoAuthenticationDetails extends OAuth2AuthenticationDetails {
     private String nameSpace;
 
 
-    public SsoAuthenticationDetails(HttpServletRequest request, String id, String userid) {
+    public SsoAuthenticationDetails(HttpServletRequest request, String id, String userId) {
         super(request);
         this.id = id;
-        this.userid = userid;
+        this.userId = userId;
     }
-//    public SsoAuthenticationDetails(HttpServletRequest request, boolean managingService, String id, String user_id,String userFullName, RestTemplate restTemplate) {
-//        super(request);
-//
-//        this.managingService = managingService;
-//        this.id = id;
-//        this.userid = user_id;
-//        this.userFullName = userFullName;
-//        this.restTemplate = restTemplate;
-//    }
 
     /**
      * Returns the current full user name (first name + last name).
@@ -64,7 +52,7 @@ public class SsoAuthenticationDetails extends OAuth2AuthenticationDetails {
      * @param serviceInstanceId
      */
     public void setManagingServiceInstance(String serviceInstanceId) {
-        this.managingServiceInstance = serviceInstanceId;
+        managingServiceInstance = serviceInstanceId;
     }
     public String getManagingServiceInstance() {
         return managingServiceInstance;
@@ -92,8 +80,8 @@ public class SsoAuthenticationDetails extends OAuth2AuthenticationDetails {
         return id;
     }
 
-    public String getUserid() {
-        return userid;
+    public String getUserId() {
+        return userId;
     }
 
     public String getRole() {
@@ -127,10 +115,6 @@ public class SsoAuthenticationDetails extends OAuth2AuthenticationDetails {
     public void setGrantedAuthorities(List<GrantedAuthority> grantedAuthorities) {
         this.grantedAuthorities = grantedAuthorities;
     }
-
-//    public RestTemplate getRestTemplate() {
-//        return restTemplate;
-//    }
 
     public OAuth2AccessToken getAccessToken() {
         return accessToken;
@@ -188,73 +172,4 @@ public class SsoAuthenticationDetails extends OAuth2AuthenticationDetails {
         this.nameSpace = nameSpace;
     }
 
-    //    private static final Logger LOGGER = LoggerFactory.getLogger(SsoAuthenticationDetails.class);
-//
-//    private final String token_id;
-//    private String userid;
-//    private String username;
-//    private String imgPath;
-//
-//    private OAuth2AccessToken accessToken;
-//    private List<GrantedAuthority> authorities;
-//
-//
-//    /**
-//     * Records the access token value and remote address and will also set the session Id if a session already exists
-//     * (it won't create one).
-//     * @param request that the authentication request was received from
-//     * @param token_id
-//     */
-//    public SsoAuthenticationDetails(HttpServletRequest request, String token_id, String userid) {
-//        super(request);
-//        this.token_id = token_id;
-//        this.userid = userid;
-//    }
-//
-//    public String getToken_id() {
-//        return token_id;
-//    }
-//
-//    public String getUserid() {
-//        return userid;
-//    }
-//
-//    public void setUserid(String userid) {
-//        this.userid = userid;
-//    }
-//
-//    public String getUsername() {
-//        return username;
-//    }
-//
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
-//
-//
-//
-//
-//    public String getImgPath() {
-//        return imgPath;
-//    }
-//
-//    public void setImgPath(String imgPath) {
-//        this.imgPath = imgPath;
-//    }
-//
-//    public OAuth2AccessToken getAccessToken() {
-//        return accessToken;
-//    }
-//
-//    public void setAccessToken(OAuth2AccessToken accessToken) {
-//        this.accessToken = accessToken;
-//    }
-//
-//    public List<GrantedAuthority> getAuthorities() {
-//        return authorities;
-//    }
-//
-//    public void setAuthorities(List<GrantedAuthority> authorities) {
-//        this.authorities = authorities;
-//    }
 }

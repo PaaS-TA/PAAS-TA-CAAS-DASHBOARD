@@ -38,7 +38,7 @@ public class EventsController {
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_EVENTS_LIST)
     @ResponseBody
-    EventsList getEventList(@PathVariable("namespace") String namespace, @PathVariable("resourceUid") String resourceUid, @RequestParam(value="type", required=false) String type) {
+    EventsList getEventsList(@PathVariable("namespace") String namespace, @PathVariable("resourceUid") String resourceUid, @RequestParam(value="type", required=false) String type) {
         EventsList resultList = eventsService.getEventsList(namespace, resourceUid, type);
 
         // FOR DASHBOARD
@@ -54,7 +54,7 @@ public class EventsController {
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_NAMESPACE_EVENTS_LIST)
     @ResponseBody
-    EventsList getNamespaceEventList(@PathVariable("namespace") String namespace) {
+    EventsList getNamespaceEventsList(@PathVariable("namespace") String namespace) {
         return eventsService.getNamespaceEventsList(namespace);
     }
 }

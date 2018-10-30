@@ -46,6 +46,7 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String url = request.getRequestURI();
+        String ajaxHeader = request.getHeader("X-CaaS-Ajax-call");
 
         LOGGER.info("### Intercepter start ###");
         LOGGER.info("** Request URI - "+url);
@@ -53,6 +54,7 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
         try {
 
             if (!url.contains("/common/error/unauthorized") && !url.contains("/resources")) {
+
                 Pattern pattern = Pattern.compile("("+Constants.CAAS_INIT_URI+"/)([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12})");
                 Matcher matcher = pattern.matcher(url);
 
@@ -64,65 +66,69 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
                     ssoAuthenticationDetails = (SsoAuthenticationDetails) obj ;
                 }
 
-                if (ssoAuthenticationDetails != null && !ssoAuthenticationDetails.getNameSpace().isEmpty()) {
+                if (ssoAuthenticationDetails != null && ssoAuthenticationDetails.getNameSpace() != null
+                        && !ssoAuthenticationDetails.getNameSpace().isEmpty()) {
 
                     LOGGER.info(":: ssoAuthenticationDetails.namespace ::"+ ssoAuthenticationDetails.getNameSpace());
 
-                    // ADD: namespace exist checked by user
-                    boolean isExistNamespace = restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_USERS_VALID_EXIST_NAMESPACE
-                            .replace("{userId}", ssoAuthenticationDetails.getUserid())
+                    // ADD: 요청때마다(API Call) Namespace 존재 여부(DB)를 체크한다.
+                    boolean isExistNamespace = restTemplateService.send(Constants.TARGET_COMMON_API
+                            , Constants.URI_COMMON_API_USERS_VALID_EXIST_NAMESPACE
+                            .replace("{userId}", ssoAuthenticationDetails.getUserId())
                             .replace("{namespace}", ssoAuthenticationDetails.getNameSpace())
                             , HttpMethod.GET, null, Boolean.class);
 
-                    if(!isExistNamespace){
-                        LOGGER.info("### Namespace not exist.[{}] plz Check the namespace. ###", ssoAuthenticationDetails.getNameSpace());
+                    if(!isExistNamespace){ // Namespace 가 존재하지 않을시
+                        LOGGER.info("### Namespace not exist.[{}] plz Check the namespace. ###"
+                                , ssoAuthenticationDetails.getNameSpace());
                         SecurityContextHolder.clearContext();
 
-                        // rest api 경우 error 처리
-                        if(url.indexOf("/api/") == 0){
-                            response.resetBuffer();
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.flushBuffer();
-                        }else{
+                        // ajax call 여부는 'X-CaaS-Ajax-call' header 값을 참고
+                        if(ajaxHeader == null){ // ajax call 이 아닐 경우 error 처리
                             response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
+                        }else{                  // ajax call 일시 에러처리
+                            // header value check
+                            if("true".equals(ajaxHeader)){
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                            }else{
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED
+                                        , "Header value 'X-CaaS-Ajax-call' is mismatch.");
+                            }
                         }
                     }
 
                 }else{
-                    // 최초 접속이 아니면서 SSO 데이터가 없는 경우 Redirect 처리
+                    // SSO 데이터가 없는 경우 Redirect 처리
                     if(!url.contains("/caas/intro/overview/") && ssoAuthenticationDetails == null){
 
-                        // rest api 경우 error 처리
-                        if(url.indexOf("/api/") == 0) {
-                            response.resetBuffer();
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.flushBuffer();
-                        }else {
+                        // ajax call 이 아닐 경우 error 처리
+                        if(ajaxHeader == null) {
                             LOGGER.info("### ssoAuthenticationDetails info is null. ###");
                             SecurityContextHolder.clearContext();
                             response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
+                            return false; // sendRedirect 중복 호출을 막기 위함
+                        }else {
+                            if("true".equals(ajaxHeader)){
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                            }else{
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED
+                                        , "Header value 'X-CaaS-Ajax-call' is mismatch.");
+                            }
                         }
                     }
-
                 }
 
-
-                // 최초 접속시.
                 if (url.contains(Constants.CAAS_INIT_URI + "/") && matcher.find()) {
+
                     try {
                         String serviceInstanceId = request.getServletPath().split("/")[4];
 
                         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
                         if (authentication != null) {
-                            //SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) authentication.getDetails();
                             ssoAuthenticationDetails = (SsoAuthenticationDetails) authentication.getDetails();
-
-//                            String aa = customUserDetailsService.getUaaToken(true);
-//                            LOGGER.info(aa);
-
-//                            String ssoServiceInstanceId = ssoAuthenticationDetails.getServiceInstanceId();
                             String uaaToken = ssoAuthenticationDetails.getAccessToken().toString();
+
                             LOGGER.info(uaaToken);
 
                             if (!customUserDetailsService.isManagingApp(uaaToken, serviceInstanceId)) {
@@ -151,10 +157,20 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
                 }
             }
         } catch(Exception e) {
-            e.printStackTrace();
 
-            response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
-            return false;
+            // ajax call 이 아닐 경우 error 처리
+            if(ajaxHeader == null) {
+                LOGGER.info("### Exception Catch. ###");
+                SecurityContextHolder.clearContext();
+                response.sendRedirect(request.getContextPath()+"/common/error/unauthorized");
+            }else {
+                if("true".equals(ajaxHeader)){
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                }else{
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED
+                            , "Header value 'X-CaaS-Ajax-call' is mismatch.");
+                }
+            }
         }
 
         LOGGER.info("### Intercepter end ###");

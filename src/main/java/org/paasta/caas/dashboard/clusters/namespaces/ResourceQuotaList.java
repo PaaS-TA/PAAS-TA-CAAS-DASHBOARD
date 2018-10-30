@@ -15,6 +15,7 @@ import java.util.List;
 public class ResourceQuotaList {
 
   private String resultCode;
+  private String resultMessage;
   private List<ResourceQuota> items;
 
 }
