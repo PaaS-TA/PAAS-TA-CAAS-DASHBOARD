@@ -102,6 +102,8 @@ public class RestTemplateService {
             resultMap.put("resultMessage", e.getMessage());
             ObjectMapper mapper = new ObjectMapper();
 
+            LOGGER.error("Error resultMap : {}", resultMap);
+
             return mapper.convertValue(resultMap, responseType);
         }
     }
