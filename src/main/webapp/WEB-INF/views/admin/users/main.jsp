@@ -169,7 +169,7 @@
 
                 // 2. 자를 단어 조합
                 roleNameArr = userId.split('@');
-                userName = roleNameArr[0].replace((/[_\W]+/g, "-")).toLowerCase();
+                userName = roleNameArr[0].replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '').toLowerCase();
                 splitWord = (ORGANIZATION_GUID + "-" + userName).toLowerCase() + "-";
 
                 // 3. role name 만 추출하자.
@@ -177,9 +177,11 @@
                 splitRole = roleArr[1];
 
                 // 4. splitRole 이 admin 인 경우 select box 는 disabled
-                if((splitRole === "admin") || (G_RS_UPDATE !== "TRUE")){
+                // 1) 로그인된 본인이 admin 이거나, 로그인된 본인이 업데이트 권한 없는 user 인 경우
+                // 2) 로그인된 본인이 user 이고, 업데이트 권한 있는 경우
+                if((splitRole === "admin") || ((splitRole === "user") && (G_RS_UPDATE !== "TRUE"))){
                     selectBox += "<select disabled name='role-filter' data-user-id='"+ items[i].userId +"'>"
-                }else{
+                }else if((splitRole === "user") && (G_RS_UPDATE === "TRUE")){
                     selectBox += "<select name='role-filter' data-user-id='"+ items[i].userId +"'>"
                 }
 
