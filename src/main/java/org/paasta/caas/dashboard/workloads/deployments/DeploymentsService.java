@@ -36,7 +36,6 @@ public class DeploymentsService {
                 HttpMethod.GET, null, DeploymentsList.class);
     }
 
-
     /**
      * Deployments 상세 정보를 조회한다.
      *
@@ -51,7 +50,6 @@ public class DeploymentsService {
                 , HttpMethod.GET, null, Deployments.class);
     }
 
-
     /**
      * Deployments YAML을 조회한다.
      *
@@ -65,20 +63,5 @@ public class DeploymentsService {
                         .replace("{deploymentsName:.+}", deploymentsName),
                 HttpMethod.GET, null, Deployments.class);
     }
-
-
-//    /**
-//     * Deployments 목록을 조회한다. (Label Selector)
-//     *
-//     * @param namespace the namespace
-//     * @param selectors the selectors
-//     * @return the deployments list
-//     */
-//     DeploymentsList getDeploymentsListLabelSelector(String namespace, String selectors) {
-//        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_DEPLOYMENTS_RESOURCES
-//                    .replace("{namespace:.+}", namespace)
-//                    .replace("{selector:.+}", selectors),
-//                HttpMethod.GET, null, DeploymentsList.class);
-//    }
 
 }
