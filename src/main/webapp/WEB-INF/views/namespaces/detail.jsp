@@ -129,32 +129,51 @@
             return false;
         }
 
-        var trHtml = "";
+        /* Resource List (https://godoc.org/k8s.io/kubernetes/pkg/apis/core#ResourceName)
+            "pods"
+            "services"
+            "replicationcontrollers"
+            "resourcequotas"
+            "secrets"
+            "configmaps"
+            "persistentvolumeclaims"
+            "services.nodeports"
+            "services.loadbalancers"
+            "requests.cpu"
+            "requests.memory"
+            "requests.storage"
+            "requests.ephemeral-storage"
+            "limits.cpu"
+            "limits.memory"
+            "limits.ephemeral-storage"
+        */
+        var skipResourceKey = [ 
+            'requests.storage', 
+            'limits.ephemeral-storage' 
+        ];
+        var trHtml;
 
         for (var i = 0; i < data.items.length; i++) {
             var htmlRe = "";
             var hards = data.items[i].status.hard;
             var useds = data.items[i].status.used;
             var name = data.items[i].metadata.name;
-            var scopes = data.items[i].spec.scopes;
+            var scopes = nvl(data.items[i].spec.scopes, "-");
 
-            if (scopes == null || scopes == "null") {
-                scopes = "-";
-            }
-
+            trHtml = "";
             for ( var key in hards ) {
-                if(key === 'requests.storage') {
+                if ( skipResourceKey.includes(key) ) {
                     continue;
                 }
-                trHtml +=
-                    "<tr>"
+                
+                trHtml += "<tr>"
                     + "<td>" + key + "</td>"
                     + "<td>" + hards[key] + "</td>"
                     + "<td>" + useds[key] + "</td>"
                     + "</tr>";
             }
 
-            htmlRe = html.replace("<tbody>", "<tbody>"+trHtml);
+            htmlRe = html.replace("<tbody>", "<tbody>" + trHtml);
 
             htmlRe = htmlRe.replace("{{metadata.name}}", name);
             htmlRe = htmlRe.replace("{{spec.scopes}}", scopes);
