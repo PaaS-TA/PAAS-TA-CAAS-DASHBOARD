@@ -126,7 +126,7 @@
                 rc = G_ADMIN_NAME;
             }else if(rc === G_REGULAR_USER_CODE){
                 rc = G_REGULAR_USER_NAME;
-            }else if(rc === G_INIT_USER_CODE){
+            }else{
                 rc = G_INIT_USER_NAME;
             }
 
@@ -183,6 +183,8 @@
                     selectBox += "<select disabled name='role-filter' data-user-id='"+ items[i].userId +"'>"
                 }else if((splitRole === "user") && (G_RS_UPDATE === "TRUE")){
                     selectBox += "<select name='role-filter' data-user-id='"+ items[i].userId +"'>"
+                }else{
+                    selectBox += "<select name='role-filter' data-user-id='"+ items[i].userId +"'>"
                 }
 
 
@@ -193,7 +195,7 @@
                     rc2 = G_ADMIN_NAME;
                 }else if(rc2 === G_REGULAR_USER_CODE){
                     rc2 = G_REGULAR_USER_NAME;
-                }else if(rc2 === G_INIT_USER_CODE){
+                }else{
                     rc2 = G_INIT_USER_NAME;
                 }
 
@@ -283,7 +285,7 @@
             G_USER_PER_ROLE = G_ADMIN_CODE;
         }else if (G_USER_PER_ROLE === G_REGULAR_USER_NAME){
             G_USER_PER_ROLE = G_REGULAR_USER_CODE;
-        }else if(G_USER_PER_ROLE === G_INIT_USER_NAME){
+        }else{
             G_USER_PER_ROLE = G_INIT_USER_CODE;
         }
 
