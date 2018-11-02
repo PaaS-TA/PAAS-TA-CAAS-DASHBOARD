@@ -16,7 +16,7 @@
         var resourceName = '<c:out value="${nodeName}" default="" />';
 
         var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>'
-            .replace('{namespace:.+}', NAME_SPACE).replace('{resourceName:.+}', resourceName);
+            .replace('{namespace:.+}', NAME_SPACE).replace('{resourceUid:.+}', resourceName + '?type=node');
 
         procGetCommonEventsList(reqUrl, resourceName);
     };

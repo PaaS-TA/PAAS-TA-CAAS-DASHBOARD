@@ -37,23 +37,24 @@ public class SsoAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
         LOGGER.info("** onAuthenticationSuccess in");
         requestCache.saveRequest(request, response);
 
-        String sessionRedirectUrl = "";
-        if(request.getSession() != null && request.getSession().getAttribute("sessionRedirectUrl") != null) {
-            LOGGER.info("in");
-            LOGGER.info(request.getSession().getAttribute("sessionRedirectUrl").toString());
-            String reUrl = request.getSession().getAttribute("sessionRedirectUrl").toString();
-            if(request.getSession().getAttribute("sessionRedirectUrl").toString().contains("?serviceInstanceId=")) {
-                reUrl = Constants.CAAS_INIT_URI;
+        Object obj = request.getSession().getAttribute("sessionRedirectUrl");
+        String sessionRedirectUrl = obj != null ? obj.toString(): "";
+
+        if(request.getSession() != null && sessionRedirectUrl != "") {
+            LOGGER.info("[onAuthenticationSuccess] Process Start - sessionRedirectUrl:" + sessionRedirectUrl);
+
+            if(sessionRedirectUrl.contains("?serviceInstanceId=")) {
+                sessionRedirectUrl = Constants.CAAS_INIT_URI;
             }
-            sessionRedirectUrl = reUrl;
         }
 
         if(!sessionRedirectUrl.equals("")) {
+            LOGGER.info("[onAuthenticationSuccess] sendRedirect URL: " + sessionRedirectUrl);
             getRedirectStrategy().sendRedirect(request, response, sessionRedirectUrl);
         } else {
+            LOGGER.info("[onAuthenticationSuccess] Request-Attribute not include sessionRedirectUrl.");
             super.onAuthenticationSuccess(request, response, authentication);
         }
 
-//        super.onAuthenticationSuccess(request, response, authentication);
     }
 }

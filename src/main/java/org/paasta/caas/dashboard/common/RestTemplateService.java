@@ -97,12 +97,12 @@ public class RestTemplateService {
 
             return resEntity.getBody();
         } catch (Exception e) {
-            e.printStackTrace();
-
             Map<String, Object> resultMap = new HashMap();
             resultMap.put("resultCode", "FAIL");
+            resultMap.put("resultMessage", e.getMessage());
             ObjectMapper mapper = new ObjectMapper();
-            LOGGER.info(mapper.convertValue(resultMap, responseType).toString());
+
+            LOGGER.error("Error resultMap : {}", resultMap);
 
             return mapper.convertValue(resultMap, responseType);
         }

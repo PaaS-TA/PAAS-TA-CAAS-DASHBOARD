@@ -1,3 +1,16 @@
+/**
+ * API call function
+ * @param reqUrl      : Request URL
+ * @param reqMethod   : Request Method (GET POST PUT DELETE ..)
+ * @param param       : Request Parameters
+ * @param preFunc     : Pre function
+ * @param callback    : after function
+ * @description
+ *      async: false 동기 처리
+ * @author CISS
+ * @since 2018.10.23
+ * @since 2018.10.30 Error 처리 수정
+ */
 var procCallAjax = function(reqUrl, reqMethod, param, preFunc, callback) {
     var reqData = "";
     if (param != null) {
@@ -11,16 +24,35 @@ var procCallAjax = function(reqUrl, reqMethod, param, preFunc, callback) {
         async: false,
         contentType: "application/json",
         beforeSend: function(xhr){
-            ///preFunc
+            // preFunc
             xhr.setRequestHeader(_csrf_header, _csrf_token);
+            // CaaS-API Ajax request header setting
+            xhr.setRequestHeader("X-CaaS-Ajax-call", "true");
         },
         success: function(data) {
-            callback(data);
+
+            if(data.resultCode == "FAIL"){
+                viewLoading('hide');
+                alertMessage();
+
+                /* 대상 서버 메시지로 출력. 현재는 DashBoard 에서 메시지 처리하도록 해당 주석 처리
+                if(nvl(data.resultMessage) != ""){
+                    alertMessage(data.resultMessage,"false");
+                }
+                */
+            }else{
+                callback(data);
+            }
+
         },
         error: function(jqXHR, exception) {
+            console.log("jqXHR.status::::"+jqXHR.status+" exception:::"+exception);
+            viewLoading('hide');
+
             if(jqXHR.status == 401){
-                console.log("API unauthorized.");
-                location.href = "/common/error/unauthorized";
+                alertMessage('API unauthorized.', false);
+            }else if (jqXHR.status == 500){
+                alertMessage();
             }
         },
         complete : function(data) {
@@ -257,7 +289,6 @@ var addPodsEvent = function(targetObject, selector) {
     // 기존 리스트 데이터에 event.type, event.message 추가
     var eventType = 'normal';
     var eventMessage = [];
-    var uniqueMessage = [];
 
     var reqPodsUrl = URI_API_PODS_RESOURCES
         .replace("{namespace:.+}", NAME_SPACE)
@@ -278,24 +309,18 @@ var addPodsEvent = function(targetObject, selector) {
             procCallAjax(reqEventsUrl, "GET", null, null, function(eventData){
                 $.each(eventData.items, function (index, eData) {
                     var eType = eData.type;
-                    if(eType == 'Warning'){
+                    if(eType == 'Warning' && !(eventMessage.indexOf(eData.message) > -1) ){
                         eventType = eType;
                         eventMessage.push(eData.message);
                     }
                 });
-                $.each(eventMessage, function (i, el) {
-                    if($.inArray(el, uniqueMessage) === -1) {
-                        uniqueMessage.push(el);
-                    }
-                });
-
             });
 
         }); // Event API call end
     }); //Pods API call end
 
     targetObject.type = eventType;
-    targetObject.message = uniqueMessage;
+    targetObject.message = eventMessage;
 
 };
 
@@ -468,7 +493,9 @@ var procSetAnnotations = function (extAnnotations) {
     }
 
     var annotationsString = procSetSelector(annotations);
-    tempStr += ' ' + procCreateSpans(annotationsString, 'NOT_LB');
+    if ('' !== annotationsString) {
+        tempStr += ' ' + procCreateSpans(annotationsString, 'NOT_LB');
+    }
 
     return nvl(tempStr, '-');
 };
@@ -482,7 +509,6 @@ var procSetAnnotationLayerpop = function(eventElement) {
     procSetLayerPopup(title, content, null, null, 'x', null, null, null);
 };
 
-//
 /**
  * 객체의 값을 비교한다.
  * @param object   : 대상 Object 1

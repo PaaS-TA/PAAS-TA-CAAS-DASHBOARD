@@ -60,7 +60,7 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
 
     @Bean(name = "authenticationManager")
     public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManager();
+        return authenticationManager();
     }
 
     @Bean
@@ -117,10 +117,7 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .antMatchers(Constants.CAAS_INIT_URI).access("hasRole('ROLE_ADMIN')")
                     .antMatchers(Constants.CAAS_INIT_URI + "/**").authenticated()
-                    .antMatchers("/caas/clusters/namespaces/**").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/caas/users").access("hasRole('ROLE_ADMIN')")
-                    .antMatchers("/workload/replicaSets").access("hasRole('ROLE_ADMIN')")
-                    .antMatchers("/common/**").permitAll()
                     .antMatchers("/resources/**").permitAll()
                     .and()
                         .addFilterBefore(ssoClientContextFilter.unwrap(), AbstractPreAuthenticatedProcessingFilter.class)

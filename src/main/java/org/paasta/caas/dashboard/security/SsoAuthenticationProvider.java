@@ -37,16 +37,13 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         final Object details = authentication.getDetails();
         LOGGER.info("############### authenticate in!!!!!!!!!!");
-        Collection<? extends GrantedAuthority> role = null;
-        User user = null;
-
+        Collection<? extends GrantedAuthority> role;
+        User user;
 
         if (!(details instanceof SsoAuthenticationDetails)) {
             throw new InternalAuthenticationServiceException("The authentication details [" + details
                     + "] are not an instance of " + SsoAuthenticationDetails.class.getSimpleName());
         }
-
-
 
         try {
             /*
@@ -54,19 +51,22 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
              *   취득후 사용자 롤을 이용하여, 권한을 부여한다.
              */
             SsoAuthenticationDetails ssoAuthenticationDetails = (SsoAuthenticationDetails) details;
-            customUserDetailsService.setToken(ssoAuthenticationDetails.getAccessToken().getValue());
+            String accessToken = ssoAuthenticationDetails.getAccessToken().getValue();
+            LOGGER.info("AccessToken : "+accessToken);
+
+            customUserDetailsService.setToken(accessToken);
 
             user = (User) customUserDetailsService.loadUserBySsoAuthenticationDetails(ssoAuthenticationDetails);
             role = user.getAuthorities();
-//            LOGGER.info("uaa user guid : "+ssoAuthenticationDetails.getId());
-//            LOGGER.info("uaa user token : "+ssoAuthenticationDetails.getAccessToken().toString());
+
             ssoAuthenticationDetails.setUsername(user.getUsername());
             ssoAuthenticationDetails.setImgPath(user.getImgPath());
             ssoAuthenticationDetails.setServiceInstanceId(user.getServiceInstanceId());
             ssoAuthenticationDetails.setOrganizationGuid(user.getOrganizationGuid());
             ssoAuthenticationDetails.setSpaceGuid(user.getSpaceGuid());
             ssoAuthenticationDetails.setNameSpace(user.getNameSpace());
-            authentication = new OAuth2Authentication(((OAuth2Authentication) authentication).getOAuth2Request(), new UsernamePasswordAuthenticationToken(ssoAuthenticationDetails.getUserid(), "N/A", role));
+
+            authentication = new OAuth2Authentication(((OAuth2Authentication) authentication).getOAuth2Request(), new UsernamePasswordAuthenticationToken(ssoAuthenticationDetails.getUserId(), "N/A", role));
             ((OAuth2Authentication) authentication).setDetails(ssoAuthenticationDetails);
 
 
@@ -76,9 +76,6 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
             HttpSession session = request.getSession();
             session.setAttribute("custom_user_role",user);
 
-
-
-            LOGGER.info(((SsoAuthenticationDetails) details).getAccessToken().getValue());
             LOGGER.info("############### authenticate out!!!!!!!!!!");
 
         } catch(UsernameNotFoundException e) {

@@ -13,6 +13,7 @@ import lombok.Data;
 public class Users {
 
     private String resultCode;
+    private String resultMessage;
 
     private long id;
     private String userId;

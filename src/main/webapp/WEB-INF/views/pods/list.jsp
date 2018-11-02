@@ -300,7 +300,7 @@
             }
 
             var namespaceHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NAMESPACES %>/' + pod.namespace, pod.namespace);
-            htmlString.push('<tr name="podRow" data-search-key="' + pod.uid + '">'
+            htmlString.push('<tr name="podRow" data-search-key="' + pod.name + '">'
                 + '<td id="' + pod.uid + '">' + podNameHtml + '</td>'
                 + '<td>' + namespaceHtml + '</td>'
                 + '<td>' + nodeNameHtml + '</td>'

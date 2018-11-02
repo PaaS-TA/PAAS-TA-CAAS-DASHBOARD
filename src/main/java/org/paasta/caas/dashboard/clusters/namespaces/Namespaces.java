@@ -16,6 +16,7 @@ import org.paasta.caas.dashboard.common.model.CommonStatus;
 public class Namespaces {
 
     private String resultCode;
+    private String resultMessage;
 
     private String kind;
     private String apiVersion;
