@@ -139,7 +139,7 @@
         var labels              = procSetSelector(data.metadata.labels);
         var annotations         = data.metadata.annotations;
         var creationTimestamp   = data.metadata.creationTimestamp;
-        var selector            = procSetSelector(data.spec.selector.matchLabels);
+        var selector            = procSetSelector(data.spec.selector.matchLabels); // 필수값
         var images              = [];
 
         // 서비스 리스트를 조회하기 위한 replicaset label 참조
@@ -161,6 +161,8 @@
 
         getDeploymentsInfo(data);
         getDetailForPodsList(selector);
+        getServices();
+
     };
 
     // GET DEPLOYMENTS INFO
@@ -168,8 +170,7 @@
 
         // URI_API_DEPLOYMENTS_DETAIL
         /*
-           Deployments 조회 : replicaset 상세에서 ownerReferences 를 참조(metadata.ownerReferences.name == deployment name) 한다.
-                             deployment detail의 label 을 사용해 service를 조회한다.
+           Deployments 조회 : replicaset 상세에서 ownerReferences 를 참조(metadata.ownerReferences.name == deployment name).
         */
         var deploymentsName = "";
         var deploymentsInfo = "";
@@ -197,11 +198,6 @@
             alertMessage();
             return false;
         }
-
-        // deployment 상세의 label로 service 를 조회한다.
-        if(data.metadata.labels != null){
-            getServices(data.metadata.labels);
-        }
     };
 
     // GET DETAIL FOR PODS LIST
@@ -213,16 +209,10 @@
     };
 
     // GET SERVICE LIST
-    var getServices = function(selector) {
-        /* Replicaset 생성시 추가되는 "pod-template-hash" 레이블은 service 레이블에 생성되지 않는다.
-            - service, deployment 레이블 조회시 => 필터링 조건에서 "pod-template-hash" 레이블은 제외한다.
-            - pods 레이블 조회시 =>  필터링 조건에서 "pod-template-hash" 레이블 포함함.
-         */
-        selector = procSetSelector(selector);
+    var getServices = function() {
 
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_RESOURCES %>"
-                .replace("{namespace:.+}", NAME_SPACE)
-                .replace("{selector:.+}", selector);
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_LIST%>"
+                .replace("{namespace:.+}", NAME_SPACE);
         procCallAjax(reqUrl, "GET", null, null, callbackGetServices);
     };
 
@@ -305,8 +295,6 @@
                     + "<td>" + externalEndpoints + "</td>"
                     + "<td>" + items[i].metadata.creationTimestamp + "</td>"
                     + "</tr>");
-
-            //selectorList.push(selector + "," + serviceName);
             endpoints = "";
 
         }
