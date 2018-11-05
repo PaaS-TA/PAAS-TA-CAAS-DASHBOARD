@@ -69,19 +69,4 @@ public class CustomServicesService {
                 HttpMethod.GET, null, CustomServices.class);
     }
 
-
-    /**
-     * Services 목록을 조회한다. (Label Selector)
-     *
-     * @param namespace the namespace
-     * @param selectors the selectors
-     * @return the custom services list
-     */
-    CustomServicesList getCustomServicesListLabelSelector(String namespace, String selectors) {
-        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_SERVICES_RESOURCES
-                        .replace("{namespace:.+}", namespace)
-                        .replace("{selector:.+}", selectors),
-                HttpMethod.GET, null, CustomServicesList.class);
-    }
-
 }
