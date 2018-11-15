@@ -31,7 +31,6 @@ import java.util.Objects;
 @Service
 public class UsersService {
 
-    private static final String REQ_URL = "/users";
     private final RestTemplateService restTemplateService;
     private final TemplateService templateService;
     private final RefreshSessionService refreshSessionService;
@@ -200,6 +199,9 @@ public class UsersService {
                 .replace("{namespace:.+}", user.getCaasNamespace())
                 .replace("{caasAccountName:.+}", user.getCaasAccountName()), HttpMethod.DELETE, null, String.class);
 
-        return restTemplateService.send(Constants.TARGET_COMMON_API, REQ_URL, HttpMethod.DELETE, user, Users.class);
+        return restTemplateService.send(Constants.TARGET_COMMON_API, Constants.URI_COMMON_API_USERS_DETAIL
+                .replace("{serviceInstanceId:.+}", user.getServiceInstanceId())
+                .replace("{organizationGuid:.+}", user.getOrganizationGuid())
+                .replace("{userId:.+}", user.getUserId()), HttpMethod.DELETE, null, Users.class);
     }
 }

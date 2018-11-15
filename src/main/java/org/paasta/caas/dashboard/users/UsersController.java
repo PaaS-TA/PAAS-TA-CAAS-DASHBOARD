@@ -102,15 +102,20 @@ public class UsersController {
      * @param users the users
      * @return the users
      */
-    @PostMapping(value = Constants.API_URL + Constants.URI_COMMON_API_USERS_UPDATE)
+    @PutMapping(value = Constants.API_URL + Constants.URI_COMMON_API_USERS_DETAIL)
     @ResponseBody
     public Users updateUserRole(@PathVariable("serviceInstanceId") String serviceInstanceId,
                                 @PathVariable("organizationGuid") String organizationGuid,
                                 @PathVariable("userId") String userId,
                                 @RequestBody Users users){
         Users user = userService.getUserByServiceInstanceId(serviceInstanceId, organizationGuid, userId);
-        user.setRoleSetCode(users.getRoleSetCode());
-        return userService.updateUserRole(serviceInstanceId, organizationGuid, user);
+
+        if(user.getResultCode().equals(Constants.RESULT_STATUS_SUCCESS)){
+            user.setRoleSetCode(users.getRoleSetCode());
+            return userService.updateUserRole(serviceInstanceId, organizationGuid, user);
+        }else{
+            return user;
+        }
     }
 
     /**
@@ -121,12 +126,17 @@ public class UsersController {
      * @param userId the userId
      * @return the users
      */
-    @PostMapping(value = Constants.API_URL + Constants.URI_COMMON_API_USERS_DELETE)
+    @DeleteMapping(value = Constants.API_URL + Constants.URI_COMMON_API_USERS_DETAIL)
     @ResponseBody
     public Users deleteUser(@PathVariable("serviceInstanceId") String serviceInstanceId,
                             @PathVariable("organizationGuid") String organizationGuid,
                             @PathVariable("userId") String userId){
         Users user = userService.getUserByServiceInstanceId(serviceInstanceId, organizationGuid, userId);
-        return userService.deleteUserByServiceInstanceId(user);
+
+        if(user.getResultCode().equals(Constants.RESULT_STATUS_SUCCESS)){
+            return userService.deleteUserByServiceInstanceId(user);
+        }else{
+            return user;
+        }
     }
 }
