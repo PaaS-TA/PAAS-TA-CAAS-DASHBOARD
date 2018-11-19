@@ -51,19 +51,18 @@ public class Constants {
     public static final String URI_API_DEPLOYMENTS_LIST = "/namespaces/{namespace:.+}/deployments";
     public static final String URI_API_DEPLOYMENTS_DETAIL = "/namespaces/{namespace:.+}/deployments/{deploymentName:.+}";
     public static final String URI_API_DEPLOYMENTS_YAML = "/namespaces/{namespace:.+}/deployments/{deploymentName:.+}/yaml";
-    public static final String URI_API_DEPLOYMENTS_RESOURCES = "/namespaces/{namespace:.+}/deployments/resource/{selector:.+}";
 
     public static final String URI_API_PODS_LIST = "/namespaces/{namespace:.+}/pods";
     public static final String URI_API_PODS_DETAIL = "/namespaces/{namespace:.+}/pods/{podName:.+}";
     public static final String URI_API_PODS_YAML = "/namespaces/{namespace:.+}/pods/{podName:.+}/yaml";
-    public static final String URI_API_PODS_LIST_BY_SELECTOR = "/namespaces/{namespace:.+}/pods/resource/{selector:.+}";
-    public static final String URI_API_PODS_LIST_BY_NODE = "/namespaces/{namespace:.+}/pods/node/{nodeName:.+}";
+    public static final String URI_API_PODS_LIST_BY_SELECTOR = "/namespaces/{namespace:.+}/pods/resources/{selector:.+}";
+    public static final String URI_API_PODS_LIST_BY_NODE = "/namespaces/{namespace:.+}/pods/nodes/{nodeName:.+}";
     public static final String URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE = "/namespaces/{namespace:.+}/pods/service/{serviceName:.+}/{selector:.+}";
 
     public static final String URI_API_REPLICA_SETS_LIST = "/namespaces/{namespace:.+}/replicaSets";
     public static final String URI_API_REPLICA_SETS_DETAIL = "/namespaces/{namespace:.+}/replicaSets/{replicaSetName:.+}";
     public static final String URI_API_REPLICA_SETS_YAML = "/namespaces/{namespace:.+}/replicaSets/{replicaSetName:.+}/yaml";
-    public static final String URI_API_REPLICA_SETS_RESOURCES = "/namespaces/{namespace:.+}/replicaSets/resource/{selector:.+}";
+    public static final String URI_API_REPLICA_SETS_RESOURCES = "/namespaces/{namespace:.+}/replicaSets/resources/{selector:.+}";
 
     public static final String URI_API_SERVICES_LIST = "/namespaces/{namespace:.+}/services";
     public static final String URI_API_SERVICES_DETAIL = "/namespaces/{namespace:.+}/services/{serviceName:.+}";
@@ -71,7 +70,7 @@ public class Constants {
 
     public static final String URI_API_ENDPOINTS_DETAIL = "/namespaces/{namespace:.+}/endpoints/{serviceName:.+}";
 
-    public static final String URI_API_EVENTS_LIST = "/namespaces/{namespace:.+}/events/resource/{resourceUid:.+}";
+    public static final String URI_API_EVENTS_LIST = "/namespaces/{namespace:.+}/events/resources/{resourceUid:.+}";
     public static final String URI_API_NAMESPACE_EVENTS_LIST    = "/namespaces/{namespace:.+}/events";
 
     public static final String URI_API_ROLES_DETAIL = "/namespaces/{namespace:.+}/roles/{roleName:.+}";
