@@ -46,8 +46,8 @@ public class DeploymentsController {
      * @param httpServletRequest the http servlet request
      * @return the deployments detail
      */
-    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}")
-    public ModelAndView getDashboardDetail(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
+    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentName}")
+    public ModelAndView getDashboardDetail(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentName") String deploymentName) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/detail", new ModelAndView());
     }
 
@@ -57,8 +57,8 @@ public class DeploymentsController {
      * @param httpServletRequest the http servlet request
      * @return the deployments detail events
      */
-    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/events")
-    public ModelAndView getDashboardEvent(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
+    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentName}/events")
+    public ModelAndView getDashboardEvent(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentName") String deploymentName) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/events", new ModelAndView());
     }
 
@@ -68,8 +68,8 @@ public class DeploymentsController {
      * @param httpServletRequest the http servlet request
      * @return the replicaSets detail yaml
      */
-    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentsName}/yaml")
-    public ModelAndView getDashboardYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentsName") String deploymentsName) {
+    @GetMapping(value = Constants.CAAS_BASE_URL + "/workloads/deployments/{deploymentName}/yaml")
+    public ModelAndView getDashboardYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "deploymentName") String deploymentName) {
         return commonService.setPathVariables(httpServletRequest, BASE_URL + "/yaml", new ModelAndView());
     }
 
@@ -88,37 +88,25 @@ public class DeploymentsController {
      * Deployments 상세 정보를 조회한다.
      *
      * @param namespace the namespace
-     * @param deploymentsName the deployments name
+     * @param deploymentName the deployments name
      * @return the deployments
      */
     @GetMapping( value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_DETAIL )
-    public Deployments getDeployments(@PathVariable String namespace, @PathVariable String deploymentsName) {
-        return deploymentsService.getDeployments(namespace, deploymentsName);
+    public Deployments getDeployments(@PathVariable String namespace, @PathVariable String deploymentName) {
+        return deploymentsService.getDeployments(namespace, deploymentName);
     }
 
     /**
      * Deployments YAML 정보를 조회한다.
      *
      * @param namespace the namespace
-     * @param deploymentsName the deployments name
+     * @param deploymentName the deployments name
      * @return the deployments yaml
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_YAML)
     @ResponseBody
-    public Deployments getDeploymentsYaml(@PathVariable(value = "namespace") String namespace, @PathVariable("deploymentsName") String deploymentsName) {
-        return deploymentsService.getDeploymentsYaml(namespace, deploymentsName);
+    public Deployments getDeploymentsYaml(@PathVariable(value = "namespace") String namespace, @PathVariable("deploymentName") String deploymentName) {
+        return deploymentsService.getDeploymentsYaml(namespace, deploymentName);
     }
 
-//    /**
-//     * Deployments 목록을 조회한다. (Label Selector)
-//     *
-//     * @param namespace the namespace
-//     * @param selector the selector for filter
-//     * @return the deployments list
-//     */
-//    @GetMapping( value = Constants.API_URL + Constants.URI_API_DEPLOYMENTS_RESOURCES )
-//    @ResponseBody
-//    public DeploymentsList getDeploymentsListLabelSelector(@PathVariable("namespace") String namespace, @PathVariable("selector") String selector) {
-//        return deploymentsService.getDeploymentsListLabelSelector(namespace, selector);
-//    }
 }

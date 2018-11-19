@@ -15,7 +15,7 @@
 
     // GET LIST
     var getList = function () {
-        var resourceName = "<c:out value='${deploymentsName}' default='' />";
+        var resourceName = "<c:out value='${deploymentName}' default='' />";
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
             .replace("{namespace:.+}", NAME_SPACE)

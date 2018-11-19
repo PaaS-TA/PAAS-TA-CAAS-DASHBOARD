@@ -172,18 +172,18 @@
         /*
            Deployments 조회 : replicaset 상세에서 ownerReferences 를 참조(metadata.ownerReferences.name == deployment name).
         */
-        var deploymentsName = "";
+        var deploymentName = "";
         var deploymentsInfo = "";
 
         if(data.metadata.ownerReferences == null){
             deploymentsInfo = "-";
         }else{
-            deploymentsName = data.metadata.ownerReferences[0].name;
-            deploymentsInfo = "<a href='<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/"+deploymentsName+"'>"+deploymentsName+"</a>";
+            deploymentName = data.metadata.ownerReferences[0].name;
+            deploymentsInfo = "<a href='<%= Constants.URI_WORKLOAD_DEPLOYMENTS %>/"+deploymentName+"'>"+deploymentName+"</a>";
 
             var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_DETAIL %>"
                     .replace("{namespace:.+}", NAME_SPACE)
-                    .replace("{deploymentsName:.+}", deploymentsName);
+                    .replace("{deploymentName:.+}", deploymentName);
             procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsInfo);
         }
 

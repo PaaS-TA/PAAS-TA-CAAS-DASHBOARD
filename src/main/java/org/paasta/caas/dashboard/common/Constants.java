@@ -49,8 +49,8 @@ public class Constants {
     public static final String URI_API_NODES_LIST = "/nodes/{nodeName:.+}";
 
     public static final String URI_API_DEPLOYMENTS_LIST = "/namespaces/{namespace:.+}/deployments";
-    public static final String URI_API_DEPLOYMENTS_DETAIL = "/namespaces/{namespace:.+}/deployments/{deploymentsName:.+}";
-    public static final String URI_API_DEPLOYMENTS_YAML = "/namespaces/{namespace:.+}/deployments/{deploymentsName:.+}/yaml";
+    public static final String URI_API_DEPLOYMENTS_DETAIL = "/namespaces/{namespace:.+}/deployments/{deploymentName:.+}";
+    public static final String URI_API_DEPLOYMENTS_YAML = "/namespaces/{namespace:.+}/deployments/{deploymentName:.+}/yaml";
     public static final String URI_API_DEPLOYMENTS_RESOURCES = "/namespaces/{namespace:.+}/deployments/resource/{selector:.+}";
 
     public static final String URI_API_PODS_LIST = "/namespaces/{namespace:.+}/pods";

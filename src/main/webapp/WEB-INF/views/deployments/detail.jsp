@@ -10,7 +10,7 @@
 <%@ page import="org.paasta.caas.dashboard.common.Constants" %>
 
 <div class="content">
-    <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <c:out value="${deploymentsName}"/></h1>
+    <h1 class="view-title"><span class="detail_icon"><i class="fas fa-file-alt"></i></span> <c:out value="${deploymentName}"/></h1>
     <jsp:include page="../common/contentsTab.jsp"/>
     <!-- Details 시작-->
     <div class="cluster_content01 row two_line two_view harf_view">
@@ -100,7 +100,7 @@
         viewLoading('show');
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_DETAIL %>"
                 .replace("{namespace:.+}", NAME_SPACE)
-                .replace("{deploymentsName:.+}", "<c:out value='${deploymentsName}'/>");
+                .replace("{deploymentName:.+}", "<c:out value='${deploymentName}'/>");
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeployments);
     };
 

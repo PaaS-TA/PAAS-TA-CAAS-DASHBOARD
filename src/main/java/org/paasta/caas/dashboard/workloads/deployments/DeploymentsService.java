@@ -40,13 +40,13 @@ public class DeploymentsService {
      * Deployments 상세 정보를 조회한다.
      *
      * @param namespace   the namespace
-     * @param deploymentsName the deployments name
+     * @param deploymentName the deployments name
      * @return the deployments
      */
-    public Deployments getDeployments (String namespace, String deploymentsName ) {
+    public Deployments getDeployments (String namespace, String deploymentName ) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_DEPLOYMENTS_DETAIL
                     .replace( "{namespace:.+}", namespace )
-                    .replace( "{deploymentsName:.+}", deploymentsName )
+                    .replace( "{deploymentName:.+}", deploymentName )
                 , HttpMethod.GET, null, Deployments.class);
     }
 
@@ -54,13 +54,13 @@ public class DeploymentsService {
      * Deployments YAML을 조회한다.
      *
      * @param namespace   the namespace
-     * @param deploymentsName the deployments name
+     * @param deploymentName the deployments name
      * @return the deployments yaml
      */
-    Deployments getDeploymentsYaml(String namespace, String deploymentsName) {
+    Deployments getDeploymentsYaml(String namespace, String deploymentName) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_DEPLOYMENTS_YAML
                         .replace("{namespace:.+}", namespace)
-                        .replace("{deploymentsName:.+}", deploymentsName),
+                        .replace("{deploymentName:.+}", deploymentName),
                 HttpMethod.GET, null, Deployments.class);
     }
 
