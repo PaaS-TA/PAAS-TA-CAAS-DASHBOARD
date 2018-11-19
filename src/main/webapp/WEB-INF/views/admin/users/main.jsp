@@ -297,12 +297,12 @@
 
         var reqData = JSON.stringify(reqParam);
 
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_UPDATE %>"
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_DETAIL %>"
             .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
             .replace("{organizationGuid:.+}", ORGANIZATION_GUID)
             .replace("{userId:.+}", G_USER_ID_SELECT_ROLE);
 
-        procCallAjax(reqUrl, "POST", reqData, null, callbackUpdateRoleOfUser);
+        procCallAjax(reqUrl, "PUT", reqData, null, callbackUpdateRoleOfUser);
     };
 
     // CALLBACK USER ROLE
@@ -334,12 +334,12 @@
     var deleteUser = function (userId) {
         $("#commonLayerPopup").modal("hide");
 
-        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_DELETE %>"
+        var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_DETAIL %>"
             .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
             .replace("{organizationGuid:.+}", ORGANIZATION_GUID)
             .replace("{userId:.+}", userId);
 
-        procCallAjax(reqUrl, "POST", null, null, callbackDeleteUser);
+        procCallAjax(reqUrl, "DELETE", null, null, callbackDeleteUser);
     };
 
     // CALLBACK DELETE USER

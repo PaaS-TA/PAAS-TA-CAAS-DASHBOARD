@@ -230,7 +230,10 @@
             endpointsPreString,
             nodePort,
             specPortsList,
-            specPortsListLength;
+            specPortsListLength,
+            endpointProtocol,
+            endpointWithSpecPort,
+            endpointWithNodePort;
 
         var resultArea       = $('#resultAreaForService');
         var resultHeaderArea = $('#resultHeaderAreaForService');
@@ -260,17 +263,19 @@
             nodePort = items[i].spec.ports.nodePort;
 
             var labels = procSetSelector(items[i].metadata.labels);
-
-            if (nodePort === undefined) {
-                nodePort = "0";
-            }
-
             specPortsList = items[i].spec.ports;
-            specPortsListLength = specPortsList.length;
 
-            for (var j = 0; j < specPortsListLength; j++) {
-                endpoints += '<p>' + endpointsPreString + specPortsList[j].port + " " + specPortsList[j].protocol + '</p>'
-                        + '<p>' + endpointsPreString + nodePort + " " + specPortsList[j].protocol + '</p>';
+            if (nvl(specPortsList) !== '') {
+                specPortsListLength = specPortsList.length;
+
+                for (var j = 0; j < specPortsListLength; j++) {
+                    nodePort = nvl(specPortsList[j].nodePort, '0');
+                    endpointProtocol = specPortsList[j].protocol;
+                    endpointWithSpecPort = endpointsPreString + specPortsList[j].port + " " + endpointProtocol;
+                    endpointWithNodePort = endpointsPreString + nodePort + " " + endpointProtocol;
+
+                    endpoints += '<p>' + endpointWithSpecPort + '</p>' + '<p>' + endpointWithNodePort + '</p>';
+                }
             }
 
             //External Endpoints
