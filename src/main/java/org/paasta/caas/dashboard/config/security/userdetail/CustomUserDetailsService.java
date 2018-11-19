@@ -209,7 +209,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         String yml = null;
         yml = templateService.convert("instance/create_account.ftl", model);
 
-        restTemplateService.send(Constants.TARGET_CAAS_API, "/authenticate/namespaces/" + spaceName + "/serviceaccounts", HttpMethod.POST, yml, null);
+        restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/" + spaceName + "/serviceaccounts", HttpMethod.POST, yml, null);
         LOGGER.info("createUser end~~");
     }
 
@@ -226,7 +226,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         yml = templateService.convert("instance/create_init_role.ftl", model);
 
         try {
-            restTemplateService.send(Constants.TARGET_CAAS_API, "/authenticate/namespaces/" + spaceName + "/roles", HttpMethod.POST, yml, null);
+            restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/" + spaceName + "/roles", HttpMethod.POST, yml, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -246,7 +246,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         yml = templateService.convert("instance/create_roleBinding.ftl", model);
 
         try {
-            restTemplateService.send(Constants.TARGET_CAAS_API, "/authenticate/namespaces/" + spaceName + "/rolebindings", HttpMethod.POST, yml, null);
+            restTemplateService.send(Constants.TARGET_CAAS_API, "/namespaces/" + spaceName + "/rolebindings", HttpMethod.POST, yml, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -257,7 +257,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOGGER.info("getToken spaceName~~ {}", spaceName);
         LOGGER.info("getToken userName~~ {}", userName);
 
-        String jsonObj = restTemplateService.send(Constants.TARGET_CAAS_API, "/authenticate/namespaces/" + spaceName + "/serviceaccounts/" + userName, HttpMethod.GET, null, String.class);
+        String jsonObj = restTemplateService.send(Constants.TARGET_CAAS_API, "namespaces/" + spaceName + "/serviceaccounts/" + userName, HttpMethod.GET, null, String.class);
         LOGGER.info("getToken jsonObj~~ {}",jsonObj);
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(jsonObj);
