@@ -1,21 +1,15 @@
 # PAAS-TA-CAAS-DASHBOARD
+  PaaS-TA 에서 제공하는 Container 서비스의 관리와 모니터링을 용이하게 하기 위하여 제공하는 UI 서비스이다.
 
-## 버전 정보
- - frame commit
- - 개발중
-
-## Caas_Dashboard 란?
-  Paasta에서 제공하는 Kubernetes Cluster 의 관리와 모니터링을 용이하게 하기 위하여 제공하는 UI서비스이다.
-
-
-## 유의사항
-
-개발 정보
-- java 1.8 버전
-- SpringCloud Edgware.RELEASE 
-- TomcatEmded 8.5.14
+## 개발 환경
+- JDK 8
 - Gradle 4.4.1
-- Spring-boot 2.3.0
-- JSP
-
-
+- Spring Io Platform Cairo-SR3
+- Spring Boot 2.0.4
+- Spring Security 5.0.7
+- TomcatEmded 8.5.32
+- JSTL 1.2
+- Gson 2.8.5
+- Apache Tiles 3.0.8
+- Lombok 1.18.2
+- Jacoco 0.8.1
