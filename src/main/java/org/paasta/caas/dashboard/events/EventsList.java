@@ -1,5 +1,6 @@
 package org.paasta.caas.dashboard.events;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  * @since 2018.8.13
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class EventsList {
 
     private String resultCode;
