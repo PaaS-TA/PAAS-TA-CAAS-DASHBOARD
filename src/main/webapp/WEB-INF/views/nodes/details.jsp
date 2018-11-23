@@ -123,13 +123,14 @@
     </div>
 </div>
 <script type="text/javascript">
-    // SET CONTENT TO LAYER POP MODAL
-    var setLayerpop = function(eventElement) {
-        var select = $(eventElement);
-        var title = JSON.stringify(select.data('title')).replace(/^"|"$/g, '');
-        var content = JSON.stringify(select.data('content')).replace(/^"|"$/g, '');
 
-        procSetLayerPopup(title, content, null, null, 'x', null, null, null);
+    // GET NODE
+    var getNode = function() {
+        var resourceName = '<c:out value="${nodeName}" default="" />';
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_NODES_LIST %>'
+            .replace('{nodeName:.+}', resourceName);
+
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetNodeDetail);
     };
 
     // REPLACE FIRST LETTER ONLY TO UPPER-CASE ALPHABET LETTER FROM EXTERNAL STRING(OR OBJECT)
@@ -191,15 +192,6 @@
         $('#node_architecture').html(nodeInfo.architecture);
 
         viewLoading('hide');
-    };
-
-    // GET NODE
-    var getNode = function() {
-        var resourceName = '<c:out value="${nodeName}" default="" />';
-        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_NODES_LIST %>'
-            .replace('{nodeName:.+}', resourceName);
-
-        procCallAjax(reqUrl, 'GET', null, null, callbackGetNodeDetail);
     };
 
     // ON LOAD

@@ -59,6 +59,15 @@
 <script type="text/javascript" src='<c:url value="/resources/js/highcharts.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/data.js"/>'></script>
 <script type="text/javascript">
+
+    // GET NODE
+    var getNode = function() {
+        var resourceName = '<c:out value="${nodeName}" default="" />';
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_NODES_LIST %>'.replace('{nodeName:.+}', resourceName);
+
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetNodeSummary);
+    };
+
     // CALLBACK GET NODE SUMMARY
     var callbackGetNodeSummary = function(data) {
         viewLoading('show');
@@ -67,11 +76,6 @@
         var podsTableHeader = $('#podListResultHeaderArea');
         var conditionsNotFound = $('#conditionsNotFound');
         var conditionsTableHeader = $('#conditionsTableHeader');
-
-        podNotFound.show();
-        podsTableHeader.hide();
-        conditionsNotFound.show();
-        conditionsTableHeader.hide();
 
         if (!procCheckValidData(data)) {
             viewLoading('hide');
@@ -109,21 +113,16 @@
             podsTableHeader.show();
             conditionsNotFound.hide();
             conditionsTableHeader.show();
+        } else {
+            podNotFound.show();
+            podsTableHeader.hide();
+            conditionsNotFound.show();
+            conditionsTableHeader.hide();
         }
 
         procSetToolTipForTableTd('conditionResultArea');
         $('[data-toggle="tooltip"]').tooltip();
-
         viewLoading('hide');
-    };
-
-    // GET NODE
-    var getNode = function() {
-        var resourceName = '<c:out value="${nodeName}" default="" />';
-        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_NODES_LIST %>'
-            .replace('{nodeName:.+}', resourceName);
-
-        procCallAjax(reqUrl, 'GET', null, null, callbackGetNodeSummary);
     };
 
     // ON LOAD
