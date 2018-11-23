@@ -19,5 +19,6 @@ public class EventsList {
 
     // FOR DASHBOARD
     private String resourceName;
+    private String status;
 
 }

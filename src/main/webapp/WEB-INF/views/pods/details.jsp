@@ -113,11 +113,20 @@
     <!-- Details  끝 -->
 </div>
 <script type="text/javascript">
-    var createMovePageAnchorTag = function(movePageUrl, content) {
-        var anchorTag = '<a href="javascript:void(0);" onclick="procMovePage(\'' + movePageUrl + '\');">' + content + '</a>';
-        return anchorTag;
+
+    // GET POD'S DETAIL
+    var getDetail = function() {
+        var resourceName = '<c:out value="${podName}" default="" />';
+
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_DETAIL %>'
+            .replace('{namespace:.+}', NAME_SPACE).replace('{podName:.+}', resourceName);
+
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetDetail);
     };
 
+    var createMovePageAnchorTag = function(movePageUrl, content) {
+        return '<a href="javascript:void(0);" onclick="procMovePage(\'' + movePageUrl + '\');">' + content + '</a>';
+    };
 
     // REPLACE FIRST LETTER ONLY TO UPPER-CASE ALPHABET LETTER FROM EXTERNAL STRING(OR OBJECT)
     var upperCaseFirstLetterOnly = function(obj) {
@@ -175,15 +184,12 @@
         var resultHeaderArea = $('#containersResultHeaderArea');
         var noResultArea = $('#noContainersResultArea');
 
-        resultHeaderArea.hide();
-        resultArea.hide();
-        noResultArea.show();
-
         var containerMap = getContainerMap(containers, status.containerStatuses, nvl(status.phase, 'Unknown'));
         var listCount = 0;
 
+        //<%-- Container 정보에 대한 Table Form 시작 --%>
         var containerDetailHtml =
-            '<%-- Container 정보에 대한 Table Form 시작 --%> <div><table class="table_detail alignL"> \
+            '<div><table class="table_detail alignL"> \
                 <colgroup><col style="*"><col style="*"></colgroup> \
                 <tbody> \
                     <tr><td>Name</td>                  <td name="cName" > -</td></tr> \
@@ -191,7 +197,7 @@
                     <tr><td>Environment variables</td> <td name="cEnv"  > -</td></tr> \
                     <tr><td>Commands</td>              <td name="cCmd"  > -</td></tr> \
                     <tr><td>Args</td>                  <td name="cArgs" > -</td></tr> \
-                </tbody></table></div> <%-- Container 정보에 대한 Table Form 끝 --%>';
+                </tbody></table></div>';
 
         $.each(Object.keys(containerMap), function(index, item) {
             var container = containerMap[item];
@@ -269,15 +275,6 @@
         }
     };
 
-    // CONTENT SETTING FOR POP-UP MODAL
-    var setLayerpop = function(eventElement) {
-        var select = $(eventElement);
-        var title = JSON.stringify(select.data('title')).replace(/^"|"$/g, '');
-        var content = JSON.stringify(select.data('content')).replace(/^"|"$/g, '');
-
-        procSetLayerPopup(title, content, null, null, 'x', null, null, null);
-    };
-
     // CALLBACK GET POD'S DETAIL
     var callbackGetDetail = function(data) {
         viewLoading('show');
@@ -350,16 +347,6 @@
         createContainerResultArea(data.status, data.spec.containers);
 
         viewLoading('hide');
-    };
-
-    // GET POD'S DETAIL
-    var getDetail = function() {
-        var resourceName = '<c:out value="${podName}" default="" />';
-
-        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_DETAIL %>'
-            .replace('{namespace:.+}', NAME_SPACE).replace('{podName:.+}', resourceName);
-
-        procCallAjax(reqUrl, 'GET', null, null, callbackGetDetail);
     };
 
     // ON LOAD

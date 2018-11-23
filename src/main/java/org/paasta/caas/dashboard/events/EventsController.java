@@ -38,11 +38,14 @@ public class EventsController {
      */
     @GetMapping(value = Constants.API_URL + Constants.URI_API_EVENTS_LIST)
     @ResponseBody
-    EventsList getEventsList(@PathVariable("namespace") String namespace, @PathVariable("resourceUid") String resourceUid, @RequestParam(value="type", required=false) String type) {
+    EventsList getEventsList(@PathVariable("namespace") String namespace, @PathVariable("resourceUid") String resourceUid, @RequestParam(value="type", required=false) String type, @RequestParam(value="status", required=false) String status) {
         EventsList resultList = eventsService.getEventsList(namespace, resourceUid, type);
 
         // FOR DASHBOARD
         resultList.setResourceName(resourceUid);
+        if(status != null) {
+            resultList.setStatus(status);
+        }
         return resultList;
     }
 

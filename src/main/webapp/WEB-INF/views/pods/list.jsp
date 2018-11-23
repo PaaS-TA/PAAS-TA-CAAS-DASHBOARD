@@ -11,8 +11,7 @@
         <p>Pods</p>
         <ul id="pod-list-search-form" class="colright_btn">
             <li>
-                <input type="text" id="table-search-01" name="table-search" class="table-search" placeholder="search"
-                       onkeypress="if (event.keyCode === 13) { setPodsListWithFilter(this.value); }"/>
+                <input type="text" id="table-search-01" name="table-search" class="table-search" placeholder="search"  onkeypress="if (event.keyCode === 13) { setPodsList(this.value); }" maxlength="100"/>
                 <button name="button" class="btn table-search-on" type="button">
                     <i class="fas fa-search"></i>
                 </button>
@@ -58,59 +57,129 @@
     </div>
 </div>
 <script type="text/javascript">
+
+    var G_PODS_LIST;
+
+    // Overview 통계용 데이터
+    var G_PODS_LIST_LENGTH = 0;
     var G_PODS_CHART_RUNNING_CNT = 0;
     var G_PODS_CHART_FAILED_CNT = 0;
     var G_PODS_CHART_PENDING_CNT = 0;
     var G_PODS_CHART_SUCCEEDED_CNT = 0;
-    var G_PODS_LIST_LENGTH = 0;
+
+    // GET PODS' LIST USING REQUEST URL FOR OTHER WORKLOADS
+    var getPodListUsingRequestURL = function(reqUrl) {
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetPodList);
+    }
+
+    // GET PODS' LIST FOR OTHER PAGES
+    var getPodsList = function() {
+        viewLoading('show');
+        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>'.replace('{namespace:.+}', NAME_SPACE);
+        procCallAjax(reqUrl, 'GET', null, null, callbackGetPodList);
+    };
 
     // CALLBACK POD LIST
     var callbackGetPodList = function(data) {
-        viewLoading('show');
-
-        $('#noPodListResultArea').show();
-        $('#podListResultArea').hide();
-        $('#podListResultHeaderArea').hide();
-
         if (!procCheckValidData(data)) {
             viewLoading('hide');
             alertMessage();
-            return;
+            return false;
         }
 
-        var pod;
+        G_PODS_LIST = data;
+        G_PODS_LIST_LENGTH = data.items.length;
+        setPodsList("");
+    };
+    
+    var setPodsList = function (searchKeyword) {
+        viewLoading('show');
+
+        var resultArea = $('#podListResultArea');//.hide();
+        var resultHeaderArea = $('#podListResultHeaderArea');//.hide();
+        var noResultArea = $('#noPodListResultArea');//.show();
+        var resultTable = $('#resultTableForPod');
+
+        var checkListCount = 0;
+        var htmlString = [];
+
         var podList = [];
         var podNameList = [];
-        $.each(data.items, function(index, item) {
+        var pod;
+
+        $.each(G_PODS_LIST.items, function(index, item) {
+
+            var podName = item.metadata.name;
             pod = getPod(item);
             podList.push(pod);
-            if (!('Running' === pod.podStatus || 'Succeeded' === pod.podStatus)) {
-                podNameList.push(pod.name);
-            }
 
-            switch (pod.podStatus) {
-                case 'Pending':
-                    G_PODS_CHART_PENDING_CNT++;
-                    break;
-                case 'Running':
-                    G_PODS_CHART_RUNNING_CNT++;
-                    break;
-                case 'Succeeded':
-                    G_PODS_CHART_SUCCEEDED_CNT++;
-                    break;
-                default:
-                    G_PODS_CHART_FAILED_CNT++;
-                    break;
+            if ((nvl(searchKeyword) === "") || podName.indexOf(searchKeyword) > -1) {
+
+                if (!('Running' === pod.podStatus || 'Succeeded' === pod.podStatus)) {
+                    podNameList.push(pod.name);
+                }
+
+                switch (pod.podStatus) {
+                    case 'Pending':
+                        G_PODS_CHART_PENDING_CNT++;
+                        break;
+                    case 'Running':
+                        G_PODS_CHART_RUNNING_CNT++;
+                        break;
+                    case 'Succeeded':
+                        G_PODS_CHART_SUCCEEDED_CNT++;
+                        break;
+                    default:
+                        G_PODS_CHART_FAILED_CNT++;
+                        break;
+                }
+
+                var nodeNameHtml;
+                if (pod.nodeName !== '-') {
+                    nodeNameHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NODES %>/' + pod.nodeName + '/summary', pod.nodeName);
+                } else {
+                    nodeNameHtml = '-';
+                }
+
+                var namespaceHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NAMESPACES %>/' + pod.namespace, pod.namespace);
+                // GET POD EVENTS
+                procSetEventStatusForPods(pod.uid, pod.podStatus);
+                var eventHtml = G_EVENT_STR.replace("{podLink}", createMovePageAnchorTag('<%= Constants.URI_WORKLOAD_PODS %>/' + pod.name, pod.name));
+                htmlString.push('<tr name="podRow" data-search-key="' + pod.name + '">'
+                    + '<td>' + eventHtml + '</td>'
+                    + '<td>' + namespaceHtml + '</td>'
+                    + '<td>' + nodeNameHtml + '</td>'
+                    + '<td><span>' + pod.podStatus + '</span></td>'
+                    + '<td>' + pod.restartCount + '</td>'
+                    + '<td>' + pod.creationTimestamp + '</td>'
+                    + '<td><span>' + pod.usageCPU + '</span></td>'
+                    + '<td><span>' + pod.usageMemory + '</span></td>'
+                    + '</tr>');
+                checkListCount++;
             }
-            G_PODS_LIST_LENGTH++;
         });
 
-        setPodTable(podList);
-        procSetEventStatusForPods(podList);
+        if (G_PODS_LIST_LENGTH < 1 || checkListCount < 1) {
+            resultHeaderArea.hide();
+            resultArea.hide();
+            noResultArea.show();
+        } else {
+            noResultArea.hide();
+            resultHeaderArea.show();
+            resultArea.html(htmlString);
+            resultArea.show();
+
+            resultTable.tablesorter({
+                sortList: [[5, 1]] // 0 = ASC, 1 = DESC
+            });
+
+            resultTable.tablesorter();
+            resultTable.trigger("update");
+            $('.headerSortFalse > td').unbind();
+        }
 
         procSetToolTipForTableTd('podListResultArea');
         $('[data-toggle="tooltip"]').tooltip();
-
         viewLoading('hide');
     };
 
@@ -273,158 +342,36 @@
         return anchorTag;
     };
 
-    // SET POD LIST TABLE
-    var setPodTable = function(podList) {
-        var resultArea = $('#podListResultArea');
-        var resultHeaderArea = $('#podListResultHeaderArea');
-        var noResultArea = $('#noPodListResultArea');
-
-        noResultArea.show();
-        resultHeaderArea.hide();
-        resultArea.hide();
-
-        var listLength = podList.length;
-        var htmlString = [];
-
-        for (var i = 0; i < listLength; i++) {
-            var pod = podList[i];
-
-            var podNameHtml = '<span class="running2 tableTdToolTipFalse"><i class="fas fa-check-circle"></i></span> '
-                + createMovePageAnchorTag('<%= Constants.URI_WORKLOAD_PODS %>/' + pod.name, pod.name);
-
-            var nodeNameHtml;
-            if (pod.nodeName !== '-') {
-                nodeNameHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NODES %>/' + pod.nodeName + '/summary', pod.nodeName);
-            } else {
-                nodeNameHtml = '-';
-            }
-
-            var namespaceHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NAMESPACES %>/' + pod.namespace, pod.namespace);
-            htmlString.push('<tr name="podRow" data-search-key="' + pod.name + '">'
-                + '<td id="' + pod.uid + '">' + podNameHtml + '</td>'
-                + '<td>' + namespaceHtml + '</td>'
-                + '<td>' + nodeNameHtml + '</td>'
-                + '<td><span>' + pod.podStatus + '</span></td>'
-                + '<td>' + pod.restartCount + '</td>'
-                + '<td>' + pod.creationTimestamp + '</td>'
-                + '<td><span>' + pod.usageCPU + '</span></td>'
-                + '<td><span>' + pod.usageMemory + '</span></td>'
-                + '</tr>');
-        }
-
-        if (htmlString.length > 0) {
-            noResultArea.hide();
-            resultHeaderArea.show();
-            resultArea.show();
-
-            resultArea.html(htmlString);
-
-            var resultTable = $('#resultTableForPod');
-            resultTable.tablesorter({
-                sortList: [[5, 1]] // 0 = ASC, 1 = DESC
-            });
-            resultTable.trigger('update');
-            $('.headerSortFalse > td').unbind();
-        }
-    };
-
-    // FILTER POD LIST BY POD NAME
-    var setPodsListWithFilter = function(findValue) {
-        viewLoading('show');
-
-        var podsTableHeader = $('#podListResultHeaderArea');
-        var podNotFound = $('#noPodListResultArea');
-        var podRows = $('tr[name=podRow]');
-
-        if (podRows.length > 0) {
-            if ('' === nvl(findValue)) {
-                podNotFound.hide();
-                podsTableHeader.show();
-                podRows.show();
-            } else {
-                var showCount = 0;
-                $.each(podRows, function(index, podRow) {
-                    var rowElement = $(podRow);
-                    if (rowElement.data('searchKey').includes(findValue)) {
-                        rowElement.show();
-                        showCount++;
-                    } else {
-                        rowElement.hide();
-                    }
-                });
-
-                if (showCount <= 0) {
-                    podNotFound.show();
-                    podsTableHeader.hide();
-                } else {
-                    podNotFound.hide();
-                    podsTableHeader.show();
-                }
-            }
-        }
-
-        viewLoading('hide');
-    };
-
     // SET EVENT STATUS FOR PODS
-    var procSetEventStatusForPods = function(podNameList) {
-        viewLoading('show');
-
-        var listLength = podNameList.length;
+    var procSetEventStatusForPods = function(podUidName, status) {
         var reqUrl;
 
-        for (var i = 0; i < listLength; i++) {
-            reqUrl = URI_API_EVENTS_LIST.replace("{namespace:.+}", NAME_SPACE).replace("{resourceUid:.+}", podNameList[i].uid);
-            procCallAjax(reqUrl, "GET", null, null, callbackSetEventStatusForPods);
-        }
+        reqUrl = URI_API_EVENTS_LIST.replace("{namespace:.+}", NAME_SPACE).replace("{resourceUid:.+}", podUidName + '?status=' + status);
+        return procCallAjax(reqUrl, "GET", null, null, callbackSetEventStatusForPods);
     };
-
 
     // CALLBACK SET EVENT(STATUS) FOR PODS AND RESOURCES RELATED PODS
+    var G_EVENT_STR;
     var callbackSetEventStatusForPods = function(data) {
-        if (!procCheckValidData(data)) {
-            viewLoading('hide');
-            alertMessage();
-            return false;
-        }
-        var podName = data.resourceName;
-        var items = data.items;
-        var listLength = items.length;
-        var itemStatusIconHtml = "<span class='failed2 tableTdToolTipFalse'><i class='fas fas fa-exclamation-circle'></i></span> ";
-        if(listLength > 0) {
+        var statusIconHtml = "";
+        var statusMessageHtml = [];
+        G_EVENT_STR = "";
+        var itemList = data.items;
 
-        }
-        var itemMessageHtml;
-        var itemMessageList = [];
-
-        var warningCount = 0;
-        for (var i = 0; i < listLength; i++) {
-            if (items[i].type === 'Warning') {
-                itemMessageList.push(
-                    $('<p class="failed2 custom-content-overflow" data-toggle="tooltip">' + items[i].message + '</p>')
-                        .attr('title', items[i].message).wrapAll("<div/>").parent().html()
-                );
-                warningCount++;
+        if(data.status === 'Running' || data.status ==='Succeeded'){
+            if(itemList.length < 1){
+                statusIconHtml = "<span class='green2 tableTdToolTipFalse'><i class='fas fa-check-circle'></i> </span>";
             }
+        }else{
+            statusIconHtml = "<span class='red2 tableTdToolTipFalse'><i class='fas fa-exclamation-circle'></i> </span>";
+            $.each(itemList , function (index, item) {
+                if(item.type == 'Warning') { // [Warning]과 [Warning] 외 두 가지 상태로 분류
+                    statusMessageHtml += "<p class='red2 custom-content-overflow'>" + item.message + "</p>";
+                }
+            });
         }
 
-        if (warningCount > 0) {
-            itemMessageHtml = itemMessageList.join("");
-            $('#' + podName + ' span').html(itemStatusIconHtml);
-            $('#' + podName).append(itemMessageHtml);
-        }
-
+        G_EVENT_STR =  statusIconHtml +  '{podLink}'+  statusMessageHtml;
         viewLoading('hide');
-    };
-
-    // GET PODS' LIST USING REQUEST URL
-    var getPodListUsingRequestURL = function(reqUrl) {
-        procCallAjax(reqUrl, 'GET', null, null, callbackGetPodList);
-    }
-
-    // GET PODS' LIST
-    var getPodsList = function() {
-        var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>'.replace('{namespace:.+}', NAME_SPACE);
-        getPodListUsingRequestURL(reqUrl);
     };
 </script>
