@@ -13,10 +13,10 @@ import java.util.List;
  * @since 2018.8.13
  */
 @Data
-@JsonIgnoreProperties(ignoreUnknown=true)
 public class EventsList {
 
     private String resultCode;
+    private String resultMessage;
     private List<Events> items;
 
     // FOR DASHBOARD
