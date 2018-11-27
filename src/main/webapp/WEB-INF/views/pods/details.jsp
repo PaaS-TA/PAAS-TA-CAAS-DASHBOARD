@@ -124,10 +124,6 @@
         procCallAjax(reqUrl, 'GET', null, null, callbackGetDetail);
     };
 
-    var createMovePageAnchorTag = function(movePageUrl, content) {
-        return '<a href="javascript:void(0);" onclick="procMovePage(\'' + movePageUrl + '\');">' + content + '</a>';
-    };
-
     // REPLACE FIRST LETTER ONLY TO UPPER-CASE ALPHABET LETTER FROM EXTERNAL STRING(OR OBJECT)
     var upperCaseFirstLetterOnly = function(obj) {
         return (obj + '').charAt(0).toUpperCase() + (obj + '').substring(1);

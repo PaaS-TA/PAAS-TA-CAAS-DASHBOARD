@@ -336,12 +336,6 @@
         };
     };
 
-    // CREATE ANCHOR TAG FUNCTION
-    var createMovePageAnchorTag = function(movePageUrl, content) {
-        var anchorTag = '<a href="javascript:void(0);" onclick="procMovePage(\'' + movePageUrl + '\');">' + content + '</a>';
-        return anchorTag;
-    };
-
     // SET EVENT STATUS FOR PODS
     var procSetEventStatusForPods = function(podUidName, status) {
         var reqUrl;
