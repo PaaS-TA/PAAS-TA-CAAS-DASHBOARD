@@ -165,7 +165,7 @@ var procCheckValidData = function (data) {
     }
 };
 
-var viewLoading = function(type) {
+var procViewLoading = function(type) {
     var dashboardWrap = $("#dashboardWrap");
     var loader = $("#loadingSpinner");
 
@@ -494,6 +494,6 @@ var compareObj = function( a, b ){
     return a === b;
 };
 
-var createMovePageAnchorTag = function(movePageUrl, content) {
+var procCreateMovePageAnchorTag = function(movePageUrl, content) {
     return '<a href="javascript:void(0);" onclick="procMovePage(\'' + movePageUrl + '\');">' + content + '</a>';
 };

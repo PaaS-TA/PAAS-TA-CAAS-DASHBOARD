@@ -136,15 +136,15 @@
 
                 var nodeNameHtml;
                 if (pod.nodeName !== '-') {
-                    nodeNameHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NODES %>/' + pod.nodeName + '/summary', pod.nodeName);
+                    nodeNameHtml = procCreateMovePageAnchorTag('<%= Constants.URI_CLUSTER_NODES %>/' + pod.nodeName + '/summary', pod.nodeName);
                 } else {
                     nodeNameHtml = '-';
                 }
 
-                var namespaceHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NAMESPACES %>/' + pod.namespace, pod.namespace);
+                var namespaceHtml = procCreateMovePageAnchorTag('<%= Constants.URI_CLUSTER_NAMESPACES %>/' + pod.namespace, pod.namespace);
                 // GET POD EVENTS
                 procSetEventStatusForPods(pod.uid, pod.podStatus);
-                var eventHtml = G_EVENT_STR.replace("{podLink}", createMovePageAnchorTag('<%= Constants.URI_WORKLOAD_PODS %>/' + pod.name, pod.name));
+                var eventHtml = G_EVENT_STR.replace("{podLink}", procCreateMovePageAnchorTag('<%= Constants.URI_WORKLOAD_PODS %>/' + pod.name, pod.name));
                 htmlString.push('<tr name="podRow" data-search-key="' + pod.name + '">'
                     + '<td>' + eventHtml + '</td>'
                     + '<td>' + namespaceHtml + '</td>'

@@ -305,7 +305,7 @@
 
         var nodeNameHtml;
         if ('' !== nvl(data.spec.nodeName)) {
-            nodeNameHtml = createMovePageAnchorTag('<%= Constants.URI_CLUSTER_NODES %>/' + data.spec.nodeName + '/summary', data.spec.nodeName);
+            nodeNameHtml = procCreateMovePageAnchorTag('<%= Constants.URI_CLUSTER_NODES %>/' + data.spec.nodeName + '/summary', data.spec.nodeName);
         } else {
             nodeNameHtml = '-';
         }
@@ -316,7 +316,7 @@
             if ('-' !== ownerName && labels.match('job-name')) {
                 controllerNameHtml = ownerName;
             } else {
-                controllerNameHtml = createMovePageAnchorTag('<%= Constants.URI_WORKLOAD_REPLICA_SETS %>/' + ownerName, ownerName);
+                controllerNameHtml = procCreateMovePageAnchorTag('<%= Constants.URI_WORKLOAD_REPLICA_SETS %>/' + ownerName, ownerName);
             }
         } else {
             controllerNameHtml = '-';
