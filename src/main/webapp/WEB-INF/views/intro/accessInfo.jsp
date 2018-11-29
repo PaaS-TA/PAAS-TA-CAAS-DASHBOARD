@@ -319,7 +319,7 @@
     var callbackGetUser = function(data) {
         if (!procCheckValidData(data)) {
             procViewLoading('hide');
-            alertMessage();
+            procAlertMessage();
             return false;
         }
 
@@ -359,7 +359,7 @@
     var callbackGetAccessToken = function (data) {
         if (!procCheckValidData(data)) {
             procViewLoading('hide');
-            alertMessage();
+            procAlertMessage();
             return false;
         }
 

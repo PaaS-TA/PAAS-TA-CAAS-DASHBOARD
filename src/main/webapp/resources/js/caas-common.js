@@ -33,7 +33,7 @@ var procCallAjax = function(reqUrl, reqMethod, param, preFunc, callback) {
 
             if(data.resultCode == "FAIL"){
                 procViewLoading('hide');
-                alertMessage();
+                procAlertMessage();
             }else{
                 callback(data);
             }
@@ -44,9 +44,9 @@ var procCallAjax = function(reqUrl, reqMethod, param, preFunc, callback) {
             procViewLoading('hide');
 
             if(jqXHR.status == 401){
-                alertMessage('API unauthorized.', false);
+                procAlertMessage('API unauthorized.', false);
             }else if (jqXHR.status == 500){
-                alertMessage();
+                procAlertMessage();
             }
         },
         complete : function(data) {
@@ -174,7 +174,7 @@ var procViewLoading = function(type) {
 };
 
 
-var alertMessage = function (value, result) {
+var procAlertMessage = function (value, result) {
     var messageValue = '시스템 에러가 발생했습니다.';
     var alertLayer = $(".alertLayer");
 

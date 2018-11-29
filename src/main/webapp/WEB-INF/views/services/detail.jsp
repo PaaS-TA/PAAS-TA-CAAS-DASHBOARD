@@ -130,7 +130,7 @@
     var callbackGetUserDetail = function (data) {
         if (!procCheckValidData(data)) {
             procViewLoading('hide');
-            alertMessage();
+            procAlertMessage();
             return false;
         }
 
@@ -154,7 +154,7 @@
     var callbackGetDetail = function(data) {
         if (!procCheckValidData(data)) {
             procViewLoading('hide');
-            alertMessage();
+            procAlertMessage();
             return false;
         }
 

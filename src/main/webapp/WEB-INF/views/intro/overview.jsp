@@ -127,7 +127,7 @@
         if (!procCheckValidData(data)) {
             noResultAreaForNameSpaceDetails.show();
             procViewLoading('hide');
-            alertMessage('Get NameSpaces Failure.', false);
+            procAlertMessage('Get NameSpaces Failure.', false);
 
             return false;
         }
@@ -179,7 +179,7 @@
             $("#detailTab").append(html);
 
             procViewLoading('hide');
-            alertMessage();
+            procAlertMessage();
 
             return false;
         }

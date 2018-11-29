@@ -98,7 +98,7 @@
     var callbackGetUsersList = function(data) {
         if (!procCheckValidData(data)) {
             procViewLoading('hide');
-            alertMessage();
+            procAlertMessage();
             return false;
         }
 

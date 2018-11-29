@@ -144,7 +144,7 @@
 
         if (!procCheckValidData(data)) {
             procViewLoading('hide');
-            alertMessage();
+            procAlertMessage();
             return;
         }
 
