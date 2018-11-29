@@ -353,9 +353,7 @@
         var itemList = data.items;
 
         if(data.status === 'Running' || data.status ==='Succeeded'){
-            if(itemList.length < 1){
-                statusIconHtml = "<span class='green2 tableTdToolTipFalse'><i class='fas fa-check-circle'></i> </span>";
-            }
+            statusIconHtml = "<span class='green2 tableTdToolTipFalse'><i class='fas fa-check-circle'></i> </span>";
         }else{
             statusIconHtml = "<span class='red2 tableTdToolTipFalse'><i class='fas fa-exclamation-circle'></i> </span>";
             $.each(itemList , function (index, item) {
