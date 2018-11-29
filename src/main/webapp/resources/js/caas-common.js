@@ -208,12 +208,12 @@ var procAlertMessage = function (value, result) {
  *    targetObject : 이벤트 데이터를 추가할 대상 JSON Object 입니다.(replicaSet, deployment 리스트 데이터)
  *    selector     : replace 처리되지 않은 json Data 입니다.
  *
- *    ex) addPodsEvent(itemList, itemList.spec.selector.matchLabels); // event Data added to 'itemList'
+ *    ex) procAddPodsEvent(itemList, itemList.spec.selector.matchLabels); // event Data added to 'itemList'
  *
  * @author CISS
  * @since 2018.09.12
  */
-var addPodsEvent = function(targetObject, selector) {
+var procAddPodsEvent = function(targetObject, selector) {
 
     selector = procSetSelector(selector);
 

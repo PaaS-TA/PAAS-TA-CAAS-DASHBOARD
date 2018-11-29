@@ -106,7 +106,7 @@
                     imageTags += '<p>' + containers[i].image + '</p>';
                 }
 
-                addPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가
+                procAddPodsEvent(itemList, itemList.spec.selector.matchLabels); // 이벤트 추가
 
                 var statusIconHtml;
                 var statusMessageHtml = [];

@@ -121,7 +121,7 @@
                 }
 
                 //이벤트 관련 추가 START
-                addPodsEvent(itemList, itemList.spec.selector.matchLabels);
+                procAddPodsEvent(itemList, itemList.spec.selector.matchLabels);
 
                 // Overview 통계용 전역 데이터 셋팅
                 if(itemList.type == "normal") {
