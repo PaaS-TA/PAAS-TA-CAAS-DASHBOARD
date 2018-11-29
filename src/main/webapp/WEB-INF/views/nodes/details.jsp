@@ -140,10 +140,10 @@
 
     // CALLBACK GET NODE DETAIL
     var callbackGetNodeDetail = function(data) {
-        viewLoading('show');
+        procViewLoading('show');
 
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return;
         }
@@ -191,7 +191,7 @@
         $('#node_os_name').html(nodeInfo.operatingSystem);
         $('#node_architecture').html(nodeInfo.architecture);
 
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
     // ON LOAD

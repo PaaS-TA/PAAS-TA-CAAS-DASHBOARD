@@ -57,7 +57,7 @@
 
     // GET LIST
     var procGetCommonEventsList = function (reqUrl, titleString) {
-        viewLoading('show');
+        procViewLoading('show');
 
         $('#commonEventsViewTitle').html(titleString);
         procCallAjax(reqUrl, "GET", null, null, callbackProcGetCommonEventsList);
@@ -67,7 +67,7 @@
     // CALLBACK
     var callbackProcGetCommonEventsList = function (data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }
@@ -104,7 +104,7 @@
         }
 
         procSetToolTipForTableTd('resultCommonEventsArea');
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
 </script>

@@ -74,7 +74,7 @@
 
     // GET PODS' LIST FOR OTHER PAGES
     var getPodsList = function() {
-        viewLoading('show');
+        procViewLoading('show');
         var reqUrl = '<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST %>'.replace('{namespace:.+}', NAME_SPACE);
         procCallAjax(reqUrl, 'GET', null, null, callbackGetPodList);
     };
@@ -82,7 +82,7 @@
     // CALLBACK POD LIST
     var callbackGetPodList = function(data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }
@@ -93,7 +93,7 @@
     };
     
     var setPodsList = function (searchKeyword) {
-        viewLoading('show');
+        procViewLoading('show');
 
         var resultArea = $('#podListResultArea');//.hide();
         var resultHeaderArea = $('#podListResultHeaderArea');//.hide();
@@ -180,7 +180,7 @@
 
         procSetToolTipForTableTd('podListResultArea');
         $('[data-toggle="tooltip"]').tooltip();
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
     // GET POD STATUS FROM POD'S STATUS DATA
@@ -366,6 +366,6 @@
         }
 
         G_EVENT_STR =  statusIconHtml +  '{podLink}'+  statusMessageHtml;
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 </script>

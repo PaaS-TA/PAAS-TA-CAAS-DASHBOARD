@@ -52,11 +52,9 @@
     var G_DEPLOYMENTS_LIST_LENGTH;
     var G_DEV_CAHRT_RUNNING_CNT = 0;
     var G_DEV_CHART_FAILED_CNT = 0;
-    var G_DEV_CHART_SUCCEEDEDCNT = 0;
-    var G_DEV_CHART_PENDDING_CNT = 0;
 
     var getDeploymentsList = function() {
-        viewLoading('show');
+        procViewLoading('show');
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_LIST %>".replace("{namespace:.+}", NAME_SPACE);
         procCallAjax(reqUrl, "GET", null, null, callbackGetDeploymentsList);
 
@@ -65,7 +63,7 @@
     // CALLBACK
     var callbackGetDeploymentsList = function (data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }
@@ -77,7 +75,7 @@
     };
 
     var setDeploymentsList = function (searchKeyword) {
-        viewLoading('show');
+        procViewLoading('show');
 
         var resultArea = $('#deploymentsListArea');
         var resultHeaderArea = $('#resultDeploymentsHeaderArea');
@@ -167,7 +165,7 @@
         }
 
         procSetToolTipForTableTd('resultDeploymentsTable');
-        viewLoading('hide');
+        procViewLoading('hide');
 
     };
 

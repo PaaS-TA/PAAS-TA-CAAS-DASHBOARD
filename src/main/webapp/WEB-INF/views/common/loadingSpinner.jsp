@@ -14,7 +14,7 @@
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function () {
-        viewLoading('show');
+        procViewLoading('show');
     });
 
 </script>

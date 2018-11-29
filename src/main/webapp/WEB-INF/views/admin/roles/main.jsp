@@ -151,8 +151,7 @@
 
     // ON LOAD
     $(document.body).ready(function () {
-        viewLoading('show');
-        viewLoading('hide');
-        // getRoleList();
+        procViewLoading('show');
+        procViewLoading('hide');
     });
 </script>

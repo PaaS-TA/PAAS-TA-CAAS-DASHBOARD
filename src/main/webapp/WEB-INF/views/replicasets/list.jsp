@@ -60,7 +60,7 @@
 
     // GET LIST
     var getReplicaSetsList = function(selector) {
-        viewLoading('show');
+        procViewLoading('show');
 
         var reqUrl;
 
@@ -78,20 +78,20 @@
     // CALLBACK
     var callbackGetReplicaSetsList = function(data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }
 
         G_REPLICA_SETS_LIST = data;
-        viewLoading('hide');
+        procViewLoading('hide');
 
         setReplicaSetsList("");
     };
 
     // SET LIST
     var setReplicaSetsList = function(searchKeyword) {
-        viewLoading('show');
+        procViewLoading('show');
 
         var resultArea       = $('#resultAreaForReplicaSets');
         var resultHeaderArea = $('#resultHeaderAreaForReplicaSets');
@@ -183,7 +183,7 @@
         }
 
         procSetToolTipForTableTd('resultAreaForReplicaSets');
-        viewLoading('hide');
+        procViewLoading('hide');
 
     };
 

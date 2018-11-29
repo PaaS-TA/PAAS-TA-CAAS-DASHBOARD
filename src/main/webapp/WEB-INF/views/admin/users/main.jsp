@@ -85,7 +85,7 @@
 
     // GET LIST
     var getUsersList = function() {
-        viewLoading('show');
+        procViewLoading('show');
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_LIST %>"
             .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
             .replace("{organizationGuid:.+}", ORGANIZATION_GUID);
@@ -97,20 +97,20 @@
     // CALLBACK
     var callbackGetUsersList = function(data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }
 
         G_USERS_LIST = data.items;
 
-        viewLoading('hide');
+        procViewLoading('hide');
         setUsersList("");
     };
 
     // SET LIST
     var setUsersList = function(searchKeyword) {
-        viewLoading('show');
+        procViewLoading('show');
         var userId;
 
         var resultArea = $('#resultArea');
@@ -253,7 +253,7 @@
             resultArea.html(htmlString);
         }
 
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
     // BIND (SERACH USER BUTTON)
@@ -310,10 +310,10 @@
         var resultString = 'Role 이 변경되었습니다.';
 
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             resultString = 'Role 변경에 실패했습니다.';
         }
-        viewLoading('hide');
+        procViewLoading('hide');
         procSetLayerPopup('알림', resultString, '확인', null, 'x', 'location.reload(true);', 'location.reload(true);', 'location.reload(true);');
     };
 
@@ -347,10 +347,10 @@
         var resultString = '사용자가 삭제되었습니다.';
 
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             resultString = '사용자 삭제에 실패했습니다.'
         }
-        viewLoading('hide');
+        procViewLoading('hide');
         procSetLayerPopup('알림', resultString, '확인', null, 'x', 'location.reload(true);', 'location.reload(true);', 'location.reload(true);');
     };
 

@@ -67,7 +67,7 @@
 
     // GET LIST
     var getList = function () {
-        viewLoading('show');
+        procViewLoading('show');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_LIST %>"
             .replace("{namespace:.+}", NAME_SPACE);
@@ -79,12 +79,12 @@
     // CALLBACK
     var callbackGetList = function (data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             return false;
         }
 
         G_SERVICE_LIST = data;
-        viewLoading('hide');
+        procViewLoading('hide');
 
         setList("");
     };
@@ -92,7 +92,7 @@
 
     // SET LIST
     var setList = function (searchKeyword) {
-        viewLoading('show');
+        procViewLoading('show');
 
         var resultArea = $('#resultArea');
         var resultHeaderArea = $('#resultHeaderArea');
@@ -185,7 +185,7 @@
         }
 
         procSetToolTipForTableTd('resultArea');
-        viewLoading('hide');
+        procViewLoading('hide');
         getDetailForPods(selectorList);
     };
 
@@ -197,7 +197,7 @@
             reqUrl;
 
         for (var i = 0; i < listLength; i++) {
-            viewLoading('show');
+            procViewLoading('show');
             tempSelectorList = selectorList[i].split("||");
             reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE %>"
                 .replace("{namespace:.+}", NAME_SPACE)
@@ -212,7 +212,7 @@
     // CALLBACK
     var callbackGetDetailForPods = function (data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             return false;
         }
 
@@ -231,7 +231,7 @@
         $('#' + data.serviceName).html(runningSum + " / " + totalSum);
 
         procSetToolTipForTableTd('resultArea');
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
 

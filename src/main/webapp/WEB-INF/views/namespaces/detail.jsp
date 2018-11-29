@@ -76,7 +76,7 @@
 <script type="text/javascript">
 
     var getDetail = function() {
-        viewLoading('show');
+        procViewLoading('show');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_NAME_SPACES_DETAIL %>"
             .replace("{namespace:.+}", NAME_SPACE);
@@ -90,7 +90,7 @@
 
         if (!procCheckValidData(data)) {
             noResultAreaForNameSpaceDetails.show();
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage('Get NameSpaces Failure.', false);
 
             return false;
@@ -103,11 +103,11 @@
 
         resultAreaForNameSpaceDetails.show();
 
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
     var getResourceQuotaList = function(namespace) {
-        viewLoading('show');
+        procViewLoading('show');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_NAME_SPACES_RESOURCE_QUOTAS %>"
             .replace("{namespace:.+}", NAME_SPACE);
@@ -123,30 +123,12 @@
 
             $("#detailTab").append(html);
 
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
 
             return false;
         }
 
-        /* Resource List (https://godoc.org/k8s.io/kubernetes/pkg/apis/core#ResourceName)
-            "pods"
-            "services"
-            "replicationcontrollers"
-            "resourcequotas"
-            "secrets"
-            "configmaps"
-            "persistentvolumeclaims"
-            "services.nodeports"
-            "services.loadbalancers"
-            "requests.cpu"
-            "requests.memory"
-            "requests.storage"
-            "requests.ephemeral-storage"
-            "limits.cpu"
-            "limits.memory"
-            "limits.ephemeral-storage"
-        */
         var skipResourceKey = [ 
             'requests.storage', 
             'limits.ephemeral-storage' 
@@ -181,7 +163,7 @@
             $("#detailTab").append(htmlRe);
         }
 
-        viewLoading('hide');
+        procViewLoading('hide');
     }
 
     $(document.body).ready(function () {

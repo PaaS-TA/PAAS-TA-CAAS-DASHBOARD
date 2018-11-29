@@ -39,7 +39,7 @@
 
     // GET DETAIL
     var procGetCommonDetailYaml = function (reqUrl, titleString) {
-        viewLoading('show');
+        procViewLoading('show');
 
         $('#commonYamlViewTitle').html(titleString);
         procCallAjax(reqUrl, "GET", null, null, callbackProcGetCommonDetailYaml);
@@ -49,13 +49,13 @@
     // CALLBACK
     var callbackProcGetCommonDetailYaml = function (data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }
 
         $('#resultCommonYamlArea').html('---\n' + data.sourceTypeYaml);
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
 </script>

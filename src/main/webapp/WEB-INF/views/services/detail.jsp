@@ -116,7 +116,7 @@
 
     // GET DETAIL
     var getUserDetail = function () {
-        viewLoading('show');
+        procViewLoading('show');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_DETAIL %>"
             .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
@@ -129,7 +129,7 @@
     // CALLBACK
     var callbackGetUserDetail = function (data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }
@@ -140,7 +140,7 @@
 
     // GET DETAIL
     var getDetail = function() {
-        viewLoading('show');
+        procViewLoading('show');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_SERVICES_DETAIL %>"
             .replace("{namespace:.+}", NAME_SPACE)
@@ -153,7 +153,7 @@
     // CALLBACK
     var callbackGetDetail = function(data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }
@@ -227,7 +227,7 @@
             }
         }
 
-        viewLoading('hide');
+        procViewLoading('hide');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_PODS_LIST_BY_SELECTOR_WITH_SERVICE %>"
             .replace("{namespace:.+}", NAME_SPACE)
@@ -241,7 +241,7 @@
 
     // GET DETAIL FOR ENDPOINTS
     var getDetailForEndpoints = function() {
-        viewLoading('show');
+        procViewLoading('show');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_ENDPOINTS_DETAIL %>"
             .replace("{namespace:.+}", NAME_SPACE)
@@ -254,7 +254,7 @@
     // CALLBACK
     var callbackGetDetailForEndpoints = function(data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             return false;
         }
 
@@ -344,7 +344,7 @@
         }
 
         procSetToolTipForTableTd('resultAreaForEndpoints');
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
 
@@ -355,7 +355,7 @@
 
         for (var i = 0; i < listLength; i++) {
             if (nodeNameList[i] !== '-') {
-                viewLoading('show');
+                procViewLoading('show');
 
                 reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_NODES_LIST %>"
                     .replace('{nodeName:.+}', nodeNameList[i]);
@@ -369,7 +369,7 @@
     // CALLBACK
     var callbackGetDetailForNodes = function(data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             return false;
         }
 
@@ -383,7 +383,7 @@
         }
 
         procSetToolTipForTableTd('resultAreaForEndpoints');
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
 

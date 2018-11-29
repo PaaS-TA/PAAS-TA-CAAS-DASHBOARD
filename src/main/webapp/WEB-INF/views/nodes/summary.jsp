@@ -70,7 +70,7 @@
 
     // CALLBACK GET NODE SUMMARY
     var callbackGetNodeSummary = function(data) {
-        viewLoading('show');
+        procViewLoading('show');
 
         var podNotFound = $('#noPodListResultArea');
         var podsTableHeader = $('#podListResultHeaderArea');
@@ -78,7 +78,7 @@
         var conditionsTableHeader = $('#conditionsTableHeader');
 
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return;
         }
@@ -122,7 +122,7 @@
 
         procSetToolTipForTableTd('conditionResultArea');
         $('[data-toggle="tooltip"]').tooltip();
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
     // ON LOAD

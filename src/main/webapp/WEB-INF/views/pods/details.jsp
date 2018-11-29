@@ -273,10 +273,10 @@
 
     // CALLBACK GET POD'S DETAIL
     var callbackGetDetail = function(data) {
-        viewLoading('show');
+        procViewLoading('show');
 
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return;
         }
@@ -342,7 +342,7 @@
 
         createContainerResultArea(data.status, data.spec.containers);
 
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
     // ON LOAD

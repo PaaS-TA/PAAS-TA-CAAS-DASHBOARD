@@ -32,14 +32,8 @@ var procCallAjax = function(reqUrl, reqMethod, param, preFunc, callback) {
         success: function(data) {
 
             if(data.resultCode == "FAIL"){
-                viewLoading('hide');
+                procViewLoading('hide');
                 alertMessage();
-
-                /* 대상 서버 메시지로 출력. 현재는 DashBoard 에서 메시지 처리하도록 해당 주석 처리
-                if(nvl(data.resultMessage) != ""){
-                    alertMessage(data.resultMessage,"false");
-                }
-                */
             }else{
                 callback(data);
             }
@@ -47,7 +41,7 @@ var procCallAjax = function(reqUrl, reqMethod, param, preFunc, callback) {
         },
         error: function(jqXHR, exception) {
             console.log("jqXHR.status::::"+jqXHR.status+" exception:::"+exception);
-            viewLoading('hide');
+            procViewLoading('hide');
 
             if(jqXHR.status == 401){
                 alertMessage('API unauthorized.', false);

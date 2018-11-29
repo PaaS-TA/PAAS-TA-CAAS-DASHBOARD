@@ -19,8 +19,8 @@
 <script type="text/javascript">
     // ON LOAD
     $(document.body).ready(function() {
-        viewLoading('show');
+        procViewLoading('show');
         getPodsList();
-        viewLoading('hide');
+        procViewLoading('hide');
     });
 </script>

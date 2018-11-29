@@ -129,7 +129,7 @@
     // CALLBACK
     var callbackGetDetail = function(data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }
@@ -194,7 +194,7 @@
     // CALLBACK
     var callbackGetDeploymentsInfo = function(data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }
@@ -220,7 +220,7 @@
     // CALLBACK
     var callbackGetServices = function(data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }
@@ -322,7 +322,7 @@
         }
 
         procSetToolTipForTableTd('resultAreaForService');
-        viewLoading('hide');
+        procViewLoading('hide');
 
     };
 

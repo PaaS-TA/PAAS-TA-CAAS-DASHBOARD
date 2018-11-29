@@ -97,7 +97,7 @@
 <script type="text/javascript">
 
     var getDetail = function() {
-        viewLoading('show');
+        procViewLoading('show');
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_DEPLOYMENTS_DETAIL %>"
                 .replace("{namespace:.+}", NAME_SPACE)
                 .replace("{deploymentName:.+}", "<c:out value='${deploymentName}'/>");
@@ -110,12 +110,12 @@
                 .replace("{namespace:.+}", NAME_SPACE)
                 .replace("{selector:.+}", selector);
         getPodListUsingRequestURL(reqUrl);
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
     var callbackGetDeployments = function (data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }

@@ -306,7 +306,7 @@
 
     // GET User
     var getUser = function() {
-        viewLoading('show');
+        procViewLoading('show');
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_COMMON_API_USERS_DETAIL %>"
             .replace("{serviceInstanceId:.+}", SERVICE_INSTANCE_ID)
             .replace("{organizationGuid:.+}", ORGANIZATION_GUID)
@@ -318,7 +318,7 @@
     // CALLBACK
     var callbackGetUser = function(data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }
@@ -341,14 +341,14 @@
         $("#access-user-role").val(G_ROLE_NAME);
 
         G_USER_ACCESS_TOKEN = data.caasAccountTokenName;
-        viewLoading('hide');
+        procViewLoading('hide');
         getAccessToken();
     };
 
 
     // user 의 token 값 가져오기
     var getAccessToken = function () {
-        viewLoading('show');
+        procViewLoading('show');
         var reqUrl = "<%= Constants.CAAS_BASE_URL %><%= Constants.URI_API_SECRETS_DETAIL %>"
             .replace("{namespace:.+}", NAME_SPACE)
             .replace("{accessTokenName:.+}", G_USER_ACCESS_TOKEN);
@@ -358,7 +358,7 @@
 
     var callbackGetAccessToken = function (data) {
         if (!procCheckValidData(data)) {
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
             return false;
         }
@@ -374,7 +374,7 @@
         $('.caasNamespace').html(G_GUIDE_NAMESPACE);
         $('.caasCredentialsToken').html(G_USER_ACCESS_TOKEN);
 
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
 

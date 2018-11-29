@@ -111,7 +111,7 @@
 <script type="text/javascript">
 
     var getDetail = function() {
-        viewLoading('show');
+        procViewLoading('show');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_NAME_SPACES_DETAIL %>"
             .replace("{namespace:.+}", NAME_SPACE);
@@ -126,7 +126,7 @@
 
         if (!procCheckValidData(data)) {
             noResultAreaForNameSpaceDetails.show();
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage('Get NameSpaces Failure.', false);
 
             return false;
@@ -142,7 +142,7 @@
 
         resultAreaForNameSpaceDetails.show();
 
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
     var getPlan = function () {
@@ -161,7 +161,7 @@
 
 
     var getResourceQuotaList = function(namespace) {
-        viewLoading('show');
+        procViewLoading('show');
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_NAME_SPACES_RESOURCE_QUOTAS %>"
             .replace("{namespace:.+}", NAME_SPACE);
@@ -178,7 +178,7 @@
 
             $("#detailTab").append(html);
 
-            viewLoading('hide');
+            procViewLoading('hide');
             alertMessage();
 
             return false;
@@ -218,7 +218,7 @@
             $("#detailTab").append(htmlRe);
         }
 
-        viewLoading('hide');
+        procViewLoading('hide');
     };
 
 
