@@ -253,7 +253,7 @@
         for (var i = 0; i < listLength; i++) {
 
             // replicaset 과 service의 spec.selector 를 비교해서 같은 항목의 서비스만 출력하도록 한다.
-            if(!compareObj(items[i].spec.selector, replicasetLabel)){
+            if(!procCompareObj(items[i].spec.selector, replicasetLabel)){
                 continue;
             }
 

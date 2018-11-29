@@ -446,12 +446,12 @@ var procSetAnnotationLayerpop = function(eventElement) {
  * @param object   : 대상 Object 2
  * @description
  *    label 비교용으로 사용
- *    ex use) compareObj( {"app":"wordpress","tier":"front"},{"tier":"front", "app":"wordpress"} )  => true
+ *    ex use) procCompareObj( {"app":"wordpress","tier":"front"},{"tier":"front", "app":"wordpress"} )  => true
  *
  * @author CISS
  * @since 2018.10.23
  */
-var compareObj = function( a, b ){
+var procCompareObj = function( a, b ){
     var type = typeof a, i, j;
     if( type == "object" ){
         if( a === null ){
@@ -461,7 +461,7 @@ var compareObj = function( a, b ){
                 return false;
             }
             for( i = 0, j = a.length ; i < j ; i++ ){
-                if(!compareObj(a[i], b[i])){
+                if(!procCompareObj(a[i], b[i])){
                     return false;
                 }
             }
@@ -477,7 +477,7 @@ var compareObj = function( a, b ){
             //a의 각 키와 비교하면서 카운트를 제거한다.
             for( i in a ){
                 if( a.hasOwnProperty(i) ){
-                    if( !compareObj( a[i], b[i] ) ) return false;
+                    if( !procCompareObj( a[i], b[i] ) ) return false;
                     j--;
                 }
             }
