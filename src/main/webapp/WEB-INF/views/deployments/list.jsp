@@ -52,6 +52,8 @@
     var G_DEPLOYMENTS_LIST_LENGTH;
     var G_DEV_CAHRT_RUNNING_CNT = 0;
     var G_DEV_CHART_FAILED_CNT = 0;
+    var G_DEV_CHART_SUCCEEDEDCNT = 0;
+    var G_DEV_CHART_PENDDING_CNT = 0;
 
     var getDeploymentsList = function() {
         procViewLoading('show');
