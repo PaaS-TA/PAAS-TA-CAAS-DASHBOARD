@@ -6,7 +6,7 @@
 
     <!-- TEMPLATES -->
     <definition name="layout.default" template="/WEB-INF/views/common/defaultLayout.jsp">
-        <put-attribute name="title" value="CaaS Dashboard"/>
+        <put-attribute name="title" value="Container Service"/>
         <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
         <put-attribute name="left-menu" value="/WEB-INF/views/common/leftMenu.jsp"/>
         <put-attribute name="body" value=""/>
@@ -17,7 +17,7 @@
     </definition>
 
     <definition name="layout.admin" template="/WEB-INF/views/common/defaultLayout.jsp">
-        <put-attribute name="title" value="CaaS Dashboard"/>
+        <put-attribute name="title" value="Container Service"/>
         <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
         <put-attribute name="left-menu" value="/WEB-INF/views/common/adminLeftMenu.jsp"/>
         <put-attribute name="body" value=""/>
