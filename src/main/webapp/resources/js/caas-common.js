@@ -100,7 +100,7 @@ function nvl(str, defaultStr){
 
 // SET MENU CURSOR
 var procSetMenuCursor = function () {
-    var leftMenuList = ["intro", "workloads", "services", "users", "roles"];
+    var leftMenuList = ["intro", "workloads", "services", "storages", "users", "roles"];
     var headerMenuList = ["users", "roles"];
     var leftMenuListLength = leftMenuList.length;
     var calledMenu = leftMenuList[0];

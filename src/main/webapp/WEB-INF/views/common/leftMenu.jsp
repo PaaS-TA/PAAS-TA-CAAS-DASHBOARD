@@ -50,6 +50,20 @@
                     </dd>
                 </dl>
             </li>
+            <li id="left-menu-storages" onclick="procMovePage('<%= Constants.URI_STORAGES %>');">
+                <dl>
+                    <dt>
+                        <div id="lnbimg20" class="">
+
+                        </div>
+                    </dt>
+                    <dd>
+                        <p>
+                            Storages
+                        </p>
+                    </dd>
+                </dl>
+            </li>
         </ul>
     </div>
 </nav>

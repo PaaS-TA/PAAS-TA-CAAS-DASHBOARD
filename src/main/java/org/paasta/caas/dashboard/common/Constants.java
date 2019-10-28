@@ -37,6 +37,8 @@ public class Constants {
 
     public static final String URI_SERVICES = "/caas/services";
 
+    public static final String URI_STORAGES = "/caas/storages";
+
     public static final String URI_USERS = "/caas/users";
 
     public static final String URI_ROLES = "/caas/roles";
@@ -80,6 +82,10 @@ public class Constants {
     public static final String URI_API_SERVICE_ACCOUNT_DETAIL = "/namespaces/{namespace:.+}/serviceAccounts/{caasAccountName:.+}";
 
     public static final String URI_API_SECRETS_DETAIL = "/namespaces/{namespace:.+}/secrets/{accessTokenName:.+}";
+
+    public static final String URI_API_STORAGES_LIST = "/namespaces/{namespace:.+}/persistentVolumeClaims";
+    public static final String URI_API_STORAGES_DETAIL = "/namespaces/{namespace:.+}/persistentVolumeClaims/{persistentVolumeClaimName:.+}";
+    public static final String URI_API_STORAGES_YAML = "/namespaces/{namespace:.+}/persistentVolumeClaims/{persistentVolumeClaimName:.+}/yaml";
 
 
     // COMMON API URI
