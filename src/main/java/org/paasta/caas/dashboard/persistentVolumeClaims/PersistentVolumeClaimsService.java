@@ -6,9 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * PersistentVolumeClaims Service 클래스
  *
@@ -36,28 +33,25 @@ public class PersistentVolumeClaimsService {
      * PersistentVolumeClaims 목록을 조회한다.
      *
      * @param namespace the namespace
-     * @return the PersistentVolumeClaims List
+     * @return the Persistent Volume Claims List
      */
     PersistentVolumeClaimsList getPersistentVolumeClaimsList(String namespace) {
         return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_STORAGES_LIST
                         .replace("{namespace:.+}", namespace),
                 HttpMethod.GET, null, PersistentVolumeClaimsList.class);
     }
-//
-//    /**
-//     * PersistentVolumeClaims 상세 정보를 조회한다.
-//     *
-//     * @param namespace                     the namespace
-//     * @param persistentVolumeClaimName  the PersistentVolumeClaims
-//     * @return the PersistentVolumeClaims
-//     */
-//    public PersistentVolumeClaims getPersistentVolumeClaims(String namespace, String persistentVolumeClaimName) {
-//        HashMap responseMap = (HashMap) restTemplateService.send(Constants.TARGET_CAAS_MASTER_API,
-//                propertyService.getCaasMasterApiListPersistentVolumeClaimsGetUrl()
-//                        .replace("{namespace}", namespace)
-//                        .replace("{name}", persistentVolumeClaimName)
-//                , HttpMethod.GET, null, Map.class);
-//
-//        return (PersistentVolumeClaims) commonService.setResultModel(commonService.setResultObject(responseMap, PersistentVolumeClaims.class), Constants.RESULT_STATUS_SUCCESS);
-//    }
+
+    /**
+     * PersistentVolumeClaims 상세 정보를 조회한다.
+     *
+     * @param namespace                     the namespace
+     * @param persistentVolumeClaimName  the Persistent Volume Claim name
+     * @return the Persistent Volume Claims
+     */
+    PersistentVolumeClaims getPersistentVolumeClaims(String namespace, String persistentVolumeClaimName) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_STORAGES_DETAIL
+                        .replace("{namespace:.+}", namespace)
+                        .replace("{persistentVolumeClaimName:.+}", persistentVolumeClaimName),
+                HttpMethod.GET, null, PersistentVolumeClaims.class);
+    }
 }

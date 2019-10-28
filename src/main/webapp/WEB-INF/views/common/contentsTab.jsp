@@ -201,6 +201,31 @@
             </c:choose>
         </c:when>
 
+        <c:when test="${pathLevel2 eq 'storages'}">
+            <c:choose>
+                <c:when test="${!empty pathLevel3}">
+                    <li name="tab01"
+                            <c:if test="${empty pathLevel4}"> class="cluster_tabs_on"</c:if>
+                            <c:if test="${!empty pathLevel4}"> class="cluster_tabs_right"
+                                onclick="procMovePage('<%=Constants.URI_STORAGES%>'+'/${pathLevel3}');"
+                            </c:if>
+                    >Details</li>
+                    <li name="tab02"
+                            <c:if test="${pathLevel4 eq 'events'}"> class="cluster_tabs_on"</c:if>
+                            <c:if test="${pathLevel4 ne 'events'}"> class="cluster_tabs_right"
+                                onclick="procMovePage('<%=Constants.URI_STORAGES%>'+'/${pathLevel3}/events');"
+                            </c:if>
+                    >Events</li>
+                    <li name="tab03"
+                            <c:if test="${pathLevel4 eq 'yaml'}"> class="cluster_tabs_on"</c:if>
+                            <c:if test="${pathLevel4 ne 'yaml'}"> class="cluster_tabs_right yamlTab"
+                                onclick="procMovePage('<%=Constants.URI_STORAGES%>'+'/${pathLevel3}/yaml');"
+                            </c:if>
+                    >YAML</li>
+                </c:when>
+            </c:choose>
+        </c:when>
+
         <c:when test="${pathLevel2 eq 'intro'}">
             <c:choose>
                 <c:when test="${pathLevel3 eq 'overview'}">

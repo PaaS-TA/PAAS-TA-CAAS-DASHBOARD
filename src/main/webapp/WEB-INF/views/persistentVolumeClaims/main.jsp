@@ -122,21 +122,34 @@
                 namespace = itemsMetadata.namespace;
                 specResources = itemsSpec.resources;
 
+                var capacity = "";
+
+                if(itemStatus.capacity != null) {
+                    capacity = itemStatus.capacity.storage;
+                }
+
+
                 var specCollection = [];
 
+                var accessModesList = "";
+                for(var j = 0; j < itemsSpec.accessModes.length; j++) {
+                    accessModesList += '<p>' + itemsSpec.accessModes[j] + '</p>';
+                }
+
                 specCollection.push(
-                    '<p> accessMode : ' + itemsSpec.accessModes[0] + '</p>'
-                    + '<p> capacity : ' + itemStatus.capacity.storage + '</p>'
+                    '<p> accessMode : ' + nvl(accessModesList, '-') + '</p>'
+                    + '<p> capacity : ' + capacity + '</p>'
                     + '<p> volumeName : ' + itemsSpec.volumeName + '</p>'
                     + '<p> volumeMode : ' + itemsSpec.volumeMode + '</p>'
-                    + '<p> storageClassName : ' + itemsSpec.storageClassName + '</p>'
-                    + '<p> claimRef : ' + persistentVolumeClaimName + "(" + itemsSpec.resources.requests.storage + ")" + '</p>'
+                    + '<p> storageClassName : ' + nvl(itemsSpec.storageClassName, '-') + '</p>'
+                    + '<p> claimRef : ' + nvl(persistentVolumeClaimName, '-') + "(" + nvl(itemsSpec.resources.requests.storage, '-') + ")" + '</p>'
                 );
 
 
                 htmlString.push(
                     '<tr>'
-                    + '<td><span class="green2"><i class="fas fa-check-circle"></i></span> ' + persistentVolumeClaimName + '</td>'
+                    + '<td><span class="green2"><i class="fas fa-check-circle"></i></span> '
+                    + '<a href="javascript:void(0);" onclick="procMovePage(\'<%= Constants.URI_STORAGES %>/' + persistentVolumeClaimName + '\');">' + persistentVolumeClaimName + '</a></td>'
                     + '<td><p>' + nvl(itemsMetadata.label, '-') + '</p></td>'
                     + '<td><p>' + nvl(specCollection, '-') + '</p></td>'
                     + '<td>' + itemStatus.phase + "</td>"
@@ -168,7 +181,7 @@
 
         <%--procSetToolTipForTableTd('resultArea');--%>
         procViewLoading('hide');
-        <%--getDetailForPods(selectorList);--%>
+
     };
 
 

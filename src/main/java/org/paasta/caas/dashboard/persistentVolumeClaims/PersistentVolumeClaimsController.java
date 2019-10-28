@@ -49,6 +49,42 @@ public class PersistentVolumeClaimsController {
 
 
     /**
+     * Storages detail 페이지로 이동한다.
+     *
+     * @param httpServletRequest the http servlet request
+     * @return the storages detail
+     */
+    @GetMapping(value = Constants.URI_STORAGES + "/{persistentVolumeClaimName:.+}")
+    public ModelAndView getStoragesDetail(HttpServletRequest httpServletRequest, @PathVariable(value = "persistentVolumeClaimName") String persistentVolumeClaimName) {
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/detail", new ModelAndView());
+    }
+
+
+    /**
+     * Persistent Volume Claim events 페이지로 이동한다.
+     *
+     * @param httpServletRequest the http servlet request
+     * @return the persistentVolumeClaim detail events
+     */
+    @GetMapping(value = Constants.URI_STORAGES + "/{persistentVolumeClaimName}/events")
+    public ModelAndView getPersistentVolumeClaimEvent(HttpServletRequest httpServletRequest, @PathVariable(value = "persistentVolumeClaimName") String persistentVolumeClaimName) {
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/events", new ModelAndView());
+    }
+
+
+    /**
+     * Persistent Volume Claim yaml 페이지로 이동한다.
+     *
+     * @param httpServletRequest the http servlet request
+     * @return the persistentVolumeClaim detail yaml
+     */
+    @GetMapping(value = Constants.CAAS_BASE_URL + "/{persistentVolumeClaimName}/yaml")
+    public ModelAndView getPersistentVolumeClaimYaml(HttpServletRequest httpServletRequest, @PathVariable(value = "persistentVolumeClaimName") String persistentVolumeClaimName) {
+        return commonService.setPathVariables(httpServletRequest, VIEW_URL + "/yaml", new ModelAndView());
+    }
+
+
+    /**
      * PersistentVolumeClaims 목록을 조회한다.
      *
      * @param namespace the namespace
@@ -59,16 +95,16 @@ public class PersistentVolumeClaimsController {
     public PersistentVolumeClaimsList getPersistentVolumeClaimsList(@PathVariable(value = "namespace") String namespace) {
         return persistentVolumeClaimsService.getPersistentVolumeClaimsList(namespace);
     }
-//
-//    /**
-//     * PersistentVolumeClaims 상세 정보를 조회한다.
-//     *
-//     * @param namespace
-//     * @param persistentVolumeClaimName
-//     * @return
-//     */
-//    @GetMapping(value = "/{persistentVolumeClaimName:.+}")
-//    public PersistentVolumeClaims getPersistentVolumeClaims(@PathVariable(value = "namespace") String namespace, @PathVariable(value = "persistentVolumeClaimName") String persistentVolumeClaimName) {
-//        return persistentVolumeClaimsService.getPersistentVolumeClaims(namespace, persistentVolumeClaimName);
-//    }
+
+    /**
+     * PersistentVolumeClaims 상세 정보를 조회한다.
+     *
+     * @param namespace
+     * @param persistentVolumeClaimName
+     * @return
+     */
+    @GetMapping(value = Constants.API_URL + Constants.URI_API_STORAGES_DETAIL)
+    public PersistentVolumeClaims getPersistentVolumeClaims(@PathVariable(value = "namespace") String namespace, @PathVariable(value = "persistentVolumeClaimName") String persistentVolumeClaimName) {
+        return persistentVolumeClaimsService.getPersistentVolumeClaims(namespace, persistentVolumeClaimName);
+    }
 }
