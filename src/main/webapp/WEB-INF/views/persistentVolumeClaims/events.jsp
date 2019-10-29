@@ -19,7 +19,7 @@
 
         var reqUrl = "<%= Constants.API_URL %><%= Constants.URI_API_EVENTS_LIST %>"
             .replace("{namespace:.+}", NAME_SPACE)
-            .replace("{resourceUid:.+}", resourceName);
+            .replace("{resourceUid:.+}", resourceName + '?type=persistentVolumeClaim');
 
         procGetCommonEventsList(reqUrl, resourceName);
     };

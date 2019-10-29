@@ -32,8 +32,8 @@
                             <colgroup>
                                 <col style='width:auto;'>
                                 <col style='width:10%;'>
-                                <col style='width:25%;'>
-                                <col style='width:20%;'>
+                                <col style='width:35%;'>
+                                <col style='width:15%;'>
                                 <col style='width:20%;'>
                             </colgroup>
                             <thead>
@@ -43,7 +43,7 @@
                                 <td>Labels</td>
                                 <td>Spec</td>
                                 <td>Status</td>
-                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '5')"><i class="fas fa-caret-down"></i></button></td>
+                                <td>Created on<button class="sort-arrow" onclick="procSetSortList('resultTable', this, '4')"><i class="fas fa-caret-down"></i></button></td>
                             </tr>
                             </thead>
                             <tbody id="resultArea">
@@ -106,9 +106,7 @@
 
         var items = G_STORAGES_LIST.items;
         var listLength = items.length;
-        var endpoints = "";
         var checkListCount = 0;
-        var selectorList = [];
         var htmlString = [];
 
         for(var i = 0; i < listLength; i++) {
@@ -126,21 +124,22 @@
 
                 if(itemStatus.capacity != null) {
                     capacity = itemStatus.capacity.storage;
+                } else {
+                    capacity = '-';
                 }
-
 
                 var specCollection = [];
 
-                var accessModesList = "";
+                var accessModesList = [];
                 for(var j = 0; j < itemsSpec.accessModes.length; j++) {
-                    accessModesList += '<p>' + itemsSpec.accessModes[j] + '</p>';
+                    accessModesList.push(itemsSpec.accessModes[j]);
                 }
 
                 specCollection.push(
-                    '<p> accessMode : ' + nvl(accessModesList, '-') + '</p>'
+                    '<p> accessMode : ' + accessModesList + '</p>'
                     + '<p> capacity : ' + capacity + '</p>'
-                    + '<p> volumeName : ' + itemsSpec.volumeName + '</p>'
-                    + '<p> volumeMode : ' + itemsSpec.volumeMode + '</p>'
+                    + '<p> volumeName : ' + nvl(itemsSpec.volumeName, '-') + '</p>'
+                    + '<p> volumeMode : ' + nvl(itemsSpec.volumeMode, '-') + '</p>'
                     + '<p> storageClassName : ' + nvl(itemsSpec.storageClassName, '-') + '</p>'
                     + '<p> claimRef : ' + nvl(persistentVolumeClaimName, '-') + "(" + nvl(itemsSpec.resources.requests.storage, '-') + ")" + '</p>'
                 );
@@ -152,7 +151,7 @@
                     + '<a href="javascript:void(0);" onclick="procMovePage(\'<%= Constants.URI_STORAGES %>/' + persistentVolumeClaimName + '\');">' + persistentVolumeClaimName + '</a></td>'
                     + '<td><p>' + nvl(itemsMetadata.label, '-') + '</p></td>'
                     + '<td><p>' + nvl(specCollection, '-') + '</p></td>'
-                    + '<td>' + itemStatus.phase + "</td>"
+                    + '<td>' + nvl(itemStatus.phase, '-') + "</td>"
                     + '<td>' + itemsMetadata.creationTimestamp + '</td>'
                     + '</tr>');
 
@@ -179,7 +178,7 @@
             $('.headerSortFalse > td').unbind();
         }
 
-        <%--procSetToolTipForTableTd('resultArea');--%>
+        procSetToolTipForTableTd('resultArea');
         procViewLoading('hide');
 
     };

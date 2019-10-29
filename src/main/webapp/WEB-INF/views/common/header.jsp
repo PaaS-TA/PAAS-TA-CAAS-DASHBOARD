@@ -43,7 +43,7 @@
                 <c:choose>
                     <c:when test="${g.index eq 1}" >
                         <c:choose>
-                            <c:when test="${(path eq 'services') || (path eq 'users') || (path eq 'roles')}" >
+                            <c:when test="${(path eq 'services') || (path eq 'users') || (path eq 'roles') || (path eq 'storages')}" >
                                 <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}');">${cfn:camelCaseParser(path)}</a></li>
                             </c:when>
                             <c:otherwise>
@@ -66,6 +66,9 @@
                             <c:when test="${pathArray[1] eq 'services'}" >
                                 <%-- service는 탭메뉴 없음. 1 depth만 표시 --%>
                             </c:when>
+                            <c:when test="${pathArray[1] eq 'storages'}" >
+                                <%-- storages 는 탭메뉴 없음. 1 depth만 표시 --%>
+                            </c:when>
                             <c:when test="${pathArray[2] eq 'namespaces'}" >
                                 <%-- namespaces main : Detail --%>
                                 <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}/${pathArray[3]}');"> ${cfn:camelCaseParser(path)}</a></li>
@@ -84,7 +87,7 @@
         </ul>
         <div class="btn-kuber">
             <c:forEach var="path" items="${pathArray}" varStatus="g">
-                <c:if test="${path eq 'clusters' || path eq 'workloads' || path eq 'services' || path eq 'users' || path eq 'roles'}">
+                <c:if test="${path eq 'clusters' || path eq 'workloads' || path eq 'services' || path eq 'users' || path eq 'roles' || path eq 'storages'}">
                 </c:if>
             </c:forEach>
         </div>
