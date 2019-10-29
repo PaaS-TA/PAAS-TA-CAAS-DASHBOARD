@@ -144,10 +144,17 @@
                     + '<p> claimRef : ' + nvl(persistentVolumeClaimName, '-') + "(" + nvl(itemsSpec.resources.requests.storage, '-') + ")" + '</p>'
                 );
 
+                var statusIconHtml = "";
+
+                if(itemStatus.phase === 'Bound') {
+                    statusIconHtml = "<td><span class='green2'><i class='fas fa-check-circle'></i></span> ";
+                } else {
+                    statusIconHtml = "<td><span class='red2'><i class='fas fa-exclamation-circle'></i></span> ";
+                }
 
                 htmlString.push(
                     '<tr>'
-                    + '<td><span class="green2"><i class="fas fa-check-circle"></i></span> '
+                    + statusIconHtml
                     + '<a href="javascript:void(0);" onclick="procMovePage(\'<%= Constants.URI_STORAGES %>/' + persistentVolumeClaimName + '\');">' + persistentVolumeClaimName + '</a></td>'
                     + '<td><p>' + nvl(itemsMetadata.label, '-') + '</p></td>'
                     + '<td><p>' + nvl(specCollection, '-') + '</p></td>'
