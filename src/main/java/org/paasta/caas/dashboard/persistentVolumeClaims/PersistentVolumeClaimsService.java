@@ -54,4 +54,19 @@ public class PersistentVolumeClaimsService {
                         .replace("{persistentVolumeClaimName:.+}", persistentVolumeClaimName),
                 HttpMethod.GET, null, PersistentVolumeClaims.class);
     }
+
+
+    /**
+     * PersistentVolumeClaims YAML 을 조회한다.
+     *
+     * @param namespace                    the namespace
+     * @param persistentVolumeClaimName the Persistent Volume Claim name
+     * @return the Persistent Volume Claims
+     */
+    public PersistentVolumeClaims getPersistentVolumeClaimYaml(String namespace, String persistentVolumeClaimName) {
+        return restTemplateService.send(Constants.TARGET_CAAS_API, Constants.URI_API_STORAGES_YAML
+                        .replace("{namespace:.+}", namespace)
+                        .replace("{persistentVolumeClaimName:.+}", persistentVolumeClaimName),
+                HttpMethod.GET, null, PersistentVolumeClaims.class);
+    }
 }
