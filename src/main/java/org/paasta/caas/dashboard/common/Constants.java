@@ -29,6 +29,7 @@ public class Constants {
     // DASHBOARD URI
     public static final String URI_INTRO_OVERVIEW = "/caas/intro/overview";
     public static final String URI_INTRO_ACCESS_INFO = "/caas/intro/accessInfo";
+    public static final String URI_INTRO_PRIVATE_REGISTRY_INFO = "/caas/intro/privateRegistryInfo";
 
     public static final String URI_WORKLOAD_OVERVIEW = "/caas/workloads/overview";
     public static final String URI_WORKLOAD_DEPLOYMENTS = "/caas/workloads/deployments";

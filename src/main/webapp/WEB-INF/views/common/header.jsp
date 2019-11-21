@@ -63,6 +63,9 @@
                             <c:when test="${pathArray[2] eq 'accessInfo'}" >
                                 <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${cfn:camelCaseParser('access')}</a></li>
                             </c:when>
+                            <c:when test="${pathArray[2] eq 'privateRegistryInfo'}" >
+                                <li><a class="cont-parent-link" href="javascript:void(0);" onclick="procMovePage('/${pathArray[0]}/${pathArray[1]}/${pathArray[2]}');">${cfn:camelCaseParser('private registry')}</a></li>
+                            </c:when>
                             <c:when test="${pathArray[1] eq 'services'}" >
                                 <%-- service는 탭메뉴 없음. 1 depth만 표시 --%>
                             </c:when>

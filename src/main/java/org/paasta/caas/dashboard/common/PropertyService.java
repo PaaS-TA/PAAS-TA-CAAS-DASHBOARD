@@ -44,4 +44,10 @@ public class PropertyService {
 
     @Value("${roleSet.initUserName}")
     private String initUserName;
+
+    @Value("${private.registry.imageName}")
+    private String privateRegistryImageName;
+
+    @Value("${private.registry.url}")
+    private String privateRegistryUrl;
 }

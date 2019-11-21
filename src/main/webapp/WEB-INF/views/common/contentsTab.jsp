@@ -231,13 +231,21 @@
                 <c:when test="${pathLevel3 eq 'overview'}">
                     <li name="tab01" class="cluster_tabs_on">Overview</li>
                     <li name="tab02" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_INTRO_ACCESS_INFO%>');">Access</li>
+                    <li name="tab03" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_INTRO_PRIVATE_REGISTRY_INFO%>');">Private Registry</li>
                 </c:when>
                 <c:when test="${pathLevel3 eq 'accessInfo'}">
                     <li name="tab01" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_INTRO_OVERVIEW%>');">Overview</li>
                     <li name="tab02" class="cluster_tabs_on">Access</li>
+                    <li name="tab03" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_INTRO_PRIVATE_REGISTRY_INFO%>');">Private Registry</li>
+                </c:when>
+                <c:when test="${pathLevel3 eq 'privateRegistryInfo'}">
+                    <li name="tab01" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_INTRO_OVERVIEW%>');">Overview</li>
+                    <li name="tab02" class="cluster_tabs_right" onclick="procMovePage('<%=Constants.URI_INTRO_ACCESS_INFO%>');">Access</li>
+                    <li name="tab03" class="cluster_tabs_on">Private Registry</li>
                 </c:when>
             </c:choose>
         </c:when>
+
     </c:choose>
     <%--</ul>--%>
     <div class="cluster_tabs_line"></div>
