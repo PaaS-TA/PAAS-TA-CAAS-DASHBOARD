@@ -1,5 +1,5 @@
 <%--
-  Intro privateDockerInfo
+  Private Registry Info
   @author hrjin
   @version 1.0
   @since 2019.11.19
