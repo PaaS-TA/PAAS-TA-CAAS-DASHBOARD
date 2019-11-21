@@ -41,7 +41,6 @@
                 </div>
                 <div class="maT10"></div>
                 <div class="custom-access-contents">
-                    <div class="maT10"></div>
                     <div class="fa-pull-left" id="podForPrivateDockerRegistry">
                         <p>---</p>
                         <p>apiVersion: apps/v1</p>
