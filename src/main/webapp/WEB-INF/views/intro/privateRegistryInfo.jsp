@@ -15,6 +15,9 @@
                 <p>Private Registry Info</p>
             </div>
         </div>
+        <div class="account_table access">
+            <p>Private Registry 도커 이미지를 Container 상에 배포 및 사용하기 위한 사전 작업 설명 페이지입니다.</p>
+        </div>
     </div>
     <div class="cluster_tabs clearfix"></div>
     <%--How to access :: BEGIN--%>
@@ -64,9 +67,6 @@
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- containerPort: 5000</p>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imagePullSecrets:</p>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name: paasta</p>
-                    </div>
-                    <div class="fa-pull-right">
-                        <i class="fas fa-copy custom-access-copy-button" about="podForPrivateDockerRegistry"></i>
                     </div>
                 </div>
             </div>
@@ -125,9 +125,6 @@
                         <p>&nbsp;&nbsp;ports:</p>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;- port: 5000</p>
                     </div>
-                    <div class="fa-pull-right">
-                        <i class="fas fa-copy custom-access-copy-button" about="svcForPrivateDockerRegistry"></i>
-                    </div>
                 </div>
             </div>
         </div>
@@ -153,24 +150,6 @@
                         <i class="fas fa-copy custom-access-copy-button" about="confirmServiceCommandKubectl"></i>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="custom-access-wrap">
-            <div class="custom-access-title">
-                <p>5. 각자의 Private Registry 사용을 위한 Secret 생성</p>
-            </div>
-            <div class="custom-access-contents-wrap">
-                <div class="custom-access-contents">
-                    <div class="fa-pull-left" id="createPrivateRegistrySecret">
-                        <p>kubectl create secret docker-registry [생성할 secret 명] --docker-server=<span class="caasMasterUrl"></span>:[생성된 service port] --docker-username=admin --docker-password=cloudfoundry --namespace <span class="nameSpace"></span></p>
-                    </div>
-                    <div class="fa-pull-right">
-                        <i class="fas fa-copy custom-access-copy-button" about="createPrivateRegistrySecret"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="custom-access-title-caution">
-                <p style="color: red;"><i class="fas fa-info-circle"></i> [생성된 service port] 란 4번 순서를 행하였을 때 '5000:3xxxx/TCP' 중 3xxxx port 를 뜻합니다.</p>
             </div>
         </div>
     </div>
